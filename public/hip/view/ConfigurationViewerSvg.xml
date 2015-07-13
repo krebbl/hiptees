@@ -1,0 +1,96 @@
+<parent:ConfigurationViewerSvgClass xmlns:parent="hip.view" xmlns="js.svg" onclick="_handleClick" xmlns:js="js.core">
+
+
+
+    <g class="asset-container" cid="_assetContainerWrapper">
+        <parent:SvgContentPlaceholder name="renderer"/>
+    </g>
+
+    <rect class="configuration-boundary"
+          cid="_boundingBox"
+          x="0" y="0"
+          fill-opacity="0"
+          onpointerdown="handlePointerDown('move','', event)"
+          width="{_size.width}" height="{_size.height}"/>
+
+    <g visible="{selected}">
+
+        <g translateX="{half(_size.width)}" translateY="{_size.height}" visible="{verticalStretchable}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    visible="{not(keepAspectRatio)}"
+                    onpointerdown="handlePointerDown('resize','b',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"
+                    visible="{not(keepAspectRatio)}"/>
+        </g>
+
+        <g visible="{and(verticalStretchable,horizontalStretchable)}">
+            <circle r="{handleWidth}"
+                    fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','lt',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateY="{half(_size.height)}">
+            <circle r="{handleWidth}"
+                    fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','l',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateX="{_size.width}" translateY="{half(_size.height)}">
+            <circle r="{handleWidth}"
+                    fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','r',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateY="{_size.height}" visible="{and(verticalStretchable,horizontalStretchable)}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','lb',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateX="{_size.width}" translateY="{_size.height}"
+           visible="{and(verticalStretchable,horizontalStretchable)}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','rb',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateX="{_size.width}"
+           visible="{and(verticalStretchable,horizontalStretchable)}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','tr',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"/>
+
+        </g>
+
+        <g translateX="{half(_size.width)}" visible="{verticalStretchable}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    visible="{not(keepAspectRatio)}"
+                    onpointerdown="handlePointerDown('resize','t',event)"/>
+
+            <circle r="3" fill="gray"
+                    style="pointer-events: none;"/>
+
+        </g>
+
+
+    </g>
+
+
+</parent:ConfigurationViewerSvgClass>

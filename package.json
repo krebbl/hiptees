@@ -1,0 +1,11 @@
+{
+  "name": "hiptees",
+  "version": "0.1.0",
+  "description": "t-shirt customization app",
+  "main": "build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "krebbl",
+  "license": "ISC"
+}

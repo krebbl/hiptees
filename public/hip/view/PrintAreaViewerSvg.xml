@@ -1,0 +1,17 @@
+<parent:ConfigurationViewerSvgClass xmlns="http://www.w3.org/1999/xhtml"
+                                    xmlns:parent="hip.view" xmlns:svg="js.svg" xmlns:js="js.core">
+
+
+        <svg:rect class="configuration-boundary"
+                  x="0" y="0"
+                  fill="white"
+                  width="{_configurationWidth}" height="{_configurationHeight}"/>
+
+        <js:Repeat items="configurations">
+            <js:Template name="item">
+
+            </js:Template>
+        </js:Repeat>
+
+
+</parent:ConfigurationViewerSvgClass>

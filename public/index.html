@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--
+    Created with rAppid.js - a declarative RIA MVC JS Framework developed by Tony Findeisen and Marcus Krejpowicz
+    Visit http://rappidjs.com for more Information.
+    -->
+    <title>Hiptees</title>
+
+    <!-- VERSION="${VERSION}" -->
+
+    <script type="text/javascript" src="js/lib/require.js" data-usage="lib"></script>
+    <script type="text/javascript" src="js/lib/rAppid.js" data-usage="lib"></script>
+
+    <link type="text/css" rel="stylesheet" href="hip/font/biko_black.css"/>
+    <link type="text/css" rel="stylesheet" href="hip/font/dense-regular.css"/>
+    <link type="text/css" rel="stylesheet" href="css/hiptees.css"/>
+
+    <meta name="fragment" content="!">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <script type="text/javascript">
+        var viewportTag;
+        (function (document, screen) {
+            var head = document.head || document.getElementsByTagName("head")[0],
+                    scale = 2,
+                    meta;
+
+//            if (window.matchMedia) {
+//                var matchMedia = window.matchMedia("(max-device-width: 400px)");
+//                if (matchMedia && matchMedia.matches) {
+//                    scale = 1;
+//                }
+//            } else if (screen.width <= 720) {
+//                scale = 1;
+//            }
+
+            meta = document.createElement("meta");
+            meta.setAttribute("name", "viewport");
+            meta.setAttribute("content", "width=device-width, initial-scale=" + scale + ", maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes");
+
+            viewportTag = meta;
+
+//            head.appendChild(meta);
+        })(document, screen);
+    </script>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <!--<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+    <![endif]-->
+
+</head>
+<body>
+
+<!--<svg focused="true" width="870" height="870" version="1.2" viewBox="0 0 127.86767349874145 127.86767349874145"-->
+     <!--class="active product-viewer bright">-->
+    <!--<defs></defs>-->
+    <!--<g transform="translate(-1000,-1000)"></g>-->
+    <!--<g class="product-type-view">-->
+        <!--<image NS1:href="//image3.spreadshirtmedia.net/image-server/v1/productTypes/31/views/1/appearances/1?width=900&amp;height=900"-->
+               <!--x="0" y="0" width="127.86767349874145" height="127.86767349874145"></image>-->
+        <!--<g transform="translate(16.8968,27.4002)" class="print-area">-->
+            <!--<rect class="print-area-border" width="60.2804746382" height="69.8705501494"></rect>-->
+        <!--</g>-->
+    <!--</g>-->
+<!--</svg>-->
+<!--<svg-->
+     <!--xmlns:xlink="http://www.w3.org/1999/xlink"-->
+     <!--width="300" height="300" viewBox="0 0 200 200">-->
+
+    <!--<g>-->
+        <!--<g transform="translate(30,30)">-->
+            <!--<rect width="100" height="100"/>-->
+        <!--</g>-->
+    <!--</g>-->
+
+<!--</svg>-->
+<script type="text/javascript" data-usage="bootstrap">
+    setTimeout(function () {
+        rAppid.bootStrap("hip/Hipstee.xml");
+    }, 500);
+</script>
+<div class="bikoblack">|MÉq</div>
+<div class="dense">|MÉq</div>
+<div>&#xFEFF</div>
+<div>&shy;</div>
+</body>
+</html>

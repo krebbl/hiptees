@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<hip:HipsteeClass
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:js="js.core" xmlns:ui="js.ui" xmlns:hip="hip" xmlns:view="hip.view"
+        xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:text="hip.text">
+
+    <js:Injection>
+        <command:EventBus cid="eventBus"/>
+        <command:Executor cid="executor" eventBus="{eventBus}"/>
+        <handler:TextConfigurationHandler cid="textConfigurationHandler"/>
+        <handler:ApplyFilterHandler cid="applyFilterHandler"/>
+        <handler:ProductHandler cid="productHandler" product="{product}"/>
+        <handler:ConfigurationHandler cid="configurationHandler" />
+        <handler:TextFlowHandler cid="textFlowHandler" />
+        <text:SvgMeasurer />
+        <view:SvgTextEditor />
+
+    </js:Injection>
+
+    <div class="container">
+        <!--<div class="nav-bar">-->
+            <!--<div class="header-back">b</div>-->
+            <!--<div class="header-title">Title</div>-->
+            <!--<div class="header-share">s</div>-->
+        <!--</div>-->
+
+        <div class="view-content">
+            <!--<view:ProductViewer product="{product}" widthUpdatePolicy="in"/>-->
+            <view:ProductViewerSvg product="{product}" style="display: block; -webkit-transform: translateZ(0);" />
+            <!--<view:SvgTextEditor marginLeft="40px" width="300" height="300" viewBox="0 0 100 100" textObject="{textObject}"/>-->
+        </div>
+
+        <div>
+
+        </div>
+
+        <!--<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">-->
+            <!--<view:SvgTextRenderer textObject="{textObject}"/>-->
+        <!--</svg>-->
+
+        <div>
+            <input type="number" value="{{anchor}}"/>
+            <input type="number" value="{{focus}}"/>
+            <input type="text" value="{{text}}"/>
+            <input type="button" value="insert char" onclick="_insertChar"/>
+            <input type="button" value="insert line" onclick="_insertLine"/>
+            <input type="button" value="delete" onclick="_deleteSelection"/>
+
+        </div>
+
+
+        <!--<div class="footer {activeControl()}">-->
+            <!--<div class="configuration-control text-configuration-control">-->
+                <!--<div class="font-selection">-->
+                    <!--<ui:SelectionView items="{fonts}" class="fonts" tagName="ul">-->
+                        <!--<js:Template name="item">-->
+                            <!--<li onclick="_selectFont(item)">abc</li>-->
+                        <!--</js:Template>-->
+                    <!--</ui:SelectionView>-->
+                <!--</div>-->
+                <!--<div class="text-color-selection">-->
+                    <!--color-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="configuration-control image-configuration-control">-->
+                <!--<ui:Slider min="0" max="100"/>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+
+
+    <!--<form onsubmit="changeTextColor">-->
+        <!--<input type="text" value="{{textColor}}"/>-->
+    <!--</form>-->
+
+    <!--<form onsubmit="changeFontSize">-->
+        <!--<input type="text" value="{{fontSize}}"/>-->
+        <!--<input type="button" onclick="decreaseFontSize" value="-"/>-->
+        <!--<input type="button" onclick="increaseFontSize" value="+"/>-->
+    <!--</form>-->
+
+    <!--<form onsubmit="changeGrayScale">-->
+        <!--<input type="range" name="points" min="0" max="100" onchange="_handleScaleChange"/>-->
+        <!--<input type="text" value="{{gray}}"/>-->
+    <!--</form>-->
+
+    <!--<view:PrintAreaViewer cid="productViewer" product="{product}" height="3000" interactive="false"/>-->
+
+
+    <!--<button onclick="createImage">Save!</button>-->
+
+</hip:HipsteeClass>

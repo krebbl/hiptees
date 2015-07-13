@@ -1,0 +1,14 @@
+<parent:SvgTextEditorClass xmlns="http://www.w3.org/1999/xhtml"
+                           xmlns:parent="hip.view"
+                           onkeydown="_onkeyDown"
+                           onkeypress="_onkeyPress"
+                           onkeyup="_onkeyUp"
+        oninput="_oninput">
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="{svgWidth}" height="{svgHeight}" cid="svg" xml:space="preserve" viewBox="{viewBox}">
+        <g>
+            <parent:SvgTextRenderer cid="$textContainer" textObject="{textObject}" maxWidth="{maxWidth}" class="text-renderer"/>
+        </g>
+        <!--<circle cy="50" cx="50" r="50" fill="red"/>-->
+    </svg>
+</parent:SvgTextEditorClass>

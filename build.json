@@ -1,0 +1,17 @@
+{
+    "modules": [
+        {
+            "name": "hip/Hipstee",
+            "include": [
+                "xaml!hip/Hipstee"
+            ]
+        }
+    ],
+    "indexFile": "index.html",
+    "targetDir": "public-build",
+    "uglify": {
+        "max_line_length": 250
+    },
+    "usePackageVersion": true,
+    "removeSpaces": true
+}

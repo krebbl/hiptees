@@ -1,0 +1,131 @@
+* {
+  /*outline: none;*/
+  /*box-sizing: border-box;*/
+  /*line-height: 1.2;*/
+}
+
+html {
+  height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+  min-height: 100%;
+  /*line-height: 1.2;*/
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: #d9dbda;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.bikoblack {
+  position: absolute;
+  font-family: "bikoblack";
+  /*visibility: hidden;*/ }
+
+.dense {
+  position: absolute;
+  font-family: "denseregular";
+  /*visibility: hidden;*/ }
+
+.product-viewer {
+  /*position: relative;*/
+  /*max-width: 1000px;*/
+  /*width: 100%;*/
+  transform: translateZ(0);
+}
+
+.print-area-viewer {
+  pointer-events: none; }
+
+.container {
+  /*max-width: 1000px; */
+}
+
+.move-handle {
+  position: absolute;
+  color: white;
+  top: 0;
+  right: -40px;
+  height: 40px;
+  width: 40px;
+  background-color: #05AD56; }
+
+.delete-handle {
+  position: absolute;
+  left: -32px;
+  top: 0;
+  height: 32px;
+  width: 32px;
+  background-color: red;
+  color: white; }
+
+.nav-bar {
+  background: #05AD56;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px; }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  background: black;
+  width: 100%;
+  color: white;
+  overflow: hidden; }
+  .footer .configuration-control {
+    display: none; }
+  .footer.text-selected .text-configuration-control {
+    display: block; }
+  .footer.image-selected .image-configuration-control {
+    display: block; }
+
+.font-selection ul.fonts {
+  color: white;
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 38px;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  overflow-x: scroll; }
+  .font-selection ul.fonts > li {
+    display: inline-block;
+    width: 80px;
+    height: 38px; }
+
+.view-content {
+  position: absolute;
+  top: 44px; }
+
+
+.editing circle {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+rect.configuration-boundary {
+    vector-effect: non-scaling-stroke;
+}
+
+.editing rect.configuration-boundary {
+    opacity: 0.5;
+}
+
+.active rect.configuration-boundary {
+    stroke: blue;
+    stroke-width: 1;
+}
+
+.svg-text-editor {
+    outline: 0;
+}

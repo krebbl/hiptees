@@ -1,0 +1,142 @@
+$brand-color : #05AD56;
+$bg-color: #E2E2E2;
+$footer-color: #282828;
+$footer-select-color: #191919;
+$nav-bar-height: 44px;
+
+
+* {
+  outline: none;
+  box-sizing: border-box;
+  line-height: 1.2;
+}
+
+html {
+  height: 100%;
+}
+
+
+
+body {
+  min-height: 100%;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: rgb(217, 219, 218);
+}
+
+.bikoblack {
+  position: absolute;
+  font-family: "bikoblack";
+  /*visibility: hidden;*/
+}
+
+.dense {
+  position: absolute;
+  font-family: "denseregular";
+  /*visibility: hidden;*/
+}
+
+.product-viewer {
+  position: relative;
+  max-width: 1000px;
+  width: 100%;
+  transform: translateZ(0);
+}
+
+.print-area-viewer {
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1000px;
+}
+
+
+.move-handle {
+  position: absolute;
+  color: white;
+  top: 0;
+  right: -40px;
+  height: 40px;
+  width: 40px;
+  background-color: $brand-color;
+}
+
+.delete-handle {
+  position: absolute;
+  left: -32px;
+  top: 0;
+  height: 32px;
+  width: 32px;
+  background-color: red;
+  color: white;
+}
+
+.nav-bar {
+  background: $brand-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $nav-bar-height;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  background: black;
+  width: 100%;
+  color: white;
+  overflow: hidden;
+
+  .configuration-control {
+    display: none;
+  }
+
+
+  &.text-selected {
+    .text-configuration-control {
+      display: block;
+    }
+  }
+
+  &.image-selected {
+    .image-configuration-control {
+      display: block;
+    }
+  }
+
+}
+
+.font-selection {
+//  overflow: auto;
+//  height: 30px;
+
+  ul.fonts {
+    color: white;
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 38px;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    overflow-x: scroll;
+
+    > li {
+      display: inline-block;
+      width: 80px;
+      height: 38px;
+    }
+  }
+
+
+
+}
+
+.view-content {
+  position: absolute;
+  top: $nav-bar-height;
+}
