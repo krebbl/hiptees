@@ -1,5 +1,7 @@
 define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor", "hip/command/SelectConfiguration", "hip/handler/ProductHandler"], function (SvgElement, List, _, Executor, SelectConfiguration, ProductHandler) {
 
+    var maskId = 1;
+
     return SvgElement.inherit('sprd.view.ConfigurationViewerSvgClass', {
 
         defaults: {
@@ -28,7 +30,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             _offset: {
                 x: 0,
                 y: 0
-            }
+            },
+
+            _maskId: ++maskId
         },
 
         inject: {
@@ -36,7 +40,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             productHandler: ProductHandler
         },
 
-        $classAttributes: ["handleWidth","product", "printArea", "configuration", "keepAspectRatio", "selected"],
+        $classAttributes: ["handleWidth", "product", "printArea", "configuration", "keepAspectRatio", "selected", "verticalStretchable", "horizontalStretchable", "rotatable"],
 
         ctor: function () {
 
@@ -155,8 +159,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             change._size = size;
             change._offset = offset;
 
-            this.set(change, {force: true});
 
+            // TODO: execute position change command
+            this.set(change, {force: true});
         },
 
         _render_offset: function (offset) {
@@ -169,7 +174,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             return value * 0.5;
         },
 
-        and: function(a, b){
+        and: function (a, b) {
             return a && b;
         },
 
@@ -192,6 +197,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             }));
 
             e.stopPropagation();
+        },
+        negate: function (number) {
+            return -1 * number;
         }
 
 
