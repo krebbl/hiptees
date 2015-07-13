@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/TextConfigurationViewer'], function (SvgElement, List, ConfigurationViewerSvg, TextConfigurationViewer) {
+define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/TextConfigurationViewer', 'xaml!hip/view/ImageConfigurationViewer', 'hip/model/TextConfiguration', 'hip/model/ImageConfiguration'], function (SvgElement, List, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, TextConfiguration, ImageConfiguration) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -32,11 +32,9 @@ define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerS
                 });
 
 
-
                 this.$border = border;
 
                 this.addChild(this.$border);
-
             }
         },
         _renderProduct: function (product) {
@@ -51,14 +49,23 @@ define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerS
         },
         _addConfiguration: function (configuration) {
 
+            var Factory = null;
+            if (configuration instanceof TextConfiguration) {
+                Factory = TextConfigurationViewer;
+            } else if (configuration instanceof ImageConfiguration) {
+                Factory = ImageConfigurationViewer;
+            }
 
-            var configurationViewer = this.createComponent(TextConfigurationViewer, {
-                configuration: configuration,
-                printArea: this.$.printArea
-            });
+            if (Factory) {
+                var configurationViewer = this.createComponent(Factory, {
+                    configuration: configuration,
+                    printArea: this.$.printArea
+                });
 
-            this.$configurationViewers.push(configurationViewer);
-            this.addChild(configurationViewer);
+                this.$configurationViewers.push(configurationViewer);
+                this.addChild(configurationViewer);
+            }
+
         },
 
         _removeConfiguration: function (configuration) {
