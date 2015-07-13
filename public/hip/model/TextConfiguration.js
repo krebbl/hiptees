@@ -1,9 +1,8 @@
-define(["hip/model/Configuration", "js/core/List", "hip/view/TextConfigurationRenderer"], function (Configuration, List, TextConfigurationRenderer) {
+define(["hip/model/Configuration", "js/core/List"], function (Configuration, List) {
     return Configuration.inherit('hip.model.TextConfiguration', {
         defaults: {
             singleLine: false,
             background: null
-        },
-        renderFactory: TextConfigurationRenderer
+        }
     })
 });

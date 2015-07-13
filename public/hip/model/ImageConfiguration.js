@@ -1,6 +1,5 @@
-define(["hip/model/Configuration", "hip/view/ImageConfigurationRenderer"], function (Configuration, ImageConfigurationRenderer) {
+define(["hip/model/Configuration"], function (Configuration) {
     return Configuration.inherit('hip.model.ImageConfiguration', {
-        renderFactory: ImageConfigurationRenderer,
         defaults: {
             image: null,
             filters: null

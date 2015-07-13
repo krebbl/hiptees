@@ -67,7 +67,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
             if (textColor) {
                 for (var i = 0; i < this.$el.childNodes.length; i++) {
                     var child = this.$el.childNodes[i];
-                    child.setAttribubte("fill", textColor);
+                    child.setAttribute("fill", textColor);
                 }
             }
         },

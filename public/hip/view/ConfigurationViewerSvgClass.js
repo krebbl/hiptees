@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'js/core/List', "underscore", "xaml!hip/view/TextRendererSvg", "hip/command/Executor", "hip/command/SelectConfiguration", "hip/handler/ProductHandler"], function (SvgElement, List, _, TextRendererSvg, Executor, SelectConfiguration, ProductHandler) {
+define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor", "hip/command/SelectConfiguration", "hip/handler/ProductHandler"], function (SvgElement, List, _, Executor, SelectConfiguration, ProductHandler) {
 
     return SvgElement.inherit('sprd.view.ConfigurationViewerSvgClass', {
 
