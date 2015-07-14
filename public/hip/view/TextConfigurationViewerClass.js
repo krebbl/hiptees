@@ -6,6 +6,8 @@ define(['xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/SvgTextEditor'], 
             verticalStretchable: false
         },
 
+        $classAttributes: ["textRenderer"],
+
         inject: {
             svgTextEditor: SvgTextEditor
         },

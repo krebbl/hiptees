@@ -1,0 +1,35 @@
+<view:TextSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
+                              xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+
+    <ui:TabView>
+        <ui:Tab title="Format">
+            <div>
+                <ui:SelectionView items="{fonts}" class="fonts" tagName="ul" selectedItem="{configuration.fontFamily}">
+                    <js:Template name="item">
+                        <li onclick="_selectFont(item)">abc</li>
+                    </js:Template>
+                </ui:SelectionView>
+            </div>
+            <div>
+                <ui:SelectionView items="{alignments}" class="alignments" tagName="ul" selectedItem="{configuration.textAlign}">
+                    <js:Template name="item">
+                        <li onclick="_selectAlignment(item)">{item}</li>
+                    </js:Template>
+                </ui:SelectionView>
+            </div>
+            <div class="font-size">
+                <a onclick="_decreaseFontSize(0.5)">-</a>
+                <span>{configuration.fontSize}</span>
+                <a onclick="_increaseFontSize(0.5)">+</a>
+            </div>
+            <div class="line-height">
+                <a onclick="_decreaseLineHeight(-0.1)">-</a>
+                <span>{configuration.lineHeight}</span>
+                <a onclick="_increaseLineHeight(0.1)">+</a>
+            </div>
+        </ui:Tab>
+        <ui:Tab title="Color">
+
+        </ui:Tab>
+    </ui:TabView>
+</view:TextSettingsViewClass>

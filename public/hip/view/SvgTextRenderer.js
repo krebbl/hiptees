@@ -29,11 +29,16 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
                     self._renderTextObject(e.$.textObject);
                 }
             });
+
+            this.bind('textObject', 'change:fontFamily', this._updateTextFlow, this);
+            this.bind('textObject', 'change:fontSize', this._updateTextFlow, this);
+            this.bind('textObject', 'change:lineHeight', this._updateLineHeight, this);
+            this.bind('textObject', 'change:textAlign', this._updateAlignment, this);
         },
 
 
         _updateTextFlow: function () {
-
+            this._renderTextObject(this.$.textObject);
         },
 
         _renderMaxWidth: function (maxWidth, oldMaxWidth) {
@@ -41,24 +46,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
             if (maxWidth && this.$.textObject && this.$.measureResult) {
                 this._renderTextObject(this.$.textObject);
 
-                var textAlign = this.$.textObject.$.textAlign;
-                if (textAlign == "center" || textAlign == "right") {
-                    var x,
-                        transform;
-                    for (var i = 0; i < this.$el.childNodes.length; i++) {
-                        var child = this.$el.childNodes[i],
-                            line = this.$.measureResult.lines[i];
-                        transform = child.getAttribute("transform");
-                        if (textAlign == "center") {
-                            x = 0.5 * (maxWidth - line.width);
-                        } else if (textAlign == "right") {
-                            x = maxWidth - line.width;
-                        }
-
-                        child.setAttribute("transform", transform.replace(/translate\([^,]+,([^,]+)\)/, "translate(" + x + ",$1)"));
-                    }
-                }
-
+                this._updateAlignment();
             }
 
         },
@@ -80,10 +68,30 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
                     line = this.$.measureResult.lines[i];
 
                     transform = child.getAttribute("transform");
-                    y = i * this.$.textObject.fontSize * this.$.textObject.lineHeight;
+                    y = i * this.$.textObject.$.fontSize * this.$.textObject.$.lineHeight;
 
-                    child.setAttribute("transform", transform.replace(/translate\(([^,]+),[^,]+\)/, "translate($1,"+ y+")"));
+                    child.setAttribute("transform", transform.replace(/translate\(([^,]+),[^,]+\)/, "translate($1," + y + ")"));
                 }
+            }
+        },
+
+        _updateAlignment: function () {
+            var maxWidth = this.$.maxWidth;
+            var textAlign = this.$.textObject.$.textAlign;
+            var x,
+                transform;
+            for (var i = 0; i < this.$el.childNodes.length; i++) {
+                var child = this.$el.childNodes[i],
+                    line = this.$.measureResult.lines[i];
+                transform = child.getAttribute("transform");
+                x = 0;
+                if (textAlign == "center") {
+                    x = 0.5 * (maxWidth - line.width);
+                } else if (textAlign == "right") {
+                    x = maxWidth - line.width;
+                }
+
+                child.setAttribute("transform", transform.replace(/translate\([^,]+,([^,]+)\)/, "translate(" + x + ",$1)"));
             }
         },
 
@@ -146,9 +154,9 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
                         text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                         text.setAttributeNS("http://www.w3.org/XML/1998/namespace", "space", "preserve");
                         text.setAttribute("fill", textObject.color);
-                        text.setAttribute("y", ascent);
                         group.appendChild(text);
                     }
+                    text.setAttribute("y", ascent);
 
                     if (!lineText) {
                         lineText = EMPTY_LINE_TEXT;

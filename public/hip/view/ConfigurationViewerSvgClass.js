@@ -56,6 +56,17 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             });
         },
 
+        _initializationComplete: function(){
+            this.callBase();
+
+            var self = this;
+            this.getSvgRoot().bind('change:width', function(e){
+                if(e.$){
+                    self.set('handleWidth', 16 * self.globalToLocalFactor().x);
+                }
+            });
+        },
+
         _commitConfiguration: function (configuration) {
 
             if (configuration) {
@@ -109,6 +120,14 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
         },
 
+        multiplyVectors: function (a, b) {
+            return a[0] * b[0] + a[1] * b[1];
+        },
+
+        vectorLength: function (v) {
+            return Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2));
+        },
+
         handlePointerMove: function (event) {
             event.preventDefault();
 
@@ -123,9 +142,52 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$moved = true;
 
             if (this.$action == "resize") {
+
                 if (this.$.keepAspectRatio) {
-                    var aspectRatio = this.$originalSize.height / this.$originalSize.width;
-                    diffY = aspectRatio * diffX;
+                    if (this.$resizeType.length == 2) {
+                        var diffVector = [diffX, diffY],
+                            rootVector = [this.$originalSize.width, this.$originalSize.height];
+
+                        if (this.$resizeType.indexOf("l") > -1) {
+                            rootVector[0] = rootVector[0] * -1;
+                        }
+
+                        if (this.$resizeType.indexOf("t") > -1) {
+                            rootVector[1] = rootVector[1] * -1;
+                        }
+
+                        var rootLength = this.vectorLength(rootVector);
+                        var s = this.multiplyVectors(diffVector, rootVector) / rootLength,
+                            lf = s / rootLength;
+
+
+                        diffX = rootVector[0] * lf;
+                        diffY = rootVector[1] * lf;
+
+
+                    } else {
+
+                        if (this.$resizeType.indexOf("l") > -1 || this.$resizeType.indexOf("r") > -1) {
+                            diffY = (this.$originalSize.height / this.$originalSize.width) * diffX * 0.5;
+
+                            if(this.$resizeType.indexOf("l") > -1) {
+                                diffY *= -1;
+                            }
+
+                            offset.y -= diffY;
+                            size.height += 2 * diffY;
+                        } else if (this.$resizeType.indexOf("b") > -1 || this.$resizeType.indexOf("t") > -1) {
+                            diffX = (this.$originalSize.width / this.$originalSize.height) * diffY * 0.5;
+
+                            if (this.$resizeType.indexOf("t") > -1) {
+                                diffX *= -1;
+                            }
+
+                            offset.x -= diffX;
+                            size.width += 2 * diffX;
+                        }
+
+                    }
                 }
 
                 if (this.$resizeType.indexOf("b") > -1 && this.$.verticalStretchable) {
@@ -134,13 +196,13 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 }
 
                 if (this.$resizeType.indexOf("r") > -1 && this.$.horizontalStretchable) {
-                    size.width = this.$originalSize.width + diffX * 2;
-                    offset.x = this.$originalOffset.x - diffX;
+                    size.width = this.$originalSize.width + diffX;
+                    offset.x = this.$originalOffset.x;
                 }
 
                 if (this.$resizeType.indexOf("l") > -1 && this.$.horizontalStretchable) {
                     offset.x = this.$originalOffset.x + diffX;
-                    size.width = this.$originalSize.width - diffX * 2;
+                    size.width = this.$originalSize.width - diffX;
                 }
 
                 if (this.$resizeType.indexOf("t") > -1 && this.$.verticalStretchable) {
@@ -181,6 +243,11 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         handlePointerUp: function (event) {
             if (this.$moved) {
                 event.preventDefault();
+
+                this.$.executor.storeAndExecute(new SelectConfiguration({
+                    configuration: this.$.configuration
+                }));
+
 //                event.stopPropagation();
                 // TODO: create command
             }

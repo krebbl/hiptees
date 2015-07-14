@@ -21,7 +21,6 @@
 
         <g translateX="{half(_size.width)}" translateY="{_size.height}" visible="{verticalStretchable}">
             <circle r="{handleWidth}" fill-opacity="0"
-                    visible="{not(keepAspectRatio)}"
                     onpointerdown="handlePointerDown('resize','b',event)"/>
 
             <circle r="3" fill="gray"
@@ -76,7 +75,7 @@
         <g translateX="{_size.width}"
            visible="{and(verticalStretchable,horizontalStretchable)}">
             <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','tr',event)"/>
+                    onpointerdown="handlePointerDown('resize','rt',event)"/>
 
             <circle r="3" fill="gray"
                     style="pointer-events: none;"/>
@@ -85,7 +84,6 @@
 
         <g translateX="{half(_size.width)}" visible="{verticalStretchable}">
             <circle r="{handleWidth}" fill-opacity="0"
-                    visible="{not(keepAspectRatio)}"
                     onpointerdown="handlePointerDown('resize','t',event)"/>
 
             <circle r="3" fill="gray"

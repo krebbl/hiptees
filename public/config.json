@@ -3,11 +3,12 @@
         "hip/Hipstee",
         "hip/text/SvgMeasurer",
         "hip/view/ConfigurationViewerSvg",
+        "hip/view/ImageConfigurationViewer",
         "hip/view/PrintAreaViewerSvg",
         "hip/view/ProductViewerOld",
         "hip/view/SvgTextEditor",
         "hip/view/TextConfigurationViewer",
-        "hip/view/TextRendererSvg",
+        "hip/view/TextSettingsView",
         "js/svg/SvgDescriptor",
         "js/ui/AutoSuggestionBox",
         "js/ui/ButtonGroup",
@@ -33,8 +34,7 @@
         "js/ui/field/Password",
         "js/ui/field/RadioGroup",
         "js/ui/field/Text",
-        "js/ui/field/TextArea",
-        "webtest/test/ui/TabViewTest"
+        "js/ui/field/TextArea"
     ],
     "namespaceMap": null,
     "rewriteMap": null,

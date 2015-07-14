@@ -29,14 +29,14 @@
                     scale = 2,
                     meta;
 
-//            if (window.matchMedia) {
-//                var matchMedia = window.matchMedia("(max-device-width: 400px)");
-//                if (matchMedia && matchMedia.matches) {
-//                    scale = 1;
-//                }
-//            } else if (screen.width <= 720) {
-//                scale = 1;
-//            }
+            if (window.matchMedia) {
+                var matchMedia = window.matchMedia("(max-device-width: 400px)");
+                if (matchMedia && matchMedia.matches) {
+                    scale = 1;
+                }
+            } else if (screen.width <= 720) {
+                scale = 1;
+            }
 
             meta = document.createElement("meta");
             meta.setAttribute("name", "viewport");
@@ -44,7 +44,7 @@
 
             viewportTag = meta;
 
-//            head.appendChild(meta);
+            head.appendChild(meta);
         })(document, screen);
     </script>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->

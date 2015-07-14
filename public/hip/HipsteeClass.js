@@ -103,9 +103,9 @@ define(
                     image: {
                         url: "./example/palmen-im-himmel.jpg"
                     },
-                    anchor: {
-                        x: 0.2,
-                        y: 0
+                    size: {
+                        width: 308,
+                        height: 300
                     },
                     scale: 0.8,
                     filters: []
@@ -151,7 +151,7 @@ define(
                     productType: productType
                 });
 
-//                product.$.configurations.add(imageConfiguration);
+                product.$.configurations.add(imageConfiguration);
                 product.$.configurations.add(textConfiguration);
                 product.$.configurations.add(textConfiguration2);
 
@@ -161,13 +161,13 @@ define(
             },
 
             _commitSelectedConfiguration: function (selected) {
-                console.log(selected);
+//                console.log(selected);
             },
 
             _selectFont: function (font) {
 
                 var command = new ChangeFontFamily({
-                    fontFamily: font,
+                    fontFamily: font.name,
                     configuration: this.$.selectedConfiguration
                 });
                 this.$.executor.storeAndExecute(command);
@@ -314,6 +314,9 @@ define(
                     anchorOffset: this.$.anchor,
                     focusOffset: this.$.focus
                 }));
+            },
+            minusHalf: function(n){
+                return -0.5 * n;
             }
         });
     }

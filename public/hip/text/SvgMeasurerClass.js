@@ -26,7 +26,7 @@ define(["js/svg/Svg"], function (Svg) {
 
             var normalTop = this.$el.getBoundingClientRect().top;
 
-            measurer.textContent = "Èg";
+            measurer.textContent = "ÈÄgq";
 
             var rect = measurer.getBoundingClientRect();
 

@@ -39,7 +39,6 @@ define(['js/svg/Svg', 'hip/view/PrintAreaViewerSvg', "hip/command/Executor", "hi
             this.setViewBox(0, 0, this.get('productType.size.width'), this.get('productType.size.height'));
         },
 
-
         _renderProductType: function (productType) {
 
             if (productType) {
