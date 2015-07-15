@@ -56,12 +56,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             });
         },
 
-        _initializationComplete: function(){
+        _initializationComplete: function () {
             this.callBase();
 
             var self = this;
-            this.getSvgRoot().bind('change:width', function(e){
-                if(e.$){
+            this.getSvgRoot().bind('change:width', function (e) {
+                if (e.$) {
                     self.set('handleWidth', 16 * self.globalToLocalFactor().x);
                 }
             });
@@ -170,7 +170,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                         if (this.$resizeType.indexOf("l") > -1 || this.$resizeType.indexOf("r") > -1) {
                             diffY = (this.$originalSize.height / this.$originalSize.width) * diffX * 0.5;
 
-                            if(this.$resizeType.indexOf("l") > -1) {
+                            if (this.$resizeType.indexOf("l") > -1) {
                                 diffY *= -1;
                             }
 
@@ -234,6 +234,10 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
         half: function (value) {
             return value * 0.5;
+        },
+
+        quarter: function (value) {
+            return value * 0.25;
         },
 
         and: function (a, b) {

@@ -23,9 +23,10 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','b',event)"/>
 
-            <circle r="3" fill="gray"
-                    style="pointer-events: none;"
-                    />
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
         </g>
 
         <g visible="{and(verticalStretchable,horizontalStretchable)}">
@@ -33,7 +34,8 @@
                     fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','lt',event)"/>
 
-            <circle r="3" fill="gray"
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
 
@@ -42,7 +44,8 @@
                     fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','l',event)"/>
 
-            <circle r="3" fill="gray"
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
 
@@ -51,7 +54,8 @@
                     fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','r',event)"/>
 
-            <circle r="3" fill="gray"
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
 
@@ -59,7 +63,8 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','lb',event)"/>
 
-            <circle r="3" fill="gray"
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
 
@@ -68,7 +73,8 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','rb',event)"/>
 
-            <circle r="3" fill="gray"
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
 
@@ -77,7 +83,8 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','rt',event)"/>
 
-            <circle r="3" fill="gray"
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
                     style="pointer-events: none;"/>
 
         </g>
@@ -86,9 +93,9 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','t',event)"/>
 
-            <circle r="3" fill="gray"
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
                     style="pointer-events: none;"/>
-
         </g>
 
 
