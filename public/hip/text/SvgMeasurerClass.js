@@ -13,7 +13,7 @@ define(["js/svg/Svg"], function (Svg) {
 
         measureFont: function (fontFamily, fontSize) {
             var cacheKey = (fontFamily + "_" + fontSize);
-            if(fontMeasureCache[cacheKey]){
+            if (fontMeasureCache[cacheKey]) {
                 return fontMeasureCache[cacheKey];
             }
 
@@ -43,13 +43,14 @@ define(["js/svg/Svg"], function (Svg) {
             return ret;
         },
 
-        setUpMeasurer: function (fontFamily, fontSize) {
+        setUpMeasurer: function (fontFamily, fontSize, letterSpacing) {
             if (!this.isRendered()) {
                 this.$stage.$document.body.appendChild(this.render());
             }
 
             this.$._textContainer.$el.setAttribute("font-family", fontFamily);
             this.$._textContainer.$el.setAttribute("font-size", fontSize);
+            this.$._textContainer.$el.setAttribute("letter-spacing", letterSpacing || 0);
         },
 
         breakLines: function (lines, width) {
@@ -149,8 +150,8 @@ define(["js/svg/Svg"], function (Svg) {
         },
 
 
-        measureLines: function (lines, fontFamily, fontSize, pixelWidth) {
-            this.setUpMeasurer(fontFamily, fontSize);
+        measureLines: function (lines, fontFamily, fontSize, letterSpacing, pixelWidth) {
+            this.setUpMeasurer(fontFamily, fontSize, letterSpacing);
 
             var fontMeasure = this.measureFont(fontFamily, fontSize);
 

@@ -33,6 +33,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
             this.bind('textObject', 'change:fontFamily', this._updateTextFlow, this);
             this.bind('textObject', 'change:fontSize', this._updateTextFlow, this);
             this.bind('textObject', 'change:lineHeight', this._updateLineHeight, this);
+            this.bind('textObject', 'change:letterSpacing', this._updateTextFlow, this);
             this.bind('textObject', 'change:textAlign', this._updateAlignment, this);
         },
 
@@ -61,18 +62,23 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
         },
 
         _updateLineHeight: function () {
-            if (this.$.measureResult && this.$.textObject) {
-                var child, line, transform, y;
+            var textObject = this.$.textObject;
+            if (this.$.measureResult && textObject) {
+                var child, line, transform, y,
+                    lines = this.$.measureResult.lines;
                 for (var i = 0; i < this.$el.childNodes.length; i++) {
                     child = this.$el.childNodes[i];
-                    line = this.$.measureResult.lines[i];
+                    line = lines[i];
 
                     transform = child.getAttribute("transform");
-                    y = i * this.$.textObject.$.fontSize * this.$.textObject.$.lineHeight;
+                    y = i * textObject.$.fontSize * textObject.$.lineHeight;
 
                     child.setAttribute("transform", transform.replace(/translate\(([^,]+),[^,]+\)/, "translate($1," + y + ")"));
                 }
+                var height = (this.$el.childNodes.length - 1) * textObject.$.fontSize * textObject.$.lineHeight + this.$.measureResult.fontMeasure.height;
+                this.trigger('on:heightChanged', {height: height}, this);
             }
+
         },
 
         _updateAlignment: function () {
@@ -104,7 +110,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
                     "font-family": textObject.$.fontFamily,
                     "font-size": textObject.$.fontSize
                 });
-                var measureResult = this.$.svgMeasurer.measureLines(textObject.$.textFlow, textObject.$.fontFamily, textObject.$.fontSize, this.$.maxWidth);
+                var measureResult = this.$.svgMeasurer.measureLines(textObject.$.textFlow, textObject.$.fontFamily, textObject.$.fontSize, textObject.$.letterSpacing, this.$.maxWidth);
                 // cache measure result for text object
                 this.set('measureResult', measureResult);
             }
@@ -177,7 +183,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
                     } else if (textAlign == "right") {
                         x = this.$.maxWidth - line.width;
                     }
-
+                    text.setAttribute("letter-spacing", textObject.letterSpacing || 0);
                     text.setAttribute("transform", "translate(" + x + "," + y + ")");
                 }
 
@@ -186,7 +192,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
                 }
 
 
-                var height = lines.length * textObject.fontSize * textObject.lineHeight;
+                var height = (lines.length - 1) * textObject.fontSize * textObject.lineHeight + this.$.measureResult.fontMeasure.height;
                 this.trigger('on:heightChanged', {height: height}, this);
             }
 

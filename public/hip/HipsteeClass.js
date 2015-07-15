@@ -132,6 +132,7 @@ define(
 //                    text: ["Èg","test", "line3", "line4", "line5", "line6", "line7", "line8", "line10", "line11", "line12", "line13", "line14"].join(""),
                     textFlow: ["abcde", "fghijklmnopq ","rsuvwxyz0123456789"],
                     fontFamily: "denseregular",
+                    letterSpacing: 2,
                     color: '#00FF00',
                     fontSize: 20,
                     lineHeight: 1.7,
