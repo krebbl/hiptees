@@ -35,21 +35,19 @@
 
         </div>
 
-        <div>
-            <input type="number" value="{{anchor}}"/>
-            <input type="number" value="{{focus}}"/>
-            <input type="text" value="{{text}}"/>
-            <input type="button" value="insert char" onclick="_insertChar"/>
-            <input type="button" value="insert line" onclick="_insertLine"/>
-            <input type="button" value="delete" onclick="_deleteSelection"/>
+        <!--<div>-->
+            <!--<input type="number" value="{{anchor}}"/>-->
+            <!--<input type="number" value="{{focus}}"/>-->
+            <!--<input type="text" value="{{text}}"/>-->
+            <!--<input type="button" value="insert char" onclick="_insertChar"/>-->
+            <!--<input type="button" value="insert line" onclick="_insertLine"/>-->
+            <!--<input type="button" value="delete" onclick="_deleteSelection"/>-->
 
-        </div>
+        <!--</div>-->
 
 
         <div class="footer {activeControl()}">
-            <div class="configuration-control text-configuration-control">
-                <view:TextSettingsView configuration="{selectedConfiguration}"/>
-            </div>
+            <view:TextSettingsView configuration="{selectedConfiguration}"/>
 
             <div class="configuration-control image-configuration-control">
                 <ui:Slider min="0" max="100"/>

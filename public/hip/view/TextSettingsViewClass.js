@@ -7,8 +7,10 @@ define(["hip/view/SettingsViewClass",
 
     return SettingsViewClass.inherit({
         defaults: {
+            componentClass: "settings-view text-settings-view",
             fonts: ["Arial", 'Verdana', 'bikoblack', 'denseregular', 'Times', 'Amatic SC'],
-            alignments: ["left", "center", "right"]
+            alignments: ["left", "center", "right"],
+            selectedSubContent: ''
         },
 
         _selectFont: function (fontFamily) {
@@ -42,8 +44,29 @@ define(["hip/view/SettingsViewClass",
             }));
         },
 
+        _selectSubContent: function(subContent){
+            this.set('selectedSubContent', subContent);
+        },
+
+        isSubContentSelected: function(subContent){
+            return this.$.selectedSubContent == subContent;
+        }.onChange('selectedSubContent'),
+
         _decreaseFontSize: function (by) {
             this._increaseFontSize(-1 * by);
+        },
+        format: function(n){
+            if(n){
+                var r = String(n);
+                var s = r.split(".");
+                if(s.length > 1){
+                    s[1] = s[1].substr(0,1);
+                }
+                return s.join(".");
+            }
+
+            return "";
+
         }
     })
 });

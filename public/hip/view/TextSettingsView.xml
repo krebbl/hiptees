@@ -1,35 +1,121 @@
 <view:TextSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
-                              xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+                            xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
 
-    <ui:TabView>
-        <ui:Tab title="Format">
-            <div>
-                <ui:SelectionView items="{fonts}" class="fonts" tagName="ul" selectedItem="{configuration.fontFamily}">
-                    <js:Template name="item">
-                        <li onclick="_selectFont(item)">abc</li>
-                    </js:Template>
-                </ui:SelectionView>
-            </div>
-            <div>
-                <ui:SelectionView items="{alignments}" class="alignments" tagName="ul" selectedItem="{configuration.textAlign}">
-                    <js:Template name="item">
-                        <li onclick="_selectAlignment(item)">{item}</li>
-                    </js:Template>
-                </ui:SelectionView>
-            </div>
-            <div class="font-size">
-                <a onclick="_decreaseFontSize(0.5)">-</a>
-                <span>{configuration.fontSize}</span>
-                <a onclick="_increaseFontSize(0.5)">+</a>
-            </div>
-            <div class="line-height">
-                <a onclick="_decreaseLineHeight(-0.1)">-</a>
-                <span>{configuration.lineHeight}</span>
-                <a onclick="_increaseLineHeight(0.1)">+</a>
-            </div>
-        </ui:Tab>
-        <ui:Tab title="Color">
+    <div class="settings-header">
+        <a onclick="_selectSubContent('')">Back</a>
+    </div>
+    <div class="settings-content" selected="{isSubContentSelected('')}">
+        <ul class="settings">
+            <li>
+                <a onclick="_selectSubContent('fontSettings')">
+                    <span class="label">
+                        Font-Family
+                    </span>
+                    <span class="value">
+                        {configuration.fontFamily}
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a onclick="_selectSubContent('fontSize')">
+                    <span class="label">
+                        Font Size
+                    </span>
+                    <span class="value">
+                        {configuration.fontSize}
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <span class="label">
+                        Color
+                    </span>
+                    <span class="value">
+                        {configuration.color}
+                    </span>
+                </a>
 
-        </ui:Tab>
-    </ui:TabView>
+            </li>
+            <li>
+                <div class="text-align">
+                    <ui:SelectionView items="{alignments}" class="alignments" tagName="ul"
+                                      selectedItem="{configuration.textAlign}">
+                        <js:Template name="item">
+                            <li onclick="_selectAlignment(item)">{item}</li>
+                        </js:Template>
+                    </ui:SelectionView>
+                </div>
+            </li>
+            <li>
+                <a>
+                    <span class="label">
+                        Line Height
+                    </span>
+                    <span class="value">
+                        {configuration.lineHeight}
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <span class="label">
+                        Letter Spacing
+                    </span>
+                    <span class="value">
+                        {configuration.letterSpacing}
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="settings-sub-content" selected="{isSubContentSelected('fontSettings')}">
+        <ui:SelectionView items="{fonts}" class="settings" tagName="ul" selectedItem="{configuration.fontFamily}">
+            <js:Template name="item">
+                <li>
+                    <a onclick="_selectFont(item)">${item}</a>
+                </li>
+            </js:Template>
+        </ui:SelectionView>
+    </div>
+    <div class="settings-sub-content" selected="{isSubContentSelected('fontSize')}">
+        <div>
+            Font Size {configuration.fontSize} Pt
+            <span float="right">
+                <span class="btn-group">
+                    <a onclick="_decreaseFontSize(1)">-</a>
+                    <a onclick="_increaseFontSize(1)">+</a>
+                </span>
+            </span>
+        </div>
+        <div class="slider">
+            Slider
+        </div>
+    </div>
+
+    <!--<ui:TabView>-->
+    <!--<ui:Tab title="Format">-->
+    <!--<div class="font-family">-->
+
+    <!--</div>-->
+    <!--<div class="font-size">-->
+    <!--<a class="decrease-button button" >-</a>-->
+    <!--<span>{format(configuration.fontSize)}</span>-->
+    <!--<a class="increase-button button" >+</a>-->
+    <!--</div>-->
+    <!--<div class="line-height">-->
+    <!--<a class="decrease-button button" onclick="_decreaseLineHeight(-0.1)">-</a>-->
+    <!--<span>{format(configuration.lineHeight)}</span>-->
+    <!--<a class="increase-button button" onclick="_increaseLineHeight(0.1)">+</a>-->
+    <!--</div>-->
+    <!--</ui:Tab>-->
+    <!--<ui:Tab title="Color">-->
+    <!--<div>-->
+
+    <!--</div>-->
+    <!--</ui:Tab>-->
+    <!--</ui:TabView>-->
+
+    <!--<a class="delete-button button" onclick="_deleteConfiguration">Delete</a>-->
+
 </view:TextSettingsViewClass>

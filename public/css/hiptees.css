@@ -7,6 +7,9 @@ html {
   height: 100%; }
 
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   min-height: 100%;
   line-height: 1.2;
   padding: 0;
@@ -54,6 +57,17 @@ body {
   background-color: red;
   color: white; }
 
+.active > .configuration-boundary {
+  stroke: #05AD56;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke; }
+
+.configuration-handle {
+  fill: white;
+  stroke: #05AD56;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke; }
+
 .nav-bar {
   background: #05AD56;
   position: absolute;
@@ -65,31 +79,147 @@ body {
 .footer {
   position: fixed;
   bottom: 0;
-  background: black;
   width: 100%;
-  color: white;
+  color: black;
   overflow: hidden; }
-  .footer .configuration-control {
-    display: none; }
-  .footer.text-selected .text-configuration-control {
-    display: block; }
-  .footer.image-selected .image-configuration-control {
+  .footer .settings-header {
+    background-color: #eeeeee;
+    height: 30px;
+    border-bottom: 1px solid #EAEAEA; }
+  .footer .settings-content {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    background: white;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    overflow-x: scroll;
+    transition: transform 0.5s;
+    transform: translate(-100%, 0); }
+    .footer .settings-content.active {
+      transform: translate(0, 0); }
+  .footer .settings-sub-content {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    background: white;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    overflow-x: scroll;
+    z-index: 2;
+    transition: transform 0.5s;
+    -webkit-transition: -webkit-transform 0.5s;
+    transform: translate(100%, 0);
+    -webkit-transform: translate(100%, 0); }
+    .footer .settings-sub-content.active {
+      transform: translate(0, 0);
+      -webkit-transform: translate(0, 0); }
+  .footer .settings-view {
+    position: relative;
+    background: white;
+    transform: translate(0, 224px);
+    -webkit-transform: translate(0, 224px);
+    -moz-transform: translate(0, 224px);
+    -ms-transform: translate(0, 224px);
+    -o-transform: translate(0, 224px);
+    height: 224px;
+    -webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    -ms-transition: -ms-transform 0.5s;
+    -o-transition: -o-transform 0.5s;
+    transition: transform 0.5s; }
+  .footer.text-selected .text-settings-view {
+    transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0); }
+  .footer.image-selected .image-settings-view {
     display: block; }
 
-.font-selection ul.fonts {
-  color: white;
+.settings-view .nav-tabs li {
+  display: inline-block; }
+  .settings-view .nav-tabs li.active {
+    background-color: #222; }
+
+.settings-view .nav-tabs a {
+  text-decoration: none;
   display: block;
+  font-size: 14px;
+  padding: 8px 13px; }
+
+.settings-view .tab-content {
+  background-color: #222; }
+
+.settings-view a {
+  text-decoration: none; }
+
+ul.settings > li {
+  border-bottom: 1px solid lightgray; }
+  ul.settings > li.active a {
+    color: white;
+    background: #05AD56; }
+
+ul.settings > li > a {
+  color: black;
+  display: block;
+  font-size: 0.8em;
+  padding: 10px 16px; }
+
+ul.settings .value {
+  float: right; }
+
+.font-family {
+  padding-top: 1px; }
+  .font-family ul.fonts {
+    color: white;
+    display: block;
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    overflow-x: scroll; }
+    .font-family ul.fonts > li {
+      display: inline-block;
+      width: 70px;
+      height: 30px;
+      padding: 6px 0; }
+      .font-family ul.fonts > li.active {
+        background-color: #05AD56; }
+
+.text-align ul > li {
+  font-size: 0.8em;
+  text-align: center;
+  display: inline-block;
+  width: 33%;
+  padding: 10px 0; }
+  .text-align ul > li.active {
+    background-color: #05AD56;
+    color: white; }
+
+ul {
   list-style: none;
   margin: 0;
-  padding: 0;
-  height: 38px;
-  -webkit-overflow-scrolling: touch;
-  white-space: nowrap;
-  overflow-x: scroll; }
-  .font-selection ul.fonts > li {
-    display: inline-block;
-    width: 80px;
-    height: 38px; }
+  padding: 0; }
+
+.font-size, .line-height {
+  display: inline-block;
+  width: 50%;
+  text-align: center; }
+  .font-size .button, .line-height .button {
+    width: 25px; }
+  .font-size .decrease-button, .line-height .decrease-button {
+    float: left;
+    display: block; }
+  .font-size .increase-button, .line-height .increase-button {
+    float: right; }
 
 .view-content {
   position: absolute;
@@ -102,3 +232,9 @@ body {
   position: absolute;
   left: 50%;
   margin-top: -44px; }
+
+.editing .configuration-handle {
+  display: none; }
+
+.editing .configuration-boundary {
+  stroke-opacity: 0.4; }

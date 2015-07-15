@@ -1,9 +1,8 @@
-$brand-color : #05AD56;
+$brand-color: #05AD56;
 $bg-color: #E2E2E2;
 $footer-color: #282828;
 $footer-select-color: #191919;
 $nav-bar-height: 44px;
-
 
 * {
   outline: none;
@@ -15,9 +14,11 @@ html {
   height: 100%;
 }
 
-
-
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
   min-height: 100%;
   line-height: 1.2;
   padding: 0;
@@ -53,7 +54,6 @@ body {
   max-width: 1000px;
 }
 
-
 .move-handle {
   position: absolute;
   color: white;
@@ -74,6 +74,19 @@ body {
   color: white;
 }
 
+.active > .configuration-boundary {
+  stroke: $brand-color;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.configuration-handle {
+  fill: white;
+  stroke: $brand-color;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
 .nav-bar {
   background: $brand-color;
   position: absolute;
@@ -83,57 +96,226 @@ body {
   height: $nav-bar-height;
 }
 
+$settings-height : 224px;
+
 .footer {
   position: fixed;
   bottom: 0;
-  background: black;
   width: 100%;
-  color: white;
+  color: black;
   overflow: hidden;
 
-  .configuration-control {
-    display: none;
+  .settings-header {
+    background-color: #eeeeee;
+    height: 30px;
+    border-bottom: 1px solid #EAEAEA;
   }
 
+  .settings-content {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    background: white;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    overflow-x: scroll;
+    transition: transform 0.5s;
+
+    &.active {
+      transform: translate(0, 0);
+    }
+
+    transform: translate(-100%, 0);
+  }
+
+  .settings-sub-content {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    background: white;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    overflow-x: scroll;
+    z-index: 2;
+    transition: transform 0.5s;
+    -webkit-transition: -webkit-transform 0.5s;
+
+    transform: translate(100%, 0);
+    -webkit-transform: translate(100%, 0);
+    &.active {
+      transform: translate(0, 0);
+      -webkit-transform: translate(0, 0);
+    }
+  }
+
+  .settings-view {
+    position: relative;
+    background: white;
+    transform: translate(0, $settings-height);
+    -webkit-transform: translate(0, $settings-height);
+    -moz-transform: translate(0, $settings-height);
+    -ms-transform: translate(0, $settings-height);
+    -o-transform: translate(0, $settings-height);
+    height: $settings-height;
+    -webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    -ms-transition: -ms-transform 0.5s;
+    -o-transition: -o-transform 0.5s;
+    transition: transform 0.5s;
+  }
 
   &.text-selected {
-    .text-configuration-control {
-      display: block;
+    .text-settings-view {
+      transform: translate(0, 0);
+      -webkit-transform: translate(0, 0);
+      -moz-transform: translate(0, 0);
+      -ms-transform: translate(0, 0);
+      -o-transform: translate(0, 0);
     }
   }
 
   &.image-selected {
-    .image-configuration-control {
+    .image-settings-view {
       display: block;
     }
   }
 
 }
 
-.font-selection {
-//  overflow: auto;
-//  height: 30px;
+.settings-view {
+
+  .nav-tabs {
+    li {
+      display: inline-block;
+
+      &.active {
+        background-color: #222;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      display: block;
+      font-size: 14px;
+      padding: 8px 13px;
+    }
+  }
+
+  .tab-content {
+    background-color: #222;
+
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .button {
+
+  }
+
+
+}
+
+ul.settings {
+  > li {
+    border-bottom: 1px solid lightgray;
+
+    &.active a {
+      color: white;
+      background: $brand-color;
+    }
+  }
+
+  > li > a {
+    color: black;
+    display: block;
+    font-size: 0.8em;
+//    height: 30px;
+    padding: 10px 16px;
+
+  }
+
+
+
+  .value {
+    float: right;
+  }
+}
+
+.font-family {
+  padding-top: 1px;
 
   ul.fonts {
     color: white;
     display: block;
     list-style: none;
+    text-align: center;
     margin: 0;
     padding: 0;
-    height: 38px;
+    height: 30px;
     -webkit-overflow-scrolling: touch;
     white-space: nowrap;
     overflow-x: scroll;
 
     > li {
       display: inline-block;
-      width: 80px;
-      height: 38px;
+      width: 70px;
+      height: 30px;
+      padding: 6px 0;
+
+      &.active {
+        background-color: $brand-color;
+      }
+    }
+
+  }
+}
+
+.text-align {
+  ul {
+    > li {
+      font-size: 0.8em;
+      text-align: center;
+      display: inline-block;
+      width: 33%;
+      padding: 10px 0;
+
+      &.active {
+        background-color: $brand-color;
+        color: white;
+      }
     }
   }
+}
 
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
+.font-size, .line-height {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
 
+  .button {
+    width: 25px;
+  }
+
+  .decrease-button {
+    float: left;
+    display: block;
+  }
+
+  .increase-button {
+    float: right;
+  }
 }
 
 .view-content {
@@ -149,4 +331,19 @@ body {
   position: absolute;
   left: 50%;
   margin-top: -1 * $nav-bar-height;
+}
+
+.svg-text-editor {
+//  transform: rotateZ(-4.39844571389983deg);
+//  -webkit-transform: rotateZ(-4.39844571389983deg);
+}
+
+.editing {
+  .configuration-handle {
+    display: none;
+  }
+
+  .configuration-boundary {
+    stroke-opacity: 0.4;
+  }
 }
