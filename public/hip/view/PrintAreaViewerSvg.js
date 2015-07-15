@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/TextConfigurationViewer', 'xaml!hip/view/ImageConfigurationViewer', 'hip/model/TextConfiguration', 'hip/model/ImageConfiguration'], function (SvgElement, List, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, TextConfiguration, ImageConfiguration) {
+define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/TextConfigurationViewer', 'xaml!hip/view/ImageConfigurationViewer', 'hip/model/TextConfiguration', 'hip/model/ImageConfiguration', 'hip/handler/ProductHandler'], function (SvgElement, List, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, TextConfiguration, ImageConfiguration, ProductHandler) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -9,11 +9,20 @@ define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerS
             componentClass: "print-area"
         },
 
+        inject: {
+            productHandler: ProductHandler
+        },
+
         $classAttributes: ["product", "printArea"],
 
         ctor: function () {
             this.callBase();
             this.$configurationViewers = [];
+
+            var self = this;
+            this.bind('productHandler', 'on:configurationRemoved', function(e){
+                self._removeConfiguration(e.$.configuration);
+            });
         },
 
         _renderPrintArea: function (printArea) {
@@ -69,7 +78,16 @@ define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerS
         },
 
         _removeConfiguration: function (configuration) {
+            for (var i = 0; i < this.$configurationViewers.length; i++) {
+                var viewer = this.$configurationViewers[i];
+                if(viewer.$.configuration == configuration){
+                    this.removeChild(viewer);
+                    viewer.destroy();
+                    this.$configurationViewers.splice(1,1);
 
+                    break;
+                }
+            }
         },
 
         getViewerForConfiguration: function (configuration) {
