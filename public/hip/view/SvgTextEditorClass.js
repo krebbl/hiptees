@@ -85,13 +85,6 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                     if (child.textContent == EMPTY_LINE_TEXT) {
                         length -= 2;
                     }
-                    if (child.hasAttribute("data-soft-line")) {
-                        length--;
-
-                        if (!child.hasAttribute("data-char-break")) {
-                            length++;
-                        }
-                    }
                     if (length > absoluteOffset) {
                         if (child.textContent == EMPTY_LINE_TEXT) {
                             length += 2;
@@ -101,6 +94,10 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                             offset: Math.max(0, absoluteOffset - (length - child.textContent.length - 1))
                         };
                     }
+                    if (child.hasAttribute("data-soft-line") && child.hasAttribute("data-char-break")) {
+                        length--;
+                    }
+
                 }
                 var lastChild = textContainer.lastChild;
                 return {
@@ -264,15 +261,17 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
 
         _onkeyPress: function (e) {
-            e.preventDefault();
-            var sel = this.getAbsoluteSelection();
 
-            this.$.executor.storeAndExecute(new InsertText({
-                textObject: this.$.textObject,
-                text: String.fromCharCode(e.domEvent.which),
-                anchorOffset: sel.anchorOffset,
-                focusOffset: sel.focusOffset
-            }));
+            if(e.domEvent.charCode > 0){
+                e.preventDefault();
+                var sel = this.getAbsoluteSelection();
+                this.$.executor.storeAndExecute(new InsertText({
+                    textObject: this.$.textObject,
+                    text: String.fromCharCode(e.domEvent.which),
+                    anchorOffset: sel.anchorOffset,
+                    focusOffset: sel.focusOffset
+                }));
+            }
 
         }
     })
