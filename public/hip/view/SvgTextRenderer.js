@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMeasurer'], function (SvgElement, TextFlowHandler, SvgMeasurer) {
+define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMeasurer', 'js/svg/Svg'], function (SvgElement, TextFlowHandler, SvgMeasurer, Svg) {
 
     var EMPTY_LINE_TEXT = "\n" + String.fromCharCode(173);
 
@@ -171,9 +171,13 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
 
                     if (line.soft) {
                         text.setAttribute("data-soft-line", "1");
+                    } else {
+                        text.removeAttribute("data-soft-line");
                     }
                     if (line.charBreak) {
                         text.setAttribute("data-char-break", "1");
+                    } else {
+                        text.removeAttribute("data-char-break");
                     }
 
                     y = i * textObject.fontSize * textObject.lineHeight;

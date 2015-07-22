@@ -21,7 +21,7 @@ define(["js/svg/Svg"], function (Svg) {
             this.$._textContainer.$el.setAttribute("font-size", fontSize);
 
             var measurer = this.$._textContainer.$el;
-            // TODO: add cache
+
             measurer.textContent = "";
 
             var normalTop = this.$el.getBoundingClientRect().top;
@@ -71,7 +71,8 @@ define(["js/svg/Svg"], function (Svg) {
 
             if (line.length > 0) {
                 var text;
-                var measureWidth = this.getWidthForText(line);
+                var measureWidth = this.getWidthForText(line),
+                    soft = false;
 
                 while (line.length > 1 && measureWidth > width) {
                     var splitAt = line.length - 1,
@@ -119,6 +120,7 @@ define(["js/svg/Svg"], function (Svg) {
                     });
 
                     line = line.substr(splitAt2);
+                    soft = true;
 
                     measureWidth = this.getWidthForText(line);
                 }
@@ -126,7 +128,7 @@ define(["js/svg/Svg"], function (Svg) {
                 if (line.length > 0) {
                     lines.push({
                         charBreak: false,
-                        soft: false,
+                        soft: soft,
                         text: line,
                         width: measureWidth
                     });
