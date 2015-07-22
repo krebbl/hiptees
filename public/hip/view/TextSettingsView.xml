@@ -12,7 +12,7 @@
                         Font-Family
                     </span>
                     <span class="value">
-                        {configuration.fontFamily}
+                        <img src="./font/{_getFontImageSrc(configuration.fontFamily)}" height="20"/>
                     </span>
                 </a>
             </li>
@@ -70,10 +70,10 @@
         </ul>
     </div>
     <div class="settings-sub-content" selected="{isSubContentSelected('fontSettings')}">
-        <ui:SelectionView items="{fonts}" class="settings" tagName="ul" selectedItem="{configuration.fontFamily}">
+        <ui:SelectionView items="{fontFamilies}" class="settings" tagName="ul" selectedItem="{_getFontFamily(configuration.fontFamily)}">
             <js:Template name="item">
                 <li>
-                    <a onclick="_selectFont(item)">${item}</a>
+                    <a onclick="_selectFont(item)"><img src="./font/${item.image}" height="20"/></a>
                 </li>
             </js:Template>
         </ui:SelectionView>

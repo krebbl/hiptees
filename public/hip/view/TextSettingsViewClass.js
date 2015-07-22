@@ -1,22 +1,35 @@
 define(["hip/view/SettingsViewClass",
+    "json!font/index",
+    "underscore",
     "hip/command/ChangeTextAlignment",
     "hip/command/ChangeFontFamily",
     "hip/command/ChangeLineHeight",
-    "hip/command/ChangeFontSize"], function (SettingsViewClass, ChangeTextAlignment, ChangeFontFamily, ChangeLineHeight, ChangeFontSize) {
+    "hip/command/ChangeFontSize"], function (SettingsViewClass, fonts, _, ChangeTextAlignment, ChangeFontFamily, ChangeLineHeight, ChangeFontSize) {
 
 
     return SettingsViewClass.inherit({
         defaults: {
             componentClass: "settings-view text-settings-view",
-            fonts: ["Arial", 'Verdana', 'bikoblack', 'denseregular', 'Times', 'Amatic SC'],
+            fontFamilies: fonts.fontFamilies,
             alignments: ["left", "center", "right"],
             selectedSubContent: ''
+        },
+
+        _getFontFamily: function (fontFamily) {
+            return _.find(this.$.fontFamilies, function (ff) {
+                return ff.regular == fontFamily || ff.bold == fontFamily || ff.italic == fontFamily || ff.boldItalic == fontFamily;
+            });
+        },
+
+        _getFontImageSrc: function (fontFamily) {
+            fontFamily = this._getFontFamily(fontFamily);
+            return fontFamily ? fontFamily.image : "";
         },
 
         _selectFont: function (fontFamily) {
             this.$.executor.storeAndExecute(new ChangeFontFamily({
                 configuration: this.$.configuration,
-                fontFamily: fontFamily
+                fontFamily: fontFamily.regular
             }));
         },
 
@@ -44,29 +57,32 @@ define(["hip/view/SettingsViewClass",
             }));
         },
 
-        _selectSubContent: function(subContent){
+        _selectSubContent: function (subContent) {
             this.set('selectedSubContent', subContent);
         },
 
-        isSubContentSelected: function(subContent){
+        isSubContentSelected: function (subContent) {
             return this.$.selectedSubContent == subContent;
         }.onChange('selectedSubContent'),
 
         _decreaseFontSize: function (by) {
             this._increaseFontSize(-1 * by);
         },
-        format: function(n){
-            if(n){
+        format: function (n) {
+            if (n) {
                 var r = String(n);
                 var s = r.split(".");
-                if(s.length > 1){
-                    s[1] = s[1].substr(0,1);
+                if (s.length > 1) {
+                    s[1] = s[1].substr(0, 1);
                 }
                 return s.join(".");
             }
 
             return "";
 
+        },
+        stopPropagation: function(e){
+            e.stopPropagation();
         }
     })
 });
