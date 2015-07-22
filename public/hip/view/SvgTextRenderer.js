@@ -104,15 +104,23 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
         _renderTextObject: function (textObject) {
 
             if (textObject) {
-//                var f = this.$rootScope.localToGlobalFactor().x;
-//                console.log();
-                this.set({
-                    "font-family": textObject.$.fontFamily,
-                    "font-size": textObject.$.fontSize
+                if (!this.$fontManager) {
+                    var svg = this.getSvgRoot();
+                    this.$fontManager = new Svg.FontManager(svg);
+                }
+                var self = this;
+
+                this.$fontManager.loadExternalFont(textObject.$.fontFamily, "./font/" + textObject.$.fontFamily + ".woff", function () {
+                    self.set({
+                        "font-family": textObject.$.fontFamily,
+                        "font-size": textObject.$.fontSize
+                    });
+                    var measureResult = self.$.svgMeasurer.measureLines(textObject.$.textFlow, textObject.$.fontFamily, textObject.$.fontSize, textObject.$.letterSpacing, self.$.maxWidth);
+                    // cache measure result for text object
+                    self.set('measureResult', measureResult);
+
                 });
-                var measureResult = this.$.svgMeasurer.measureLines(textObject.$.textFlow, textObject.$.fontFamily, textObject.$.fontSize, textObject.$.letterSpacing, this.$.maxWidth);
-                // cache measure result for text object
-                this.set('measureResult', measureResult);
+
             }
         },
 
