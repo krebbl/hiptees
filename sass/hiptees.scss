@@ -78,6 +78,7 @@ body {
   stroke: $brand-color;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1 2;
 }
 
 .configuration-handle {
@@ -99,94 +100,102 @@ body {
 $settings-height : 224px;
 
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  color: black;
-  overflow: hidden;
-
-  .settings-header {
-    background-color: #eeeeee;
-    height: 30px;
-    border-bottom: 1px solid #EAEAEA;
-  }
-
-  .settings-content {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    width: 100%;
-    bottom: 0;
-    background: white;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    overflow-x: scroll;
-    transition: transform 0.5s;
-
-    &.active {
-      transform: translate(0, 0);
-    }
-
-    transform: translate(-100%, 0);
-  }
-
-  .settings-sub-content {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    width: 100%;
-    bottom: 0;
-    background: white;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    overflow-x: scroll;
-    z-index: 2;
-    transition: transform 0.5s;
-    -webkit-transition: -webkit-transform 0.5s;
-
-    transform: translate(100%, 0);
-    -webkit-transform: translate(100%, 0);
-    &.active {
-      transform: translate(0, 0);
-      -webkit-transform: translate(0, 0);
-    }
-  }
-
-  .settings-view {
-    position: relative;
-    background: white;
-    transform: translate(0, $settings-height);
-    -webkit-transform: translate(0, $settings-height);
-    -moz-transform: translate(0, $settings-height);
-    -ms-transform: translate(0, $settings-height);
-    -o-transform: translate(0, $settings-height);
-    height: $settings-height;
-    -webkit-transition: -webkit-transform 0.5s;
-    -moz-transition: -moz-transform 0.5s;
-    -ms-transition: -ms-transform 0.5s;
-    -o-transition: -o-transform 0.5s;
-    transition: transform 0.5s;
-  }
-
-  &.text-selected {
-    .text-settings-view {
-      transform: translate(0, 0);
-      -webkit-transform: translate(0, 0);
-      -moz-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
-      -o-transform: translate(0, 0);
-    }
-  }
-
-  &.image-selected {
-    .image-settings-view {
-      display: block;
-    }
-  }
+//  position: fixed;
+//  bottom: 0;
+//  width: 100%;
+//  color: black;
+//  height: auto;
 
 }
 
+.settings-header {
+  background-color: #eeeeee;
+  height: 30px;
+  border-bottom: 1px solid #EAEAEA;
+}
+
+.settings-content {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background: white;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  overflow-x: scroll;
+  transition: transform 0.5s;
+
+  &.active {
+    transform: translate(0, 0);
+  }
+
+  transform: translate(-100%, 0);
+}
+
+.settings-sub-content {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background: white;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  overflow-x: scroll;
+  z-index: 2;
+  transition: transform 0.5s;
+  -webkit-transition: -webkit-transform 0.5s;
+
+  transform: translate(100%, 0);
+  -webkit-transform: translate(100%, 0);
+  &.active {
+    transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+  }
+}
+
 .settings-view {
+  background: white;
+  transform: translate(0, $settings-height);
+  -webkit-transform: translate(0, $settings-height);
+  -moz-transform: translate(0, $settings-height);
+  -ms-transform: translate(0, $settings-height);
+  -o-transform: translate(0, $settings-height);
+  height: $settings-height;
+  -webkit-transition: -webkit-transform 0.5s;
+  -moz-transition: -moz-transform 0.5s;
+  -ms-transition: -ms-transform 0.5s;
+  -o-transition: -o-transform 0.5s;
+  transition: transform 0.5s;
+}
+
+.text-selected {
+  .text-settings-view {
+    transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+  }
+}
+
+.image-selected {
+  .image-settings-view {
+    transform: translate(0, 0);
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+  }
+}
+
+.settings-view {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  //  color: black;
+//    height: auto;
 
   .nav-tabs {
     li {
@@ -320,8 +329,8 @@ ul {
 
 .view-content {
   position: absolute;
-  top: $nav-bar-height;
-  bottom: 0;
+  top: 0;
+  bottom: -100px;
   left: 0;
   right: 0;
 
