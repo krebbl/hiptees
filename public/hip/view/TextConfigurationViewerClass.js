@@ -12,13 +12,15 @@ define(['xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/SvgTextEditor'], 
             svgTextEditor: SvgTextEditor
         },
 
+        ctor: function(){
+            this.callBase();
+
+            this.bind('svgTextEditor', 'on:blur', this._disableEditing, this);
+        },
+
         _commitSelected: function (selected) {
             if (!selected) {
-                if (this.$.svgTextEditor.$.textObject == this.$.configuration) {
-                    this.$.svgTextEditor.set('visible', false);
-                    this.$.textRenderer.set('visible', true);
-                    this.removeClass("editing");
-                }
+                this._disableEditing();
             }
         },
 
@@ -45,12 +47,22 @@ define(['xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/SvgTextEditor'], 
 
         },
 
+        _disableEditing: function(){
+            if (this.$.svgTextEditor.$.textObject == this.$.configuration) {
+                this.$.svgTextEditor.set('visible', false);
+                this.$.textRenderer.set('visible', true);
+                this.removeClass("editing");
+            }
+        },
+
+
         _handleClick: function () {
-            if (this.$.selected && !this.$moved) {
+            if (this.$.selected && !this.$moved && !this.$preventClick) {
 
                 var rect = this.getBoundRectInPx();
                 var root = this.getSvgRoot();
                 this.$.svgTextEditor.set({
+//                    visible: true,
                     zIndex: 1000,
                     position: "absolute",
                     left: Math.ceil(rect.left + window.scrollX),
