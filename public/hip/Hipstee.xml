@@ -7,13 +7,14 @@
     <js:Injection>
         <command:EventBus cid="eventBus"/>
         <command:Executor cid="executor" eventBus="{eventBus}"/>
+        <handler:ImageConfigurationHandler cid="imageConfigurationHandler"/>
         <handler:TextConfigurationHandler cid="textConfigurationHandler"/>
         <handler:ApplyFilterHandler cid="applyFilterHandler"/>
         <handler:ProductHandler cid="productHandler" product="{product}"/>
-        <handler:ConfigurationHandler cid="configurationHandler" />
-        <handler:TextFlowHandler cid="textFlowHandler" />
-        <text:SvgMeasurer />
-        <view:SvgTextEditor />
+        <handler:ConfigurationHandler cid="configurationHandler"/>
+        <handler:TextFlowHandler cid="textFlowHandler"/>
+        <text:SvgMeasurer/>
+        <view:SvgTextEditor/>
 
     </js:Injection>
 
@@ -25,8 +26,10 @@
         </div>
 
         <div class="view-content" cid="viewContent" heightUpdatePolicy="in">
-            <div class="product-viewer-wrapper" height="{viewContent.height}" width="{viewContent.height}" marginLeft="{minusHalf(width)}px">
-                <view:ProductViewerSvg height="{height}" width="{width}" product="{product}" style="display: block; -webkit-transform: translateZ(0);" />
+            <div class="product-viewer-wrapper" height="{viewContent.height}" width="{viewContent.height}"
+                 marginLeft="{minusHalf(width)}px">
+                <view:ProductViewerSvg height="{height}" width="{width}" product="{product}"
+                                       style="display: block; -webkit-transform: translateZ(0);"/>
             </div>
             <!--<view:SvgTextEditor marginLeft="40px" width="300" height="300" viewBox="0 0 100 100" textObject="{textObject}"/>-->
         </div>
@@ -36,43 +39,45 @@
         </div>
 
         <!--<div>-->
-            <!--<input type="number" value="{{anchor}}"/>-->
-            <!--<input type="number" value="{{focus}}"/>-->
-            <!--<input type="text" value="{{text}}"/>-->
-            <!--<input type="button" value="insert char" onclick="_insertChar"/>-->
-            <!--<input type="button" value="insert line" onclick="_insertLine"/>-->
-            <!--<input type="button" value="delete" onclick="_deleteSelection"/>-->
+        <!--<input type="number" value="{{anchor}}"/>-->
+        <!--<input type="number" value="{{focus}}"/>-->
+        <!--<input type="text" value="{{text}}"/>-->
+        <!--<input type="button" value="insert char" onclick="_insertChar"/>-->
+        <!--<input type="button" value="insert line" onclick="_insertLine"/>-->
+        <!--<input type="button" value="delete" onclick="_deleteSelection"/>-->
 
         <!--</div>-->
 
 
-        <div class="footer {activeControl()}">
-            <view:TextSettingsView configuration="{selectedConfiguration}"/>
+        <div class="footer">
 
-            <div class="configuration-control image-configuration-control">
-                <ui:Slider min="0" max="100"/>
-            </div>
+        </div>
+        <div class="setting-views">
+            <view:TextSettingsView />
+            <view:ImageSettingsView />
         </div>
     </div>
 
 
     <!--<form onsubmit="changeTextColor">-->
-        <!--<input type="text" value="{{textColor}}"/>-->
+    <!--<input type="text" value="{{textColor}}"/>-->
     <!--</form>-->
 
     <!--<form onsubmit="changeFontSize">-->
-        <!--<input type="text" value="{{fontSize}}"/>-->
-        <!--<input type="button" onclick="decreaseFontSize" value="-"/>-->
-        <!--<input type="button" onclick="increaseFontSize" value="+"/>-->
+    <!--<input type="text" value="{{fontSize}}"/>-->
+    <!--<input type="button" onclick="decreaseFontSize" value="-"/>-->
+    <!--<input type="button" onclick="increaseFontSize" value="+"/>-->
     <!--</form>-->
 
     <!--<form onsubmit="changeGrayScale">-->
-        <!--<input type="range" name="points" min="0" max="100" onchange="_handleScaleChange"/>-->
-        <!--<input type="text" value="{{gray}}"/>-->
+    <!--<input type="range" name="points" min="-100" max="100" onchange="_handleSaturationChange" zIndex="1000"-->
+           <!--position="absolute" value="{{gray}}"/>-->
+    <!--<input type="text" value="{{gray}}"/>-->
     <!--</form>-->
 
     <!--<view:PrintAreaViewer cid="productViewer" product="{product}" height="3000" interactive="false"/>-->
 
+    <!--<img src="./example/bright.png" id="brightImage" style="-webkit-filter: url(#filter1)"/>-->
 
     <!--<button onclick="createImage">Save!</button>-->
 

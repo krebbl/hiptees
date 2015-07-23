@@ -1,0 +1,34 @@
+<parent:ImageFilterClass xmlns="http://www.w3.org/2000/svg"
+                         xmlns:parent="hip.view">
+    <feComponentTransfer />
+
+    <feColorMatrix type="matrix" values="{saturationMatrix(filter.saturation)}"
+                   color-interpolation-filters="sRGB"/>
+
+    <feComponentTransfer visible="{filter.contrast}" result="contrast" color-interpolation-filters="sRGB">
+        <feFuncR type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
+        <feFuncG type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
+        <feFuncB type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
+    </feComponentTransfer>
+
+    <feComponentTransfer visible="{filter.brightness}" color-interpolation-filters="sRGB">
+        <feFuncR type="linear" intercept="{_brightnessIntercept}" slope="1"/>
+        <feFuncG type="linear" intercept="{_brightnessIntercept}" slope="1"/>
+        <feFuncB type="linear" intercept="{_brightnessIntercept}" slope="1"/>
+    </feComponentTransfer>
+
+    <feComponentTransfer visible="{filter.tint}" color-interpolation-filters="sRGB">
+        <feFuncR type="linear" intercept="{_tintIntercept.r}" slope="{_tintSlope}"/>
+        <feFuncG type="linear" intercept="{_tintIntercept.g}" slope="{_tintSlope}"/>
+        <feFuncB type="linear" intercept="{_tintIntercept.b}" slope="{_tintSlope}"/>
+    </feComponentTransfer>
+
+    <feConvolveMatrix visible="{lt(filter.blur,0)}" order="3" kernelMatrix="{sharpKernelMatrix(filter.blur)}"/>
+
+    <feGaussianBlur visible="{gt(filter.blur,0)}" stdDeviation="{_blurDeviation}"/>
+
+    <feColorMatrix type="hueRotate"
+                   visible="{_hueValue}"
+                   values="{_hueValue}"/>
+
+</parent:ImageFilterClass>

@@ -1,0 +1,5 @@
+<view:ImageFilterRendererClass xmlns="http://www.w3.org/1999/xhtml"
+                                 xmlns:view="hip.view">
+    <img src=""/>
+
+</view:ImageFilterRendererClass>

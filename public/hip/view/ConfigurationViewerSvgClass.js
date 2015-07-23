@@ -32,7 +32,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 y: 0
             },
 
-            _maskId: ++maskId
+            _maskId: ""
         },
 
         inject: {
@@ -42,7 +42,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
         $classAttributes: ["handleWidth", "product", "printArea", "configuration", "keepAspectRatio", "selected", "verticalStretchable", "horizontalStretchable", "rotatable"],
 
-        ctor: function () {
+        ctor: function (attr) {
+            attr._maskId = "mask" + (++maskId);
 
             this.callBase();
 
@@ -71,7 +72,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
             if (configuration) {
                 var size = configuration.$.size,
-                    offset = {x: 0, y: 0};
+                    offset = configuration.$.offset;
 
                 this.set({
                     _size: size,
@@ -88,6 +89,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
         handlePointerDown: function (action, type, event) {
 //            event.preventDefault();
+//            event.stopPropagation();
 
             this.$currentTarget = event.target;
             this.$action = action;
@@ -113,10 +115,16 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                     self.handlePointerUp(e);
                 }
             }
+            if (!this.$clickDelegate) {
+                this.$clickDelegate = function (e) {
+                    self.handleDocumentClick(e);
+                }
+            }
 
             this.$moved = false;
 
             this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
+            this.dom(this.$stage.$document).bindDomEvent("click", this.$clickDelegate, true);
             this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
         },
 
@@ -126,6 +134,13 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
         vectorLength: function (v) {
             return Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2));
+        },
+
+        handleDocumentClick: function(e){
+            if (this.$moved) {
+                e.stopPropagation();
+            }
+            this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
         },
 
         handlePointerMove: function (event) {
@@ -139,91 +154,241 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 diffX = (changedEvent.pageX - this.$downPoint.x) * f.x,
                 diffY = (changedEvent.pageY - this.$downPoint.y) * f.y;
 
+            if (event.touches && event.touches.length == 2) {
+                var length = this.vectorLength([
+                            event.touches[0].pageX - event.touches[1].pageX,
+                            event.touches[0].pageY - event.touches[1].pageY]
+                );
+                if (!this.$startLength) {
+                    this.$startLength = length;
+                } else {
+
+                    diffX = (length - this.$startLength) * f.x;
+                    diffY = 0;
+
+                    this.$resizeType = "r";
+                    this.$action = "resize";
+
+                }
+
+            }
+
+
             this.$moved = true;
 
             if (this.$action == "resize") {
 
+                var snapped;
+
+                var rootVector = [0, 0],
+                    scaleVector = [diffX, diffY];
+
+                if (this.$resizeType.indexOf("l") > -1) {
+                    rootVector[0] = -this.$originalSize.width;
+                }
+                if (this.$resizeType.indexOf("r") > -1) {
+                    rootVector[0] = this.$originalSize.width;
+                }
+                if (this.$resizeType.indexOf("t") > -1) {
+                    rootVector[1] = -this.$originalSize.height;
+                }
+                if (this.$resizeType.indexOf("b") > -1) {
+                    rootVector[1] = this.$originalSize.height;
+                }
+
+                // calculate the length of the projected vector
+                var rootLength = this.vectorLength(rootVector);
+                var s = this.multiplyVectors(scaleVector, rootVector) / rootLength,
+                    lf = s / rootLength;
+
+
+                // multiply with the root vector
+                diffX = Math.abs(rootVector[0]) * lf;
+                diffY = Math.abs(rootVector[1]) * lf;
+
+                if (this.$originalSize.width + 2 * diffX <= 20) {
+                    diffX = -this.$originalSize.width + 10;
+                }
+                if (this.$originalSize.height + 2 * diffY <= 20) {
+//                    diffY = -this.$originalSize.height + 10;
+                }
+//                if (-diffY * 2 + 20 >= this.$originalSize.height) {
+//                    diffY = -this.$originalSize.height + 20;
+//                }
                 if (this.$.keepAspectRatio) {
-                    if (this.$resizeType.length == 2) {
-                        var diffVector = [diffX, diffY],
-                            rootVector = [this.$originalSize.width, this.$originalSize.height];
-
-                        if (this.$resizeType.indexOf("l") > -1) {
-                            rootVector[0] = rootVector[0] * -1;
-                        }
-
-                        if (this.$resizeType.indexOf("t") > -1) {
-                            rootVector[1] = rootVector[1] * -1;
-                        }
-
-                        var rootLength = this.vectorLength(rootVector);
-                        var s = this.multiplyVectors(diffVector, rootVector) / rootLength,
-                            lf = s / rootLength;
-
-
-                        diffX = rootVector[0] * lf;
-                        diffY = rootVector[1] * lf;
-
-
+                    if (diffY !== 0) {
+                        diffX = diffY * this.$originalSize.width / this.$originalSize.height;
                     } else {
-
-                        if (this.$resizeType.indexOf("l") > -1 || this.$resizeType.indexOf("r") > -1) {
-                            diffY = (this.$originalSize.height / this.$originalSize.width) * diffX * 0.5;
-
-                            if (this.$resizeType.indexOf("l") > -1) {
-                                diffY *= -1;
-                            }
-
-                            offset.y -= diffY;
-                            size.height += 2 * diffY;
-                        } else if (this.$resizeType.indexOf("b") > -1 || this.$resizeType.indexOf("t") > -1) {
-                            diffX = (this.$originalSize.width / this.$originalSize.height) * diffY * 0.5;
-
-                            if (this.$resizeType.indexOf("t") > -1) {
-                                diffX *= -1;
-                            }
-
-                            offset.x -= diffX;
-                            size.width += 2 * diffX;
-                        }
-
+                        diffY = diffX * this.$originalSize.height / this.$originalSize.width;
                     }
                 }
 
-                if (this.$resizeType.indexOf("b") > -1 && this.$.verticalStretchable) {
-                    size.height = this.$originalSize.height + diffY;
-                    offset.y = this.$originalOffset.y;
-                }
 
-                if (this.$resizeType.indexOf("r") > -1 && this.$.horizontalStretchable) {
-                    size.width = this.$originalSize.width + diffX;
-                    offset.x = this.$originalOffset.x;
-                }
+                size.width = this.$originalSize.width + diffX * 2;
+                size.height = this.$originalSize.height + diffY * 2;
+                offset.x = this.$originalOffset.x - diffX;
+                offset.y = this.$originalOffset.y - diffY;
 
-                if (this.$resizeType.indexOf("l") > -1 && this.$.horizontalStretchable) {
-                    offset.x = this.$originalOffset.x + diffX;
-                    size.width = this.$originalSize.width - diffX;
-                }
+                // if the corner handle is used
+//                    if (this.$resizeType.length == 2) {
+//                        // project resize vector on the diagonal root vector
+//                        var diffVector = [diffX, diffY],
+//                            rootVector = [this.$originalSize.width, this.$originalSize.height];
+//
+//                        if (this.$resizeType.indexOf("l") > -1) {
+//                            rootVector[0] = rootVector[0] * -1;
+//                        }
+//
+//                        if (this.$resizeType.indexOf("t") > -1) {
+//                            rootVector[1] = rootVector[1] * -1;
+//                        }
+//
+//                        // calculate the length of the projected vector
+//                        var rootLength = this.vectorLength(rootVector);
+//                        var s = this.multiplyVectors(diffVector, rootVector) / rootLength,
+//                            lf = s / rootLength;
+//
+//
+//                        // multiply with the root vector
+//                        diffX = rootVector[0] * lf;
+//                        diffY = rootVector[1] * lf;
+//
+//                        var correctedDiffX,
+//                            rootX;
+//                        if (this.$resizeType.indexOf("r") > -1) {
+//                            rootX = this.$originalOffset.x + this.$originalSize.width;
+//                            snapped = this.$parent.snapToLines(rootX + diffX);
+//                            if (snapped !== false) {
+//                                correctedDiffX = snapped - rootX;
+//                            } else {
+//                                rootX = this.$originalOffset.x + this.$originalSize.width * 0.5;
+//                                snapped = this.$parent.snapToLines(rootX + diffX * 0.5);
+//                                if (snapped !== false) {
+//                                    correctedDiffX = (snapped - rootX) * 2;
+//                                }
+//                            }
+//                        } else if (this.$resizeType.indexOf("l") > -1) {
+//                            rootX = this.$originalOffset.x;
+//                            snapped = this.$parent.snapToLines(rootX + diffX);
+//                            if (snapped !== false) {
+//                                correctedDiffX = snapped - rootX;
+//                            } else {
+//                                rootX = this.$originalOffset.x + this.$originalSize.width * 0.5;
+//                                snapped = this.$parent.snapToLines(rootX + diffX * 0.5);
+//                                if (snapped !== false) {
+//                                    correctedDiffX = (snapped - rootX) * 2;
+//                                }
+//                            }
+//
+//
+//                        }
+//                        if (correctedDiffX) {
+//                            var dir = 1;
+//                            if (this.$resizeType.indexOf("t") > -1) {
+//                                dir *= -1;
+//                            }
+//                            if (this.$resizeType.indexOf("l") > -1) {
+//                                dir *= -1;
+//                            }
+//                            diffY += dir * (correctedDiffX - diffX);
+//                            diffX = correctedDiffX;
+//                        }
+//
+//                    } else {
+//                        // if a left, top, bottom or right handle is used, keep aspect ratio
+//                        if (this.$resizeType.indexOf("l") > -1 || this.$resizeType.indexOf("r") > -1) {
+//                            diffY = (this.$originalSize.height / this.$originalSize.width) * diffX * 0.5;
+//
+//                            if (this.$resizeType.indexOf("l") > -1) {
+//                                diffY *= -1;
+//                            }
+//
+//                            offset.y -= diffY;
+//                            size.height += 2 * diffY;
+//                        } else if (this.$resizeType.indexOf("b") > -1 || this.$resizeType.indexOf("t") > -1) {
+//                            diffX = (this.$originalSize.width / this.$originalSize.height) * diffY * 0.5;
+//
+//                            if (this.$resizeType.indexOf("t") > -1) {
+//                                diffX *= -1;
+//                            }
+//
+//                            offset.x -= diffX;
+//                            size.width += 2 * diffX;
+//                        }
+//
+//                    }
 
-                if (this.$resizeType.indexOf("t") > -1 && this.$.verticalStretchable) {
-                    offset.y = this.$originalOffset.y + diffY;
-                    size.height = this.$originalSize.height - diffY;
-                }
+//                if (this.$resizeType.indexOf("r") > -1) {
+//                    snapped = this.$parent.snapToLines(this.$originalOffset.x + this.$originalSize.width + diffX);
+//                    if (snapped > -1) {
+//                        diffX = snapped - this.$originalOffset.x - this.$originalSize.width;
+//                    } else {
+//                        snapped = this.$parent.snapToLines(this.$originalOffset.x + this.$originalSize.width * 0.5 + diffX * 0.5);
+//                        if (snapped > -1) {
+//                            diffX = (snapped - (this.$originalOffset.x + this.$originalSize.width * 0.5)) * 2;
+//                        }
+//                    }
+//                }
 
+                // calculate new offset and size
+//                if (this.$resizeType.indexOf("b") > -1 && this.$.verticalStretchable) {
+//                    size.height = this.$originalSize.height + diffY;
+//                    offset.y = this.$originalOffset.y;
+//                }
+//
+//                if (this.$resizeType.indexOf("r") > -1 && this.$.horizontalStretchable) {
+//                    size.width = this.$originalSize.width + diffX;
+//                    offset.x = this.$originalOffset.x;
+//                }
+//
+//                if (this.$resizeType.indexOf("l") > -1 && this.$.horizontalStretchable) {
+//                    offset.x = this.$originalOffset.x + diffX;
+//                    size.width = this.$originalSize.width - diffX;
+//                }
+//
+//                if (this.$resizeType.indexOf("t") > -1 && this.$.verticalStretchable) {
+//                    offset.y = this.$originalOffset.y + diffY;
+//                    size.height = this.$originalSize.height - diffY;
+//                }
+//                size.width = Math.max(10, size.width);
+//                size.height = Math.max(10, size.height);
+
+                change._size = size;
             } else if (this.$action == "move") {
-                offset.x += diffX;
-                offset.y += diffY;
+                if (!event.touches || event.touches.length === 1) {
+                    offset.x += diffX;
+                    offset.y += diffY;
+                }
+
+
             }
 
-            size.width = Math.max(10, size.width);
-            size.height = Math.max(10, size.height);
 
-            change._size = size;
             change._offset = offset;
 
 
             // TODO: execute position change command
             this.set(change, {force: true});
+        },
+
+        handlePointerUp: function (event) {
+            this.$preventClick = false;
+
+            if (this.$moved) {
+                this.$preventClick = true;
+                event.preventDefault();
+                event.stopPropagation();
+                this.$.executor.storeAndExecute(new SelectConfiguration({
+                    configuration: this.$.configuration
+                }));
+            }
+
+            this.$originalSize = null;
+            this.$originalOffset = null;
+            this.$startLength = null;
+
+            this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
+            this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
         },
 
         _render_offset: function (offset) {
@@ -244,25 +409,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             return a && b;
         },
 
-        handlePointerUp: function (event) {
-            if (this.$moved) {
-                event.preventDefault();
-
-                this.$.executor.storeAndExecute(new SelectConfiguration({
-                    configuration: this.$.configuration
-                }));
-
-//                event.stopPropagation();
-                // TODO: create command
-            }
-            this.$originalSize = null;
-            this.$originalOffset = null;
-
-            this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
-            this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
-        },
         _handleClick: function (e) {
-//            this.$renderer.handleClick(e);
             this.$.executor.storeAndExecute(new SelectConfiguration({
                 configuration: this.$.configuration
             }));

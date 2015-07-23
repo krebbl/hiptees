@@ -1,0 +1,124 @@
+{"filters": [
+    {
+        "name": "None",
+        "brightness": 0,
+        "contrast": 0,
+        "blur": 0,
+        "tint": 0,
+        "saturation": 0,
+        "vignette": 0,
+        "xpro": 0
+    },
+    {
+        "name": "Selfie",
+        "brightness": 10,
+        "contrast": -12,
+        "blur": 0,
+        "tint": -50,
+        "saturation": -12,
+        "vignette": 56,
+        "xpro": 50
+    },
+    {
+        "name": "Festive",
+        "blur": -7,
+        "brightness": 10,
+        "contrast": 21,
+        "saturation": 24,
+        "xpro": 40
+    },
+    {
+        "name": "Rosie",
+        "brightness": 0,
+        "contrast": 21,
+        "tint": -86,
+        "saturation": -20,
+        "vignette": 59,
+        "xpro": 100
+    },
+    {
+        "name": "Drama",
+        "blur": 0,
+        "brightness": -10,
+        "contrast": 21,
+        "tint": 60,
+        "saturation": -34,
+        "vignette": 50,
+        "xpro": 80
+    },
+    {
+        "name": "Epic",
+        "blur": 1,
+        "brightness": 6,
+        "contrast": 20,
+        "saturation": -14,
+        "vignette": 39,
+        "xpro": 50
+    },
+    {
+        "name": "Grayscale",
+        "brightness": 15,
+        "contrast": -20,
+        "saturation": -100
+    },
+    {
+        "name": "Nordic",
+        "blur": 0,
+        "brightness": 15,
+        "contrast": -16,
+        "tint": 0,
+        "saturation": -41,
+        "vignette": 0,
+        "xpro": 1
+    },
+    {
+        "name": "Summer",
+        "blur": 0,
+        "brightness": 10,
+        "contrast": 14,
+        "tint": -46,
+        "saturation": 18,
+        "vignette": 25,
+        "xpro": 30
+    },
+    {
+        "name": "Street",
+        "blur": -7,
+        "brightness": -7,
+        "contrast": 21,
+        "tint": 0,
+        "saturation": -95,
+        "vignette": 100,
+        "xpro": 0
+    },
+    {
+        "name": "Retro",
+        "blur": 0,
+        "brightness": 0,
+        "contrast": -14,
+        "tint": 14,
+        "saturation": -18,
+        "vignette": 80,
+        "xpro": 69
+    },
+    {
+        "name": "Whimsical",
+        "blur": -19,
+        "brightness": 43,
+        "contrast": -15,
+        "tint": -79,
+        "saturation": -53,
+        "vignette": 21,
+        "xpro": 60
+    },
+    {
+        "name": "Cali",
+        "blur": 0,
+        "brightness": 22,
+        "contrast": -46,
+        "tint": 0,
+        "saturation": 38,
+        "vignette": 0,
+        "xpro": 27
+    }
+]}

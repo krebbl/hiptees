@@ -8,7 +8,8 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMe
             textObject: null,
             measureResult: null,
             maxWidth: 308,
-            textColor: "{textObject.color}"
+            textColor: "{textObject.color}",
+            componentClass: "text-renderer"
         },
 
         $classAttributes: ['textObject', 'maxWidth', 'measureResult'],

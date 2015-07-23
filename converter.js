@@ -11,7 +11,7 @@ module.exports = {
             label = options.label || "Unknown",
             fill = options.fill || "black";
 
-        exec('convert -background none -fill ' + fill + ' -font ' + src + ' -pointsize ' + size + ' label:"' + label + '" ' + dest + '.png', function (err, stdout, stderr) {
+        exec('convert -background none -fill ' + fill + ' -font ' + src + ' -pointsize ' + size + ' -resize x120 label:"' + label + '" ' + dest + '.png', function (err, stdout, stderr) {
             if (err) {
 
             }

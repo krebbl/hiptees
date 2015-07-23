@@ -1,13 +1,14 @@
 define(["hip/view/SettingsViewClass",
     "json!font/index",
     "underscore",
-    "hip/command/ChangeTextAlignment",
-    "hip/command/ChangeFontFamily",
-    "hip/command/ChangeLineHeight",
-    "hip/command/ChangeFontSize"], function (SettingsViewClass, fonts, _, ChangeTextAlignment, ChangeFontFamily, ChangeLineHeight, ChangeFontSize) {
+    "hip/entity/TextConfiguration",
+    "hip/command/ChangeTextConfiguration"], function (SettingsViewClass, fonts, _, TextConfiguration, ChangeTextConfiguration) {
 
 
     return SettingsViewClass.inherit({
+
+        supportedConfiguration: TextConfiguration,
+
         defaults: {
             componentClass: "settings-view text-settings-view",
             fontFamilies: fonts.fontFamilies,
@@ -27,22 +28,25 @@ define(["hip/view/SettingsViewClass",
         },
 
         _selectFont: function (fontFamily) {
-            this.$.executor.storeAndExecute(new ChangeFontFamily({
+            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
                 configuration: this.$.configuration,
-                fontFamily: fontFamily.regular
+                key: 'fontFamily',
+                value: fontFamily.regular
             }));
         },
 
         _selectAlignment: function (alignment) {
-            this.$.executor.storeAndExecute(new ChangeTextAlignment({
+            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
                 configuration: this.$.configuration,
-                alignment: alignment
+                key: "textAlign",
+                value: alignment
             }));
         },
         _increaseLineHeight: function (by) {
-            this.$.executor.storeAndExecute(new ChangeLineHeight({
+            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
                 configuration: this.$.configuration,
-                lineHeight: this.$.configuration.$.lineHeight + by
+                key: "lineHeight",
+                value: this.$.configuration.$.lineHeight + by
             }));
 
         },
@@ -51,9 +55,10 @@ define(["hip/view/SettingsViewClass",
         },
 
         _increaseFontSize: function (by) {
-            this.$.executor.storeAndExecute(new ChangeFontSize({
+            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
                 configuration: this.$.configuration,
-                fontSize: this.$.configuration.$.fontSize + by
+                key: 'fontSize',
+                value: this.$.configuration.$.fontSize + by
             }));
         },
 
@@ -68,8 +73,33 @@ define(["hip/view/SettingsViewClass",
         _decreaseFontSize: function (by) {
             this._increaseFontSize(-1 * by);
         },
+
+        _updateTextSize: function (e) {
+            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
+                configuration: this.$.configuration,
+                key: 'fontSize',
+                value: e.$.value
+            }));
+        },
+
+        _updateLineHeight: function (e) {
+            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
+                configuration: this.$.configuration,
+                key: "lineHeight",
+                value: e.$.value
+            }));
+        },
+
+        _updateLetterSpacing: function(e){
+            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
+                configuration: this.$.configuration,
+                key : "letterSpacing",
+                value: e.$.value
+            }));
+        },
+
         format: function (n) {
-            if (n) {
+            if (n != null) {
                 var r = String(n);
                 var s = r.split(".");
                 if (s.length > 1) {
@@ -81,7 +111,7 @@ define(["hip/view/SettingsViewClass",
             return "";
 
         },
-        stopPropagation: function(e){
+        stopPropagation: function (e) {
             e.stopPropagation();
         }
     })

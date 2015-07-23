@@ -3,7 +3,8 @@ define(['xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/SvgTextEditor'], 
 
         defaults: {
             textRenderer: null,
-            verticalStretchable: false
+            verticalStretchable: false,
+            componentClass: "text-configuration-viewer"
         },
 
         $classAttributes: ["textRenderer"],

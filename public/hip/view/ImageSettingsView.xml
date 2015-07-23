@@ -1,0 +1,42 @@
+<view:ImageSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
+                            xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+
+    <div class="settings-header">
+
+    </div>
+    <div class="settings-content" selected="true">
+        <ui:SelectionView items="{presets}" class="filter-presets" tagName="ul" selectedItem="{selectedPreset}">
+            <js:Template name="item">
+                <li>
+                    <a onclick="_selectPreset(item)">${item.name}</a>
+                </li>
+            </js:Template>
+        </ui:SelectionView>
+    </div>
+
+    <!--<ui:TabView>-->
+    <!--<ui:Tab title="Format">-->
+    <!--<div class="font-family">-->
+
+    <!--</div>-->
+    <!--<div class="font-size">-->
+    <!--<a class="decrease-button button" >-</a>-->
+    <!--<span>{format(configuration.fontSize)}</span>-->
+    <!--<a class="increase-button button" >+</a>-->
+    <!--</div>-->
+    <!--<div class="line-height">-->
+    <!--<a class="decrease-button button" onclick="_decreaseLineHeight(-0.1)">-</a>-->
+    <!--<span>{format(configuration.lineHeight)}</span>-->
+    <!--<a class="increase-button button" onclick="_increaseLineHeight(0.1)">+</a>-->
+    <!--</div>-->
+    <!--</ui:Tab>-->
+    <!--<ui:Tab title="Color">-->
+    <!--<div>-->
+
+    <!--</div>-->
+    <!--</ui:Tab>-->
+    <!--</ui:TabView>-->
+
+    <!--<a class="delete-button button" onclick="_deleteConfiguration">Delete</a>-->
+
+</view:ImageSettingsViewClass>

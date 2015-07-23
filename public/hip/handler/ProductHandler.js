@@ -13,9 +13,9 @@ define(["hip/handler/CommandHandler", "hip/command/ProductCommand", "hip/command
                 if (this.$.product && command.$.configuration) {
                     // only remove it if it was found
                     this.$.product.$.configurations.remove(command.$.configuration);
-                    if(command.$.configuration == this.$.selectedConfiguration){
+                    if (command.$.configuration == this.$.selectedConfiguration) {
                         this.set('selectedConfiguration', null);
-                        this.triggerEvent('on:configurationSelected', {configuration: command.$.configuration});
+                        this.trigger('on:configurationSelected', {configuration: null});
                     }
 
                     this.trigger('on:configurationRemoved', {configuration: command.$.configuration});
@@ -31,7 +31,7 @@ define(["hip/handler/CommandHandler", "hip/command/ProductCommand", "hip/command
 
             } else if (command instanceof SelectConfiguration) {
                 this.set('selectedConfiguration', command.$.configuration);
-                this.triggerEvent('on:configurationSelected', {configuration: command.$.configuration});
+                this.trigger('on:configurationSelected', {configuration: command.$.configuration});
             }
         }
     })

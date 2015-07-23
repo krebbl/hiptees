@@ -1,4 +1,11 @@
-define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/TextConfigurationViewer', 'xaml!hip/view/ImageConfigurationViewer', 'hip/model/TextConfiguration', 'hip/model/ImageConfiguration', 'hip/handler/ProductHandler'], function (SvgElement, List, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, TextConfiguration, ImageConfiguration, ProductHandler) {
+define(['js/svg/SvgElement', 'js/core/List',
+    'xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/TextConfigurationViewer',
+    'xaml!hip/view/ImageConfigurationViewer',
+    'xaml!hip/view/RectangleConfigurationViewer',
+    'hip/entity/TextConfiguration',
+    'hip/entity/ImageConfiguration',
+    'hip/entity/RectangleConfiguration',
+    'hip/handler/ProductHandler'], function (SvgElement, List, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, RectangleConfigurationViewer, TextConfiguration, ImageConfiguration, RectangleConfiguration, ProductHandler) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -20,7 +27,7 @@ define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerS
             this.$configurationViewers = [];
 
             var self = this;
-            this.bind('productHandler', 'on:configurationRemoved', function(e){
+            this.bind('productHandler', 'on:configurationRemoved', function (e) {
                 self._removeConfiguration(e.$.configuration);
             });
         },
@@ -63,6 +70,8 @@ define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerS
                 Factory = TextConfigurationViewer;
             } else if (configuration instanceof ImageConfiguration) {
                 Factory = ImageConfigurationViewer;
+            } else if(configuration instanceof RectangleConfiguration) {
+                Factory = RectangleConfigurationViewer;
             }
 
             if (Factory) {
@@ -80,14 +89,38 @@ define(['js/svg/SvgElement', 'js/core/List', 'xaml!hip/view/ConfigurationViewerS
         _removeConfiguration: function (configuration) {
             for (var i = 0; i < this.$configurationViewers.length; i++) {
                 var viewer = this.$configurationViewers[i];
-                if(viewer.$.configuration == configuration){
+                if (viewer.$.configuration == configuration) {
                     this.removeChild(viewer);
                     viewer.destroy();
-                    this.$configurationViewers.splice(1,1);
+                    this.$configurationViewers.splice(1, 1);
 
                     break;
                 }
             }
+        },
+
+        snapToLines: function (point) {
+            var verticalSnapLines = [0, this.get('printArea.width') * 0.5, this.get('printArea.width')],
+                closestPoint = false,
+                threshold = 2;
+
+            for (var j = 0; j < verticalSnapLines.length; j++) {
+                var snapline = verticalSnapLines[j],
+                    diff = Math.abs(point - snapline);
+                if (diff < threshold && (diff < closestPoint || closestPoint === false)) {
+                    closestPoint = snapline;
+                }
+            }
+
+            return closestPoint;
+
+            // collect snap lines
+
+            // check if it snap to lines
+
+            // display one vertical snap line and one horizontal
+
+            // correct offset
         },
 
         getViewerForConfiguration: function (configuration) {

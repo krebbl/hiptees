@@ -1,11 +1,15 @@
-define(["js/data/Model", "js/core/List"], function (Model, List) {
-    return Model.inherit('hip.model.Configuration', {
+define(["js/data/Entity", "js/core/List"], function (Model, List) {
+    return Model.inherit('hip.entity.Configuration', {
 
         defaults: {
             name: null,
             offset: {
                 x: 0,
                 y: 0
+            },
+            size: {
+                width: 100,
+                height: 100
             },
             options: {},
             scale: {
