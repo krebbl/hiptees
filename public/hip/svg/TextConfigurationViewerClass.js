@@ -1,5 +1,5 @@
-define(['xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/SvgTextEditor'], function (ConfigurationViewerSvg, SvgTextEditor) {
-    return ConfigurationViewerSvg.inherit('sprd.view.ConfigurationViewerSvgClass', {
+define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function (ConfigurationViewerSvg, SvgTextEditor) {
+    return ConfigurationViewerSvg.inherit('sprd.svg.ConfigurationViewerClass', {
 
         defaults: {
             textRenderer: null,

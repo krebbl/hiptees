@@ -245,9 +245,12 @@ ul {
   cursor: pointer; }
 
 /* line 26, ../sass/_categorize.scss */
-.slider {
+.slider-wrapper {
   position: relative;
-  margin-top: 15px;
+  margin-top: 20px;
+  padding: 0 20px; }
+
+.slider {
   border-bottom: 1px solid #f0f0f0; }
 
 /* line 32, ../sass/_categorize.scss */
@@ -269,3 +272,7 @@ ul {
   -webkit-transform: translatez(0);
   -moz-transform: translatez(0);
   transform: translatez(0); }
+
+.hsb-color-selector .color {
+  display: inline-block;
+  height: 30px; }

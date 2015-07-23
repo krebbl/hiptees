@@ -2,7 +2,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
     var maskId = 1;
 
-    return SvgElement.inherit('sprd.view.ConfigurationViewerSvgClass', {
+    return SvgElement.inherit('sprd.svg.ConfigurationViewerClass', {
 
         defaults: {
             tagName: 'g',

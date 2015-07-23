@@ -1,9 +1,9 @@
-define(['xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/SvgTextEditor'], function (ConfigurationViewerSvg, SvgTextEditor) {
+define(['xaml!hip/svg/ConfigurationViewer'], function (ConfigurationViewer) {
     var filterId = 1;
 
     var flipMatrix = [1, 0, 0, 0, -1, 0, 0, 0, 1];
 
-    return ConfigurationViewerSvg.inherit('sprd.view.ConfigurationViewerSvgClass', {
+    return ConfigurationViewer.inherit('sprd.svg.ConfigurationViewerClass', {
 
         defaults: {
             verticalStretchable: true,
@@ -17,16 +17,6 @@ define(['xaml!hip/view/ConfigurationViewerSvg', 'xaml!hip/view/SvgTextEditor'], 
             this.callBase();
 
             this.bind('configuration.filter', 'change', this.updateFilter, this);
-        },
-
-        inject: {
-
-        },
-
-        _domAdded: function () {
-            this.callBase();
-
-
         },
 
         negative: function (v) {

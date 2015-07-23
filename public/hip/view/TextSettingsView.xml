@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a>
+                <a onclick="_selectSubContent('color')">
                     <span class="label">
                         Color
                     </span>
@@ -72,10 +72,13 @@
         </ul>
     </div>
     <div class="settings-sub-content" selected="{isSubContentSelected('fontSettings')}">
-        <ui:SelectionView items="{fontFamilies}" class="settings" tagName="ul" selectedItem="{_getFontFamily(configuration.fontFamily)}">
+        <ui:SelectionView items="{fontFamilies}" class="settings" tagName="ul"
+                          selectedItem="{_getFontFamily(configuration.fontFamily)}">
             <js:Template name="item">
                 <li>
-                    <a onclick="_selectFont(item)"><img src="./font/${item.image}" height="20"/></a>
+                    <a onclick="_selectFont(item)">
+                        <img src="./font/${item.image}" height="20"/>
+                    </a>
                 </li>
             </js:Template>
         </ui:SelectionView>
@@ -90,7 +93,7 @@
                 </span>
             </span>
         </div>
-        <div class="slider">
+        <div class="slider-wrapper">
             <ui:Slider min="5" max="100" step="1" oninput="_updateTextSize" value="{configuration.fontSize}"/>
         </div>
     </div>
@@ -98,7 +101,7 @@
         <div>
             Line Height Size {format(configuration.lineHeight)}
         </div>
-        <div class="slider">
+        <div class="slider-wrapper">
             <ui:Slider min="0.5" max="2" step="0.1" oninput="_updateLineHeight" value="{configuration.lineHeight}"/>
         </div>
     </div>
@@ -106,8 +109,38 @@
         <div>
             Letter spacing {format(configuration.letterSpacing)}
         </div>
-        <div class="slider">
-            <ui:Slider min="-2" max="10" step="0.5" oninput="_updateLetterSpacing" value="{configuration.letterSpacing}"/>
+        <div class="slider-wrapper">
+            <ui:Slider min="-2" max="10" step="0.5" oninput="_updateLetterSpacing"
+                       value="{configuration.letterSpacing}"/>
+        </div>
+    </div>
+    <div class="settings-sub-content" selected="{isSubContentSelected('color')}">
+        <!--<ui:ItemsView class="hsb-color-selector" items="{hues()}" itemKey="hue">-->
+            <!--<js:Template name="item">-->
+                <!--<div>-->
+                    <!--<js:Repeat items="{saturations()}" itemKey="saturation">-->
+                        <!--<div class="color" onclick="_updateColor(background)" width="{divide(100, items.length)}%" background="#${color(hue, saturation)}"/>-->
+                    <!--</js:Repeat>-->
+                <!--</div>-->
+            <!--</js:Template>-->
+        <!--</ui:ItemsView>-->
+        <div class="hsb-color-selector">
+            <div class="slider-wrapper">
+                <ui:Slider min="0" max="360" step="1" oninput="_updateHue(value)"
+                           value="{color.h}"/>
+            </div>
+
+            <div class="slider-wrapper">
+                <ui:Slider min="0" max="100" step="1" oninput="_updateSaturation(value)"
+                           value="{color.s}"/>
+            </div>
+
+            <div class="slider-wrapper">
+                <ui:Slider min="0" max="100" step="1" oninput="_updateBrightness(value)"
+                           value="{color.b}"/>
+            </div>
+
+
         </div>
     </div>
 

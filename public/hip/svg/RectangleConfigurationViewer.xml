@@ -1,5 +1,5 @@
-<parent:ConfigurationViewerSvg xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:parent="hip.view" xmlns:js="js.core">
+<parent:ConfigurationViewer xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:parent="hip.svg" xmlns:js="js.core">
     <js:Content name="renderer">
         <g stroke="{configuration.stroke}"
            stroke-width="{configuration.strokeWidth}"
@@ -13,4 +13,4 @@
             <rect width="{_size.width}" height="{_size.height}"/>
         </g>
     </js:Content>
-</parent:ConfigurationViewerSvg>
+</parent:ConfigurationViewer>

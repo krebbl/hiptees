@@ -1,8 +1,0 @@
-<parent:TextConfigurationViewerClass xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:parent="hip.view" xmlns:js="js.core">
-
-    <js:Content name="renderer">
-        <parent:SvgTextRenderer cid="textRenderer" textObject="{configuration}" maxWidth="{_size.width}" onclick="_preventDefault" onheightChanged="_handleHeightChange"/>
-    </js:Content>
-
-</parent:TextConfigurationViewerClass>

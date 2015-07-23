@@ -2,7 +2,7 @@
 <hip:HipsteeClass
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:js="js.core" xmlns:ui="js.ui" xmlns:hip="hip" xmlns:view="hip.view"
-        xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:text="hip.text">
+        xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg">
 
     <js:Injection>
         <command:EventBus cid="eventBus"/>
@@ -13,8 +13,8 @@
         <handler:ProductHandler cid="productHandler" product="{product}"/>
         <handler:ConfigurationHandler cid="configurationHandler"/>
         <handler:TextFlowHandler cid="textFlowHandler"/>
-        <text:SvgMeasurer/>
-        <view:SvgTextEditor/>
+        <svg:TextMeasurer/>
+        <svg:TextEditor/>
 
     </js:Injection>
 
@@ -28,8 +28,8 @@
         <div class="view-content" cid="viewContent" heightUpdatePolicy="in">
             <div class="product-viewer-wrapper" height="{viewContent.height}" width="{viewContent.height}"
                  marginLeft="{minusHalf(width)}px">
-                <view:ProductViewerSvg height="{height}" width="{width}" product="{product}"
-                                       style="display: block; -webkit-transform: translateZ(0);"/>
+                <svg:ProductViewer height="{height}" width="{width}" product="{product}"
+                                   style="display: block; -webkit-transform: translateZ(0);"/>
             </div>
             <!--<view:SvgTextEditor marginLeft="40px" width="300" height="300" viewBox="0 0 100 100" textObject="{textObject}"/>-->
         </div>
@@ -53,8 +53,8 @@
 
         </div>
         <div class="setting-views">
-            <view:TextSettingsView />
-            <view:ImageSettingsView />
+            <view:TextSettingsView/>
+            <view:ImageSettingsView/>
         </div>
     </div>
 
@@ -71,7 +71,7 @@
 
     <!--<form onsubmit="changeGrayScale">-->
     <!--<input type="range" name="points" min="-100" max="100" onchange="_handleSaturationChange" zIndex="1000"-->
-           <!--position="absolute" value="{{gray}}"/>-->
+    <!--position="absolute" value="{{gray}}"/>-->
     <!--<input type="text" value="{{gray}}"/>-->
     <!--</form>-->
 

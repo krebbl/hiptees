@@ -2,7 +2,9 @@ define(["hip/view/SettingsViewClass",
     "json!font/index",
     "underscore",
     "hip/entity/TextConfiguration",
-    "hip/command/ChangeTextConfiguration"], function (SettingsViewClass, fonts, _, TextConfiguration, ChangeTextConfiguration) {
+    "hip/command/ChangeTextConfiguration",
+    "js/type/Color"
+], function (SettingsViewClass, fonts, _, TextConfiguration, ChangeTextConfiguration, Color) {
 
 
     return SettingsViewClass.inherit({
@@ -10,10 +12,19 @@ define(["hip/view/SettingsViewClass",
         supportedConfiguration: TextConfiguration,
 
         defaults: {
+            color: null,
             componentClass: "settings-view text-settings-view",
             fontFamilies: fonts.fontFamilies,
             alignments: ["left", "center", "right"],
             selectedSubContent: ''
+        },
+
+        _commitConfiguration: function (configuration) {
+
+            if (configuration) {
+                var c = Color.fromHexString(configuration.$.color);
+                this.set('color', c.toHSB());
+            }
         },
 
         _getFontFamily: function (fontFamily) {
@@ -90,12 +101,22 @@ define(["hip/view/SettingsViewClass",
             }));
         },
 
-        _updateLetterSpacing: function(e){
+        _updateLetterSpacing: function (e) {
             this.$.executor.storeAndExecute(new ChangeTextConfiguration({
                 configuration: this.$.configuration,
-                key : "letterSpacing",
+                key: "letterSpacing",
                 value: e.$.value
             }));
+        },
+
+        _updateColor: function (color) {
+            if(color){
+                this.$.executor.storeAndExecute(new ChangeTextConfiguration({
+                    configuration: this.$.configuration,
+                    key: "color",
+                    value: "#" + color.toHexString()
+                }));
+            }
         },
 
         format: function (n) {
@@ -111,6 +132,55 @@ define(["hip/view/SettingsViewClass",
             return "";
 
         },
+
+        _updateHue: function (value) {
+            this.$.color.h = value;
+
+            this._updateColor(this.$.color);
+        },
+
+        _updateSaturation: function (value) {
+            this.$.color.s = value;
+            console.log(value);
+
+            this._updateColor(this.$.color);
+        },
+
+        _updateBrightness: function (value) {
+            this.$.color.b = value;
+            console.log(value);
+            this._updateColor(this.$.color);
+        },
+
+
+        hues: function () {
+            var hues = [];
+            for (var i = 0; i <= 360; i += 360 / 30) {
+                hues.push(i);
+            }
+
+            return hues;
+        },
+
+        saturations: function () {
+            var saturations = [];
+            for (var i = 10; i <= 100; i += 100 / 20) {
+                saturations.push(i);
+            }
+
+            return saturations;
+        },
+
+        divide: function (a, b) {
+            return a / b;
+        },
+
+        color: function (hue, saturation) {
+            var c = new Color.HSB(hue, saturation, 100);
+
+            return c.toHexString();
+        },
+
         stopPropagation: function (e) {
             e.stopPropagation();
         }

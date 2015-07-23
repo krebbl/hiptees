@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/text/SvgMeasurer', 'js/svg/Svg'], function (SvgElement, TextFlowHandler, SvgMeasurer, Svg) {
+define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMeasurer', 'js/svg/Svg'], function (SvgElement, TextFlowHandler, SvgMeasurer, Svg) {
 
     var EMPTY_LINE_TEXT = "\n" + String.fromCharCode(173);
 

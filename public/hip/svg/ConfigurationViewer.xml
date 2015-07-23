@@ -1,4 +1,4 @@
-<parent:ConfigurationViewerSvgClass xmlns:parent="hip.view" xmlns="js.svg" onclick="_handleClick" xmlns:js="js.core">
+<parent:ConfigurationViewerClass xmlns:parent="hip.svg" xmlns="js.svg" onclick="_handleClick" xmlns:js="js.core">
 
     <mask id="{_maskId}">
         <rect x="0" y="0" width="{printArea.width}" height="{printArea.height}" style="stroke:none; fill: #FFFFFF"
@@ -7,7 +7,7 @@
 
 
     <g class="asset-container" cid="_assetContainerWrapper" mask="url(#{_maskId})">
-        <parent:SvgContentPlaceholder name="renderer"/>
+        <parent:ContentPlaceholder name="renderer"/>
     </g>
 
     <rect class="configuration-boundary"
@@ -102,4 +102,4 @@
     </g>
 
 
-</parent:ConfigurationViewerSvgClass>
+</parent:ConfigurationViewerClass>

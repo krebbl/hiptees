@@ -1,5 +1,5 @@
 <parent:ImageConfigurationViewerClass xmlns="http://www.w3.org/2000/svg"
-                                    xmlns:parent="hip.view" xmlns:js="js.core">
+                                    xmlns:parent="hip.svg" xmlns:js="js.core">
 
 
     <js:Content name="renderer">

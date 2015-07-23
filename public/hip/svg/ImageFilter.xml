@@ -1,5 +1,5 @@
 <parent:ImageFilterClass xmlns="http://www.w3.org/2000/svg"
-                         xmlns:parent="hip.view">
+                         xmlns:parent="hip.svg">
     <feComponentTransfer />
 
     <feColorMatrix type="matrix" values="{saturationMatrix(filter.saturation)}"
