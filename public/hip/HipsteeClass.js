@@ -98,11 +98,24 @@ define(
                 var design = new Design({
                     id: "palmen-im-himmel",
                     image: {
-                        url: "./example/palmen-im-himmel.jpg"
+                        url: "./example/palmen-im-himmel.jpg",
+                        small: "./example/palmen-im-himmel_small.jpg"
                     },
                     size: {
                         width: 547,
                         height: 411
+                    }
+                });
+
+                var design2 = new Design({
+                    id: "download",
+                    image: {
+                        url: "./example/Download.png",
+                        small: "./example/Download_small.png"
+                    },
+                    size: {
+                        width: 800,
+                        height: 532
                     }
                 });
 
@@ -122,15 +135,11 @@ define(
                 });
 
                 var imageConfiguration2 = new ImageConfiguration({
-                    image: {
-//                        url: "./example/palmen-im-himmel.jpg"
-                        url: "./example/lowcontrast.png"
-                    },
+                    design: design2,
                     size: {
-                        width: 308,
+                        width: 200,
                         height: 205
                     },
-                    scale: 0.8,
                     filters: []
                 });
 
@@ -151,11 +160,21 @@ define(
                     }
                 });
 
+//                var text = new Text({
+//                        fontFamily: '',
+//                        letterSpacing: 0
+//                    }),
+//                    paragraph = new Paragraph(),
+//                    span = new Span({
+//                        fill: "blue"
+//                    }, "text");
+
+
                 var textConfiguration2 = new TextConfiguration({
 //                    text: ["Èg","test", "line3", "line4", "line5", "line6", "line7", "line8", "line10", "line11", "line12", "line13", "line14"].join(""),
                     textFlow: ["abcde" + "fghijklmnopq" + "rsuvwxyz0123456789"],
                     fontFamily: "HammersmithOne",
-                    letterSpacing: 2,
+                    letterSpacing: 0,
                     color: '#00FF00',
                     fontSize: 20,
                     lineHeight: 1.7,
@@ -180,7 +199,7 @@ define(
                 });
 
                 product.$.configurations.add(imageConfiguration);
-//                product.$.configurations.add(imageConfiguration2);
+                product.$.configurations.add(imageConfiguration2);
 //                product.$.configurations.add(rectangleConfig);
                 product.$.configurations.add(textConfiguration);
                 product.$.configurations.add(textConfiguration2);

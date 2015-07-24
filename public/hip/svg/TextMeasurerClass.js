@@ -11,7 +11,7 @@ define(["js/svg/Svg"], function (Svg) {
         },
 
 
-        measureFont: function (fontFamily, fontSize) {
+        measureFont: function (fontFamily, fontSize, letterSpacing) {
             var cacheKey = (fontFamily + "_" + fontSize);
             if (fontMeasureCache[cacheKey]) {
                 return fontMeasureCache[cacheKey];
@@ -19,6 +19,8 @@ define(["js/svg/Svg"], function (Svg) {
 
             this.$._textContainer.$el.setAttribute("font-family", fontFamily);
             this.$._textContainer.$el.setAttribute("font-size", fontSize);
+            this.$._textContainer.$el.setAttribute("letter-spacing", letterSpacing || 0);
+
 
             var measurer = this.$._textContainer.$el;
 
@@ -66,6 +68,7 @@ define(["js/svg/Svg"], function (Svg) {
         },
 
         breakLine: function (line, width) {
+            console.log(width);
 
             var lines = [];
 
@@ -112,6 +115,8 @@ define(["js/svg/Svg"], function (Svg) {
 
                     text = line.substr(0, splitAt);
 
+                                                         console.log(text, this.getWidthForText(text));
+
                     lines.push({
                         charBreak: charBreak,
                         soft: true,
@@ -155,7 +160,7 @@ define(["js/svg/Svg"], function (Svg) {
         measureLines: function (lines, fontFamily, fontSize, letterSpacing, pixelWidth) {
             this.setUpMeasurer(fontFamily, fontSize, letterSpacing);
 
-            var fontMeasure = this.measureFont(fontFamily, fontSize);
+            var fontMeasure = this.measureFont(fontFamily, fontSize, letterSpacing);
 
             if (!(lines instanceof Array)) {
                 lines = [lines];

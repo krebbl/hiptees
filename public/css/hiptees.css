@@ -255,6 +255,7 @@ ul {
 
 /* line 32, ../sass/_categorize.scss */
 .slider-bar {
+  top: -11px;
   height: 1px;
   background: #0099CC; }
 
@@ -273,6 +274,16 @@ ul {
   -moz-transform: translatez(0);
   transform: translatez(0); }
 
+.slider {
+  height: 20px; }
+
 .hsb-color-selector .color {
   display: inline-block;
   height: 30px; }
+
+.filter-presets > li {
+  display: inline-block;
+  margin-right: 5px; }
+
+.filter-presets img.filtering {
+  visibility: hidden; }

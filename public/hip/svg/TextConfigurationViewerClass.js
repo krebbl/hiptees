@@ -16,7 +16,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
         ctor: function(){
             this.callBase();
 
-            this.bind('svgTextEditor', 'on:blur', this._disableEditing, this);
+//            this.bind('svgTextEditor', 'on:blur', this._disableEditing, this);
         },
 
         _commitSelected: function (selected) {

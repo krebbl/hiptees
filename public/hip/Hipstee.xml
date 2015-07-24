@@ -15,6 +15,7 @@
         <handler:TextFlowHandler cid="textFlowHandler"/>
         <svg:TextMeasurer/>
         <svg:TextEditor/>
+        <view:ImageFilterRenderer />
 
     </js:Injection>
 

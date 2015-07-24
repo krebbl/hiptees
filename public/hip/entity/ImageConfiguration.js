@@ -1,8 +1,8 @@
-define(["hip/entity/Configuration"], function (Configuration) {
+define(["hip/entity/Configuration", "hip/entity/Filter"], function (Configuration, Filter) {
     return Configuration.inherit('hip.entity.ImageConfiguration', {
         defaults: {
             design: null,
-            filters: null
+            filter: Filter
         },
 
         _commitDesign: function (design) {

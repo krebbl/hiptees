@@ -45,6 +45,20 @@ define(["js/data/Entity"], function (Entity) {
         },
         vignetteOpacity: function () {
             return this.$.vignette * 0.25 / 100 || 0;
-        }.onChange('vignette')
+        }.onChange('vignette'),
+
+        serialize: function () {
+            var attrs = ["brightness", "contrast", "saturation", "tint", "blur", "vignette"],
+                str = "";
+            for (var i = 0; i < attrs.length; i++) {
+                var attr = attrs[i];
+                var h = (this.get(attr) + 100).toString(16);
+                if(h.length < 2){
+                    h = "0" + h;
+                }
+                str += h;
+            }
+            return str;
+        }
     })
 });

@@ -1,4 +1,4 @@
-define(["hip/handler/CommandHandler", "hip/command/ApplyFilter", "hip/entity/ImageConfiguration"], function (Handler, ApplyFilter, ImageConfiguration) {
+define(["hip/handler/CommandHandler", "hip/command/ApplyFilter", "hip/entity/ImageConfiguration", "hip/entity/Filter"], function (Handler, ApplyFilter, ImageConfiguration, Filter) {
     return Handler.inherit({
         defaults: {
 

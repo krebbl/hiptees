@@ -378,6 +378,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 this.$preventClick = true;
                 event.preventDefault();
                 event.stopPropagation();
+                this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
+
                 this.$.executor.storeAndExecute(new SelectConfiguration({
                     configuration: this.$.configuration
                 }));
@@ -410,6 +412,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         _handleClick: function (e) {
+            this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
+
             this.$.executor.storeAndExecute(new SelectConfiguration({
                 configuration: this.$.configuration
             }));

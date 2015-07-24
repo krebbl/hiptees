@@ -8,7 +8,6 @@
         "hip/svg/TextConfigurationViewer",
         "hip/svg/TextEditor",
         "hip/svg/TextMeasurer",
-        "hip/view/ImageFilterRenderer",
         "hip/view/ImageSettingsView",
         "hip/view/TextSettingsView",
         "js/svg/SvgDescriptor",

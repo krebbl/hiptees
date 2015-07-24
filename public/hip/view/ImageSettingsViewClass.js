@@ -1,7 +1,9 @@
 define(["hip/view/SettingsViewClass",
+    "underscore",
     "hip/command/ApplyFilter",
     "hip/entity/ImageConfiguration",
-    'json!hip/asset/filters'], function (SettingsViewClass, ApplyFilter, ImageConfiguration, filters) {
+    "hip/entity/Filter",
+    'json!hip/asset/filters'], function (SettingsViewClass, _, ApplyFilter, ImageConfiguration, Filter, filters) {
 
 
     return SettingsViewClass.inherit({
@@ -16,7 +18,20 @@ define(["hip/view/SettingsViewClass",
         _selectPreset: function (preset) {
             this.$.executor.storeAndExecute(new ApplyFilter({
                 configuration: this.$.configuration,
-                filterChange: preset
+                filterChange: _.clone(preset)
+            }));
+        },
+
+        createFilter: function (preset) {
+            return new Filter(preset);
+        },
+
+        _updateFilter: function (filter, value) {
+            var change = {};
+            change[filter] = value;
+            this.$.executor.storeAndExecute(new ApplyFilter({
+                configuration: this.$.configuration,
+                filterChange: change
             }));
         }
 
