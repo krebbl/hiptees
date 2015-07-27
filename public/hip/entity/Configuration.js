@@ -1,5 +1,5 @@
-define(["js/data/Entity", "js/core/List"], function (Model, List) {
-    return Model.inherit('hip.entity.Configuration', {
+define(["js/data/Entity", "js/core/List"], function (Entity, List) {
+    return Entity.inherit('hip.entity.Configuration', {
 
         defaults: {
             name: null,
