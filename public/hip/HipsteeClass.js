@@ -8,8 +8,13 @@ define(
         'hip/entity/RectangleConfiguration',
         "hip/entity/Filter",
         "hip/command/ApplyFilter",
-        "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText"],
-    function (Application, List, Bindable, Design, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText) {
+        "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText",
+        "text/entity/TextFlow",
+        "text/entity/TextRange",
+        "text/operation/ApplyStyleToElementOperation",
+        "text/type/Style"
+    ],
+    function (Application, List, Bindable, Design, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
 
         var Product = Bindable.inherit({
             defaults: {
@@ -143,15 +148,30 @@ define(
                     filters: []
                 });
 
-                var textConfiguration = new TextConfiguration({
-                    textFlow: ["Yeah"],
-                    fontFamily: "Graduate-Regular",
-                    color: '#00FF00',
+                var textFlow = TextFlow.initializeFromText("Dude\n\nDude");
+                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength()), textFlow, new Style({
+                    color: '#00FF00'
+                }), new
+                    Style({
+                    fontFamily: 'Graduate-Regular',
                     fontSize: 20,
-                    lineHeight: 1.2,
-                    textAlign: "center",
+                    lineHeight: 2,
+                    letterSpacing: 0,
+                    textAlign: "center"
+                }))).doOperation();
+
+                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, 2), textFlow, new Style({
+                    color: '#FFFF00'
+                }))).doOperation();
+
+                (new ApplyStyleToElementOperation(TextRange.createTextRange(2, 4), textFlow, new Style({
+                    color: '#FF0000'
+                }))).doOperation();
+
+                var textConfiguration = new TextConfiguration({
+                    textFlow: textFlow,
                     size: {
-                        width: 308,
+                        width: 100,
                         height: 30
                     },
                     position: {
@@ -202,7 +222,7 @@ define(
                 product.$.configurations.add(imageConfiguration2);
 //                product.$.configurations.add(rectangleConfig);
                 product.$.configurations.add(textConfiguration);
-                product.$.configurations.add(textConfiguration2);
+//                product.$.configurations.add(textConfiguration2);
 
                 this.set('textConfiguration', textConfiguration);
                 this.set('fonts', fonts);

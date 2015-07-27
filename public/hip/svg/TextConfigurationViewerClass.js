@@ -13,7 +13,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
             svgTextEditor: SvgTextEditor
         },
 
-        ctor: function(){
+        ctor: function () {
             this.callBase();
 
 //            this.bind('svgTextEditor', 'on:blur', this._disableEditing, this);
@@ -42,14 +42,14 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
                 height: e.$.height
             });
 
-            if (this.$.svgTextEditor.$.textObject == this.$.configuration) {
+            if (this.$.svgTextEditor.$.textFlow == this.$.configuration.$.textFlow) {
                 this.$.svgTextEditor.set('height', this.getBoundRectInPx().height);
             }
 
         },
 
-        _disableEditing: function(){
-            if (this.$.svgTextEditor.$.textObject == this.$.configuration) {
+        _disableEditing: function () {
+            if (this.$.svgTextEditor.$.textFlow == this.$.configuration.$.textFlow) {
                 this.$.svgTextEditor.set('visible', false);
                 this.$.textRenderer.set('visible', true);
                 this.removeClass("editing");
@@ -75,8 +75,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
                     svgHeight: root.$.height,
                     maxWidth: this.get('_size.width'),
                     viewBox: this.getSvgRoot().$.viewBox,
-                    textObject: this.$.configuration
-                },{force: true});
+                    textFlow: this.$.configuration.$.textFlow
+                }, {force: true});
                 // TODO: bind on blur event to remove editing class
                 if (!this.$.svgTextEditor.isRendered()) {
                     this.$stage._renderChild(this.$.svgTextEditor, 0);

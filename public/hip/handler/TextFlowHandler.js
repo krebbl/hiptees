@@ -1,4 +1,9 @@
-define(["hip/handler/CommandHandler", "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText"], function (Handler, DeleteText, InsertLine, InsertText) {
+define(["hip/handler/CommandHandler",
+    "text/operation/InsertTextOperation",
+    "text/operation/SplitParagraphOperation",
+    "text/operation/DeleteOperation",
+    "text/entity/TextRange", "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText"],
+    function (Handler, InsertTextOperation, SplitParagraphOperation, DeleteOperation, TextRange, DeleteText, InsertLine, InsertText) {
     return Handler.inherit({
         defaults: {
 
@@ -34,85 +39,36 @@ define(["hip/handler/CommandHandler", "hip/command/text/DeleteText", "hip/comman
         },
 
         handleCommand: function (command) {
-            if (command.$.textObject) {
+            if (command.$.textFlow) {
 
                 var anchorOffset = command.$.anchorOffset,
                     focusOffset = command.$.focusOffset,
-                    lines = command.$.textObject.$.textFlow || [],
+                    textFlow = command.$.textFlow,
                     insertIndex;
 
-                if (lines.length > 0 && (command instanceof DeleteText || InsertText || InsertLine)) {
+                if (textFlow && command instanceof DeleteText) {
+                    (new DeleteOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow)).doOperation();
 
-                    if (anchorOffset !== focusOffset) {
-                        if (focusOffset < anchorOffset) {
-                            var t = anchorOffset;
-                            anchorOffset = focusOffset;
-                            focusOffset = t;
-                        }
-
-                        var startLineIndex = this.getLineIndex(lines, anchorOffset),
-                            endLineIndex = this.getLineIndex(lines, focusOffset);
-
-                        var relativeStart = this.getRelativeLineOffset(lines, anchorOffset),
-                            relativeEnd = this.getRelativeLineOffset(lines, focusOffset);
-
-                        if (endLineIndex < lines.length - 1 && relativeEnd > lines[endLineIndex].length) {
-                            relativeEnd = 0;
-                            endLineIndex++;
-                        }
-
-
-                        var preText = lines[startLineIndex].substring(0, relativeStart),
-                            postText = lines[endLineIndex].substring(relativeEnd);
-
-                        lines[startLineIndex] = preText + postText;
-
-                        if (startLineIndex !== endLineIndex) {
-                            lines.splice(startLineIndex + 1, endLineIndex - startLineIndex);
-                        }
-                    }
+                    focusOffset = anchorOffset;
                 }
 
                 if (command instanceof InsertText && command.$.text) {
-                    insertIndex = this.getLineIndex(lines, anchorOffset);
-                    if (insertIndex == -1) {
-                        lines.push("");
-                        insertIndex = 0;
-                    }
-                    var lineIndex = this.getRelativeLineOffset(lines, anchorOffset);
-                    if (insertIndex < lines.length - 1 && lineIndex > lines[insertIndex].length) {
-                        lineIndex = 0;
-                        insertIndex++;
-                    }
-                    var textArray = lines[insertIndex].split("");
-                    textArray.splice(lineIndex, 0, command.$.text);
-                    lines[insertIndex] = textArray.join("");
+                    (new InsertTextOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow, command.$.text)).doOperation();
 
                     anchorOffset += command.$.text.length;
                     focusOffset = anchorOffset;
                 } else if (command instanceof InsertLine) {
-                    insertIndex = this.getLineIndex(lines, anchorOffset);
-                    if (insertIndex == -1) {
-                        lines.push("");
-                        insertIndex = 0;
-                    }
-                    var oldLineIndex = this.getRelativeLineOffset(lines, anchorOffset);
+                    (new SplitParagraphOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow)).doOperation();
 
-                    var oldLineText = lines[insertIndex].substring(0, oldLineIndex);
-                    var newLine = lines[insertIndex].substring(oldLineIndex);
-
-                    lines[insertIndex] = oldLineText;
-
-                    lines.splice(insertIndex + 1, 0, newLine);
 
                     anchorOffset++;
                     focusOffset = anchorOffset;
                 }
 
-                console.log(command.$.textObject.$.textFlow);
+                console.log(command.$.textFlow);
 
                 this.trigger('on:changeTextFlow', {
-                    textObject: command.$.textObject,
+                    textFlow: command.$.textFlow,
                     anchorOffset: anchorOffset,
                     focusOffset: focusOffset
                     // TODO: add more information about change

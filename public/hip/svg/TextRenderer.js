@@ -5,16 +5,16 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
     return SvgElement.inherit({
         defaults: {
             tagName: 'g',
-            textObject: null,
+            textFlow: null,
             measureResult: null,
             maxWidth: 308,
-            textColor: "{textObject.color}",
+            textColor: "",
             componentClass: "text-renderer"
         },
 
-        $classAttributes: ['textObject', 'maxWidth', 'measureResult'],
+        $classAttributes: ['textFlow', 'maxWidth', 'measureResult'],
 
-        events: ["on:heightChanged"],
+        events: ["on:heightChanged", "on:widthChanged"],
 
         inject: {
             textFlowHandler: TextFlowHandler,
@@ -26,8 +26,8 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
             var self = this;
             this.bind('textFlowHandler', 'on:changeTextFlow', function (e) {
-                if (e.$.textObject === self.$.textObject) {
-                    self._renderTextObject(e.$.textObject);
+                if (e.$.textFlow === self.$.textFlow) {
+                    self._renderTextFlow(e.$.textFlow);
                 }
             });
 
@@ -45,8 +45,8 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
         _renderMaxWidth: function (maxWidth, oldMaxWidth) {
 
-            if (maxWidth && this.$.textObject && this.$.measureResult) {
-                this._renderTextObject(this.$.textObject);
+            if (maxWidth && this.$.textFlow && this.$.measureResult) {
+                this._renderTextFlow(this.$.textFlow);
 
                 this._updateAlignment();
             }
@@ -63,9 +63,11 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
         },
 
         _updateLineHeight: function () {
-            var textObject = this.$.textObject;
-            if (this.$.measureResult && textObject) {
+            var textFlow = this.$.textFlow;
+            if (this.$.measureResult && textFlow) {
                 var child, line, transform, y,
+                    firstParagraph = textFlow.getChildAt(0),
+                    style = firstParagraph.$.style,
                     lines = this.$.measureResult.lines;
                 for (var i = 0; i < this.$el.childNodes.length; i++) {
                     child = this.$el.childNodes[i];
@@ -76,7 +78,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
                     child.setAttribute("transform", transform.replace(/translate\(([^,]+),[^,]+\)/, "translate($1," + y + ")"));
                 }
-                var height = (this.$el.childNodes.length - 1) * textObject.$.fontSize * textObject.$.lineHeight + this.$.measureResult.fontMeasure.height;
+                var height = (this.$el.childNodes.length - 1) * style.$.fontSize * style.$.lineHeight + this.$.measureResult.fontMeasure.height;
                 this.trigger('on:heightChanged', {height: height}, this);
             }
 
@@ -84,7 +86,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
         _updateAlignment: function () {
             var maxWidth = this.$.maxWidth;
-            var textAlign = this.$.textObject.$.textAlign;
+            var textAlign = this.$.textFlow.getChildAt(0).get('style.textAlign');
             var x,
                 transform;
             for (var i = 0; i < this.$el.childNodes.length; i++) {
@@ -102,25 +104,27 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
             }
         },
 
-        _renderTextObject: function (textObject) {
+        _renderTextFlow: function (textObject) {
 
             if (textObject) {
-                if (!this.$fontManager) {
-                    var svg = this.getSvgRoot();
-                    this.$fontManager = new Svg.FontManager(svg);
-                }
                 var self = this;
-
-                this.$fontManager.loadExternalFont(textObject.$.fontFamily, "./font/" + textObject.$.fontFamily + ".woff", function () {
-                    self.set({
-                        "font-family": textObject.$.fontFamily,
-                        "font-size": textObject.$.fontSize
-                    });
-                    var measureResult = self.$.svgMeasurer.measureLines(textObject.$.textFlow, textObject.$.fontFamily, textObject.$.fontSize, textObject.$.letterSpacing, self.$.maxWidth);
-                    // cache measure result for text object
-                    self.set('measureResult', measureResult);
-
+                this.$.svgMeasurer.measureTextFlow(textObject, self.$.maxWidth, function (err, result) {
+                    if (!err) {
+                        self.set('measureResult', result);
+                    }
                 });
+//                var self = this;
+//
+//                this.$fontManager.loadExternalFont(textObject.$.fontFamily, "./font/" + textObject.$.fontFamily + ".woff", function () {
+//                    self.set({
+//                        "font-family": textObject.$.fontFamily,
+//                        "font-size": textObject.$.fontSize
+//                    });
+//                    var measureResult = self.$.svgMeasurer.measureLines(textObject.$.textFlow, textObject.$.fontFamily, textObject.$.fontSize, textObject.$.letterSpacing, self.$.maxWidth);
+//                    // cache measure result for text object
+//                    self.set('measureResult', measureResult);
+//
+//                });
 
             }
         },
@@ -146,38 +150,22 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
                 var group = this.$el;
 
-                var textObject = this.$.textObject.$,
-                    textAlign = textObject.textAlign,
-                    lineText;
-
-                if (lines.length == 0) {
-                    // add empty line
-                    lines.push({text: ""});
-                }
-
+                var lineText;
 
                 var x,
                     y,
-                    transform;
+                    transform,
+                    leaf, tspan;
                 for (var i = 0; i < lines.length; i++) {
                     line = lines[i];
-                    lineText = line.text;
-
                     if (i < group.childNodes.length) {
                         text = group.childNodes[i];
                     } else {
                         text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                         text.setAttributeNS("http://www.w3.org/XML/1998/namespace", "space", "preserve");
-                        text.setAttribute("fill", textObject.color);
                         group.appendChild(text);
                     }
                     text.setAttribute("y", ascent);
-
-                    if (!lineText) {
-                        lineText = EMPTY_LINE_TEXT;
-                    }
-                    text.textContent = lineText;
-
                     if (line.soft) {
                         text.setAttribute("data-soft-line", "1");
                     } else {
@@ -189,14 +177,45 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                         text.removeAttribute("data-char-break");
                     }
 
-                    y = i * textObject.fontSize * textObject.lineHeight;
+                    for (var j = 0; j < line.paragraph.$.children.length; j++) {
+                        leaf = line.paragraph.$.children.at(j);
+                        if (j < text.childNodes.length) {
+                            tspan = text.childNodes[j];
+                        } else {
+                            tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                            text.appendChild(tspan);
+                        }
+                        lineText = leaf.text();
+
+                        var color = leaf.get('style.color');
+                        if (color) {
+                            tspan.setAttribute("fill", color);
+                        } else {
+                            tspan.removeAttribute("fill");
+                        }
+                        if (!lineText) {
+                            lineText = EMPTY_LINE_TEXT;
+                        }
+                        tspan.textContent = lineText;
+                    }
+
+                    while (text.childNodes.length > line.paragraph.$.children.length) {
+                        text.removeChild(text.childNodes[text.childNodes.length - 1]);
+                    }
+
+                    var style = line.paragraph.$.style;
+                    y = i * style.$.fontSize * style.$.lineHeight;
                     x = 0;
-                    if (textAlign == "center") {
+                    var textAnchor = style.$.textAlign;
+                    if (textAnchor == "center") {
                         x = 0.5 * (this.$.maxWidth - line.width);
-                    } else if (textAlign == "right") {
+                    } else if (textAnchor == "right") {
                         x = this.$.maxWidth - line.width;
                     }
-                    text.setAttribute("letter-spacing", textObject.letterSpacing || 0);
+                    text.setAttribute("font-size", style.$.fontSize);
+                    text.setAttribute("fill", style.$.color);
+                    text.setAttribute("font-family", style.$.fontFamily);
+                    text.setAttribute("letter-spacing", style.$.letterSpacing || 0);
                     text.setAttribute("transform", "translate(" + x + "," + y + ")");
                 }
 
@@ -205,7 +224,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                 }
 
 
-                var height = (lines.length - 1) * textObject.fontSize * textObject.lineHeight + this.$.measureResult.fontMeasure.height;
+                var height = (lines.length - 1) * style.$.fontSize * style.$.lineHeight + this.$.measureResult.fontMeasure.height;
                 this.trigger('on:heightChanged', {height: height}, this);
             }
 

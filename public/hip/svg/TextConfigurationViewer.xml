@@ -2,7 +2,7 @@
                                     xmlns:parent="hip.svg" xmlns:js="js.core">
 
     <js:Content name="renderer">
-        <parent:TextRenderer cid="textRenderer" textObject="{configuration}" maxWidth="{_size.width}" onclick="_preventDefault" onheightChanged="_handleHeightChange"/>
+        <parent:TextRenderer cid="textRenderer" textFlow="{configuration.textFlow}" maxWidth="{_size.width}" onclick="_preventDefault" onheightChanged="_handleHeightChange"/>
     </js:Content>
 
 </parent:TextConfigurationViewerClass>

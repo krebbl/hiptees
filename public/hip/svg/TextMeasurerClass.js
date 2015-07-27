@@ -1,6 +1,16 @@
 define(["js/svg/Svg"], function (Svg) {
 
     var fontMeasureCache = {};
+    var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+
+
+    function applyStyleToElement(style, element) {
+        if (style) {
+            element.setAttribute("font-family", style.get("fontFamily"));
+            element.setAttribute("font-size", style.get("fontSize"));
+            element.setAttribute("letter-spacing", style.get("letterSpacing"));
+        }
+    }
 
     return Svg.inherit({
         defaults: {
@@ -43,6 +53,39 @@ define(["js/svg/Svg"], function (Svg) {
             fontMeasureCache[cacheKey] = ret;
 
             return ret;
+        },
+
+        measureParagraph: function (paragraph) {
+//            var cacheKey = (fontFamily + "_" + fontSize);
+//            if (fontMeasureCache[cacheKey]) {
+//                return fontMeasureCache[cacheKey];
+//            }
+
+            applyStyleToElement(paragraph.$.style, this.$._textContainer.$el);
+
+            var measurer = this.$._textContainer.$el;
+
+            measurer.textContent = "";
+
+            var normalTop = this.$el.getBoundingClientRect().top;
+
+            measurer.textContent = "ÈÄgq";
+
+            var rect = measurer.getBoundingClientRect();
+
+            var ascent = normalTop - rect.top;
+
+            var ret = {
+                ascent: ascent,
+                descent: rect.height - ascent,
+                height: rect.height
+            };
+
+//            fontMeasureCache[cacheKey] = ret;
+
+            return ret;
+
+
         },
 
         setUpMeasurer: function (fontFamily, fontSize, letterSpacing) {
@@ -115,7 +158,7 @@ define(["js/svg/Svg"], function (Svg) {
 
                     text = line.substr(0, splitAt);
 
-                                                         console.log(text, this.getWidthForText(text));
+                    console.log(text, this.getWidthForText(text));
 
                     lines.push({
                         charBreak: charBreak,
@@ -155,23 +198,178 @@ define(["js/svg/Svg"], function (Svg) {
             this.$._textContainer.$el.textContent = text;
             return this.$._textContainer.$el.getBoundingClientRect().width;
         },
+        /**
+         * Composes a text element
+         * @param paragraph
+         * @returns Number
+         */
+        getWidthForParagraph: function (paragraph) {
+            var children = paragraph.$.children,
+                child,
+                childStyle,
+                tspan,
+                text;
 
-
-        measureLines: function (lines, fontFamily, fontSize, letterSpacing, pixelWidth) {
-            this.setUpMeasurer(fontFamily, fontSize, letterSpacing);
-
-            var fontMeasure = this.measureFont(fontFamily, fontSize, letterSpacing);
-
-            if (!(lines instanceof Array)) {
-                lines = [lines];
+            while (this.$._textContainer.$el.childNodes.length) {
+                this.$._textContainer.$el.removeChild(this.$._textContainer.$el.childNodes[0]);
             }
 
-            var brokenLines = this.breakLines(lines, pixelWidth);
+            text = this.$._textContainer.$el;
+
+            applyStyleToElement(paragraph.$.style, text);
+
+            text.textContent = paragraph.text();
 
 
-            return {
-                fontMeasure: fontMeasure,
-                lines: brokenLines
+            // TODO: if its necessary to have layout options on tspans
+//            for (var i = 0; i < children.length; i++) {
+//                child = children.at(i);
+//                childStyle = child.$.style;
+//
+//                tspan = document.createElementNS(SVG_NAMESPACE, "tspan");
+//                tspan.textContent = child.getText();
+//
+////                applyStyleToElement(childStyle, tspan);
+//
+//                text.appendChild(tspan);
+//            }
+
+            return text.getBoundingClientRect().width;
+        },
+
+        breakParagraph: function (paragraph, width) {
+            var lines = [],
+                paragraphLength = paragraph.textLength() - 1;
+
+            if (paragraphLength > 0) {
+                var newParagraph;
+                var measureWidth = this.getWidthForParagraph(paragraph),
+                    soft = false;
+
+                while (paragraphLength > 1 && measureWidth > width) {
+                    var splitAt = paragraphLength,
+                        splitAt2,
+                        charBreak;
+
+                    var words = paragraph.text().split(" "),
+                        i = 0,
+                        paragraphSlice = null,
+                        wordCursor = 0,
+                        fittingCursor = 0;
+
+                    for (i = 0; i < words.length; i++) {
+                        fittingCursor = wordCursor;
+                        wordCursor += words[i].length + 1;
+                        paragraphSlice = paragraph.shallowCopy(0, wordCursor);
+                        if (this.getWidthForParagraph(paragraphSlice) > width) {
+                            break;
+                        }
+                    }
+
+                    if (fittingCursor > 0) {
+                        splitAt = fittingCursor - 1;
+                        splitAt2 = splitAt + 1;
+                        charBreak = false;
+                    } else {
+                        var start = 0,
+                            stop = splitAt,
+                            tries = 0;
+                        while (stop - 1 > start) {
+                            tries++;
+                            i = start + Math.round((stop - start) / 2);
+                            if (this.getWidthForParagraph(paragraph.shallowCopy(0, i)) < width) {
+                                start = i;
+                            } else {
+                                stop = i;
+                            }
+                        }
+
+                        splitAt = Math.max(1,start);
+                        splitAt2 = splitAt;
+                        charBreak = true
+                    }
+
+                    newParagraph = paragraph.shallowCopy(0, splitAt);
+
+                    lines.push({
+                        charBreak: charBreak,
+                        soft: true,
+                        paragraph: newParagraph,
+                        width: this.getWidthForParagraph(newParagraph)
+                    });
+
+                    paragraph = paragraph.shallowCopy(splitAt2, paragraph.textLength() - 1);
+                    soft = true;
+
+                    measureWidth = this.getWidthForParagraph(paragraph);
+                    paragraphLength = paragraph.textLength() - 1;
+                }
+
+                if (paragraphLength > 0) {
+                    lines.push({
+                        charBreak: false,
+                        soft: soft,
+                        paragraph: paragraph,
+                        width: measureWidth
+                    });
+                }
+            } else {
+                lines.push({
+                    charBreak: false,
+                    soft: false,
+                    paragraph: paragraph,
+                    width: 0
+                })
+            }
+
+            return lines;
+
+
+        },
+
+        breakTextFlow: function (textFlow, pixelWidth) {
+            var lines = [],
+                self = this;
+            textFlow.$.children.each(function (child) {
+                lines = lines.concat(self.breakParagraph(child, pixelWidth));
+            });
+
+            return lines;
+        },
+
+
+        measureTextFlow: function (textFlow, pixelWidth, callback) {
+
+            var firstParagraph = textFlow.getChildAt(0);
+            if (firstParagraph) {
+                // load font
+                var font = firstParagraph.get('style.fontFamily');
+
+                if (!this.isRendered()) {
+                    this.$stage.$document.body.appendChild(this.render());
+                }
+                var self = this;
+
+                this.fontManager.loadExternalFont(font, "./font/" + font + ".woff", function (err) {
+                    if (!err) {
+                        var fontMeasure = self.measureParagraph(firstParagraph);
+                        var lines = self.breakTextFlow(textFlow, pixelWidth);
+
+                    }
+
+
+
+
+                    callback && callback(err, {
+                        fontMeasure: fontMeasure,
+                        lines: lines
+                    })
+                });
+            } else {
+                callback && callback(null, {
+                    fontMeasure: null,
+                    lines: []
+                })
             }
 
         }

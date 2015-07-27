@@ -136,7 +136,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             return Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2));
         },
 
-        handleDocumentClick: function(e){
+        handleDocumentClick: function (e) {
             if (this.$moved) {
                 e.stopPropagation();
             }
@@ -206,15 +206,15 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 diffX = Math.abs(rootVector[0]) * lf;
                 diffY = Math.abs(rootVector[1]) * lf;
 
-                if (this.$originalSize.width + 2 * diffX <= 20) {
-                    diffX = -this.$originalSize.width + 10;
+
+                if (this.$originalSize.width + diffX * 2 < 10) {
+                    diffX = (10 - this.$originalSize.width) / 2;
                 }
-                if (this.$originalSize.height + 2 * diffY <= 20) {
-//                    diffY = -this.$originalSize.height + 10;
+
+                if (this.$originalSize.height + diffY * 2 < 10) {
+                    diffY = (10 - this.$originalSize.height) / 2;
                 }
-//                if (-diffY * 2 + 20 >= this.$originalSize.height) {
-//                    diffY = -this.$originalSize.height + 20;
-//                }
+
                 if (this.$.keepAspectRatio) {
                     if (diffY !== 0) {
                         diffX = diffY * this.$originalSize.width / this.$originalSize.height;
@@ -222,7 +222,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                         diffY = diffX * this.$originalSize.height / this.$originalSize.width;
                     }
                 }
-
 
                 size.width = this.$originalSize.width + diffX * 2;
                 size.height = this.$originalSize.height + diffY * 2;

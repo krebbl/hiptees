@@ -11,8 +11,8 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             height: 100,
             viewBox: "0 0 100 100",
             contenteditable: true,
-            textObject: null,
-            textAlign: "{textObject.textAlign}"
+            textFlow: null,
+            textAlign: "{textFlow.textAlign}"
         },
 
         inject: {
@@ -37,7 +37,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
             var self = this;
             this.bind('textFlowHandler', 'on:changeTextFlow', function (e) {
-                if (e.$.textObject === self.$.textObject) {
+                if (e.$.textFlow === self.$.textFlow) {
                     self.setCursor(e.$.anchorOffset);
                 }
             });
@@ -51,13 +51,18 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 var length = 0;
                 for (var i = 0; i < textContainer.childNodes.length; i++) {
                     var child = textContainer.childNodes[i];
-                    if (child == node.parentNode) {
-                        return length + offset;
+                    for (var j = 0; j < child.childNodes.length; j++) {
+                        var tspan = child.childNodes[j];
+                        if (tspan == node.parentNode) {
+                            return length + offset;
+                        }
+                        length += tspan.textContent.length;
+                        if (tspan.textContent == EMPTY_LINE_TEXT) {
+                            length -= 2;
+                        }
+
                     }
-                    length += child.textContent.length + 1;
-                    if (child.textContent == EMPTY_LINE_TEXT) {
-                        length -= 2;
-                    }
+                    length++;
                     if (child.hasAttribute("data-soft-line") && child.hasAttribute("data-char-break")) {
                         length--;
                     }
@@ -134,7 +139,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                     }
 
                     this.$.executor.storeAndExecute(new DeleteText({
-                        textObject: this.$.textObject,
+                        textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
                         focusOffset: sel.focusOffset
                     }));
@@ -145,7 +150,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                     }
 
                     this.$.executor.storeAndExecute(new DeleteText({
-                        textObject: this.$.textObject,
+                        textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
                         focusOffset: sel.focusOffset
                     }));
@@ -153,7 +158,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 } else if (domEvent.which == 13) {
 
                     this.$.executor.storeAndExecute(new InsertLine({
-                        textObject: this.$.textObject,
+                        textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
                         focusOffset: sel.focusOffset
                     }));
@@ -207,7 +212,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
 
                 self.$.executor.storeAndExecute(new InsertText({
-                    textObject: self.$.textObject,
+                    textFlow: self.$.textFlow,
                     text: insertedText,
                     anchorOffset: absoluteSelection.focusOffset - selection.focusOffset,
                     focusOffset: absoluteSelection.focusOffset - diff
@@ -266,7 +271,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 e.preventDefault();
                 var sel = this.getAbsoluteSelection();
                 this.$.executor.storeAndExecute(new InsertText({
-                    textObject: this.$.textObject,
+                    textFlow: this.$.textFlow,
                     text: String.fromCharCode(e.domEvent.which),
                     anchorOffset: sel.anchorOffset,
                     focusOffset: sel.focusOffset
