@@ -16,15 +16,13 @@ define(["js/core/Component"], function (Component) {
             this.$handler.push(handler);
         },
 
-        storeAndExecute: function (command) {
-            this.$history.push(command);
-
+        execute: function (command) {
             var handler;
             for (var i = 0; i < this.$handler.length; i++) {
                 handler = this.$handler[i];
                 if (handler.isResponsibleForCommand(command)) {
 //                    try {
-                        handler.handleCommand(command);
+                    handler.handleCommand(command);
 //                    } catch (e) {
 //                        this.$failed.push({
 //                            index: this.$history.indexOf(command),
@@ -35,6 +33,12 @@ define(["js/core/Component"], function (Component) {
 //                    }
                 }
             }
+        },
+
+        storeAndExecute: function (command) {
+            this.$history.push(command);
+
+            this.execute(command);
         },
         triggerEvent: function (eventType, attributes) {
             this.$.eventBus && this.$.eventBus.trigger(eventType, attributes);

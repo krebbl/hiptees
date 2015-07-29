@@ -1,4 +1,4 @@
-define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText", "hip/command/Executor", 'hip/handler/TextFlowHandler'], function (View, DeleteText, InsertLine, InsertText, Executor, TextFlowHandler) {
+define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText", "hip/command/Executor", 'hip/handler/TextFlowHandler', 'hip/command/text/SelectText'], function (View, DeleteText, InsertLine, InsertText, Executor, TextFlowHandler, SelectText) {
     var EMPTY_LINE_TEXT = "\n" + String.fromCharCode(173);
 
     return View.inherit({
@@ -24,6 +24,35 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
         _renderMaxWidth: function () {
 
+        },
+
+        _commitVisible: function (visible) {
+            if (!visible && this.$.textFlow) {
+                this.$.executor.execute(new SelectText({
+                    textFlow: this.$.textFlow,
+                    anchorOffset: 0,
+                    focusOffset: 0
+                }));
+            }
+        },
+
+        _onPointerUp: function () {
+            if (this.$.textFlow) {
+                var self = this;
+                setTimeout(function () {
+                    var selection = self.getAbsoluteSelection();
+                    self.$.executor.execute(new SelectText({
+                        textFlow: self.$.textFlow,
+                        anchorOffset: selection.anchorOffset,
+                        focusOffset: selection.focusOffset
+                    }));
+                }, 10);
+            }
+        },
+
+        _onscroll: function (e) {
+            this.$el.scrollTop = 0;
+            this.$el.scrollLeft = 0;
         },
 
         _renderViewBox: function (viewBox) {
@@ -267,7 +296,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
         _onkeyPress: function (e) {
 
-            if(e.domEvent.charCode > 0){
+            if (e.domEvent.charCode > 0) {
                 e.preventDefault();
                 var sel = this.getAbsoluteSelection();
                 this.$.executor.storeAndExecute(new InsertText({

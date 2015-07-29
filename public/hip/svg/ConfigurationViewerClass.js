@@ -77,7 +77,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 this.set({
                     _size: size,
                     _offset: offset
-                })
+                });
             }
         },
 
@@ -147,6 +147,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             event.preventDefault();
 
             var change = {},
+                self = this,
                 size = _.clone(this.$originalSize),
                 offset = _.clone(this.$originalOffset),
                 changedEvent = event.changedTouches ? event.changedTouches[0] : event,
@@ -355,11 +356,39 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 change._size = size;
             } else if (this.$action == "move") {
                 if (!event.touches || event.touches.length === 1) {
+
+
                     offset.x += diffX;
                     offset.y += diffY;
+
+                    offset.x = snapToPoints([
+                        [offset.x, size.width * 0.5],
+                        [offset.x, 0],
+                        [offset.x, size.width]
+                    ]);
                 }
 
 
+            }
+
+            function snapToPoints(points){
+                var snapped = false;
+                for (var i = 0; i < points.length; i++) {
+                    var p = points[i];
+                    snapped = snapToPoint(p[0],p[1]);
+                    if(snapped !== false){
+                        return snapped;
+                    }
+                }
+                return points[0][0];
+            }
+
+            function snapToPoint(p, diff) {
+                var snapped = self.$parent.snapToLines([p + diff], self);
+                if (snapped[0] !== false) {
+                    return snapped[0] - diff;
+                }
+                return false;
             }
 
 
@@ -374,6 +403,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$preventClick = false;
 
             if (this.$moved) {
+                this.trigger('on:configurationMoved', {configuration: this.$.configuration});
                 this.$preventClick = true;
                 event.preventDefault();
                 event.stopPropagation();
@@ -382,6 +412,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 this.$.executor.storeAndExecute(new SelectConfiguration({
                     configuration: this.$.configuration
                 }));
+
             }
 
             this.$originalSize = null;
@@ -421,6 +452,18 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
         negate: function (number) {
             return -1 * number;
+        },
+
+        getSnappingPoints: function () {
+            var x = this.get('_offset.x'),
+                y = this.get('_offset.y'),
+                width = this.get('_size.width'),
+                height = this.get('_size.height');
+
+            return [
+                [x, x + width * 0.5, x + width],
+                [y, y + height * 0.5, y + height]
+            ];
         }
 
 

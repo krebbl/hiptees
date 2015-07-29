@@ -1,5 +1,5 @@
-define(["hip/command/ConfigurationCommand"], function (ConfigurationCommand) {
-    return ConfigurationCommand.inherit({
+define(["hip/command/TextFlowCommand"], function (TextFlowCommand) {
+    return TextFlowCommand.inherit({
         defaults: {
             selection: {
                 anchor: 0,

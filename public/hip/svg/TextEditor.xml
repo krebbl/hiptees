@@ -3,6 +3,8 @@
                            onkeydown="_onkeyDown"
                            onkeypress="_onkeyPress"
                            onkeyup="_onkeyUp"
+                           onscroll="_onscroll"
+                           onpointerup="_onPointerUp"
         oninput="_oninput">
 
     <svg xmlns="http://www.w3.org/2000/svg" width="{svgWidth}" height="{svgHeight}" cid="svg" xml:space="preserve" viewBox="{viewBox}">

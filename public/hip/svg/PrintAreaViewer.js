@@ -1,11 +1,12 @@
 define(['js/svg/SvgElement', 'js/core/List',
+    "underscore",
     'xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextConfigurationViewer',
     'xaml!hip/svg/ImageConfigurationViewer',
     'xaml!hip/svg/RectangleConfigurationViewer',
     'hip/entity/TextConfiguration',
     'hip/entity/ImageConfiguration',
     'hip/entity/RectangleConfiguration',
-    'hip/handler/ProductHandler'], function (SvgElement, List, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, RectangleConfigurationViewer, TextConfiguration, ImageConfiguration, RectangleConfiguration, ProductHandler) {
+    'hip/handler/ProductHandler'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, RectangleConfigurationViewer, TextConfiguration, ImageConfiguration, RectangleConfiguration, ProductHandler) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -35,6 +36,7 @@ define(['js/svg/SvgElement', 'js/core/List',
         _renderPrintArea: function (printArea) {
             if (printArea) {
 
+
                 // Could be done via binding, but viewMaps don't change at runtime and so just evalulating
                 this.translate(this.get("printArea.offset.x"), this.get("printArea.offset.y"));
 
@@ -60,6 +62,22 @@ define(['js/svg/SvgElement', 'js/core/List',
                 product.$.configurations.each(function (configuration) {
                     self._addConfiguration(configuration);
                 });
+
+                this.$verticalSnapline = this.createComponent(SvgElement, {
+                    tagName: "line",
+                    componentClass: "snapline",
+                    stroke: "aqua",
+                    "stroke-opacity": 0,
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1000
+                });
+
+                this.addChild(this.$verticalSnapline);
+
+
+//                this._updateSnappingPoints();
             }
 
         },
@@ -70,7 +88,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                 Factory = TextConfigurationViewer;
             } else if (configuration instanceof ImageConfiguration) {
                 Factory = ImageConfigurationViewer;
-            } else if(configuration instanceof RectangleConfiguration) {
+            } else if (configuration instanceof RectangleConfiguration) {
                 Factory = RectangleConfigurationViewer;
             }
 
@@ -78,6 +96,11 @@ define(['js/svg/SvgElement', 'js/core/List',
                 var configurationViewer = this.createComponent(Factory, {
                     configuration: configuration,
                     printArea: this.$.printArea
+                });
+
+                var self = this;
+                configurationViewer.bind('on:configurationMoved', function () {
+                    self.$verticalSnapline.set('stroke-opacity', 0);
                 });
 
                 this.$configurationViewers.push(configurationViewer);
@@ -99,28 +122,65 @@ define(['js/svg/SvgElement', 'js/core/List',
             }
         },
 
-        snapToLines: function (point) {
-            var verticalSnapLines = [0, this.get('printArea.width') * 0.5, this.get('printArea.width')],
-                closestPoint = false,
+        getSnappingPoints: function (viewer) {
+            var x = 0,
+                y = 0,
+                width = this.get('printArea.width'),
+                height = this.get('printArea.height'),
+                snappingPoints = [
+                    [x, x + width * 0.5, x + width],
+                    [y, y + height * 0.5, y + height]
+                ];
+
+            for (var i = 0; i < this.$configurationViewers.length; i++) {
+                var configViewer = this.$configurationViewers[i];
+                if (configViewer !== viewer) {
+                    var confSnappingPoints = configViewer.getSnappingPoints();
+
+                    snappingPoints[0] = _.uniq(snappingPoints[0].concat(confSnappingPoints[0]));
+                    snappingPoints[1] = _.uniq(snappingPoints[1].concat(confSnappingPoints[1]));
+
+                }
+            }
+
+            return snappingPoints;
+        },
+
+        snapToLines: function (point, viewer) {
+            // collect snap lines
+            var snappingPoints = this.getSnappingPoints(viewer);
+
+            var closestPoint = [false, false],
                 threshold = 2;
 
-            for (var j = 0; j < verticalSnapLines.length; j++) {
-                var snapline = verticalSnapLines[j],
-                    diff = Math.abs(point - snapline);
-                if (diff < threshold && (diff < closestPoint || closestPoint === false)) {
-                    closestPoint = snapline;
+            // check if it snap to lines
+            for (var j = 0; j < snappingPoints[0].length; j++) {
+                var snapPoint = snappingPoints[0][j],
+                    diff = Math.abs(point[0] - snapPoint);
+
+                if (diff < threshold) {
+
+                    if ((diff < closestPoint[0] || closestPoint[0] === false)) {
+                        closestPoint[0] = snapPoint;
+                    }
+
                 }
+            }
+            // display one vertical snap line and one horizontal
+            if (closestPoint[0] !== false) {
+                this.$verticalSnapline.set({
+                    "stroke-opacity": 100,
+                    x1: closestPoint[0],
+                    x2: closestPoint[0]
+                });
+            } else {
+                this.$verticalSnapline.set({
+                    "stroke-opacity": 0
+                });
             }
 
             return closestPoint;
 
-            // collect snap lines
-
-            // check if it snap to lines
-
-            // display one vertical snap line and one horizontal
-
-            // correct offset
         },
 
         getViewerForConfiguration: function (configuration) {

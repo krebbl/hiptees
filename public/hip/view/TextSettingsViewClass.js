@@ -2,9 +2,11 @@ define(["hip/view/SettingsViewClass",
     "json!font/index",
     "underscore",
     "hip/entity/TextConfiguration",
-    "hip/command/ChangeTextConfiguration",
+    "hip/command/text/ChangeStyle",
+    "text/entity/TextRange",
+    "hip/handler/TextFlowHandler",
     "js/type/Color"
-], function (SettingsViewClass, fonts, _, TextConfiguration, ChangeTextConfiguration, Color) {
+], function (SettingsViewClass, fonts, _, TextConfiguration, ChangeStyle, TextRange, TextFlowHandler, Color) {
 
 
     return SettingsViewClass.inherit({
@@ -12,18 +14,48 @@ define(["hip/view/SettingsViewClass",
         supportedConfiguration: TextConfiguration,
 
         defaults: {
-            color: null,
+            leafColor: null,
+            paragraphStyle: null,
+            leafStyle: null,
             componentClass: "settings-view text-settings-view",
             fontFamilies: fonts.fontFamilies,
             alignments: ["left", "center", "right"],
             selectedSubContent: ''
         },
 
-        _commitConfiguration: function (configuration) {
+        inject: {
+            textFlowHandler: TextFlowHandler
+        },
 
+        ctor: function () {
+            this.callBase();
+
+            this.bind('textFlowHandler', 'on:selectionChanged', this._updateLeafStyle, this);
+            this.bind('textFlowHandler', 'on:paragraphStyleChanged', this._updateParagraphStyle, this);
+            this.bind('textFlowHandler', 'on:leafStyleChanged', this._updateLeafStyle, this);
+
+        },
+
+        _commitConfiguration: function (configuration) {
+            this._updateParagraphStyle();
+            this._updateLeafStyle();
+        },
+
+        _updateParagraphStyle: function () {
+            var configuration = this.$.configuration;
             if (configuration) {
-                var c = Color.fromHexString(configuration.$.color);
-                this.set('color', c.toHSB());
+                var range = new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
+                var paragraphStyle = range.getCommonParagraphStyle(configuration.$.textFlow);
+                this.set('paragraphStyle', paragraphStyle);
+            }
+        },
+
+        _updateLeafStyle: function () {
+            var configuration = this.$.configuration;
+            if (configuration) {
+                var range = configuration.$.textFlow.$.selection || new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
+                var leafStyle = range.getCommonLeafStyle(configuration.$.textFlow);
+                this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000').toHSB());
             }
         },
 
@@ -39,37 +71,20 @@ define(["hip/view/SettingsViewClass",
         },
 
         _selectFont: function (fontFamily) {
-            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
-                configuration: this.$.configuration,
-                key: 'fontFamily',
-                value: fontFamily.regular
+            this.$.executor.storeAndExecute(new ChangeStyle({
+                textFlow: this.$.configuration.$.textFlow,
+                paragraphStyle: {
+                    'fontFamily': fontFamily.regular
+                }
             }));
         },
 
         _selectAlignment: function (alignment) {
-            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
-                configuration: this.$.configuration,
-                key: "textAlign",
-                value: alignment
-            }));
-        },
-        _increaseLineHeight: function (by) {
-            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
-                configuration: this.$.configuration,
-                key: "lineHeight",
-                value: this.$.configuration.$.lineHeight + by
-            }));
-
-        },
-        _decreaseLineHeight: function (by) {
-            this._increaseLineHeight(-1 * by);
-        },
-
-        _increaseFontSize: function (by) {
-            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
-                configuration: this.$.configuration,
-                key: 'fontSize',
-                value: this.$.configuration.$.fontSize + by
+            this.$.executor.storeAndExecute(new ChangeStyle({
+                textFlow: this.$.configuration.$.textFlow,
+                paragraphStyle: {
+                    "textAlign": alignment
+                }
             }));
         },
 
@@ -86,15 +101,16 @@ define(["hip/view/SettingsViewClass",
         },
 
         _updateTextSize: function (e) {
-            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
-                configuration: this.$.configuration,
-                key: 'fontSize',
-                value: e.$.value
+            this.$.executor.execute(new ChangeStyle({
+                textFlow: this.$.configuration.$.textFlow,
+                paragraphStyle: {
+                    'fontSize': e.$.value
+                }
             }));
         },
 
         _updateLineHeight: function (e) {
-            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
+            this.$.executor.execute(new ChangeStyle({
                 configuration: this.$.configuration,
                 key: "lineHeight",
                 value: e.$.value
@@ -102,19 +118,21 @@ define(["hip/view/SettingsViewClass",
         },
 
         _updateLetterSpacing: function (e) {
-            this.$.executor.storeAndExecute(new ChangeTextConfiguration({
-                configuration: this.$.configuration,
-                key: "letterSpacing",
-                value: e.$.value
+            this.$.executor.execute(new ChangeStyle({
+                textFlow: this.$.configuration.$.textFlow,
+                paragraphStyle: {
+                    'letterSpacing': e.$.value
+                }
             }));
         },
 
         _updateColor: function (color) {
-            if(color){
-                this.$.executor.storeAndExecute(new ChangeTextConfiguration({
-                    configuration: this.$.configuration,
-                    key: "color",
-                    value: "#" + color.toHexString()
+            if (color) {
+                this.$.executor.execute(new ChangeStyle({
+                    textFlow: this.$.configuration.$.textFlow,
+                    leafStyle: {
+                        'color': "#" + color.toHexString()
+                    }
                 }));
             }
         },
@@ -134,22 +152,20 @@ define(["hip/view/SettingsViewClass",
         },
 
         _updateHue: function (value) {
-            this.$.color.h = value;
+            this.$.leafColor.h = value;
 
-            this._updateColor(this.$.color);
+            this._updateColor(this.$.leafColor);
         },
 
         _updateSaturation: function (value) {
-            this.$.color.s = value;
-            console.log(value);
+            this.$.leafColor.s = value;
 
-            this._updateColor(this.$.color);
+            this._updateColor(this.$.leafColor);
         },
 
         _updateBrightness: function (value) {
-            this.$.color.b = value;
-            console.log(value);
-            this._updateColor(this.$.color);
+            this.$.leafColor.b = value;
+            this._updateColor(this.$.leafColor);
         },
 
 
