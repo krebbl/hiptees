@@ -78,6 +78,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                     _size: size,
                     _offset: offset
                 });
+
+                this._updateSnapPoints();
             }
         },
 
@@ -229,130 +231,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 offset.x = this.$originalOffset.x - diffX;
                 offset.y = this.$originalOffset.y - diffY;
 
-                // if the corner handle is used
-//                    if (this.$resizeType.length == 2) {
-//                        // project resize vector on the diagonal root vector
-//                        var diffVector = [diffX, diffY],
-//                            rootVector = [this.$originalSize.width, this.$originalSize.height];
-//
-//                        if (this.$resizeType.indexOf("l") > -1) {
-//                            rootVector[0] = rootVector[0] * -1;
-//                        }
-//
-//                        if (this.$resizeType.indexOf("t") > -1) {
-//                            rootVector[1] = rootVector[1] * -1;
-//                        }
-//
-//                        // calculate the length of the projected vector
-//                        var rootLength = this.vectorLength(rootVector);
-//                        var s = this.multiplyVectors(diffVector, rootVector) / rootLength,
-//                            lf = s / rootLength;
-//
-//
-//                        // multiply with the root vector
-//                        diffX = rootVector[0] * lf;
-//                        diffY = rootVector[1] * lf;
-//
-//                        var correctedDiffX,
-//                            rootX;
-//                        if (this.$resizeType.indexOf("r") > -1) {
-//                            rootX = this.$originalOffset.x + this.$originalSize.width;
-//                            snapped = this.$parent.snapToLines(rootX + diffX);
-//                            if (snapped !== false) {
-//                                correctedDiffX = snapped - rootX;
-//                            } else {
-//                                rootX = this.$originalOffset.x + this.$originalSize.width * 0.5;
-//                                snapped = this.$parent.snapToLines(rootX + diffX * 0.5);
-//                                if (snapped !== false) {
-//                                    correctedDiffX = (snapped - rootX) * 2;
-//                                }
-//                            }
-//                        } else if (this.$resizeType.indexOf("l") > -1) {
-//                            rootX = this.$originalOffset.x;
-//                            snapped = this.$parent.snapToLines(rootX + diffX);
-//                            if (snapped !== false) {
-//                                correctedDiffX = snapped - rootX;
-//                            } else {
-//                                rootX = this.$originalOffset.x + this.$originalSize.width * 0.5;
-//                                snapped = this.$parent.snapToLines(rootX + diffX * 0.5);
-//                                if (snapped !== false) {
-//                                    correctedDiffX = (snapped - rootX) * 2;
-//                                }
-//                            }
-//
-//
-//                        }
-//                        if (correctedDiffX) {
-//                            var dir = 1;
-//                            if (this.$resizeType.indexOf("t") > -1) {
-//                                dir *= -1;
-//                            }
-//                            if (this.$resizeType.indexOf("l") > -1) {
-//                                dir *= -1;
-//                            }
-//                            diffY += dir * (correctedDiffX - diffX);
-//                            diffX = correctedDiffX;
-//                        }
-//
-//                    } else {
-//                        // if a left, top, bottom or right handle is used, keep aspect ratio
-//                        if (this.$resizeType.indexOf("l") > -1 || this.$resizeType.indexOf("r") > -1) {
-//                            diffY = (this.$originalSize.height / this.$originalSize.width) * diffX * 0.5;
-//
-//                            if (this.$resizeType.indexOf("l") > -1) {
-//                                diffY *= -1;
-//                            }
-//
-//                            offset.y -= diffY;
-//                            size.height += 2 * diffY;
-//                        } else if (this.$resizeType.indexOf("b") > -1 || this.$resizeType.indexOf("t") > -1) {
-//                            diffX = (this.$originalSize.width / this.$originalSize.height) * diffY * 0.5;
-//
-//                            if (this.$resizeType.indexOf("t") > -1) {
-//                                diffX *= -1;
-//                            }
-//
-//                            offset.x -= diffX;
-//                            size.width += 2 * diffX;
-//                        }
-//
-//                    }
-
-//                if (this.$resizeType.indexOf("r") > -1) {
-//                    snapped = this.$parent.snapToLines(this.$originalOffset.x + this.$originalSize.width + diffX);
-//                    if (snapped > -1) {
-//                        diffX = snapped - this.$originalOffset.x - this.$originalSize.width;
-//                    } else {
-//                        snapped = this.$parent.snapToLines(this.$originalOffset.x + this.$originalSize.width * 0.5 + diffX * 0.5);
-//                        if (snapped > -1) {
-//                            diffX = (snapped - (this.$originalOffset.x + this.$originalSize.width * 0.5)) * 2;
-//                        }
-//                    }
-//                }
-
-                // calculate new offset and size
-//                if (this.$resizeType.indexOf("b") > -1 && this.$.verticalStretchable) {
-//                    size.height = this.$originalSize.height + diffY;
-//                    offset.y = this.$originalOffset.y;
-//                }
-//
-//                if (this.$resizeType.indexOf("r") > -1 && this.$.horizontalStretchable) {
-//                    size.width = this.$originalSize.width + diffX;
-//                    offset.x = this.$originalOffset.x;
-//                }
-//
-//                if (this.$resizeType.indexOf("l") > -1 && this.$.horizontalStretchable) {
-//                    offset.x = this.$originalOffset.x + diffX;
-//                    size.width = this.$originalSize.width - diffX;
-//                }
-//
-//                if (this.$resizeType.indexOf("t") > -1 && this.$.verticalStretchable) {
-//                    offset.y = this.$originalOffset.y + diffY;
-//                    size.height = this.$originalSize.height - diffY;
-//                }
-//                size.width = Math.max(10, size.width);
-//                size.height = Math.max(10, size.height);
-
                 change._size = size;
             } else if (this.$action == "move") {
                 if (!event.touches || event.touches.length === 1) {
@@ -371,12 +249,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
             }
 
-            function snapToPoints(points){
+            function snapToPoints(points) {
                 var snapped = false;
                 for (var i = 0; i < points.length; i++) {
                     var p = points[i];
-                    snapped = snapToPoint(p[0],p[1]);
-                    if(snapped !== false){
+                    snapped = snapToPoint(p[0], p[1]);
+                    if (snapped !== false) {
                         return snapped;
                     }
                 }
@@ -407,7 +285,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 this.$preventClick = true;
                 event.preventDefault();
                 event.stopPropagation();
-                this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
+                // only unbind if target wasnt the configuration itself
+                if(event.target == this.$._boundingBox.$el){
+                    this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
+                }
+
+                this._updateSnapPoints();
 
                 this.$.executor.storeAndExecute(new SelectConfiguration({
                     configuration: this.$.configuration
@@ -454,16 +337,20 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             return -1 * number;
         },
 
-        getSnappingPoints: function () {
+        _updateSnapPoints: function () {
             var x = this.get('_offset.x'),
                 y = this.get('_offset.y'),
                 width = this.get('_size.width'),
                 height = this.get('_size.height');
 
-            return [
+            this.$snappingPoints = [
                 [x, x + width * 0.5, x + width],
                 [y, y + height * 0.5, y + height]
             ];
+        },
+
+        getSnappingPoints: function () {
+            return this.$snappingPoints;
         }
 
 
