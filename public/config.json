@@ -4,6 +4,7 @@
         "hip/svg/ConfigurationViewer",
         "hip/svg/ImageConfigurationViewer",
         "hip/svg/ImageFilter",
+        "hip/svg/PrintAreaViewer",
         "hip/svg/RectangleConfigurationViewer",
         "hip/svg/TextConfigurationViewer",
         "hip/svg/TextEditor",
@@ -35,7 +36,8 @@
         "js/ui/field/Password",
         "js/ui/field/RadioGroup",
         "js/ui/field/Text",
-        "js/ui/field/TextArea"
+        "js/ui/field/TextArea",
+        "text/ui/SvgTextArea"
     ],
     "namespaceMap": null,
     "rewriteMap": null,

@@ -52,9 +52,17 @@ define(["hip/handler/CommandHandler",
                             focusOffset = anchorOffset;
                         }
 
+                        textFlow.set('selection', null);
+
                         this.trigger('on:changeTextFlow', {
                             textFlow: command.$.textFlow,
                             anchorOffset: anchorOffset,
+                            focusOffset: focusOffset
+                        });
+
+                        this.trigger('on:selectionChanged', {
+                            textFlow: textFlow,
+                            anchorIndex: anchorOffset,
                             focusOffset: focusOffset
                         });
                     } else if (command instanceof SelectText) {

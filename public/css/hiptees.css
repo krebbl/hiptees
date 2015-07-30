@@ -239,7 +239,7 @@ ul {
   display: none; }
 
 .editing .configuration-boundary {
-  stroke-opacity: 0.4; }
+  stroke-opacity: 0.8; }
 
 .text-configuration-viewer .text-renderer {
   cursor: pointer; }
@@ -287,3 +287,11 @@ ul {
 
 .filter-presets img.filtering {
   visibility: hidden; }
+
+.color-picker-palette {
+  display: inline-block; }
+
+.color-picker-hue {
+  display: inline-block; }
+  .color-picker-hue .color-picker-hue-bar {
+    width: 30px !important; }

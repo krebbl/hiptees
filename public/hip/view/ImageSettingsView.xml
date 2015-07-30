@@ -2,7 +2,8 @@
                             xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
 
     <div class="settings-header">
-
+        <a onclick="cloneConfiguration()">Clone</a>
+        <a onclick="moveBackward()">Backward</a>
     </div>
     <div class="settings-content" selected="true">
         <ui:SelectionView items="{presets}" class="filter-presets" tagName="ul" selectedItem="{selectedPreset}">

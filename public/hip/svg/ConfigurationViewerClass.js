@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor", "hip/command/SelectConfiguration", "hip/handler/ProductHandler"], function (SvgElement, List, _, Executor, SelectConfiguration, ProductHandler) {
+define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor", "hip/command/SelectConfiguration", "hip/handler/ProductHandler", "hip/command/MoveConfiguration"], function (SvgElement, List, _, Executor, SelectConfiguration, ProductHandler, MoveConfiguration) {
 
     var maskId = 1;
 
@@ -23,14 +23,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 x: 0.5,
                 y: 0.5
             },
-            _size: {
-                width: 0,
-                height: 0
-            },
-            _offset: {
-                x: 0,
-                y: 0
-            },
+            _size: "{configuration.size}",
+            _offset: "{configuration.offset}",
 
             _maskId: ""
         },
@@ -56,33 +50,39 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 }
             });
         },
+        _onDomAdded: function () {
+            this.callBase();
+            this._updateHandleSize();
+        },
+
+        _updateHandleSize: function () {
+            this.set('handleWidth', 16 * this.globalToLocalFactor().x);
+
+        },
 
         _initializationComplete: function () {
             this.callBase();
 
             var self = this;
-            this.getSvgRoot().bind('change:width', function (e) {
-                if (e.$) {
-                    self.set('handleWidth', 16 * self.globalToLocalFactor().x);
-                }
-            });
+            this.getSvgRoot().bind('change:width', this._updateHandleSize, this);
+
+            this._updateSnapPoints();
+
         },
 
-        _commitConfiguration: function (configuration) {
-
-            if (configuration) {
-                var size = configuration.$.size,
-                    offset = configuration.$.offset;
-
-                this.set({
-                    _size: size,
-                    _offset: offset
-                });
-
-                this._updateSnapPoints();
-            }
-        },
-
+//        _updateOffsetAndSize: function (configuration) {
+//            if (configuration) {
+//                var size = configuration.$.size,
+//                    offset = configuration.$.offset;
+//
+//                this.set({
+//                    _size: size,
+//                    _offset: offset
+//                });
+//
+//                this._updateSnapPoints();
+//            }
+//        },
 
         getBoundRectInPx: function () {
             return this.$._boundingBox ? this.$._boundingBox.$el.getBoundingClientRect() : null;
@@ -123,9 +123,10 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 }
             }
 
-            this.$parent._prepareSnappingPointsForViewer(this);
+            this.$.printAreaViewer._prepareSnappingPointsForViewer(this);
 
             this.$moved = false;
+            this.$resized = false;
 
             this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).bindDomEvent("click", this.$clickDelegate, true);
@@ -173,16 +174,13 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
                     this.$resizeType = "r";
                     this.$action = "resize";
-
                 }
 
             }
 
 
-            this.$moved = true;
-
             if (this.$action == "resize") {
-
+                this.$resized = true;
                 var snapped;
 
                 var rootVector = [0, 0],
@@ -235,6 +233,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
                 change._size = size;
             } else if (this.$action == "move") {
+                this.$moved = true;
                 if (!event.touches || event.touches.length === 1) {
 
                     offset.x += diffX;
@@ -274,7 +273,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             }
 
             function snapToPoint(p, diff, a) {
-                var snapped = self.$parent.snapToLines(p + diff, a);
+                var snapped = self.$.printAreaViewer.snapToLines(p + diff, a);
                 if (snapped !== false) {
                     snapped -= diff;
                 }
@@ -284,15 +283,13 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
             change._offset = offset;
 
-
-            // TODO: execute position change command
             this.set(change, {force: true});
         },
 
         handlePointerUp: function (event) {
             this.$preventClick = false;
 
-            if (this.$moved) {
+            if (this.$moved || this.$resized) {
                 this.trigger('on:configurationMoved', {configuration: this.$.configuration});
                 this.$preventClick = true;
                 event.preventDefault();
@@ -308,6 +305,14 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                     configuration: this.$.configuration
                 }));
 
+                this.$.executor.storeAndExecute(new MoveConfiguration({
+                    configuration: this.$.configuration,
+                    offset: this.$._offset,
+                    size: this.$resized ? this.$._size : null
+                }));
+
+                this.$moved = null;
+                this.$resized = null;
             }
 
             this.$originalSize = null;

@@ -4,6 +4,7 @@
     <div class="settings-header">
         <a onclick="_selectSubContent('')">Back</a>
         <a onclick="toggle()">Toggle</a>
+        <a onclick="cloneConfiguration()">Clone</a>
 
     </div>
     <div class="settings-content" selected="{isSubContentSelected('')}">
@@ -118,24 +119,9 @@
                 <!--</div>-->
             <!--</js:Template>-->
         <!--</ui:ItemsView>-->
-        <div class="hsb-color-selector">
-            <div class="slider-wrapper">
-                <ui:Slider min="0" max="360" step="1" oninput="_updateHue(value)"
-                           value="{leafColor.h}"/>
-            </div>
+        <ui:ColorPicker widthUpdatePolicy="in" heightUpdatePolicy="both" width="auto" height="100%" paletteWidth="{minus(width,30)}" paletteHeight="{height}"
+                        oncolorSelect="_updateColor(color)"/>
 
-            <div class="slider-wrapper">
-                <ui:Slider min="0" max="100" step="1" oninput="_updateSaturation(value)"
-                           value="{leafColor.s}"/>
-            </div>
-
-            <div class="slider-wrapper">
-                <ui:Slider min="0" max="100" step="1" oninput="_updateBrightness(value)"
-                           value="{leafColor.b}"/>
-            </div>
-
-
-        </div>
     </div>
 
     <!--<ui:TabView>-->

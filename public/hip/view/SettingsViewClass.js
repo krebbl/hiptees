@@ -1,4 +1,8 @@
-define(["js/ui/View", "hip/command/Executor", "js/core/I18n", "hip/command/RemoveConfiguration", "hip/handler/ProductHandler"], function (View, Executor, I18n, RemoveConfiguration, ProductHandler) {
+define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
+    "hip/command/RemoveConfiguration",
+    "hip/command/CloneConfiguration",
+    "hip/command/ChangeOrder",
+    "hip/handler/ProductHandler"], function (View, Executor, I18n, RemoveConfiguration, CloneConfiguration, ChangeOrder, ProductHandler) {
 
 
     return View.inherit({
@@ -28,12 +32,26 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n", "hip/command/Remov
             });
         },
 
-        toggle: function(){
+        toggle: function () {
             this.set('minimized', !this.$.minimized);
         },
 
-        _renderMinimized: function(minimized){
-            if(minimized){
+        cloneConfiguration: function () {
+            this.$.executor.storeAndExecute(new CloneConfiguration({
+                configuration: this.$.configuration
+            }));
+        },
+
+        moveBackward: function () {
+            var product = this.$.productHandler.$.product;
+            this.$.executor.storeAndExecute(new ChangeOrder({
+                configuration: this.$.configuration,
+                index: Math.max(0, product.getIndexOfConfiguration(this.$.configuration) - 1)
+            }));
+        },
+
+        _renderMinimized: function (minimized) {
+            if (minimized) {
                 this.addClass('minimize');
             } else {
                 this.removeClass('minimize');
@@ -48,6 +66,10 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n", "hip/command/Remov
             this.$.executor.storeAndExecute(new RemoveConfiguration({
                 configuration: this.$.configuration
             }));
+        },
+        minus: function (a, b) {
+            return a - b;
+
         }
     })
 });

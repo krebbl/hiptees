@@ -5,14 +5,18 @@ define(["hip/handler/CommandHandler", "hip/command/ConfigurationCommand", "hip/c
         },
         handleCommand: function (command) {
             if (command instanceof MoveConfiguration) {
-                if (command.$.configurations && command.$.offset) {
-                    for (var i = 0; i < command.$.configurations.length; i++) {
-                        var configuration = command.$.configurations[i];
-                        var offset = _.clone(configuration.$.offset);
-                        offset.x += command.$.offset.x;
-                        offset.y += command.$.offset.y;
-                        configuration.set("offset", offset);
+                if (command.$.configuration) {
+                    var configuration = command.$.configuration;
+                    var change = {};
+                    if (command.$.size) {
+                        change.size = command.$.size;
                     }
+                    if (command.$.offset) {
+                        change.offset = command.$.offset;
+                    }
+                    configuration.set(change);
+
+                    this.trigger('on:configurationMoved', {configuration: configuration});
                 }
             }
         }

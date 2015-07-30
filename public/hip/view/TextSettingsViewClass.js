@@ -111,9 +111,10 @@ define(["hip/view/SettingsViewClass",
 
         _updateLineHeight: function (e) {
             this.$.executor.execute(new ChangeStyle({
-                configuration: this.$.configuration,
-                key: "lineHeight",
-                value: e.$.value
+                textFlow: this.$.configuration.$.textFlow,
+                paragraphStyle: {
+                    'lineHeight': e.$.value
+                }
             }));
         },
 
@@ -136,6 +137,7 @@ define(["hip/view/SettingsViewClass",
                 }));
             }
         },
+
 
         format: function (n) {
             if (n != null) {

@@ -4,7 +4,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
         defaults: {
             textRenderer: null,
             verticalStretchable: false,
-            componentClass: "text-configuration-viewer"
+            componentClass: "text-configuration-viewer",
+            maxWidth: "{configuration.size.width}"
         },
 
         $classAttributes: ["textRenderer"],
@@ -30,20 +31,52 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
 
         },
 
-        _handleHeightChange: function (e) {
+        _renderMaxWidth: function () {
+            // do nothing
+        },
+
+        handlePointerMove: function (e) {
+            this.callBase();
+
+            if (this.$resized) {
+                this.set('maxWidth', this.get('_size.width'));
+            }
+
+        },
+
+        _handleSizeChange: function (e) {
             if (this.$originalSize) {
                 this.$originalSize = {
                     width: this.$originalSize.width,
                     height: e.$.height
                 };
             }
-            this.set('_size', {
-                width: this.$._size.width,
-                height: e.$.height
+
+            var size = {},
+                offset = _.clone(this.$._offset);
+
+            var width = this.get('_size.width') || 0;
+            size.height = e.$.height;
+            if (this.$.maxWidth == null) {
+                size.width = e.$.width;
+
+                if (e.$.textAlign == "center") {
+                    offset.x -= (e.$.width - width) * 0.5;
+                } else if (e.$.textAlign == "right") {
+                    offset.x -= (e.$.width - width);
+                }
+            } else {
+                size.width = this.$._size.width;
+            }
+
+            this.set({
+                _size: size,
+                _offset: offset
             });
 
             if (this.$.svgTextEditor.$.textFlow == this.$.configuration.$.textFlow) {
-                this.$.svgTextEditor.set('height', this.getBoundRectInPx().height);
+                var rect = this.getBoundRectInPx();
+                this.$.svgTextEditor.set({left: rect.left, width: rect.width, height: rect.height});
             }
 
         },
@@ -62,6 +95,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
 
                 var rect = this.getBoundRectInPx();
                 var root = this.getSvgRoot();
+
+                console.log(rect.width);
+
                 this.$.svgTextEditor.set({
 //                    visible: true,
                     zIndex: 1000,
@@ -73,7 +109,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
                     overflow: "hidden",
                     svgWidth: root.$.width,
                     svgHeight: root.$.height,
-                    maxWidth: this.get('_size.width'),
+                    maxWidth: this.$.maxWidth,
                     viewBox: this.getSvgRoot().$.viewBox,
                     textFlow: this.$.configuration.$.textFlow
                 }, {force: true});
@@ -81,7 +117,10 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
                 if (!this.$.svgTextEditor.isRendered()) {
                     this.$stage._renderChild(this.$.svgTextEditor, 0);
                 } else {
-                    this.$.svgTextEditor.set('visible', true);
+                    this.$.svgTextEditor.set({
+                        visible: true,
+                        width: rect.width + "px"
+                    });
                 }
                 this.$.textRenderer.set('visible', false);
                 this.$.svgTextEditor.focus();

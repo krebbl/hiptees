@@ -246,7 +246,7 @@ define(["js/svg/Svg"], function (Svg) {
                 var measureWidth = this.getWidthForParagraph(paragraph),
                     soft = false;
 
-                while (paragraphLength > 1 && measureWidth > width) {
+                while (width != null && paragraphLength > 1 && measureWidth > width) {
                     var splitAt = paragraphLength,
                         splitAt2,
                         charBreak;
@@ -284,7 +284,7 @@ define(["js/svg/Svg"], function (Svg) {
                             }
                         }
 
-                        splitAt = Math.max(1,start);
+                        splitAt = Math.max(1, start);
                         splitAt2 = splitAt;
                         charBreak = true
                     }
@@ -338,7 +338,7 @@ define(["js/svg/Svg"], function (Svg) {
         },
 
 
-        measureTextFlow: function (textFlow, pixelWidth, callback) {
+        measureTextFlow: function (textFlow, maxWidth, callback) {
 
             var firstParagraph = textFlow.getChildAt(0);
             if (firstParagraph) {
@@ -353,16 +353,20 @@ define(["js/svg/Svg"], function (Svg) {
                 this.fontManager.loadExternalFont(font, "./font/" + font + ".woff", function (err) {
                     if (!err) {
                         var fontMeasure = self.measureParagraph(firstParagraph);
-                        var lines = self.breakTextFlow(textFlow, pixelWidth);
-
+                        var lines = self.breakTextFlow(textFlow, maxWidth);
+                        if (maxWidth == null) {
+                            for (var i = 0; i < lines.length; i++) {
+                                var line = lines[i];
+                                maxWidth = Math.max(maxWidth || 0, line.width);
+                            }
+                        }
                     }
-
-
 
 
                     callback && callback(err, {
                         fontMeasure: fontMeasure,
-                        lines: lines
+                        lines: lines,
+                        maxWidth: maxWidth
                     })
                 });
             } else {

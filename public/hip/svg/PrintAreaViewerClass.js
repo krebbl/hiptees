@@ -31,29 +31,13 @@ define(['js/svg/SvgElement', 'js/core/List',
             this.bind('productHandler', 'on:configurationRemoved', function (e) {
                 self._removeConfiguration(e.$.configuration);
             });
-        },
-
-        _renderPrintArea: function (printArea) {
-            if (printArea) {
-
-
-                // Could be done via binding, but viewMaps don't change at runtime and so just evalulating
-                this.translate(this.get("printArea.offset.x"), this.get("printArea.offset.y"));
-
-
-                var border = this.createComponent(SvgElement, {
-                    tagName: "rect",
-                    componentClass: "print-area-border",
-                    fill: "white",
-                    width: this.get('printArea.width'),
-                    height: this.get('printArea.height')
-                });
-
-
-                this.$border = border;
-
-                this.addChild(this.$border);
-            }
+            this.bind('productHandler', 'on:configurationAdded', function (e) {
+                self._addConfiguration(e.$.configuration);
+            });
+            this.bind('productHandler', 'on:configurationOrderChanged', function (e) {
+                var viewer = self.getViewerForConfiguration(e.$.configuration);
+                self.$.configurations.setChildIndex(viewer, e.$.index);
+            });
         },
         _renderProduct: function (product) {
 
@@ -62,21 +46,6 @@ define(['js/svg/SvgElement', 'js/core/List',
                 product.$.configurations.each(function (configuration) {
                     self._addConfiguration(configuration);
                 });
-                this.$snapLines = new Array(2);
-                for (var i = 0; i < this.$snapLines.length; i++) {
-                    this.$snapLines[i] = this.createComponent(SvgElement, {
-                        tagName: "line",
-                        componentClass: "snapline",
-                        stroke: "aqua",
-                        "stroke-opacity": 0
-                    });
-
-                    this.addChild(this.$snapLines[i]);
-
-                }
-
-
-//                this._updateSnappingPoints();
             }
 
         },
@@ -94,22 +63,23 @@ define(['js/svg/SvgElement', 'js/core/List',
             if (Factory) {
                 var configurationViewer = this.createComponent(Factory, {
                     configuration: configuration,
-                    printArea: this.$.printArea
+                    printArea: this.$.printArea,
+                    printAreaViewer: this
                 });
 
                 var self = this;
                 configurationViewer.bind('on:configurationMoved', function () {
-                    self.$snapLines[0].set('stroke-opacity', 0);
-                    self.$snapLines[1].set('stroke-opacity', 0);
+                    self.$.snapLines.$children[0].set('stroke-opacity', 0);
+                    self.$.snapLines.$children[1].set('stroke-opacity', 0);
                 });
 
                 this.$configurationViewers.push(configurationViewer);
-                this.addChild(configurationViewer);
+                this.$.configurations.addChild(configurationViewer);
             }
 
         },
 
-        _removeConfiguration: function (configuration) {
+        _removeConfiguration: function (configuration, destroy) {
             for (var i = 0; i < this.$configurationViewers.length; i++) {
                 var viewer = this.$configurationViewers[i];
                 if (viewer.$.configuration == configuration) {
@@ -168,7 +138,7 @@ define(['js/svg/SvgElement', 'js/core/List',
 
             // display snap line
             if (closestPoint !== false) {
-                this.$snapLines[axis].set({
+                this.$.snapLines.$children[axis].set({
                     "stroke-opacity": 1,
                     x1: axis == 1 ? -1000 : closestPoint,
                     x2: axis == 1 ? 1000 : closestPoint,
@@ -176,7 +146,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                     y2: axis == 0 ? 1000 : closestPoint
                 });
             } else {
-                this.$snapLines[axis].set({
+                this.$.snapLines.$children[axis].set({
                     "stroke-opacity": 0
                 });
             }

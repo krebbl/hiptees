@@ -4,7 +4,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
     return View.inherit({
         defaults: {
             componentClass: "svg-text-editor",
-            maxWidth: 10000,
+            maxWidth: null,
             svgWidth: 100,
             svgHeight: 100,
             width: 100,
@@ -22,8 +22,18 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
         $domAttributes: ["contenteditable"],
 
-        _renderMaxWidth: function () {
+        _handleSizeChange: function (e) {
+            var rect = e.target.$el.getBoundingClientRect();
+            if (this.$.maxWidth == null && rect.width > 0) {
+                this.set({
+                    width: rect.width,
+                    height: rect.height
+                });
+            }
+        },
 
+        _renderMaxWidth: function () {
+            // do nothing
         },
 
         _commitVisible: function (visible) {
@@ -39,14 +49,16 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
         _onPointerUp: function () {
             if (this.$.textFlow) {
                 var self = this;
-                setTimeout(function () {
+                this.$selectTimeout && clearTimeout(this.$selectTimeout);
+                this.$selectTimeout = setTimeout(function () {
                     var selection = self.getAbsoluteSelection();
+                    console.log(selection.anchorOffset, selection.focusOffset);
                     self.$.executor.execute(new SelectText({
                         textFlow: self.$.textFlow,
                         anchorOffset: selection.anchorOffset,
                         focusOffset: selection.focusOffset
                     }));
-                }, 10);
+                }, 500);
             }
         },
 
@@ -82,7 +94,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                     var child = textContainer.childNodes[i];
                     for (var j = 0; j < child.childNodes.length; j++) {
                         var tspan = child.childNodes[j];
-                        if (tspan == node.parentNode) {
+                        if (node === tspan.parentNode || tspan === node || tspan === node.parentNode) {
                             return length + offset;
                         }
                         length += tspan.textContent.length;

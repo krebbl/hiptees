@@ -3,6 +3,7 @@ define(
         "js/core/List",
         "js/core/Bindable",
         "hip/model/Design",
+        "hip/model/Product",
         "hip/entity/ImageConfiguration",
         "hip/entity/TextConfiguration",
         'hip/entity/RectangleConfiguration',
@@ -14,14 +15,7 @@ define(
         "text/operation/ApplyStyleToElementOperation",
         "text/type/Style"
     ],
-    function (Application, List, Bindable, Design, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
-
-        var Product = Bindable.inherit({
-            defaults: {
-                productType: null,
-                configurations: List
-            }
-        });
+    function (Application, List, Bindable, Design, Product, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
 
         var textObject = {
             textFlow: ["abc", "a"],
@@ -170,10 +164,10 @@ define(
 
                 var textConfiguration = new TextConfiguration({
                     textFlow: textFlow,
-                    size: {
-                        width: 100,
-                        height: 30
-                    },
+//                    size: {
+//                        width: 100,
+//                        height: 30
+//                    },
                     position: {
                         x: 10,
                         y: 0.2

@@ -7,14 +7,14 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
             tagName: 'g',
             textFlow: null,
             measureResult: null,
-            maxWidth: 308,
+            maxWidth: null,
             textColor: "",
             componentClass: "text-renderer"
         },
 
         $classAttributes: ['textFlow', 'maxWidth', 'measureResult'],
 
-        events: ["on:heightChanged", "on:widthChanged"],
+        events: ["on:sizeChanged"],
 
         inject: {
             textFlowHandler: TextFlowHandler,
@@ -47,7 +47,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
             this.bind('textFlowHandler', 'on:leafStyleChanged', function (e) {
                 if (e.$.textFlow === this.$.textFlow) {
-                    this._renderMeasureResult(this.$.measureResult);
+                    this._updateTextFlow();
                 }
 
             }, this);
@@ -102,13 +102,16 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
         },
 
         _updateAlignment: function () {
-            var maxWidth = this.$.maxWidth;
-            var textAlign = this.$.textFlow.getChildAt(0).get('style.textAlign');
-            var x,
+            var textAlign = this.$.textFlow.getChildAt(0).get('style.textAlign'),
+                measureResult = this.$.measureResult,
+                maxWidth = this.$.maxWidth || measureResult.maxWidth,
+                child,
+                line,
+                x,
                 transform;
             for (var i = 0; i < this.$el.childNodes.length; i++) {
-                var child = this.$el.childNodes[i],
-                    line = this.$.measureResult.lines[i];
+                child = this.$el.childNodes[i];
+                line = this.$.measureResult.lines[i];
                 transform = child.getAttribute("transform");
                 x = 0;
                 if (textAlign == "center") {
@@ -121,16 +124,22 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
             }
         },
 
-        _renderTextFlow: function (textObject) {
+        _renderTextFlow: function (textFlow) {
 
-            if (textObject) {
+            if (textFlow) {
                 var self = this;
-                this.$.svgMeasurer.measureTextFlow(textObject, self.$.maxWidth, function (err, result) {
+                this.$.svgMeasurer.measureTextFlow(textFlow, this.$.maxWidth, function (err, result) {
                     if (!err) {
+
+
                         self.set('measureResult', result, {force: true});
                     }
                 });
             }
+        },
+
+        _measureTextFlow: function (textFlow, maxWidth) {
+
         },
 
         getOriginalLine: function (index) {
@@ -150,16 +159,17 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                 var lines = measureResult.lines,
                     line,
                     text,
-                    ascent = measureResult.fontMeasure.ascent;
-
-                var group = this.$el;
-
-                var lineText;
-
-                var x,
+                    ascent = measureResult.fontMeasure.ascent,
+                    maxWidth = this.$.maxWidth || measureResult.maxWidth,
+                    group = this.$el,
+                    lineText,
+                    x,
                     y,
                     transform,
-                    leaf, tspan;
+                    leaf, tspan,
+                    textAnchor,
+                    style;
+
                 for (var i = 0; i < lines.length; i++) {
                     line = lines[i];
                     if (i < group.childNodes.length) {
@@ -187,6 +197,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                             tspan = text.childNodes[j];
                         } else {
                             tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                            tspan.setAttributeNS("http://www.w3.org/XML/1998/namespace", "space", "preserve");
                             text.appendChild(tspan);
                         }
                         lineText = leaf.text();
@@ -207,14 +218,15 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                         text.removeChild(text.childNodes[text.childNodes.length - 1]);
                     }
 
-                    var style = line.paragraph.$.style;
+                    style = line.paragraph.$.style;
                     y = i * style.$.fontSize * style.$.lineHeight;
                     x = 0;
-                    var textAnchor = style.$.textAlign;
+                    textAnchor = style.$.textAlign;
+
                     if (textAnchor == "center") {
-                        x = 0.5 * (this.$.maxWidth - line.width);
+                        x = 0.5 * (maxWidth - line.width);
                     } else if (textAnchor == "right") {
-                        x = this.$.maxWidth - line.width;
+                        x = maxWidth - line.width;
                     }
                     text.setAttribute("font-size", style.$.fontSize);
                     text.setAttribute("fill", style.$.color);
@@ -229,7 +241,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
 
                 var height = (lines.length - 1) * style.$.fontSize * style.$.lineHeight + this.$.measureResult.fontMeasure.height;
-                this.trigger('on:heightChanged', {height: height}, this);
+                this.trigger('on:sizeChanged', {height: height, width: maxWidth, textAlign: textAnchor}, this);
             }
 
         }
