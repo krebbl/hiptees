@@ -112,22 +112,29 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
             function getRelativeData(absoluteOffset) {
 
-                var length = 0;
+                var child,
+                    span,
+                    length = 0;
                 for (var i = 0; i < textContainer.childNodes.length; i++) {
-                    var child = textContainer.childNodes[i];
-                    length += child.textContent.length + 1;
-                    if (child.textContent == EMPTY_LINE_TEXT) {
-                        length -= 2;
-                    }
-                    if (length > absoluteOffset) {
-                        if (child.textContent == EMPTY_LINE_TEXT) {
-                            length += 2;
+                    child = textContainer.childNodes[i];
+                    for (var j = 0; j < child.childNodes.length; j++) {
+                        span = child.childNodes[j];
+                        length += span.textContent.length;
+
+                        if (span.textContent == EMPTY_LINE_TEXT) {
+                            length -= 2;
                         }
-                        return {
-                            node: child,
-                            offset: Math.max(0, absoluteOffset - (length - child.textContent.length - 1))
-                        };
+                        if (length >= absoluteOffset) {
+                            if (span.textContent == EMPTY_LINE_TEXT) {
+                                length += 2;
+                            }
+                            return {
+                                node: span,
+                                offset: Math.max(0, absoluteOffset - (length - span.textContent.length))
+                            };
+                        }
                     }
+                    length += 1;
                     if (child.hasAttribute("data-soft-line") && child.hasAttribute("data-char-break")) {
                         length--;
                     }
@@ -159,14 +166,12 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
             if ([8, 46, 13].indexOf(domEvent.which) > -1) {
                 var sel = this.getAbsoluteSelection();
-                console.log(sel);
                 e.preventDefault();
 
                 if (domEvent.which == 46) {
                     if (sel.anchorOffset == sel.focusOffset) {
                         sel.focusOffset = Math.max(0, sel.focusOffset + 1);
                     }
-
                     this.$.executor.storeAndExecute(new DeleteText({
                         textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
@@ -175,7 +180,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
                 } else if (domEvent.which == 8) {
                     if (sel.anchorOffset == sel.focusOffset) {
-                        sel.focusOffset = Math.max(0, sel.focusOffset - 1);
+                        sel.anchorOffset = Math.max(0, sel.focusOffset - 1);
                     }
 
                     this.$.executor.storeAndExecute(new DeleteText({
