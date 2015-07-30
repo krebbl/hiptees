@@ -62,19 +62,18 @@ define(['js/svg/SvgElement', 'js/core/List',
                 product.$.configurations.each(function (configuration) {
                     self._addConfiguration(configuration);
                 });
+                this.$snapLines = new Array(2);
+                for (var i = 0; i < this.$snapLines.length; i++) {
+                    this.$snapLines[i] = this.createComponent(SvgElement, {
+                        tagName: "line",
+                        componentClass: "snapline",
+                        stroke: "aqua",
+                        "stroke-opacity": 0
+                    });
 
-                this.$verticalSnapline = this.createComponent(SvgElement, {
-                    tagName: "line",
-                    componentClass: "snapline",
-                    stroke: "aqua",
-                    "stroke-opacity": 0,
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 1000
-                });
+                    this.addChild(this.$snapLines[i]);
 
-                this.addChild(this.$verticalSnapline);
+                }
 
 
 //                this._updateSnappingPoints();
@@ -100,7 +99,8 @@ define(['js/svg/SvgElement', 'js/core/List',
 
                 var self = this;
                 configurationViewer.bind('on:configurationMoved', function () {
-                    self.$verticalSnapline.set('stroke-opacity', 0);
+                    self.$snapLines[0].set('stroke-opacity', 0);
+                    self.$snapLines[1].set('stroke-opacity', 0);
                 });
 
                 this.$configurationViewers.push(configurationViewer);
@@ -122,7 +122,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             }
         },
 
-        getSnappingPoints: function (viewer) {
+        _prepareSnappingPointsForViewer: function (viewer) {
             var x = 0,
                 y = 0,
                 width = this.get('printArea.width'),
@@ -143,38 +143,40 @@ define(['js/svg/SvgElement', 'js/core/List',
                 }
             }
 
-            return snappingPoints;
+            this.$snappingPoints = snappingPoints;
         },
 
-        snapToLines: function (point, viewer) {
+        snapToLines: function (point, axis) {
             // collect snap lines
-            var snappingPoints = this.getSnappingPoints(viewer);
+            var snappingPoints = this.$snappingPoints;
 
-            var closestPoint = [false, false],
+            var closestPoint = false,
                 threshold = 2;
 
             // check if it snap to lines
-            for (var j = 0; j < snappingPoints[0].length; j++) {
-                var snapPoint = snappingPoints[0][j],
-                    diff = Math.abs(point[0] - snapPoint);
+            for (var j = 0; j < snappingPoints[axis].length; j++) {
+                var snapPoint = snappingPoints[axis][j],
+                    diff = Math.abs(point - snapPoint);
 
                 if (diff < threshold) {
-
-                    if ((diff < closestPoint[0] || closestPoint[0] === false)) {
-                        closestPoint[0] = snapPoint;
+                    if ((diff < closestPoint || closestPoint === false)) {
+                        closestPoint = snapPoint;
+                        break;
                     }
-
                 }
             }
-            // display one vertical snap line and one horizontal
-            if (closestPoint[0] !== false) {
-                this.$verticalSnapline.set({
-                    "stroke-opacity": 100,
-                    x1: closestPoint[0],
-                    x2: closestPoint[0]
+
+            // display snap line
+            if (closestPoint !== false) {
+                this.$snapLines[axis].set({
+                    "stroke-opacity": 1,
+                    x1: axis == 1 ? -1000 : closestPoint,
+                    x2: axis == 1 ? 1000 : closestPoint,
+                    y1: axis == 0 ? -1000 : closestPoint,
+                    y2: axis == 0 ? 1000 : closestPoint
                 });
             } else {
-                this.$verticalSnapline.set({
+                this.$snapLines[axis].set({
                     "stroke-opacity": 0
                 });
             }

@@ -123,6 +123,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 }
             }
 
+            this.$parent._prepareSnappingPointsForViewer(this);
+
             this.$moved = false;
 
             this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
@@ -235,38 +237,48 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             } else if (this.$action == "move") {
                 if (!event.touches || event.touches.length === 1) {
 
-
                     offset.x += diffX;
                     offset.y += diffY;
 
-                    offset.x = snapToPoints([
+                    var x = snapToPoints([
                         [offset.x, size.width * 0.5],
                         [offset.x, 0],
                         [offset.x, size.width]
-                    ]);
+                    ], 0);
+
+                    var y = snapToPoints([
+                        [offset.y, size.height * 0.5],
+                        [offset.y, 0],
+                        [offset.y, size.height]
+                    ], 1);
+
+                    offset.x = x;
+                    offset.y = y;
                 }
 
 
             }
 
-            function snapToPoints(points) {
-                var snapped = false;
+            function snapToPoints(points, a) {
+                var ret = points[0][0],
+                    snapped = false;
                 for (var i = 0; i < points.length; i++) {
                     var p = points[i];
-                    snapped = snapToPoint(p[0], p[1]);
+                    snapped = snapToPoint(p[0], p[1], a);
                     if (snapped !== false) {
-                        return snapped;
+                        ret = snapped;
+                        break;
                     }
                 }
-                return points[0][0];
+                return ret;
             }
 
-            function snapToPoint(p, diff) {
-                var snapped = self.$parent.snapToLines([p + diff], self);
-                if (snapped[0] !== false) {
-                    return snapped[0] - diff;
+            function snapToPoint(p, diff, a) {
+                var snapped = self.$parent.snapToLines(p + diff, a);
+                if (snapped !== false) {
+                    snapped -= diff;
                 }
-                return false;
+                return snapped;
             }
 
 
@@ -286,7 +298,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 event.preventDefault();
                 event.stopPropagation();
                 // only unbind if target wasnt the configuration itself
-                if(event.target == this.$._boundingBox.$el){
+                if (event.target == this.$._boundingBox.$el) {
                     this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
                 }
 
