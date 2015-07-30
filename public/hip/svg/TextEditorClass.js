@@ -237,13 +237,8 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 if (selection.anchorNode.parentNode.nextSibling) {
                     diff--;
                 }
-                console.log(line.text.length, textAfter.length, diff);
 
-//                var diff = Math.max(1, textAfter.length - this.$textBefore.length);
                 var insertedText = textAfter.substring(0, selection.focusOffset);
-
-//                console.log(insertedText);
-
 
                 self.$.executor.storeAndExecute(new InsertText({
                     textFlow: self.$.textFlow,
@@ -270,27 +265,27 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
         },
 
         _onkeyUp: function (e) {
-            var domEvent = e.domEvent;
-            if ([37].indexOf(domEvent.which) > -1) {
-                var selection = window.getSelection();
+            var domEvent = e.domEvent,
+                selection, focusNode, range;
+            if (37 == domEvent.which) {
+                selection = window.getSelection();
                 if (selection.type == "Caret" && selection.focusOffset > 1 && selection.focusNode.textContent === EMPTY_LINE_TEXT) {
                     e.preventDefault();
-                    var focusNode = selection.focusNode;
+                    focusNode = selection.focusNode;
                     selection.removeAllRanges();
-                    var range = new Range();
+                    range = new Range();
                     range.setStart(focusNode, 0);
                     selection.addRange(range);
                 }
-            }
-            if ([39].indexOf(domEvent.which) > -1) {
-                var selection = window.getSelection();
-                var focusNode = selection.focusNode;
+            } else if (39 == domEvent.which) {
+                selection = window.getSelection();
+                focusNode = selection.focusNode;
                 if (selection.type == "Caret" && selection.focusOffset > 0 && focusNode.textContent === EMPTY_LINE_TEXT) {
                     e.preventDefault();
                     selection.removeAllRanges();
-                    var next = focusNode.parentNode.nextSibling || focusNode.parentNode;
-                    var range = new Range();
-                    range.setStart(next.firstChild, 0);
+                    var next = focusNode.parentNode.parentNode.nextSibling || focusNode.parentNode.parentNode;
+                    range = new Range();
+                    range.setStart(next.firstChild.firstChild, 0);
                     selection.addRange(range);
                 }
 

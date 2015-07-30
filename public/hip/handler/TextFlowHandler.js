@@ -28,6 +28,11 @@ define(["hip/handler/CommandHandler",
                         textFlow = command.$.textFlow;
 
                     if (textFlow && (command instanceof DeleteText || command instanceof InsertText || command instanceof InsertLine)) {
+                        if(anchorOffset > focusOffset){
+                            var t = focusOffset;
+                            focusOffset = anchorOffset;
+                            anchorOffset = t;
+                        }
                         if (textFlow && command instanceof DeleteText) {
                             (new DeleteOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow)).doOperation();
 
