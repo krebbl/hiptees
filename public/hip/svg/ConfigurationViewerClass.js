@@ -142,7 +142,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         handleDocumentClick: function (e) {
-            if (this.$moved) {
+            if (this.$moved || this.$resized) {
                 e.stopPropagation();
             }
             this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
@@ -280,7 +280,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 return snapped;
             }
 
-
             change._offset = offset;
 
             this.set(change, {force: true});
@@ -310,9 +309,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                     offset: this.$._offset,
                     size: this.$resized ? this.$._size : null
                 }));
-
-                this.$moved = null;
-                this.$resized = null;
             }
 
             this.$originalSize = null;

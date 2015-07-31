@@ -27,12 +27,13 @@ define(["hip/handler/CommandHandler",
                         focusOffset = command.$.focusOffset,
                         textFlow = command.$.textFlow;
 
+                    if (anchorOffset > focusOffset) {
+                        var t = focusOffset;
+                        focusOffset = anchorOffset;
+                        anchorOffset = t;
+                    }
+
                     if (textFlow && (command instanceof DeleteText || command instanceof InsertText || command instanceof InsertLine)) {
-                        if(anchorOffset > focusOffset){
-                            var t = focusOffset;
-                            focusOffset = anchorOffset;
-                            anchorOffset = t;
-                        }
                         if (textFlow && command instanceof DeleteText) {
                             (new DeleteOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow)).doOperation();
 
@@ -98,11 +99,7 @@ define(["hip/handler/CommandHandler",
                             (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength()), textFlow, null, paragraphStyle)).doOperation();
                             this.trigger('on:paragraphStyleChanged', {textFlow: textFlow, paragraphStyle: paragraphStyle});
                         }
-
-
                     }
-
-
                 }
             }
         })

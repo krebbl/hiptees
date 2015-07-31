@@ -54,7 +54,9 @@ define(["hip/view/SettingsViewClass",
             if (configuration) {
                 var range = configuration.$.textFlow.$.selection || new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
                 var leafStyle = range.getCommonLeafStyle(configuration.$.textFlow);
-                this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000').toHSB());
+                if(leafStyle){
+                    this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000').toHSB());
+                }
             }
         },
 

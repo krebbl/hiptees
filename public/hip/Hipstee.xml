@@ -51,7 +51,7 @@
 
 
         <div class="footer">
-
+             <a onclick="addSomething">Add something</a>
         </div>
         <div class="setting-views">
             <view:TextSettingsView/>

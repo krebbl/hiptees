@@ -77,6 +77,14 @@ body {
   right: 0;
   height: 44px; }
 
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  background: black;
+  height: auto; }
+
 .settings-header {
   background-color: #eeeeee;
   height: 30px;

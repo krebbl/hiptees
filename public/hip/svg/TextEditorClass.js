@@ -29,10 +29,15 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                     width: rect.width,
                     height: rect.height
                 });
+
+            }
+            if (this.$.textFlow.$.selection) {
+                this.setCursor(this.$.textFlow.$.selection.$.anchorIndex, this.$.textFlow.$.selection.$.activeIndex);
             }
         },
 
         _renderMaxWidth: function () {
+            // IMPORTANT: DON'T REMOVE THIS METHOD
             // do nothing
         },
 
@@ -118,7 +123,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
         },
 
-        setCursor: function (absoluteOffset) {
+        setCursor: function (absoluteOffset, absoluteEnd) {
             var selection = window.getSelection(),
                 textContainer = this.$.$textContainer.$el;
 
@@ -164,6 +169,10 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             var relativeData = getRelativeData(absoluteOffset);
             if (relativeData) {
                 range.setStart(relativeData.node.firstChild || relativeData.node, relativeData.offset);
+                if (absoluteEnd != null) {
+                    relativeData = getRelativeData(absoluteEnd);
+                    range.setEnd(relativeData.node.firstChild || relativeData.node, relativeData.offset);
+                }
                 selection.addRange(range);
             }
         },

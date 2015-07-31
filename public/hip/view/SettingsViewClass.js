@@ -10,6 +10,7 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         defaults: {
             configuration: null,
             minimized: false,
+            visible: false,
             selectedSubContent: ''
         },
         $classAttributes: ['configuration', 'executor'],
@@ -24,6 +25,7 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
             this.bind('productHandler', 'on:configurationSelected', function (event) {
                 if (self.supportsConfiguration(event.$.configuration)) {
                     self.set('configuration', event.$.configuration);
+                    self.set('visible', true);
                     self.set('selected', true);
                     self.set('minimized', false);
                 } else {

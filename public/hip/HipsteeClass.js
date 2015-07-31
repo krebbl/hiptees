@@ -10,12 +10,13 @@ define(
         "hip/entity/Filter",
         "hip/command/ApplyFilter",
         "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText",
+        "hip/command/AddText",
         "text/entity/TextFlow",
         "text/entity/TextRange",
         "text/operation/ApplyStyleToElementOperation",
         "text/type/Style"
     ],
-    function (Application, List, Bindable, Design, Product, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
+    function (Application, List, Bindable, Design, Product, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, AddText, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
 
         var textObject = {
             textFlow: ["abc", "a"],
@@ -327,6 +328,19 @@ define(
                 return (f * width) + "px"
 
             },
+
+            addSomething: function () {
+                this.$.executor.storeAndExecute(new AddText({
+                    text: "New Text",
+                    paragraphStyle: {
+                        textAlign: "center",
+                        lineHeight: 1.3,
+                        fontSize: 30,
+                        fontFamily: "HammersmithOne"
+                    }
+                }));
+            },
+
             _handleClick: function () {
 
             },
