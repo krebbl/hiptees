@@ -228,7 +228,8 @@ ul {
   top: 0;
   bottom: -100px;
   left: 0;
-  right: 0; }
+  right: 0;
+  overflow: hidden; }
 
 .product-viewer-wrapper {
   position: absolute;

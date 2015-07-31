@@ -7,7 +7,7 @@
     <rect width="{printArea.width}"
           cid="border"
           height="{printArea.height}"
-          fill="white"
+          fill="none"
           />
 
 

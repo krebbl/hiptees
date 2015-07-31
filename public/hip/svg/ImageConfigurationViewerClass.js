@@ -1,5 +1,6 @@
 define(['xaml!hip/svg/ConfigurationViewer', 'hip/view/ImageFilterRenderer'], function (ConfigurationViewer, ImageFilterRenderer) {
-    var filterId = 1;
+    var filterId = 1,
+        gradId = 1;
 
     var flipMatrix = [1, 0, 0, 0, -1, 0, 0, 0, 1];
 
@@ -9,7 +10,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'hip/view/ImageFilterRenderer'], fun
             verticalStretchable: true,
             horizontalStretchable: true,
             keepAspectRatio: true,
-            _filterId: null
+            _filterId: null,
+            _gradId: null
         },
 
         inject: {
@@ -18,6 +20,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'hip/view/ImageFilterRenderer'], fun
 
         ctor: function (attr) {
             attr._filterId = "filter" + (++filterId);
+            attr._gradId = "grad" +(++gradId);
             this.callBase();
 
             this.bind('configuration.filter', 'change', this.updateFilter, this);

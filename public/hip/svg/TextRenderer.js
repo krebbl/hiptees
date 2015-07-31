@@ -96,7 +96,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                     child.setAttribute("transform", transform.replace(/translate\(([^,]+),[^,]+\)/, "translate($1," + y + ")"));
                 }
                 var height = (this.$el.childNodes.length - 1) * fontSize * lineHeight + this.$.measureResult.fontMeasure.height;
-                this.trigger('on:heightChanged', {height: height}, this);
+                this.trigger('on:sizeChanged', {height: height, width: this.$.maxWidth || this.$.measureResult.maxWidth}, this);
             }
 
         },

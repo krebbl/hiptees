@@ -1,0 +1,11 @@
+<parent:ProductViewerClass xmlns="js.svg"
+                           xmlns:parent="hip.svg" xmlns:js="js.core">
+
+
+    <image href="{productType.image}" width="100%" height="100%"/>
+
+    <g cid="printAreaContainer">
+        <parent:PrintAreaViewer cid="printAreaViewer" printArea="{productType.printArea}" product="{product}"/>
+    </g>
+
+</parent:ProductViewerClass>

@@ -31,7 +31,7 @@ define(
             defaults: {
 //                image: "/image-server/v1/productTypes/812/views/1/appearances/1,width=1000,height=1000",
 
-                image: "/example/shirt.png",
+                image: "./img/productType/tshirt.png",
                 size: {
                     width: 813.73,
                     height: 813.73,
@@ -39,7 +39,7 @@ define(
                 },
                 printArea: {
                     offset: {
-                        x: 241.213,
+                        x: 252.213,
                         y: 151.121,
                         unit: "mm"
                     },
@@ -49,33 +49,6 @@ define(
                 }
             }
         });
-
-        var fonts = new List([
-            {
-                name: 'Arial',
-                offset: 0.4
-            },
-            {
-                name: 'Verdana',
-                offset: 0
-            },
-            {
-                name: 'bikoblack',
-                offset: 0
-            },
-            {
-                name: 'denseregular',
-                offset: 0.9
-            },
-            {
-                name: 'Times',
-                offset: 0.35
-            },
-            {
-                name: 'Amatic SC',
-                offset: 0.5
-            }
-        ]);
 
         return Application.inherit({
             defaults: {
@@ -164,10 +137,10 @@ define(
 
                 var textConfiguration = new TextConfiguration({
                     textFlow: textFlow,
-//                    size: {
-//                        width: 100,
-//                        height: 30
-//                    },
+                    size: {
+                        width: 100,
+                        height: 30
+                    },
                     position: {
                         x: 10,
                         y: 0.2
@@ -219,7 +192,6 @@ define(
 //                product.$.configurations.add(textConfiguration2);
 
                 this.set('textConfiguration', textConfiguration);
-                this.set('fonts', fonts);
                 this.set('product', product);
             },
 

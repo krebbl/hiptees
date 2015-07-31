@@ -90,7 +90,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
 
         handlePointerDown: function (action, type, event) {
-//            event.preventDefault();
+            event.preventDefault();
 //            event.stopPropagation();
 
             this.$currentTarget = event.target;

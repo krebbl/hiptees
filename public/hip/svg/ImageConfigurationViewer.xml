@@ -2,7 +2,7 @@
                                       xmlns:parent="hip.svg" xmlns:js="js.core" xmlns:view="hip.view">
 
     <js:Content name="renderer">
-        <radialGradient id="grad" class="vignette" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+        <radialGradient id="${_gradId}" class="vignette" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
             <stop offset="0.5384615385" stop-color="#000000" stop-opacity="0"/>
             <stop offset="1" stop-color="#000000" stop-opacity="{configuration.filter.vignetteOpacity()}"/>
         </radialGradient>
@@ -17,7 +17,7 @@
                <!--href="{configuration.image.url}"-->
                <!--width="{_size.width}" height="{_size.height}" x="0" y="{_size.height}"-->
                <!--/>-->
-        <rect fill="url(#grad)" width="{_size.width}" height="{_size.height}">
+        <rect fill="url(#${_gradId})" width="{_size.width}" height="{_size.height}">
 
         </rect>
     </js:Content>

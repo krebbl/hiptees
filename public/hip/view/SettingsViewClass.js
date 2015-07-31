@@ -9,7 +9,8 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         supportedConfiguration: null,
         defaults: {
             configuration: null,
-            minimized: false
+            minimized: false,
+            selectedSubContent: ''
         },
         $classAttributes: ['configuration', 'executor'],
         inject: {
@@ -28,6 +29,7 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
                 } else {
                     self.set('minimized', false);
                     self.set('selected', false);
+                    self.set('selectedSubContent', "");
                 }
             });
         },
@@ -70,6 +72,14 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         minus: function (a, b) {
             return a - b;
 
-        }
+        },
+        _selectSubContent: function (subContent) {
+            this.set('selectedSubContent', subContent);
+        },
+
+        isSubContentSelected: function (subContent) {
+            return this.$.selectedSubContent == subContent;
+        }.onChange('selectedSubContent')
+
     })
 });

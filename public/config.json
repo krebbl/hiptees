@@ -5,6 +5,7 @@
         "hip/svg/ImageConfigurationViewer",
         "hip/svg/ImageFilter",
         "hip/svg/PrintAreaViewer",
+        "hip/svg/ProductViewer",
         "hip/svg/RectangleConfigurationViewer",
         "hip/svg/TextConfigurationViewer",
         "hip/svg/TextEditor",

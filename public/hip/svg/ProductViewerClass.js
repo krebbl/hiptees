@@ -6,7 +6,8 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
             width: 1000,
             height: 1000,
             product: null,
-            productType: "{product.productType}"
+            productType: "{product.productType}",
+            printArea: "{productType.printArea}"
         },
 
         inject: {
@@ -46,31 +47,6 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
                     height = productType.get('size.height');
 
                 this.setViewBox(0, 0, width, height);
-
-                if (this.$printAreaViewer) {
-                    // TODO: destroy and create a new one
-                }
-
-                if (!this.$printAreaViewer) {
-
-
-                    var printAreaViewer = this.createComponent(PrintAreaViewerSvg, {
-                        printArea: productType.get('printArea'),
-                        product: this.$.product
-                    });
-
-                    var group = this.createComponent(SvgElement, {
-                        tagName: 'g'
-                    });
-
-                    this.addChild(group);
-
-                    group.addChild(printAreaViewer);
-
-                    this.$printAreaViewer = group;
-                } else {
-                    // // TODO: set printArea
-                }
             } else {
                 // TODO: clear the stuff
             }

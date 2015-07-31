@@ -19,8 +19,7 @@ define(["hip/view/SettingsViewClass",
             leafStyle: null,
             componentClass: "settings-view text-settings-view",
             fontFamilies: fonts.fontFamilies,
-            alignments: ["left", "center", "right"],
-            selectedSubContent: ''
+            alignments: ["left", "center", "right"]
         },
 
         inject: {
@@ -88,43 +87,19 @@ define(["hip/view/SettingsViewClass",
             }));
         },
 
-        _selectSubContent: function (subContent) {
-            this.set('selectedSubContent', subContent);
-        },
-
-        isSubContentSelected: function (subContent) {
-            return this.$.selectedSubContent == subContent;
-        }.onChange('selectedSubContent'),
-
         _decreaseFontSize: function (by) {
             this._increaseFontSize(-1 * by);
         },
 
-        _updateTextSize: function (e) {
-            this.$.executor.execute(new ChangeStyle({
+        _previewStyle: function (key, value) {
+            this.$previewCommand = this.$previewCommand || new ChangeStyle();
+            var paragraphStyle = {};
+            paragraphStyle[key] = value;
+            this.$previewCommand.set({
                 textFlow: this.$.configuration.$.textFlow,
-                paragraphStyle: {
-                    'fontSize': e.$.value
-                }
-            }));
-        },
-
-        _updateLineHeight: function (e) {
-            this.$.executor.execute(new ChangeStyle({
-                textFlow: this.$.configuration.$.textFlow,
-                paragraphStyle: {
-                    'lineHeight': e.$.value
-                }
-            }));
-        },
-
-        _updateLetterSpacing: function (e) {
-            this.$.executor.execute(new ChangeStyle({
-                textFlow: this.$.configuration.$.textFlow,
-                paragraphStyle: {
-                    'letterSpacing': e.$.value
-                }
-            }));
+                paragraphStyle: paragraphStyle
+            });
+            this.$.executor.execute(this.$previewCommand);
         },
 
         _updateColor: function (color) {
