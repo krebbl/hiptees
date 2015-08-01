@@ -11,6 +11,7 @@
         "hip/svg/TextEditor",
         "hip/svg/TextMeasurer",
         "hip/view/ImageSettingsView",
+        "hip/view/SettingsView",
         "hip/view/TextSettingsView",
         "js/svg/SvgDescriptor",
         "js/ui/AutoSuggestionBox",

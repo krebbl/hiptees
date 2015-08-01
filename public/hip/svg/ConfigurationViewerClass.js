@@ -42,12 +42,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.callBase();
 
             var self = this;
-            this.bind('productHandler', 'change:selectedConfiguration', function (e) {
-                if (e.$ === self.$.configuration) {
-                    self.set('selected', true);
-                } else {
-                    self.set('selected', false)
-                }
+            this.bind('productHandler', 'on:configurationSelected', function (e) {
+                self.set('selected', e.$.configuration === self.$.configuration);
             });
         },
         _onDomAdded: function () {
@@ -90,9 +86,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
 
         handlePointerDown: function (action, type, event) {
-            event.preventDefault();
-//            event.stopPropagation();
 
+
+            if (!this.$stage.$browser.isIOS) {
+                event.preventDefault();
+            }
+//            event.stopPropagation();
             this.$currentTarget = event.target;
             this.$action = action;
             this.$resizeType = type;
@@ -114,6 +113,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
             if (!this.$upDelegate) {
                 this.$upDelegate = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     self.handlePointerUp(e);
                 }
             }
@@ -286,23 +288,19 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         handlePointerUp: function (event) {
-            this.$preventClick = false;
+            this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
+            this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
+
+            this.$preventClick = !this.$.selected;
 
             if (this.$moved || this.$resized) {
                 this.trigger('on:configurationMoved', {configuration: this.$.configuration});
-                this.$preventClick = true;
-                event.preventDefault();
-                event.stopPropagation();
                 // only unbind if target wasnt the configuration itself
                 if (event.target == this.$._boundingBox.$el) {
                     this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
                 }
 
                 this._updateSnapPoints();
-
-                this.$.executor.storeAndExecute(new SelectConfiguration({
-                    configuration: this.$.configuration
-                }));
 
                 this.$.executor.storeAndExecute(new MoveConfiguration({
                     configuration: this.$.configuration,
@@ -311,12 +309,13 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 }));
             }
 
+            this.$.executor.storeAndExecute(new SelectConfiguration({
+                configuration: this.$.configuration
+            }));
+
             this.$originalSize = null;
             this.$originalOffset = null;
             this.$startLength = null;
-
-            this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
-            this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
         },
 
         _render_offset: function (offset) {
@@ -339,10 +338,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
         _handleClick: function (e) {
             this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
-
-            this.$.executor.storeAndExecute(new SelectConfiguration({
-                configuration: this.$.configuration
-            }));
 
             e.stopPropagation();
         },

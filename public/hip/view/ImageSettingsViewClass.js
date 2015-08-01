@@ -1,12 +1,12 @@
-define(["hip/view/SettingsViewClass",
+define(["xaml!hip/view/SettingsView",
     "underscore",
     "hip/command/ApplyFilter",
     "hip/entity/ImageConfiguration",
     "hip/entity/Filter",
-    'json!hip/asset/filters'], function (SettingsViewClass, _, ApplyFilter, ImageConfiguration, Filter, filters) {
+    'json!hip/asset/filters'], function (SettingsView, _, ApplyFilter, ImageConfiguration, Filter, filters) {
 
 
-    return SettingsViewClass.inherit({
+    return SettingsView.inherit({
         defaults: {
             componentClass: "settings-view image-settings-view",
             presets: filters.filters,

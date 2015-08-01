@@ -10,8 +10,9 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         defaults: {
             configuration: null,
             minimized: false,
+            selected: false,
             visible: false,
-            selectedSubContent: ''
+            subContentSelected: false
         },
         $classAttributes: ['configuration', 'executor'],
         inject: {
@@ -19,29 +20,38 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
             productHandler: ProductHandler
         },
 
+        events: ['on:closeClicked'],
+
         ctor: function () {
             this.callBase();
             var self = this;
             this.bind('productHandler', 'on:configurationSelected', function (event) {
                 if (self.supportsConfiguration(event.$.configuration)) {
+//                    var hadConfiguration = !!self.$.configuration;
                     self.set('configuration', event.$.configuration);
                     self.set('visible', true);
                     self.set('selected', true);
-                    self.set('minimized', false);
+//                    self.set('minimized', self.$.minimized && hadConfiguration);
                 } else {
-                    self.set('minimized', false);
                     self.set('selected', false);
-                    self.set('selectedSubContent', "");
+//                    self.set('minimized', false);
+                    self._selectSubContent(null);
                 }
             });
         },
 
         toggle: function () {
-            this.set('minimized', !this.$.minimized);
+            this.trigger('on:closeClicked', {}, this);
         },
 
         cloneConfiguration: function () {
             this.$.executor.storeAndExecute(new CloneConfiguration({
+                configuration: this.$.configuration
+            }));
+        },
+
+        removeConfiguration: function () {
+            this.$.executor.storeAndExecute(new RemoveConfiguration({
                 configuration: this.$.configuration
             }));
         },
@@ -66,22 +76,16 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
             return this.supportedConfiguration && configuration instanceof this.supportedConfiguration;
         },
 
-        _deleteConfiguration: function () {
-            this.$.executor.storeAndExecute(new RemoveConfiguration({
-                configuration: this.$.configuration
-            }));
-        },
         minus: function (a, b) {
             return a - b;
 
         },
         _selectSubContent: function (subContent) {
-            this.set('selectedSubContent', subContent);
-        },
-
-        isSubContentSelected: function (subContent) {
-            return this.$.selectedSubContent == subContent;
-        }.onChange('selectedSubContent')
+            if (subContent) {
+                this.$.placeholder.set('content', subContent);
+            }
+            this.set('subContentSelected', !!subContent);
+        }
 
     })
 });

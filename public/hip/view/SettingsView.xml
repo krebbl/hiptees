@@ -1,0 +1,25 @@
+<view:SettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
+                            xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+
+    <div class="settings-header" selected="{not(subContentSelected)}">
+        <a class="back-btn" onclick="_selectSubContent(null)">
+            <i class="fa fa-angle-left"/> Back
+
+        </a>
+        <a class="remove-btn" onclick="removeConfiguration()">
+            <i class="fa fa-trash-o"/>
+        </a>
+        <a class="clone-btn" onclick="cloneConfiguration()">
+            <i class="fa fa-files-o"/>
+        </a>
+
+        <a class="minimize-btn" onclick="toggle()">
+            Close
+            <i class="fa fa-chevron-down"/>
+        </a>
+
+    </div>
+    <ui:ContentPlaceHolder name="settings" class="settings-content" selected="{not(subContentSelected)}"/>
+    <ui:ContentPlaceHolder class="settings-sub-content" selected="{subContentSelected}" cid="placeholder"/>
+
+</view:SettingsViewClass>

@@ -7,11 +7,14 @@ define([
     "hip/command/CloneConfiguration",
     "hip/command/ChangeOrder",
     "hip/command/AddText",
+    "hip/command/AddImageFile",
     "hip/entity/TextConfiguration",
+    "hip/entity/ImageConfiguration",
+    "hip/model/Design",
     "text/entity/TextRange",
     "text/operation/ApplyStyleToElementOperation",
     "text/entity/TextFlow"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, TextConfiguration, TextRange, ApplyStyleToElementOperation, TextFlow) {
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, TextConfiguration, DesignConfiguration, Design, TextRange, ApplyStyleToElementOperation, TextFlow) {
     return Handler.inherit({
         defaults: {
             product: null,
@@ -22,7 +25,8 @@ define([
             return command instanceof ProductCommand;
         },
         handleCommand: function (command) {
-            var configuration = command.$.configuration;
+            var configuration = command.$.configuration,
+                offset;
             if (command instanceof RemoveConfiguration) {
                 if (this.$.product && command.$.configuration) {
                     // only remove it if it was found
@@ -77,20 +81,12 @@ define([
                 }
             } else if (command instanceof AddText) {
 
-                var textFlow = TextFlow.initializeFromText(command.$.text || "TEXT"),
-                    offset = {x: 0, y: 0};
+                var textFlow = TextFlow.initializeFromText(command.$.text || "TEXT");
 
-                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, 2), textFlow, command.$.leafStyle || {}, command.$.paragraphStyle || {})).doOperation();
+                offset = this._convertOffset(command.$.offset);
 
-                if (command.$.offset) {
-                    if (command.$.offset.x <= 1) {
-                        offset.x = this.get('product.productType.printArea.width') * command.$.offset.x;
-                        offset.y = this.get('product.productType.printArea.height') * command.$.offset.y;
-                    } else {
-                        offset.x = command.$.offset.x;
-                        offset.y = command.$.offset.y;
-                    }
-                }
+                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, command.$.leafStyle || {}, command.$.paragraphStyle || {})).doOperation();
+
 
                 configuration = new TextConfiguration({
                     textFlow: textFlow,
@@ -101,9 +97,103 @@ define([
 
                 this.trigger('on:configurationAdded', {configuration: configuration});
                 this._selectConfiguration(configuration);
+            } else if (command instanceof AddImageFile) {
+                var file = command.$.file;
+
+                var self = this,
+                    reader = new FileReader();
+
+                offset = this._convertOffset(command.$.offset);
+
+                var image = new Image();
+
+                image.onload = function (evt) {
+                    var design = new Design({
+                        id: null,
+                        image: {
+                            original: image.src,
+                            url: self._resizeImage(image, 800, 800),
+                            small: self._resizeImage(image, 100, 100)
+                        },
+                        size: {
+                            width: image.width,
+                            height: image.height
+                        }
+                    });
+
+                    configuration = new DesignConfiguration({
+                        size: {
+                            width: self.get('product.productType.printArea.width'),
+                            height: design.getAspectRatio() * self.get('product.productType.printArea.width')
+                        },
+                        design: design
+                    });
+
+                    self.$.product.$.configurations.add(configuration);
+
+                    self.trigger('on:configurationAdded', {configuration: configuration});
+
+                    self._selectConfiguration(configuration);
+                };
+
+
+                reader.onload = function (evt) {
+                    image.src = evt.target.result;
+                };
+
+                reader.readAsDataURL(file);
+
             }
 
         },
+
+        _convertOffset: function (offset) {
+            var ret = {x: 0, y: 0};
+
+            if (offset) {
+                if (offset.x <= 1) {
+                    ret.x = this.get('product.productType.printArea.width') * offset.x;
+                    ret.y = this.get('product.productType.printArea.height') * offset.y;
+                } else {
+                    ret.x = offset.x;
+                    ret.y = offset.y;
+                }
+            }
+
+            return ret;
+        },
+
+        _resizeImage: function (image, maxWidth, maxHeight) {
+            var width = image.width;
+            var height = image.height;
+
+            if (width > height) {
+                if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxHeight) {
+                    width *= maxHeight / height;
+                    height = maxHeight;
+                }
+            }
+
+            if (!this.$canvas) {
+                this.$canvas = this.$stage.$document.createElement("canvas");
+                this.$stage.$document.body.appendChild(this.$canvas);
+            }
+
+
+            this.$canvas.width = width;
+            this.$canvas.height = height;
+            var ctx = this.$canvas.getContext("2d");
+            ctx.drawImage(image, 0, 0, width, height);
+
+
+            return this.$canvas.toDataURL();
+        },
+
         _selectConfiguration: function (configuration) {
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});

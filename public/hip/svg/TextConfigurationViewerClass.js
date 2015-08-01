@@ -17,7 +17,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
         ctor: function () {
             this.callBase();
 
-//            this.bind('svgTextEditor', 'on:blur', this._disableEditing, this);
+            if (this.$stage.$browser.isIOS) {
+                this.bind('svgTextEditor', 'on:blur', this._disableEditing, this);
+            }
         },
 
         _commitSelected: function (selected) {
@@ -76,9 +78,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
 
             if (this.$.svgTextEditor.$.textFlow == this.$.configuration.$.textFlow) {
                 var rect = this.getBoundRectInPx();
-                this.$.svgTextEditor.set({left: rect.left, width: rect.width, height: rect.height});
+                this.$.svgTextEditor.set({left: rect.left + window.scrollX, width: rect.width, height: rect.height});
             }
-
         },
 
         _disableEditing: function () {
@@ -86,17 +87,18 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
                 this.$.svgTextEditor.set('visible', false);
                 this.$.textRenderer.set('visible', true);
                 this.removeClass("editing");
+
+                this._updateSnapPoints();
             }
         },
 
 
-        _handleClick: function () {
-            if (this.$.selected && !this.$moved && !this.$preventClick) {
+        handlePointerUp: function () {
+            console.log("UP");
+            if (this.$.selected && !this.$moved && !this.$resized) {
 
                 var rect = this.getBoundRectInPx();
                 var root = this.getSvgRoot();
-
-                console.log(rect.width);
 
                 this.$.svgTextEditor.set({
 //                    visible: true,

@@ -11,12 +11,13 @@ define(
         "hip/command/ApplyFilter",
         "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText",
         "hip/command/AddText",
+        "hip/command/AddImageFile",
         "text/entity/TextFlow",
         "text/entity/TextRange",
         "text/operation/ApplyStyleToElementOperation",
         "text/type/Style"
     ],
-    function (Application, List, Bindable, Design, Product, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, AddText, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
+    function (Application, List, Bindable, Design, Product, ImageConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, AddText, AddImageFile, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
 
         var textObject = {
             textFlow: ["abc", "a"],
@@ -62,7 +63,9 @@ define(
                 selectionHandler: null,
                 selectedConfiguration: "{productHandler.selectedConfiguration}",
                 textColor: "{selectedConfiguration.color}",
-                fontSize: "{selectedConfiguration.fontSize}"
+                fontSize: "{selectedConfiguration.fontSize}",
+                settingsSelected: false,
+                addViewSelected: false
             },
             /**
              *  initializes the application variables
@@ -192,12 +195,13 @@ define(
                 product.$.configurations.add(textConfiguration);
 //                product.$.configurations.add(textConfiguration2);
 
-                this.set('textConfiguration', textConfiguration);
                 this.set('product', product);
             },
 
             _commitSelectedConfiguration: function (selected) {
-//                console.log(selected);
+                if (!selected) {
+                    this.set('settingsSelected', false);
+                }
             },
 
             _selectFont: function (font) {
@@ -310,17 +314,6 @@ define(
 
             },
 
-            activeControl: function () {
-                var config = this.$.selectedConfiguration;
-                if (!config) {
-                    return "none";
-                } else if (config instanceof TextConfiguration) {
-                    return "text-selected";
-                } else if (config instanceof ImageConfiguration) {
-                    return "image-selected";
-                }
-            }.onChange('selectedConfiguration'),
-
             fontListWidth: function (fonts, width) {
 
                 var f = fonts ? fonts.length : 0;
@@ -329,21 +322,66 @@ define(
 
             },
 
-            addSomething: function () {
-                this.$.executor.storeAndExecute(new AddText({
-                    text: "New Text",
-                    paragraphStyle: {
-                        textAlign: "center",
-                        lineHeight: 1.3,
-                        fontSize: 30,
-                        fontFamily: "HammersmithOne"
-                    }
+            add: function (what) {
+                if (what == "text") {
+                    this.$.executor.storeAndExecute(new AddText({
+                        text: "New Text",
+                        paragraphStyle: {
+                            textAlign: "center",
+                            lineHeight: 1.3,
+                            fontSize: 30,
+                            fontFamily: "HammersmithOne"
+                        },
+                        leafStyle: {
+                            color: "#000000"
+                        }
+                    }));
+                } else if (what == "image") {
+                    // Simulate click on the element.
+                    var evt = document.createEvent('Event');
+                    evt.initEvent('click', true, true);
+                    this.$.fileInput.$el.dispatchEvent(evt);
+                }
+
+                this.set('addViewSelected', false);
+            },
+
+            handleUpload: function (e) {
+                this.$.executor.storeAndExecute(new AddImageFile({
+                    file: e.domEvent.target.files[0]
                 }));
+            },
+
+            showSettings: function () {
+                this.set('settingsSelected', true);
+            },
+
+            hideSettings: function () {
+                this.set('settingsSelected', false);
+            },
+
+            showAddView: function () {
+                this.set('addViewSelected', true);
+            },
+
+            hideAddView: function () {
+                this.set('addViewSelected', false);
             },
 
             _handleClick: function () {
 
             },
+
+            statusClass: function () {
+                var ret = "";
+
+                if (this.$.selectedConfiguration) {
+                    ret += "configuration-selected";
+                }
+
+                return ret;
+            }.onChange('selectedConfiguration'),
+
             createImage: function () {
                 var image = this.$.productViewer.createImage();
                 document.body.appendChild(image);

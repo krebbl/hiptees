@@ -15,11 +15,11 @@
         <handler:TextFlowHandler cid="textFlowHandler"/>
         <svg:TextMeasurer/>
         <svg:TextEditor/>
-        <view:ImageFilterRenderer />
+        <view:ImageFilterRenderer/>
 
     </js:Injection>
 
-    <div class="container">
+    <div class="container {statusClass()}">
         <div class="nav-bar">
             <div class="header-back">b</div>
             <div class="header-title">Title</div>
@@ -49,14 +49,42 @@
 
         <!--</div>-->
 
+        <input cid="fileInput" type="file" onchange="handleUpload"/>
 
         <div class="footer">
-             <a onclick="addSomething">Add something</a>
+            <a onclick="showSettings" enabled="{selectedConfiguration}">
+                <i class="fa fa-pencil"/>
+                Edit
+            </a>
+            <a onclick="showAddView">
+                <i class="fa fa-plus"></i>
+                Add
+            </a>
+
         </div>
-        <div class="setting-views">
-            <view:TextSettingsView/>
-            <view:ImageSettingsView/>
+        <div class="setting-views" selected="{settingsSelected}">
+            <view:TextSettingsView oncloseClicked="hideSettings"/>
+            <view:ImageSettingsView oncloseClicked="hideSettings"/>
         </div>
+
+        <div class="add-view" selected="{addViewSelected}">
+            <div>
+                <a onclick="add('text')">
+                    <i class="fa fa-font"/>
+                    Add Text
+                </a>
+                <a onclick="add('image')">
+                    <i class="fa fa-picture-o"/>
+                    Add Image
+                </a>
+            </div>
+
+            <a class="close-btn" onclick="hideAddView">
+                Close
+                <i class="fa fa-chevron-down"/>
+            </a>
+        </div>
+
     </div>
 
 

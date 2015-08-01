@@ -1,4 +1,4 @@
-define(["hip/view/SettingsViewClass",
+define(["xaml!hip/view/SettingsView",
     "json!font/index",
     "underscore",
     "hip/entity/TextConfiguration",
@@ -6,10 +6,10 @@ define(["hip/view/SettingsViewClass",
     "text/entity/TextRange",
     "hip/handler/TextFlowHandler",
     "js/type/Color"
-], function (SettingsViewClass, fonts, _, TextConfiguration, ChangeStyle, TextRange, TextFlowHandler, Color) {
+], function (SettingsView, fonts, _, TextConfiguration, ChangeStyle, TextRange, TextFlowHandler, Color) {
 
 
-    return SettingsViewClass.inherit({
+    return SettingsView.inherit({
 
         supportedConfiguration: TextConfiguration,
 

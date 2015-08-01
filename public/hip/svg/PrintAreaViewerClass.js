@@ -73,22 +73,16 @@ define(['js/svg/SvgElement', 'js/core/List',
                     self.$.snapLines.$children[1].set('stroke-opacity', 0);
                 });
 
-                this.$configurationViewers.push(configurationViewer);
                 this.$.configurations.addChild(configurationViewer);
             }
 
         },
 
         _removeConfiguration: function (configuration, destroy) {
-            for (var i = 0; i < this.$configurationViewers.length; i++) {
-                var viewer = this.$configurationViewers[i];
-                if (viewer.$.configuration == configuration) {
-                    this.removeChild(viewer);
-                    viewer.destroy();
-                    this.$configurationViewers.splice(1, 1);
-
-                    break;
-                }
+            var viewer = this.getViewerForConfiguration(configuration);
+            if(viewer){
+                this.$.configurations.removeChild(viewer);
+                viewer.destroy();
             }
         },
 
@@ -102,8 +96,8 @@ define(['js/svg/SvgElement', 'js/core/List',
                     [y, y + height * 0.5, y + height]
                 ];
 
-            for (var i = 0; i < this.$configurationViewers.length; i++) {
-                var configViewer = this.$configurationViewers[i];
+            for (var i = 0; i < this.$.configurations.$children.length; i++) {
+                var configViewer = this.$.configurations.$children[i];
                 if (configViewer !== viewer) {
                     var confSnappingPoints = configViewer.getSnappingPoints();
 
@@ -157,8 +151,8 @@ define(['js/svg/SvgElement', 'js/core/List',
 
         getViewerForConfiguration: function (configuration) {
 
-            for (var i = 0; i < this.$configurationViewers.length; i++) {
-                var configViewer = this.$configurationViewers[i];
+            for (var i = 0; i < this.$.configurations.$children.length; i++) {
+                var configViewer = this.$.configurations.$children[i];
                 if (configViewer.$.configuration === configuration) {
                     return configViewer;
                 }

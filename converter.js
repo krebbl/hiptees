@@ -9,9 +9,9 @@ module.exports = {
             size = options.size || 300,
             file = options.file || "Unknown",
             label = options.label || "Unknown",
-            fill = options.fill || "black";
+            fill = options.fill || "white";
 
-        exec('convert -background none -fill ' + fill + ' -font ' + src + ' -pointsize ' + size + ' -resize x120 label:"' + label + '" ' + dest + '.png', function (err, stdout, stderr) {
+        exec('convert -background transparent -fill ' + fill + ' -font ' + src + ' -pointsize ' + size + ' -resize x60 label:"' + label + '" ' + dest + '.png', function (err, stdout, stderr) {
             if (err) {
 
             }
