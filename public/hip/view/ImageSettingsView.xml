@@ -6,7 +6,7 @@
             <js:Template name="item">
                 <li>
                     <a onclick="_selectPreset(item)">
-                        <view:FilteredImage src="{configuration.design.image.small}" filter="${createFilter(item)}"
+                        <view:FilteredImage src="{configuration.design.resources.SMALL}" filter="${createFilter(item)}"
                                             width="50" height="auto"/>
                     </a>
                 </li>

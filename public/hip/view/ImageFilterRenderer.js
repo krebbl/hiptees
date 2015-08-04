@@ -15,6 +15,7 @@ define(["js/core/Component", "js/core/Base"], function (Component, Base) {
 
                 var self = this;
 
+                image.crossOrigin = "Anonymous";
                 image.onload = function () {
                     try {
                         self.$canvas = self.$canvas || fx.canvas();

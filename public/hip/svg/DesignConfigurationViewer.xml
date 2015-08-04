@@ -8,7 +8,7 @@
         </radialGradient>
 
         <image cid="renderedImage" width="{_size.width}"
-               href="{configuration.design.image.url}"
+               href="{configuration.design.resources.SCREEN}"
                height="{_size.height}" x="0" y="0"/>
         <!-- TODO: only use this on server side rendering -->
         <!--<parent:ImageFilter id="${_filterId}" filter="{configuration.filter}"/>-->

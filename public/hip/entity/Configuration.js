@@ -15,7 +15,10 @@ define(["js/data/Entity", "js/core/List"], function (Entity, List) {
             size: {
                 type: Object,
                 required: false
-            }
-        }
+            },
+            type: String
+        },
+
+        idField: "id"
     })
 });

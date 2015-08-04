@@ -55,31 +55,38 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
             }
 
             var size = {},
-                offset = _.clone(this.$._offset);
+                anchor = this.$._anchor;
 
-            var width = this.get('_size.width') || 0;
+            var width = this.get('_size.width');
             size.height = e.$.height;
             if (this.$.maxWidth == null) {
                 size.width = e.$.width;
 
                 if (e.$.textAlign == "center") {
-                    offset.x -= (e.$.width - width) * 0.5;
+                    anchor.x = 0.5;
                 } else if (e.$.textAlign == "right") {
-                    offset.x -= (e.$.width - width);
+                    anchor.x = 1;
                 }
             } else {
                 size.width = this.$._size.width;
             }
 
             this.set({
-                _size: size,
-                _offset: offset
+                _anchor: anchor,
+                _size: size
             });
 
             if (this.$.svgTextEditor.$.textFlow == this.$.configuration.$.textFlow) {
                 var rect = this.getBoundRectInPx();
                 this.$.svgTextEditor.set({left: rect.left + window.scrollX, width: rect.width, height: rect.height});
             }
+        },
+
+        anchor: function () {
+            return {
+                x: 0.5,
+                y: 0
+            };
         },
 
         _disableEditing: function () {

@@ -3,7 +3,8 @@
                           xmlns:conf="js.conf">
 
     <js:Router cid="router">
-        <conf:RouteConfiguration route="^editor" onexec="loadProduct"/>
+        <conf:RouteConfiguration route="^editor$" onexec="loadEditor"/>
+        <conf:RouteConfiguration route="^editor\/(\w+)" onexec="loadProduct"/>
     </js:Router>
 
     <js:Content name="header">
@@ -30,6 +31,11 @@
             <a onclick="showAddView">
                 <i class="fa fa-plus"/>
                 Add
+            </a>
+
+            <a onclick="saveProduct">
+                <i class="fa fa-basket"/>
+                Buy
             </a>
 
         </div>

@@ -3,6 +3,7 @@ define([
     "hip/command/ProductCommand",
     "hip/command/RemoveConfiguration",
     "hip/command/SaveProduct",
+    "hip/command/LoadProduct",
     "hip/command/SelectConfiguration",
     "hip/command/CloneConfiguration",
     "hip/command/ChangeOrder",
@@ -12,21 +13,26 @@ define([
     "hip/entity/TextConfiguration",
     "hip/entity/DesignConfiguration",
     "hip/model/Design",
+    "hip/model/Product",
     "hip/util/CloudinaryImageUploader",
+    "xaml!hip/data/HipDataSource",
+    "js/data/Collection",
     "text/entity/TextRange",
     "text/operation/ApplyStyleToElementOperation",
     "text/entity/TextFlow",
     "flow",
     "underscore"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, ChangeProductType, TextConfiguration, DesignConfiguration, Design, ImageUploader, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, ChangeProductType, TextConfiguration, DesignConfiguration, Design, Product, ImageUploader, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
     return Handler.inherit({
         defaults: {
+            api: null,
             product: null,
             selectedConfiguration: null,
             savingProduct: false
         },
 
         inject: {
+            api: HipDataSource,
             imageUploader: ImageUploader
         },
 
@@ -35,7 +41,8 @@ define([
         },
         handleCommand: function (command) {
             var configuration = command.$.configuration,
-                offset;
+                offset,
+                self = this;
             if (command instanceof RemoveConfiguration) {
                 if (this.$.product && command.$.configuration) {
                     // only remove it if it was found
@@ -63,6 +70,7 @@ define([
 
                     var clone = configuration.clone();
                     clone.set({
+                        id: this._generateDesignId(),
                         offset: {
                             x: configuration.get('offset.x') + 10,
                             y: configuration.get('offset.y') + 10
@@ -99,6 +107,7 @@ define([
 
 
                 configuration = new TextConfiguration({
+                    id: this._generateDesignId(),
                     textFlow: textFlow,
                     offset: offset
                 });
@@ -110,22 +119,25 @@ define([
             } else if (command instanceof AddImageFile) {
                 var file = command.$.file;
 
-                var self = this,
-                    reader = new FileReader();
+                var reader = new FileReader();
 
                 offset = this._convertOffset(command.$.offset);
 
                 var image = new Image();
 
                 image.onload = function (evt) {
-                    var design = new Design({
+                    var designs = self.$.api.createCollection(Collection.of(Design));
+
+                    var design = designs.createItem();
+
+                    design.set({
                         id: null,
                         file: file,
                         type: "image",
-                        image: {
+                        resources: {
                             original: image.src,
-                            url: self._resizeImage(image, 800, 800),
-                            small: self._resizeImage(image, 100, 100)
+                            SCREEN: self._resizeImage(image, 800, 800),
+                            SMALL: self._resizeImage(image, 100, 100)
                         },
                         size: {
                             width: image.width,
@@ -133,10 +145,17 @@ define([
                         }
                     });
 
+                    var printAreaWidth = self.get('product.productType.printArea.size.width');
+                    var height = design.getAspectRatio() * self.get('product.productType.printArea.size.width');
                     configuration = new DesignConfiguration({
+                        id: self._generateDesignId(),
+                        offset: {
+                            x: printAreaWidth * 0.5,
+                            y: height * 0.5
+                        },
                         size: {
-                            width: self.get('product.productType.printArea.size.width'),
-                            height: design.getAspectRatio() * self.get('product.productType.printArea.size.width')
+                            width: printAreaWidth,
+                            height: height
                         },
                         design: design
                     });
@@ -162,10 +181,53 @@ define([
                     // TODO: convert configurations to new productType
 
                 }
-                this.$.product.set('productType', command.$.productType);
+                var defaultAppearance = command.$.productType.$.appearances.find(function (app) {
+                    return app.$.id == command.$.productType.$.defaultAppearanceId
+                });
+
+                this.$.product.set({
+                    'appearance': defaultAppearance,
+                    'productType': command.$.productType
+                });
                 this.trigger('on:productTypeChanged', {productType: command.$.productType});
+            } else if (command instanceof LoadProduct) {
+
+                var products = this.$.api.createCollection(Collection.of(Product));
+                var product = products.createItem(command.$.productId);
+
+
+                flow()
+                    .seq("product", function (cb) {
+                        product.fetch({}, cb);
+                    })
+                    .seq("productType", function (cb) {
+                        this.vars.product.$.productType.fetch({}, cb);
+                    })
+                    .seq(function (cb) {
+                        var designs = [];
+                        this.vars.product.$.configurations.each(function (configuration) {
+                            if (configuration.$.design) {
+                                designs.push(configuration.$.design);
+                            }
+                        });
+                        flow()
+                            .seqEach(designs, function (d, cb) {
+                                d.fetch(cb);
+                            })
+                            .exec(cb);
+                    })
+                    .exec(function (err, results) {
+                        if (!err) {
+                            self.set('product', results.product);
+                        }
+                    });
+
             }
 
+        },
+
+        _generateDesignId: function () {
+            return '_' + Math.random().toString(36).substr(2, 9)
         },
 
         _convertOffset: function (offset) {
@@ -226,29 +288,27 @@ define([
             product.$.configurations.each(function (configuration) {
                 if (configuration instanceof DesignConfiguration) {
                     if (configuration.$.design.isNew()) {
-                        newDesigns.push(newDesigns);
+                        newDesigns.push(configuration.$.design);
                     }
                 }
             });
 
             // filter out duplicate designs
             newDesigns = _.uniq(newDesigns, false, function (a, b) {
-                return a.$.file === b.$.file;
+                return  a && b && a.$.file === b.$.file;
             });
 
             var self = this;
 
             flow()
-                .seq(newDesigns, function (design, cb) {
+                .seqEach(newDesigns, function (design, cb) {
                     flow()
                         .seq(function (cb) {
                             design.set('resourceProvider', self.$.imageUploader.$.name);
                             design.save({}, cb)
                         })
                         .seq(function (cb) {
-                            var options = {
-                                type: "image"
-                            };
+                            var options = {};
 
                             self.$.imageUploader.uploadFile(design.$.id, design.$.file, options, cb);
                         })

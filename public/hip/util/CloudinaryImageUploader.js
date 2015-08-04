@@ -3,7 +3,7 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore"], f
     return Component.inherit({
 
         defaults: {
-            formDataUrl: "/cloudinaryFormData",
+            formDataUrl: "/api/v1/cloudinaryFormData",
             baseUrl: "https://api.cloudinary.com/v1_1/",
             cloudName: "drbxi29nk",
             name: "cloudinary"

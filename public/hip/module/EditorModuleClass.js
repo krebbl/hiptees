@@ -3,9 +3,11 @@ define([
     "hip/command/AddText",
     "hip/command/AddImageFile",
     "hip/command/ChangeProductType",
+    "hip/command/SaveProduct",
+    "hip/command/LoadProduct",
     "hip/model/ProductType",
     "js/data/Collection"
-], function (BaseModule, AddText, AddImageFile, ChangeProductType, ProductType, Collection) {
+], function (BaseModule, AddText, AddImageFile, ChangeProductType, SaveProduct, LoadProduct, ProductType, Collection) {
     return BaseModule.inherit({
         defaults: {
             productHandler: null,
@@ -19,18 +21,21 @@ define([
 
         },
 
+        _commitProduct: function(product){
+            console.log(product);
+        },
+
         _commitSelectedConfiguration: function (selected) {
             if (!selected) {
                 this.set('settingsSelected', false);
             }
         },
 
-        loadProduct: function (routeContext) {
-
+        loadEditor: function (routeContext) {
             if (!this.get('product.productType')) {
+                var self = this;
 
                 var productTypes = this.$.api.createCollection(Collection.of(ProductType));
-                var self = this;
 
                 productTypes.fetch({}, function (err, productTypes) {
                     if (!err) {
@@ -40,9 +45,17 @@ define([
                     }
                     routeContext.callback(err);
                 });
-
-
             }
+
+        }.async(),
+
+        loadProduct: function (routeContext, productId) {
+
+            this.$.executor.execute(new LoadProduct({
+                productId: productId
+            }));
+
+            routeContext.callback();
 
         }.async(),
 
@@ -93,6 +106,10 @@ define([
         },
         minusHalf: function (n) {
             return -0.5 * n;
+        },
+
+        saveProduct: function () {
+            this.$.executor.storeAndExecute(new SaveProduct());
         }
     })
 });

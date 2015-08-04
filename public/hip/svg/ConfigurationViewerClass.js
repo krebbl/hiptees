@@ -19,14 +19,13 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             _configurationWidth: 0,
             _configurationHeight: 0,
             _boundingBox: null,
-            _anchor: {
-                x: 0.5,
-                y: 0.5
-            },
+            _anchor: "{anchor()}",
             _size: "{configuration.size}",
             _offset: "{configuration.offset}",
-
-            _maskId: ""
+            _maskId: "",
+            _realOffset: "{offset()}",
+            translateX: "{_realOffset.x}",
+            translateY: "{_realOffset.y}"
         },
 
         inject: {
@@ -46,6 +45,25 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 self.set('selected', e.$.configuration === self.$.configuration);
             });
         },
+
+        offset: function () {
+            var size = this.$._size || {width: 0, height: 0},
+                offset = this.$._offset || {x: 0, y: 0},
+                anchor = this.$._anchor;
+
+            return {
+                x: (offset.x - size.width * anchor.x) || 0,
+                y: (offset.y - size.height * anchor.y) || 0
+            };
+        }.onChange("_offset", "_size", "_anchor"),
+
+        anchor: function () {
+            return {
+                x: 0.5,
+                y: 0.5
+            };
+        },
+
         _onDomAdded: function () {
             this.callBase();
             this._updateHandleSize();
@@ -230,8 +248,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
                 size.width = this.$originalSize.width + diffX * 2;
                 size.height = this.$originalSize.height + diffY * 2;
-                offset.x = this.$originalOffset.x - diffX;
-                offset.y = this.$originalOffset.y - diffY;
+//                offset.x = this.$originalOffset.x - diffX;
+//                offset.y = this.$originalOffset.y - diffY;
 
                 change._size = size;
             } else if (this.$action == "move") {
@@ -242,15 +260,15 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                     offset.y += diffY;
 
                     var x = snapToPoints([
-                        [offset.x, size.width * 0.5],
-                        [offset.x, 0],
-                        [offset.x, size.width]
+                        [offset.x, size.width * (0.5 - this.$._anchor.x)],
+                        [offset.x, size.width * (0 - this.$._anchor.x)],
+                        [offset.x, size.width * (1 - this.$._anchor.x)]
                     ], 0);
 
                     var y = snapToPoints([
-                        [offset.y, size.height * 0.5],
-                        [offset.y, 0],
-                        [offset.y, size.height]
+                        [offset.y, size.height * (0.5 - this.$._anchor.y)],
+                        [offset.y, size.height * (0 - this.$._anchor.y)],
+                        [offset.y, size.height * (1 - this.$._anchor.y)]
                     ], 1);
 
                     offset.x = x;
@@ -300,8 +318,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                     this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
                 }
 
-                this._updateSnapPoints();
-
                 this.$.executor.storeAndExecute(new MoveConfiguration({
                     configuration: this.$.configuration,
                     offset: this.$._offset,
@@ -316,12 +332,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$originalSize = null;
             this.$originalOffset = null;
             this.$startLength = null;
-        },
-
-        _render_offset: function (offset) {
-            if (offset) {
-                this.translate(offset.x, offset.y);
-            }
         },
 
         half: function (value) {
@@ -345,9 +355,15 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             return -1 * number;
         },
 
+        _commitChangedAttributes: function ($) {
+            this.callBase();
+
+            this._updateSnapPoints();
+        },
+
         _updateSnapPoints: function () {
-            var x = this.get('_offset.x'),
-                y = this.get('_offset.y'),
+            var x = this.get('_realOffset.x'),
+                y = this.get('_realOffset.y'),
                 width = this.get('_size.width'),
                 height = this.get('_size.height');
 

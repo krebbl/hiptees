@@ -17,6 +17,7 @@ define(["js/ui/View", "hip/view/ImageFilterRenderer"], function (View, ImageFilt
                 this.addClass('filtering');
                 if (this.$.filter && this.$.imageFilter) {
                     var self = this;
+                    this.$el.crossOrigin = "Anonymous";
                     setTimeout(function () {
                         var filterCode = self.$.filter.serialize();
                         var cacheId = filterCode + "_" + src;
