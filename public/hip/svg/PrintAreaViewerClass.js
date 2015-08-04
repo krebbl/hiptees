@@ -1,12 +1,12 @@
 define(['js/svg/SvgElement', 'js/core/List',
     "underscore",
     'xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextConfigurationViewer',
-    'xaml!hip/svg/ImageConfigurationViewer',
+    'xaml!hip/svg/DesignConfigurationViewer',
     'xaml!hip/svg/RectangleConfigurationViewer',
     'hip/entity/TextConfiguration',
-    'hip/entity/ImageConfiguration',
+    'hip/entity/DesignConfiguration',
     'hip/entity/RectangleConfiguration',
-    'hip/handler/ProductHandler'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, ImageConfigurationViewer, RectangleConfigurationViewer, TextConfiguration, ImageConfiguration, RectangleConfiguration, ProductHandler) {
+    'hip/handler/ProductHandler'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, ProductHandler) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -54,9 +54,10 @@ define(['js/svg/SvgElement', 'js/core/List',
             var Factory = null;
             if (configuration instanceof TextConfiguration) {
                 Factory = TextConfigurationViewer;
-            } else if (configuration instanceof ImageConfiguration) {
-                Factory = ImageConfigurationViewer;
-            } else if (configuration instanceof RectangleConfiguration) {
+            } else if (configuration instanceof DesignConfiguration) {
+                Factory = DesignConfigurationViewer;
+            }
+            else if (configuration instanceof RectangleConfiguration) {
                 Factory = RectangleConfigurationViewer;
             }
 
@@ -80,7 +81,7 @@ define(['js/svg/SvgElement', 'js/core/List',
 
         _removeConfiguration: function (configuration, destroy) {
             var viewer = this.getViewerForConfiguration(configuration);
-            if(viewer){
+            if (viewer) {
                 this.$.configurations.removeChild(viewer);
                 viewer.destroy();
             }
@@ -89,8 +90,8 @@ define(['js/svg/SvgElement', 'js/core/List',
         _prepareSnappingPointsForViewer: function (viewer) {
             var x = 0,
                 y = 0,
-                width = this.get('printArea.width'),
-                height = this.get('printArea.height'),
+                width = this.get('printArea.size.width'),
+                height = this.get('printArea.size.height'),
                 snappingPoints = [
                     [x, x + width * 0.5, x + width],
                     [y, y + height * 0.5, y + height]

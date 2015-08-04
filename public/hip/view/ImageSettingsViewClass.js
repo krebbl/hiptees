@@ -1,9 +1,9 @@
 define(["xaml!hip/view/SettingsView",
     "underscore",
     "hip/command/ApplyFilter",
-    "hip/entity/ImageConfiguration",
+    "hip/entity/DesignConfiguration",
     "hip/entity/Filter",
-    'json!hip/asset/filters'], function (SettingsView, _, ApplyFilter, ImageConfiguration, Filter, filters) {
+    'json!hip/asset/filters'], function (SettingsView, _, ApplyFilter, DesignConfiguration, Filter, filters) {
 
 
     return SettingsView.inherit({
@@ -13,7 +13,7 @@ define(["xaml!hip/view/SettingsView",
             selectedPreset: null
         },
 
-        supportedConfiguration: ImageConfiguration,
+        supportedConfiguration: DesignConfiguration,
 
         _selectPreset: function (preset) {
             this.$.executor.storeAndExecute(new ApplyFilter({

@@ -1,8 +1,12 @@
 {
     "xamlClasses": [
-        "hip/Hipstee",
+        "hip/Hiptees",
+        "hip/data/HipDataSource",
+        "hip/module/EditorModule",
+        "hip/module/ProductPresetModule",
+        "hip/module/ProductTypeModule",
         "hip/svg/ConfigurationViewer",
-        "hip/svg/ImageConfigurationViewer",
+        "hip/svg/DesignConfigurationViewer",
         "hip/svg/ImageFilter",
         "hip/svg/PrintAreaViewer",
         "hip/svg/ProductViewer",

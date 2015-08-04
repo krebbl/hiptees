@@ -1,0 +1,26 @@
+<parent:ProductTypeModuleClass xmlns="http://www.w3.org/1999/xhtml"
+                               xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
+
+
+    <js:Router cid="router">
+        <conf:RouteConfiguration route="^productType" onexec="loadProductTypes"/>
+    </js:Router>
+
+    <js:Content name="header">
+        Choose you type
+    </js:Content>
+
+    <js:Content name="content">
+        <ui:ItemsView items="{productTypes}" tagName="ul">
+            <js:Template name="item">
+                <li>
+                    <a onclick="selectProductType(item)">
+                        <img src="${item.resources.MEDIUM}"/>
+                        ${item.name}
+                    </a>
+                </li>
+            </js:Template>
+        </ui:ItemsView>
+    </js:Content>
+
+</parent:ProductTypeModuleClass>

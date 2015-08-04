@@ -37,7 +37,10 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
         _onDomAdded: function () {
             this.callBase();
 
-            this.setViewBox(0, 0, this.get('productType.size.width'), this.get('productType.size.height'));
+            if (this.$.productType) {
+                this.setViewBox(0, 0, this.get('productType.size.width'), this.get('productType.size.height'));
+            }
+
         },
 
         _renderProductType: function (productType) {

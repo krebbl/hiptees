@@ -4,9 +4,9 @@
                              translateY="{printArea.offset.y}">
 
 
-    <rect width="{printArea.width}"
+    <rect width="{printArea.size.width}"
           cid="border"
-          height="{printArea.height}"
+          height="{printArea.size.height}"
           fill="none"
           />
 

@@ -1,4 +1,4 @@
-<parent:ImageConfigurationViewerClass xmlns="http://www.w3.org/2000/svg"
+<parent:DesignConfigurationViewerClass xmlns="http://www.w3.org/2000/svg"
                                       xmlns:parent="hip.svg" xmlns:js="js.core" xmlns:view="hip.view">
 
     <js:Content name="renderer">
@@ -22,4 +22,4 @@
         </rect>
     </js:Content>
 
-</parent:ImageConfigurationViewerClass>
+</parent:DesignConfigurationViewerClass>

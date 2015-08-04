@@ -1,7 +1,11 @@
-define(["hip/entity/Configuration", "js/core/List"], function (Configuration, List) {
+define(["hip/entity/Configuration", "js/core/List", "text/entity/TextFlow"], function (Configuration, List, TextFlow) {
     return Configuration.inherit('hip.entity.TextConfiguration', {
         defaults: {
-            singleLine: false
+            textFlow: null
+        },
+
+        schema: {
+            textFlow: TextFlow
         }
     })
 });

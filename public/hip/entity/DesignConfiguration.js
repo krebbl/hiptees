@@ -1,5 +1,5 @@
 define(["hip/entity/Configuration", "hip/entity/Filter"], function (Configuration, Filter) {
-    return Configuration.inherit('hip.entity.ImageConfiguration', {
+    return Configuration.inherit('hip.entity.DesignConfiguration', {
         defaults: {
             design: null,
             filter: Filter

@@ -8,19 +8,28 @@ define([
     "hip/command/ChangeOrder",
     "hip/command/AddText",
     "hip/command/AddImageFile",
+    "hip/command/ChangeProductType",
     "hip/entity/TextConfiguration",
-    "hip/entity/ImageConfiguration",
+    "hip/entity/DesignConfiguration",
     "hip/model/Design",
+    "hip/util/CloudinaryImageUploader",
     "text/entity/TextRange",
     "text/operation/ApplyStyleToElementOperation",
-    "text/entity/TextFlow"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, TextConfiguration, DesignConfiguration, Design, TextRange, ApplyStyleToElementOperation, TextFlow) {
+    "text/entity/TextFlow",
+    "flow",
+    "underscore"
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, ChangeProductType, TextConfiguration, DesignConfiguration, Design, ImageUploader, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
     return Handler.inherit({
         defaults: {
             product: null,
             selectedConfiguration: null,
             savingProduct: false
         },
+
+        inject: {
+            imageUploader: ImageUploader
+        },
+
         isResponsibleForCommand: function (command) {
             return command instanceof ProductCommand;
         },
@@ -39,6 +48,7 @@ define([
                 }
             } else if (command instanceof SaveProduct) {
 
+                this._saveProduct(this.$.product);
                 // TODO trigger on:configurationSaving
 
 
@@ -110,6 +120,8 @@ define([
                 image.onload = function (evt) {
                     var design = new Design({
                         id: null,
+                        file: file,
+                        type: "image",
                         image: {
                             original: image.src,
                             url: self._resizeImage(image, 800, 800),
@@ -123,8 +135,8 @@ define([
 
                     configuration = new DesignConfiguration({
                         size: {
-                            width: self.get('product.productType.printArea.width'),
-                            height: design.getAspectRatio() * self.get('product.productType.printArea.width')
+                            width: self.get('product.productType.printArea.size.width'),
+                            height: design.getAspectRatio() * self.get('product.productType.printArea.size.width')
                         },
                         design: design
                     });
@@ -143,6 +155,15 @@ define([
 
                 reader.readAsDataURL(file);
 
+            } else if (command instanceof ChangeProductType) {
+
+                var currentProductType = this.get('product.productType');
+                if (currentProductType) {
+                    // TODO: convert configurations to new productType
+
+                }
+                this.$.product.set('productType', command.$.productType);
+                this.trigger('on:productTypeChanged', {productType: command.$.productType});
             }
 
         },
@@ -152,8 +173,8 @@ define([
 
             if (offset) {
                 if (offset.x <= 1) {
-                    ret.x = this.get('product.productType.printArea.width') * offset.x;
-                    ret.y = this.get('product.productType.printArea.height') * offset.y;
+                    ret.x = this.get('product.productType.printArea.size.width') * offset.x;
+                    ret.y = this.get('product.productType.printArea.size.height') * offset.y;
                 } else {
                     ret.x = offset.x;
                     ret.y = offset.y;
@@ -197,6 +218,47 @@ define([
         _selectConfiguration: function (configuration) {
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});
+        },
+
+        _saveProduct: function (product, cb) {
+            var newDesigns = [];
+
+            product.$.configurations.each(function (configuration) {
+                if (configuration instanceof DesignConfiguration) {
+                    if (configuration.$.design.isNew()) {
+                        newDesigns.push(newDesigns);
+                    }
+                }
+            });
+
+            // filter out duplicate designs
+            newDesigns = _.uniq(newDesigns, false, function (a, b) {
+                return a.$.file === b.$.file;
+            });
+
+            var self = this;
+
+            flow()
+                .seq(newDesigns, function (design, cb) {
+                    flow()
+                        .seq(function (cb) {
+                            design.set('resourceProvider', self.$.imageUploader.$.name);
+                            design.save({}, cb)
+                        })
+                        .seq(function (cb) {
+                            var options = {
+                                type: "image"
+                            };
+
+                            self.$.imageUploader.uploadFile(design.$.id, design.$.file, options, cb);
+                        })
+                        .exec(cb);
+                })
+                .seq(function (cb) {
+                    product.save(cb);
+                })
+                .exec(cb);
+
         }
     })
 });

@@ -1,4 +1,4 @@
-define(["hip/handler/CommandHandler", "hip/command/ApplyFilter", "hip/entity/ImageConfiguration"], function (Handler, ApplyFilter, ImageConfiguration) {
+define(["hip/handler/CommandHandler", "hip/command/ApplyFilter", "hip/entity/DesignConfiguration"], function (Handler, ApplyFilter, DesignConfiguration) {
     return Handler.inherit({
         defaults: {
 
@@ -9,7 +9,7 @@ define(["hip/handler/CommandHandler", "hip/command/ApplyFilter", "hip/entity/Ima
         handleCommand: function (command) {
             var filter = command.$.filter;
             // todo check if its a valid filter
-            if (filter && command.$.configuration && command.$.configuration instanceof ImageConfiguration) {
+            if (filter && command.$.configuration && command.$.configuration instanceof DesignConfiguration) {
                 var filters = command.$.configuration.$.filters;
                 var newFilters = [];
                 for (var i = 0; i < filters.length; i++) {

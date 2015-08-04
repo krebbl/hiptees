@@ -3,6 +3,7 @@
 *-plugin.xml
 
 public/js
+env/dev.json
 
 node_modules
 public-build
