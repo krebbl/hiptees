@@ -27,8 +27,8 @@
 
     <feGaussianBlur visible="{gt(filter.blur,0)}" stdDeviation="{_blurDeviation}"/>
 
-    <feColorMatrix type="hueRotate"
-                   visible="{_hueValue}"
-                   values="{_hueValue}"/>
+    <feComponentTransfer>
+        <feFuncA type="discrete" tableValues="1 1"/>
+    </feComponentTransfer>
 
 </parent:ImageFilterClass>

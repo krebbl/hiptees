@@ -90,6 +90,7 @@
     <js:Content cid="colorContent">
         <ui:ColorPicker widthUpdatePolicy="in" heightUpdatePolicy="in"
                         width="auto" height="auto"
+                        color="{leafColor}"
                         paletteWidth="{minus(width,30)}" paletteHeight="{height}"
                         oncolorSelect="_updateColor(color)"/>
     </js:Content>

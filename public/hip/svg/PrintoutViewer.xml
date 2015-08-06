@@ -1,0 +1,8 @@
+<parent:PrintoutViewerClass xmlns="js.svg"
+                           xmlns:parent="hip.svg" xmlns:js="js.core">
+
+    <g cid="printAreaContainer">
+        <parent:PrintAreaViewer cid="printAreaViewer" printArea="{productType.printArea}" product="{product}" translateX="0" translateY="0"/>
+    </g>
+
+</parent:PrintoutViewerClass>

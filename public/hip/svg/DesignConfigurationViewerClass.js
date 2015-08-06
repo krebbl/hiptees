@@ -20,7 +20,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'hip/view/ImageFilterRenderer'], fun
 
         ctor: function (attr) {
             attr._filterId = "filter" + (++filterId);
-            attr._gradId = "grad" +(++gradId);
+            attr._gradId = "grad" + (++gradId);
             this.callBase();
 
             this.bind('configuration.filter', 'change', this.updateFilter, this);
@@ -36,14 +36,20 @@ define(['xaml!hip/svg/ConfigurationViewer', 'hip/view/ImageFilterRenderer'], fun
             }
         },
 
+        hasWebGl: function () {
+            return this.$stage.$hasWebGl;
+        },
+
         updateFilter: function () {
             var self = this,
                 configuration = this.$.configuration;
-            this.$.imageFilter.filterImage(configuration.get('design.resources.SCREEN'), configuration.get('filter'), function (err, data) {
-                if (!err) {
-                    self.$.renderedImage.$el.setAttribute('href', data);
-                }
-            });
+            if (this.$.renderedImage) {
+                this.$.imageFilter.filterImage(configuration.get('design.resources.SCREEN'), configuration.get('filter'), function (err, data) {
+                    if (!err) {
+                        self.$.renderedImage.$el.setAttribute('href', data);
+                    }
+                });
+            }
         },
 
         _imageLoaded: function () {

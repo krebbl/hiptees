@@ -3,7 +3,7 @@
     <conf:DataSourceConfiguration>
         <conf:ResourceConfiguration modelClassName="hip.model.Product" path="products"/>
         <conf:ResourceConfiguration modelClassName="hip.model.Design" path="designs"/>
-        <conf:ResourceConfiguration modelClassName="hip.model.ProductType" path="product-types"/>
+        <conf:ResourceConfiguration modelClassName="hip.model.ProductType" path="productTypes"/>
     </conf:DataSourceConfiguration>
 
 </parent:HipDataSourceClass>

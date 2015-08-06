@@ -43,6 +43,10 @@ define(['js/svg/SvgElement', 'js/core/List',
 
             if (product) {
                 var self = this;
+                while(this.$.configurations.$children.length){
+                    this.$.configurations.removeChild(this.$.configurations.$children[0]);
+                }
+
                 product.$.configurations.each(function (configuration) {
                     self._addConfiguration(configuration);
                 });

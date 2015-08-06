@@ -22,7 +22,6 @@ define([
         },
 
         _commitProduct: function(product){
-            console.log(product);
         },
 
         _commitSelectedConfiguration: function (selected) {

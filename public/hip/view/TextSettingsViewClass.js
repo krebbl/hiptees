@@ -54,9 +54,11 @@ define(["xaml!hip/view/SettingsView",
             if (configuration) {
                 var range = configuration.$.textFlow.$.selection || new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
                 var leafStyle = range.getCommonLeafStyle(configuration.$.textFlow);
-                if(leafStyle){
-                    this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000').toHSB());
+                if(!leafStyle.$.color){
+                    var l = configuration.$.textFlow.getFirstLeaf();
+                    leafStyle = l.$.style;
                 }
+                this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000').toHSB());
             }
         },
 

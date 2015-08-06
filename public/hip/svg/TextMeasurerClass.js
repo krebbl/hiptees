@@ -350,7 +350,12 @@ define(["js/svg/Svg"], function (Svg) {
                 }
                 var self = this;
 
-                this.fontManager.loadExternalFont(font, "./font/" + font + ".woff", function (err) {
+                var extension = "ttf";
+                if(this.$stage.$browser.isIOS){
+                    extension = "woff";
+                }
+
+                this.fontManager.loadExternalFont(font, "./font/" + font + "." + extension, function (err) {
                     if (!err) {
                         var fontMeasure = self.measureParagraph(firstParagraph);
                         var lines = self.breakTextFlow(textFlow, maxWidth);

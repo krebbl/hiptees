@@ -10,6 +10,13 @@ define(["js/data/Entity"], function (Entity) {
             hue: 0
         },
 
+        schema: {
+            hash: {
+                type: String,
+                generated: true
+            }
+        },
+
         getTintRGB: function () {
             var a = this.$.tint;
             if (a == 0) {
@@ -53,12 +60,46 @@ define(["js/data/Entity"], function (Entity) {
             for (var i = 0; i < attrs.length; i++) {
                 var attr = attrs[i];
                 var h = (this.get(attr) + 100).toString(16);
-                if(h.length < 2){
+                if (h.length < 2) {
                     h = "0" + h;
                 }
                 str += h;
             }
             return str;
+        },
+
+        deserialize: function (str) {
+            var attrs = ["brightness", "contrast", "saturation", "tint", "blur", "vignette"],
+                arr = str.match(/.{1,2}/g),
+                key,
+                val,
+                ret = {};
+
+            for (var i = 0; i < attrs.length; i++) {
+                key = attrs[i];
+                val = parseInt(arr[i], 16) - 100;
+
+                ret[key] = val;
+            }
+            return ret;
+
+        },
+
+        compose: function () {
+            var ret = this.callBase();
+            ret.hash = this.serialize();
+
+            return ret;
+        },
+
+        parse: function (data) {
+            var ret = this.callBase();
+
+            if (ret.hash) {
+                ret = this.deserialize(ret.hash);
+            }
+
+            return ret;
         }
     })
 });

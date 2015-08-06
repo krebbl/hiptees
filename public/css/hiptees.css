@@ -79,6 +79,16 @@ body {
   right: 0;
   height: 44px; }
 
+.header {
+  text-align: center;
+  height: 50px;
+  position: fixed;
+  z-index: 15;
+  color: gray;
+  background-color: #ffffff;
+  top: 0;
+  width: 100%; }
+
 .footer {
   position: fixed;
   bottom: 0;
@@ -216,7 +226,7 @@ ul.settings {
   ul.settings > li {
     border-bottom: 1px solid #425060; }
     ul.settings > li.active, ul.settings > li:focus {
-      background: #64AB23;
+      background: #2fc743;
       border-bottom: 1px solid transparent; }
   ul.settings > li > a {
     color: white;
@@ -259,7 +269,7 @@ ul.font-list:after {
   padding: 1em 0;
   color: white; }
   .text-align ul > li.active {
-    background-color: #64AB23; }
+    background-color: #2fc743; }
 
 ul {
   list-style: none;

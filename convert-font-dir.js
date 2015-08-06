@@ -93,6 +93,8 @@ fs.readdir('./fonts', function (err, files) {
                     });
                 }
 
+                fs.createReadStream(__dirname + "/" + dir + "/" + file).pipe(fs.createWriteStream(__dirname + "/" + "public/font" + "/" + file));
+
                 converter.ttf2Woff({
                     src: __dirname + "/" + dir + "/" + file,
                     dest: __dirname + "/" + "public/font" + "/" + file.replace('.ttf', '.woff')

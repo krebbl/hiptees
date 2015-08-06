@@ -1,16 +1,20 @@
 var webPage = require('webpage');
 var page = webPage.create();
 
-page.open('http://hip.js/text.html?asdasd', function (status) {
+page.open('http://hip.js/printout.html#/55c284e2f78e2d64819b2a76', function (status) {
 
     var svg = page.evaluate(function () {
-        return document.getElementById("svgContainer").innerHTML;
+
+//        document.getElementById("svgContainer").innerHTML;
+
     });
 
-    var fs = require('fs');
-    page.viewportSize = { width: 350, height: 350 };
-    page.render('./generated/text.pdf', {format: 'pdf', quality: '20'});
+    page.viewportSize = { width: 4000, height: 1000 };
 
-//    fs.write('./generated/text.svg', svg, 'w');
-    phantom.exit();
+
+    setTimeout(function () {
+        page.render('./generated/printout.png', {format: 'png'});
+        phantom.exit();
+    }, 2000);
+
 });

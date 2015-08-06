@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<hip:HipteesClass
+<hip:PrintoutClass
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:js="js.core" xmlns:ui="js.ui" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
         xmlns:data="hip.data" xmlns:conf="js.conf">
 
     <js:Injection>
-        <data:HipDataSource cid="api" gateway="./api/v1" endPoint=""/>
+        <data:HipDataSource cid="api" gateway="/api/v1" endPoint=""/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
         <command:EventBus cid="eventBus"/>
         <command:Executor cid="executor" eventBus="{eventBus}"/>
-        <handler:NavigationHandler cid="navigationHandler" />
+        <handler:NavigationHandler cid="navigationHandler"/>
         <handler:ImageConfigurationHandler cid="imageConfigurationHandler"/>
         <handler:TextConfigurationHandler cid="textConfigurationHandler"/>
         <handler:ApplyFilterHandler cid="applyFilterHandler"/>
@@ -18,23 +18,18 @@
         <handler:ConfigurationHandler cid="configurationHandler"/>
         <handler:TextFlowHandler cid="textFlowHandler"/>
         <svg:TextMeasurer/>
-        <svg:TextEditor/>
         <view:ImageFilterRenderer/>
+        <svg:TextEditor/>
+        <handler:ProductHandler cid="productHandler" product="{product}"/>
     </js:Injection>
 
     <js:Router cid="router">
-        <conf:RouteConfiguration route="^$" onexec="defaultRoute"/>
+        <conf:RouteConfiguration route="^(\w+)$" onexec="defaultRoute"/>
     </js:Router>
 
-    <js:ModuleLoader router="{router}" class="container {statusClass()}" cid="moduleLoader">
+    <svg:PrintoutViewer width="4000" height="{width2Height(width)}" product="{product}"
+                       style="display: block; -webkit-transform: translateZ(0);"/>
 
-        <conf:ModuleConfiguration name="productType" moduleClass="hip.module.ProductTypeModule" route="^productTypes.*"/>
-        <conf:ModuleConfiguration name="preset" moduleClass="hip.module.ProductPresetModule" route="^presets.*"/>
-        <conf:ModuleConfiguration name="editor" moduleClass="hip.module.EditorModule" route="^editor.*"/>
 
-        <ui:ContentPlaceHolder class="header" name="header"/>
-        <ui:ContentPlaceHolder class="content" name="content"/>
 
-    </js:ModuleLoader>
-
-</hip:HipteesClass>
+</hip:PrintoutClass>

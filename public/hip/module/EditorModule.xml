@@ -8,11 +8,15 @@
     </js:Router>
 
     <js:Content name="header">
-
+         Hiptees
     </js:Content>
 
 
     <js:Content name="content">
+        <a>
+            Undo
+        </a>
+
         <div class="view-content" cid="viewContent" heightUpdatePolicy="in">
             <div class="product-viewer-wrapper" height="{viewContent.height}" width="{viewContent.height}"
                  marginLeft="{minusHalf(width)}px">
@@ -34,8 +38,8 @@
             </a>
 
             <a onclick="saveProduct">
-                <i class="fa fa-basket"/>
-                Buy
+                <i class="fa fa-check"/>
+                Finish
             </a>
 
         </div>

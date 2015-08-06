@@ -1,5 +1,5 @@
 <parent:DesignConfigurationViewerClass xmlns="http://www.w3.org/2000/svg"
-                                      xmlns:parent="hip.svg" xmlns:js="js.core" xmlns:view="hip.view">
+                                       xmlns:parent="hip.svg" xmlns:js="js.core" xmlns:view="hip.view">
 
     <js:Content name="renderer">
         <radialGradient id="${_gradId}" class="vignette" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
@@ -8,15 +8,19 @@
         </radialGradient>
 
         <image cid="renderedImage" width="{_size.width}"
+               visible="{hasWebGl()}"
                href="{configuration.design.resources.SCREEN}"
                height="{_size.height}" x="0" y="0"/>
         <!-- TODO: only use this on server side rendering -->
-        <!--<parent:ImageFilter id="${_filterId}" filter="{configuration.filter}"/>-->
-        <!--<image cid="groupImage"-->
-               <!--filter="{filterUrl()}"-->
-               <!--href="{configuration.image.url}"-->
-               <!--width="{_size.width}" height="{_size.height}" x="0" y="{_size.height}"-->
-               <!--/>-->
+        <g visible="{not(hasWebGl())}">
+            <parent:ImageFilter id="${_filterId}" filter="{configuration.filter}" x="0%" y="0%" width="100%"
+                                height="100%"/>
+            <image cid="groupImage"
+                   filter="{filterUrl()}"
+                   href="{configuration.design.resources.SCREEN}"
+                   width="{_size.width}" height="{_size.height}" x="0" y="0"
+                    />
+        </g>
         <rect fill="url(#${_gradId})" width="{_size.width}" height="{_size.height}">
 
         </rect>

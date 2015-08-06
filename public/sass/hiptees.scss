@@ -4,7 +4,7 @@ $footer-color: #282828;
 $footer-select-color: #191919;
 
 $color-m: #425060;
-$color-j: #64AB23;
+$color-j: #2fc743; //#64AB23
 
 $nav-bar-height: 44px;
 
@@ -105,6 +105,18 @@ body {
 
 //$settings-height: 224px;
 $settings-height: 210px;
+
+.header {
+  text-align: center;
+  height: 50px;
+  position: fixed;
+  z-index: 15;
+  color: gray;
+  background-color: #ffffff;
+  top: 0;
+  width: 100%;
+
+}
 
 .footer {
   position: fixed;

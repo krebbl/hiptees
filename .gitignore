@@ -2,7 +2,10 @@
 *.iml
 *-plugin.xml
 
+fonts
 public/js
+public/font/*.ttf
+public/font/*.woff
 env/dev.json
 
 node_modules

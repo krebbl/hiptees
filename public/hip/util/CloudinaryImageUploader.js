@@ -40,10 +40,10 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore"], f
                 data: JSON.stringify(options)
 
             }, function (err, xhr) {
-                if (xhr.status === 200) {
+                if (xhr.status === 201) {
                     var ret = JSON.parse(xhr.responses.text);
                 }
-                callback && callback(xhr.status === 200 ? null : xhr, ret);
+                callback && callback(xhr.status === 201 ? null : xhr, ret);
             })
         },
 

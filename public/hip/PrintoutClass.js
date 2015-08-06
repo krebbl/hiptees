@@ -9,7 +9,7 @@ define(
         "hip/entity/TextConfiguration",
         'hip/entity/RectangleConfiguration',
         "hip/entity/Filter",
-        "hip/command/ApplyFilter",
+        "hip/command/LoadProduct",
         "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText",
         "hip/command/AddText",
         "hip/command/AddImageFile",
@@ -18,14 +18,13 @@ define(
         "text/operation/ApplyStyleToElementOperation",
         "text/type/Style"
     ],
-    function (Application, List, Bindable, Collection, Design, Product, DesignConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, AddText, AddImageFile, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
+    function (Application, List, Bindable, Collection, Design, Product, DesignConfiguration, TextConfiguration, RectangleConfiguration, Filter, LoadProduct, DeleteText, InsertLine, InsertText, AddText, AddImageFile, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
 
         return Application.inherit({
             supportEnvironments: true,
             applicationDefaultNamespace: "hip",
 
             defaults: {
-                product: null,
                 anchor: 0,
                 focus: 0,
                 text: "",
@@ -33,6 +32,7 @@ define(
                 executor: null,
                 selectionHandler: null,
                 selectedConfiguration: "{productHandler.selectedConfiguration}",
+                product: "{productHandler.product}",
                 textColor: "{selectedConfiguration.color}",
                 fontSize: "{selectedConfiguration.fontSize}",
                 settingsSelected: false,
@@ -51,15 +51,6 @@ define(
                 }
             },
 
-            _selectFont: function (font) {
-
-                var command = new ChangeFontFamily({
-                    fontFamily: font.name,
-                    configuration: this.$.selectedConfiguration
-                });
-                this.$.executor.storeAndExecute(command);
-            },
-
             /***
              * Starts the application
              * @param parameter
@@ -68,33 +59,7 @@ define(
             start: function (parameter, callback) {
                 // setup command handlers
 
-                this.$.navigationHandler.set('router', this.$.router);
-
-                this.$.executor.addCommandHandler(this.$.navigationHandler);
-                this.$.executor.addCommandHandler(this.$.textConfigurationHandler);
-                this.$.executor.addCommandHandler(this.$.imageConfigurationHandler);
-                this.$.executor.addCommandHandler(this.$.applyFilterHandler);
                 this.$.executor.addCommandHandler(this.$.productHandler);
-                this.$.executor.addCommandHandler(this.$.configurationHandler);
-                this.$.executor.addCommandHandler(this.$.textFlowHandler);
-
-                var api = this.$.api;
-
-                var products = api.createCollection(Collection.of(Product));
-
-                var product = products.createItem();
-
-                this.$.productHandler.set('product', product);
-
-                try {
-                    var canvas = this.$stage.$document.createElement('canvas');
-                    var ctx = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                    ctx.getSupportedExtensions();
-                    this.$stage.$hasWebGl = true;
-                } catch (e) {
-                    this.$stage.$hasWebGl = false;
-                }
-
 
                 // false - disables autostart
                 this.callBase(parameter, false);
@@ -116,8 +81,12 @@ define(
                 return "dev";
             },
 
-            defaultRoute: function (routeContext) {
-                routeContext.navigate(this.$lastFragment || "productTypes");
+            defaultRoute: function (routeContext, productId) {
+                this.$.executor.execute(new LoadProduct({
+                    productId: productId
+                }));
+
+                routeContext.callback();
             },
 
             statusClass: function () {
@@ -128,7 +97,16 @@ define(
                 }
 
                 return ret;
-            }.onChange('selectedConfiguration')
+            }.onChange('selectedConfiguration'),
+
+            width2Height: function (width) {
+                var s = this.get('product.productType.printArea.size');
+                if (s) {
+                    return width * s.height / s.width;
+                } else {
+                    return width;
+                }
+            }.onChange('product.productType.printArea')
         });
     }
 );
