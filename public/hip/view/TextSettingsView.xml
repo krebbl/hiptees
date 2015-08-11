@@ -1,5 +1,5 @@
 <view:TextSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
-                            xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+                            xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core" xmlns:setting="hip.view.setting">
 
     <js:Content name="settings">
         <ul class="settings">
@@ -50,11 +50,26 @@
         </ul>
     </js:Content>
     <js:Content cid="fontFamilyContent">
+        <js:Content name="headerInfo">
+            <div class="font-family-options">
+                <a class="btn-bold" enabled="{selectedFontFamily.bold}"
+                   onclick="_selectFont(selectedFontFamily, 'bold', selected)"
+                   selected="{isBold(paragraphStyle.fontFamily)}">
+                    bold
+                </a>
+                <a class="btn-italic" enabled="{selectedFontFamily.italic}"
+                   onclick="_selectFont(selectedFontFamily, 'italic', selected)"
+                   selected="{isItalic(paragraphStyle.fontFamily)}">
+                    italic
+                </a>
+            </div>
+        </js:Content>
         <ui:SelectionView items="{fontFamilies}" class="settings font-list" tagName="ul"
-                          selectedItem="{_getFontFamily(paragraphStyle.fontFamily)}">
+                          keyPath="name"
+                          selectedItem="{selectedFontFamily}">
             <js:Template name="item">
                 <li>
-                    <a onclick="_selectFont(item)">
+                    <a onclick="_selectFont(item, 'regular')">
                         <img src="./font/${item.image}"/>
                     </a>
                 </li>
@@ -87,11 +102,6 @@
                        value="{paragraphStyle.letterSpacing}"/>
         </div>
     </js:Content>
-    <js:Content cid="colorContent">
-        <ui:ColorPicker widthUpdatePolicy="in" heightUpdatePolicy="in"
-                        width="auto" height="auto"
-                        color="{leafColor}"
-                        paletteWidth="{minus(width,30)}" paletteHeight="{height}"
-                        oncolorSelect="_updateColor(color)"/>
-    </js:Content>
+    <setting:ColorSetting cid="colorContent" selectedColor="{leafColor}" oncolorSelect="_updateColor"/>
+
 </view:TextSettingsViewClass>

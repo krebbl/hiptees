@@ -1,0 +1,13 @@
+<parent:ColorSettingClass xmlns="http://www.w3.org/1999/xhtml"
+                          xmlns:parent="hip.view.setting" xmlns:js="js.core" xmlns:ui="js.ui">
+
+    <js:Content name="headerInfo">
+        <input type="text" value="#{selectedColor.toHexString()}" onchange="_dispatch(value)" onblur="_fixZoom"/>
+    </js:Content>
+    <ui:ColorPicker widthUpdatePolicy="in" heightUpdatePolicy="in"
+                    width="auto" height="auto"
+                    color="{selectedColor}"
+                    paletteWidth="{minus(width,30)}" paletteHeight="{height}"
+                    oncolorSelect="_dispatch(color)"/>
+
+</parent:ColorSettingClass>

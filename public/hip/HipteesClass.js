@@ -72,6 +72,7 @@ define(
 
                 this.$.executor.addCommandHandler(this.$.navigationHandler);
                 this.$.executor.addCommandHandler(this.$.textConfigurationHandler);
+                this.$.executor.addCommandHandler(this.$.shapeConfigurationHandler);
                 this.$.executor.addCommandHandler(this.$.imageConfigurationHandler);
                 this.$.executor.addCommandHandler(this.$.applyFilterHandler);
                 this.$.executor.addCommandHandler(this.$.productHandler);

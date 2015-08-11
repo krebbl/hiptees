@@ -3,10 +3,12 @@ define(['js/svg/SvgElement', 'js/core/List',
     'xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextConfigurationViewer',
     'xaml!hip/svg/DesignConfigurationViewer',
     'xaml!hip/svg/RectangleConfigurationViewer',
+    'xaml!hip/svg/CircleConfigurationViewer',
     'hip/entity/TextConfiguration',
     'hip/entity/DesignConfiguration',
     'hip/entity/RectangleConfiguration',
-    'hip/handler/ProductHandler'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, ProductHandler) {
+    'hip/entity/CircleConfiguration',
+    'hip/handler/ProductHandler'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ProductHandler) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -14,7 +16,8 @@ define(['js/svg/SvgElement', 'js/core/List',
             tagName: 'g',
             product: null,
             printArea: null,
-            componentClass: "print-area"
+            componentClass: "print-area",
+            activeViewer: null
         },
 
         inject: {
@@ -43,7 +46,7 @@ define(['js/svg/SvgElement', 'js/core/List',
 
             if (product) {
                 var self = this;
-                while(this.$.configurations.$children.length){
+                while (this.$.configurations.$children.length) {
                     this.$.configurations.removeChild(this.$.configurations.$children[0]);
                 }
 
@@ -60,9 +63,10 @@ define(['js/svg/SvgElement', 'js/core/List',
                 Factory = TextConfigurationViewer;
             } else if (configuration instanceof DesignConfiguration) {
                 Factory = DesignConfigurationViewer;
-            }
-            else if (configuration instanceof RectangleConfiguration) {
+            } else if (configuration instanceof RectangleConfiguration) {
                 Factory = RectangleConfigurationViewer;
+            } else if (configuration instanceof CircleConfiguration) {
+                Factory = CircleConfigurationViewer;
             }
 
             if (Factory) {
@@ -73,9 +77,14 @@ define(['js/svg/SvgElement', 'js/core/List',
                 });
 
                 var self = this;
-                configurationViewer.bind('on:configurationMoved', function () {
+                configurationViewer.bind('on:configurationPointerUp', function () {
                     self.$.snapLines.$children[0].set('stroke-opacity', 0);
                     self.$.snapLines.$children[1].set('stroke-opacity', 0);
+                    self.set('activeViewer', null);
+                });
+
+                configurationViewer.bind('on:configurationPointerDown', function (e) {
+                    self.set('activeViewer', e.target);
                 });
 
                 this.$.configurations.addChild(configurationViewer);
@@ -163,6 +172,18 @@ define(['js/svg/SvgElement', 'js/core/List',
                 }
             }
             return null;
+        },
+
+        format: function (val) {
+            return val != null ? val.toFixed(2) : 0;
+        },
+
+        or: function (a, b) {
+            return a || b;
+
+        },
+        half: function(a){
+            return a * 0.5;
         }
 
     });

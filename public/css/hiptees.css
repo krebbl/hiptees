@@ -114,12 +114,27 @@ body {
   position: absolute;
   width: 100%;
   z-index: 3;
-  color: transparent; }
+  color: white; }
   .settings-header a {
     color: white;
     margin-right: 15px; }
   .settings-header .back-btn {
     display: inline-block; }
+  .settings-header .header-info {
+    position: absolute;
+    left: 70px;
+    right: 70px;
+    top: 0;
+    bottom: 0; }
+    .settings-header .header-info input {
+      background-color: #273950;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      margin: 0 auto;
+      display: block;
+      color: white;
+      text-align: center; }
   .settings-header .minimize-btn {
     float: right;
     margin-right: 0; }
@@ -197,9 +212,9 @@ body {
 .add-view {
   background: #2D3C4D;
   position: fixed;
-  bottom: -100px;
+  bottom: -140px;
   width: 100%;
-  height: 100px;
+  height: 140px;
   transition: bottom 0.5s; }
   .add-view.active {
     bottom: 0; }
@@ -261,6 +276,22 @@ ul.font-list:after {
   display: block;
   visibility: hidden;
   height: 0px; }
+
+.font-family-options {
+  text-align: center;
+  height: 100%;
+  padding: 0.5em 0; }
+  .font-family-options a {
+    display: inline-block;
+    height: 100%; }
+    .font-family-options a.btn-bold {
+      font-weight: bold; }
+    .font-family-options a.btn-italic {
+      font-style: italic; }
+    .font-family-options a.disabled {
+      opacity: 0.4; }
+    .font-family-options a.active {
+      color: #2fc743; }
 
 .text-align ul > li {
   text-align: center;
@@ -365,7 +396,7 @@ ul {
   top: 30px;
   left: 0;
   right: 0;
-  bottom: 1px; }
+  bottom: 0; }
 
 .color-picker-palette {
   display: inline-block; }

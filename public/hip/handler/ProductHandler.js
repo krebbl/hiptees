@@ -9,12 +9,16 @@ define([
     "hip/command/ChangeOrder",
     "hip/command/AddText",
     "hip/command/AddImageFile",
+    "hip/command/AddShape",
     "hip/command/ChangeProductType",
     "hip/entity/TextConfiguration",
     "hip/entity/DesignConfiguration",
+    "hip/entity/RectangleConfiguration",
+    "hip/entity/CircleConfiguration",
     "hip/model/Design",
     "hip/model/Product",
     "hip/util/CloudinaryImageUploader",
+    "xaml!hip/svg/TextMeasurer",
     "xaml!hip/data/HipDataSource",
     "js/data/Collection",
     "text/entity/TextRange",
@@ -22,7 +26,7 @@ define([
     "text/entity/TextFlow",
     "flow",
     "underscore"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, ChangeProductType, TextConfiguration, DesignConfiguration, Design, Product, ImageUploader, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
     return Handler.inherit({
         defaults: {
             api: null,
@@ -33,7 +37,8 @@ define([
 
         inject: {
             api: HipDataSource,
-            imageUploader: ImageUploader
+            imageUploader: ImageUploader,
+            textMeasurer: TextMeasurer
         },
 
         isResponsibleForCommand: function (command) {
@@ -54,15 +59,7 @@ define([
                     this.trigger('on:configurationRemoved', {configuration: command.$.configuration});
                 }
             } else if (command instanceof SaveProduct) {
-
                 this._saveProduct(this.$.product);
-                // TODO trigger on:configurationSaving
-
-
-                // TODO trigger on:configurationSaved
-
-//            } else if (command instanceof AddText) {
-
             } else if (command instanceof SelectConfiguration) {
                 this._selectConfiguration(command.$.configuration);
             } else if (command instanceof CloneConfiguration) {
@@ -70,7 +67,7 @@ define([
 
                     var clone = configuration.clone();
                     clone.set({
-                        id: this._generateDesignId(),
+                        id: this._generateConfigurationId(),
                         offset: {
                             x: configuration.get('offset.x') + 10,
                             y: configuration.get('offset.y') + 10
@@ -107,7 +104,7 @@ define([
 
 
                 configuration = new TextConfiguration({
-                    id: this._generateDesignId(),
+                    id: this._generateConfigurationId(),
                     textFlow: textFlow,
                     offset: offset
                 });
@@ -148,7 +145,7 @@ define([
                     var printAreaWidth = self.get('product.productType.printArea.size.width');
                     var height = design.getAspectRatio() * self.get('product.productType.printArea.size.width');
                     configuration = new DesignConfiguration({
-                        id: self._generateDesignId(),
+                        id: self._generateConfigurationId(),
                         offset: {
                             x: printAreaWidth * 0.5,
                             y: height * 0.5
@@ -173,6 +170,38 @@ define([
                 };
 
                 reader.readAsDataURL(file);
+            } else if (command instanceof AddShape) {
+                var printAreaWidth = self.get('product.productType.printArea.size.width'),
+                    printAreaHeight = self.get('product.productType.printArea.size.height');
+
+                var Factory = null;
+
+                if (command.$.type == "circle") {
+                    Factory = CircleConfiguration;
+                } else if (command.$.type == "rectangle") {
+                    Factory = RectangleConfiguration;
+                }
+
+                if (Factory) {
+                    configuration = new Factory({
+                        id: self._generateConfigurationId(),
+
+                        offset: {
+                            x: printAreaWidth * 0.5,
+                            y: printAreaHeight * 0.2
+                        },
+                        size: {
+                            width: printAreaWidth * 0.5,
+                            height: printAreaWidth * 0.5
+                        }
+                    });
+
+                    self.$.product.$.configurations.add(configuration);
+
+                    self.trigger('on:configurationAdded', {configuration: configuration});
+
+                    self._selectConfiguration(configuration);
+                }
 
             } else if (command instanceof ChangeProductType) {
 
@@ -193,7 +222,10 @@ define([
             } else if (command instanceof LoadProduct) {
 
                 var products = this.$.api.createCollection(Collection.of(Product));
-                var product = products.createItem(command.$.productId);
+                var product = products.createItem(command.$.productId),
+                    loadLazy = command.$.lazy,
+                    callback = command.$.callback || function () {
+                    };
 
 
                 flow()
@@ -204,15 +236,9 @@ define([
                         this.vars.product.$.productType.fetch({}, cb);
                     })
                     .seq(function (cb) {
-                        var designs = [];
-                        this.vars.product.$.configurations.each(function (configuration) {
-                            if (configuration.$.design) {
-                                designs.push(configuration.$.design);
-                            }
-                        });
                         flow()
-                            .seqEach(designs, function (d, cb) {
-                                d.fetch(cb);
+                            .parEach(this.vars.product.$.configurations, function (configuration, cb) {
+                                self._loadConfiguration(configuration, loadLazy, cb);
                             })
                             .exec(cb);
                     })
@@ -220,13 +246,51 @@ define([
                         if (!err) {
                             self.set('product', results.product);
                         }
+                        callback && callback();
                     });
 
             }
 
         },
 
-        _generateDesignId: function () {
+        _loadConfiguration: function (configuration, loadLazy, callback) {
+            if (configuration instanceof DesignConfiguration) {
+                flow()
+                    .seq("design", function (cb) {
+                        configuration.$.design.fetch(cb);
+                    })
+                    .seq(function (cb) {
+                        if (!loadLazy) {
+                            var image = new Image();
+
+                            image.onload = function () {
+                                cb();
+                            };
+
+                            image.src = this.vars.design.$.resources.SCREEN;
+                        } else {
+                            cb();
+                        }
+                    })
+                    .exec(callback);
+            } else if (configuration instanceof TextConfiguration) {
+                if (!loadLazy) {
+                    var textFlow = configuration.$.textFlow;
+                    var style = TextRange.createTextRange(0, 1).getCommonParagraphStyle(textFlow);
+
+                    this.$.textMeasurer.loadFont(style.$.fontFamily, function (err) {
+                        callback && callback(err);
+                    });
+                } else {
+                    callback();
+                }
+
+            } else {
+                callback && callback();
+            }
+        },
+
+        _generateConfigurationId: function () {
             return '_' + Math.random().toString(36).substr(2, 9)
         },
 

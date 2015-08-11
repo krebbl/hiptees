@@ -2,12 +2,13 @@ define([
     "hip/module/BaseModule",
     "hip/command/AddText",
     "hip/command/AddImageFile",
+    "hip/command/AddShape",
     "hip/command/ChangeProductType",
     "hip/command/SaveProduct",
     "hip/command/LoadProduct",
     "hip/model/ProductType",
     "js/data/Collection"
-], function (BaseModule, AddText, AddImageFile, ChangeProductType, SaveProduct, LoadProduct, ProductType, Collection) {
+], function (BaseModule, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, ProductType, Collection) {
     return BaseModule.inherit({
         defaults: {
             productHandler: null,
@@ -21,7 +22,7 @@ define([
 
         },
 
-        _commitProduct: function(product){
+        _commitProduct: function (product) {
         },
 
         _commitSelectedConfiguration: function (selected) {
@@ -77,6 +78,10 @@ define([
                 var evt = document.createEvent('Event');
                 evt.initEvent('click', true, true);
                 this.$.fileInput.$el.dispatchEvent(evt);
+            } else if (what == "rectangle" || what == "circle") {
+                this.$.executor.storeAndExecute(new AddShape({
+                    type: what
+                }));
             }
 
             this.set('addViewSelected', false);

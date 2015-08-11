@@ -345,17 +345,10 @@ define(["js/svg/Svg"], function (Svg) {
                 // load font
                 var font = firstParagraph.get('style.fontFamily');
 
-                if (!this.isRendered()) {
-                    this.$stage.$document.body.appendChild(this.render());
-                }
                 var self = this;
 
-                var extension = "ttf";
-                if(this.$stage.$browser.isIOS){
-                    extension = "woff";
-                }
 
-                this.fontManager.loadExternalFont(font, "./font/" + font + "." + extension, function (err) {
+                this.loadFont(font, function (err) {
                     if (!err) {
                         var fontMeasure = self.measureParagraph(firstParagraph);
                         var lines = self.breakTextFlow(textFlow, maxWidth);
@@ -381,6 +374,19 @@ define(["js/svg/Svg"], function (Svg) {
                 })
             }
 
+        },
+
+        loadFont: function (font, callback) {
+            if (!this.isRendered()) {
+                this.$stage.$document.body.appendChild(this.render());
+            }
+
+            var extension = "ttf";
+            if (this.$stage.$browser.isIOS) {
+                extension = "woff";
+            }
+
+            this.fontManager.loadExternalFont(font, "./font/" + font + "." + extension, callback)
         }
 
     })

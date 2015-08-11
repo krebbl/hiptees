@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
-<hip:PrintoutClass
+<hip:ImageRendererClass
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:js="js.core" xmlns:ui="js.ui" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
         xmlns:data="hip.data" xmlns:conf="js.conf">
 
-    <js:Injection>
+    <js:Injection cid="injection">
         <data:HipDataSource cid="api" gateway="/api/v1" endPoint=""/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
+        <svg:TextMeasurer/>
         <command:EventBus cid="eventBus"/>
         <command:Executor cid="executor" eventBus="{eventBus}"/>
         <handler:NavigationHandler cid="navigationHandler"/>
@@ -17,19 +18,19 @@
         <handler:ProductHandler cid="productHandler" product="{product}"/>
         <handler:ConfigurationHandler cid="configurationHandler"/>
         <handler:TextFlowHandler cid="textFlowHandler"/>
-        <svg:TextMeasurer/>
         <view:ImageFilterRenderer/>
         <svg:TextEditor/>
-        <handler:ProductHandler cid="productHandler" product="{product}"/>
     </js:Injection>
 
     <js:Router cid="router">
-        <conf:RouteConfiguration route="^(\w+)$" onexec="defaultRoute"/>
+        <conf:RouteConfiguration route="^printout/(\w+)$" onexec="renderPrintout"/>
+        <conf:RouteConfiguration route="^product/(\w+)$" onexec="renderProduct"/>
     </js:Router>
 
-    <svg:PrintoutViewer width="4000" height="{width2Height(width)}" product="{product}"
+    <svg:PrintoutViewer visible="{isPrintout}" width="4000" height="{width2Height(width)}" product="{product}"
                        style="display: block; -webkit-transform: translateZ(0);"/>
 
+    <svg:ProductViewer visible="{not(isPrintout)}" width="800" height="800" product="{product}"
+                       style="display: block; -webkit-transform: translateZ(0);"/>
 
-
-</hip:PrintoutClass>
+</hip:ImageRendererClass>

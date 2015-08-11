@@ -1,0 +1,53 @@
+<view:ShapeSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
+                                 xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core"
+                                 xmlns:setting="hip.view.setting">
+
+    <js:Content name="settings">
+        <ul class="settings">
+            <li>
+                <a onclick="_selectColorContent('fill')">
+                    <span class="label">
+                        Fill Color
+                    </span>
+                    <span class="value">
+                        <span class="meta">{fillColor.toString()}</span>
+                        <span class="color-bubble" backgroundColor="{fillColor.toString()}"/>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a onclick="_selectColorContent('stroke')">
+                    <span class="label">
+                        Stroke Color
+                    </span>
+                    <span class="value">
+                        <span class="meta">{strokeColor.toString()}</span>
+                        <span class="color-bubble" backgroundColor="{strokeColor.toString()}"/>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a onclick="_selectSubContent(strokeContent)">
+                    <span class="label">
+                        Stroke Width
+                    </span>
+                    <span class="value">
+                        {configuration.strokeWidth}
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </js:Content>
+    <js:Content cid="strokeContent">
+        <div class="slider-label">
+            Stroke Width
+            <strong>{configuration.strokeWidth}</strong>
+        </div>
+        <div class="slider-wrapper">
+            <ui:Slider min="0" max="10" step="0.5" oninput="_updateAttribute('strokeWidth', value)"
+                       value="{configuration.strokeWidth}"/>
+        </div>
+    </js:Content>
+    <setting:ColorSetting cid="colorContent" selectedColor="{selectedColor(_attr)}" oncolorSelect="_updateColor(event)"/>
+
+</view:ShapeSettingsViewClass>

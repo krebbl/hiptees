@@ -12,10 +12,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             selected: false,
             handleWidth: 10,
             componentClass: "configuration-viewer",
-            keepAspectRatio: false,
+            keepAspectRatio: "{configuration.keepAspectRatio}",
             rotatable: false,
             verticalStretchable: true,
             horizontalStretchable: true,
+            minHeight: 10,
+            minWidth: 10,
             _configurationWidth: 0,
             _configurationHeight: 0,
             _boundingBox: null,
@@ -24,6 +26,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             _offset: "{configuration.offset}",
             _maskId: "",
             _realOffset: "{offset()}",
+            _resizing: false,
+            _moving: false,
             translateX: "{_realOffset.x}",
             translateY: "{_realOffset.y}"
         },
@@ -148,9 +152,17 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$moved = false;
             this.$resized = false;
 
+            if (action == "resize") {
+                this.set('_resizing', true);
+            } else {
+                this.set('_moving', true);
+            }
+
             this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).bindDomEvent("click", this.$clickDelegate, true);
             this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
+
+            this.trigger('on:configurationPointerDown', null, this);
         },
 
         multiplyVectors: function (a, b) {
@@ -230,12 +242,14 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 diffY = Math.abs(rootVector[1]) * lf;
 
 
-                if (this.$originalSize.width + diffX * 2 < 10) {
-                    diffX = (10 - this.$originalSize.width) / 2;
+                var minHeight = this.$.minHeight,
+                    minWidth = this.$.minWidth;
+                if (this.$originalSize.width + diffX * 2 < minWidth) {
+                    diffX = (minWidth - this.$originalSize.width) / 2;
                 }
 
-                if (this.$originalSize.height + diffY * 2 < 10) {
-                    diffY = (10 - this.$originalSize.height) / 2;
+                if (this.$originalSize.height + diffY * 2 < minHeight) {
+                    diffY = (minHeight - this.$originalSize.height) / 2;
                 }
 
                 if (this.$.keepAspectRatio) {
@@ -309,10 +323,11 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
 
+            this.set({'_resizing': false, '_moving': false});
+
             this.$preventClick = !this.$.selected;
 
             if (this.$moved || this.$resized) {
-                this.trigger('on:configurationMoved', {configuration: this.$.configuration});
                 // only unbind if target wasnt the configuration itself
                 if (event.target == this.$._boundingBox.$el) {
                     this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
@@ -332,7 +347,17 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$originalSize = null;
             this.$originalOffset = null;
             this.$startLength = null;
+
+            this.trigger('on:configurationPointerUp', null, this);
         },
+
+        cornerHandleVisible: function () {
+            var size = this.$._size;
+            if (size) {
+                return Math.min(size.width, size.height) > this.$.handleWidth;
+            }
+            return true;
+        }.onChange('_size', 'handleWidth'),
 
         half: function (value) {
             return value * 0.5;
@@ -342,8 +367,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             return value * 0.25;
         },
 
-        and: function (a, b) {
-            return a && b;
+        and: function (a, b, c) {
+            return a && b && c;
+        },
+
+        gt: function (a, b) {
+            return a > b;
         },
 
         _handleClick: function (e) {

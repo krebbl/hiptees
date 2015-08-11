@@ -25,18 +25,11 @@ define(
             applicationDefaultNamespace: "hip",
 
             defaults: {
-                anchor: 0,
-                focus: 0,
-                text: "",
-                fonts: null,
                 executor: null,
                 selectionHandler: null,
                 selectedConfiguration: "{productHandler.selectedConfiguration}",
                 product: "{productHandler.product}",
-                textColor: "{selectedConfiguration.color}",
-                fontSize: "{selectedConfiguration.fontSize}",
-                settingsSelected: false,
-                addViewSelected: false
+                isPrintout: false
             },
             /**
              *  initializes the application variables
@@ -61,6 +54,8 @@ define(
 
                 this.$.executor.addCommandHandler(this.$.productHandler);
 
+                this.$.injection.addInstance(this.$.svgLoader);
+
                 // false - disables autostart
                 this.callBase(parameter, false);
 
@@ -81,12 +76,46 @@ define(
                 return "dev";
             },
 
-            defaultRoute: function (routeContext, productId) {
-                this.$.executor.execute(new LoadProduct({
-                    productId: productId
-                }));
+            renderPrintout: function (routeContext, productId) {
+                this.renderProduct(routeContext, productId, true);
+            },
 
+
+            renderProduct: function (routeContext, productId, isPrintout) {
+                this.set('isPrintout', isPrintout);
+
+                var $document = this.$stage.$document;
+                $document.title = "";
+
+                this.$.executor.execute(new LoadProduct({
+                    productId: productId,
+                    loadLazy: false,
+                    callback: function (err) {
+                        if (!err) {
+                        }
+                        alert("loaded");
+
+                        console.log("loaded");
+                    }
+                }));
                 routeContext.callback();
+            },
+
+            loadProduct: function (product, callback) {
+
+                var self = this;
+
+                flow()
+                    .seq(function (cb) {
+                        product.fetch(cb);
+                    })
+                    .parEach(product.$.configurations.toArray(), function (configuration, cb) {
+                        self.loadConfiguration(configuration, cb);
+                    })
+                    .seq(function () {
+                        product.$.productType.fetch(null)
+                    })
+                    .exec(callback);
             },
 
             statusClass: function () {

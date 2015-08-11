@@ -8,7 +8,8 @@ define(["js/data/Entity", "js/core/List"], function (Entity, List) {
             },
             size: null,
             movable: true,
-            scalable: false
+            scalable: false,
+            keepAspectRatio: false
         },
         schema: {
             offset: Object,

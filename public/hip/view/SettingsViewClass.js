@@ -83,6 +83,10 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         _selectSubContent: function (subContent) {
             if (subContent) {
                 this.$.placeholder.set('content', subContent);
+                var header = subContent.findContent("headerInfo");
+                this.$.headerInfo.set('content', header);
+            } else if (this.$.headerInfo) {
+                this.$.headerInfo.set('content', null);
             }
             this.set('subContentSelected', !!subContent);
         }

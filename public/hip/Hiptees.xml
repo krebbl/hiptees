@@ -8,16 +8,17 @@
     <js:Injection>
         <data:HipDataSource cid="api" gateway="./api/v1" endPoint=""/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
+        <svg:TextMeasurer/>
         <command:EventBus cid="eventBus"/>
         <command:Executor cid="executor" eventBus="{eventBus}"/>
         <handler:NavigationHandler cid="navigationHandler" />
         <handler:ImageConfigurationHandler cid="imageConfigurationHandler"/>
         <handler:TextConfigurationHandler cid="textConfigurationHandler"/>
+        <handler:ShapeConfigurationHandler cid="shapeConfigurationHandler"/>
         <handler:ApplyFilterHandler cid="applyFilterHandler"/>
         <handler:ProductHandler cid="productHandler" product="{product}"/>
         <handler:ConfigurationHandler cid="configurationHandler"/>
         <handler:TextFlowHandler cid="textFlowHandler"/>
-        <svg:TextMeasurer/>
         <svg:TextEditor/>
         <view:ImageFilterRenderer/>
     </js:Injection>

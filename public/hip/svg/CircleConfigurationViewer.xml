@@ -1,0 +1,6 @@
+<parent:ShapeConfigurationViewer xmlns="http://www.w3.org/2000/svg"
+                                 xmlns:parent="hip.svg" xmlns:js="js.core" minWidth="10" minHeight="10">
+    <js:Content name="shape">
+        <circle r="{half(inner(_size.width, 1, configuration.strokeWidth))}" cx="{half(_size.width)}" cy="{half(_size.width)}"/>
+    </js:Content>
+</parent:ShapeConfigurationViewer>

@@ -4,7 +4,8 @@ $footer-color: #282828;
 $footer-select-color: #191919;
 
 $color-m: #425060;
-$color-j: #2fc743; //#64AB23
+$color-j: #2fc743;
+//#64AB23
 
 $nav-bar-height: 44px;
 
@@ -152,7 +153,7 @@ $settings-height: 210px;
   position: absolute;
   width: 100%;
   z-index: 3;
-  color: transparent;
+  color: white;
 
   a {
     color: white;
@@ -161,6 +162,25 @@ $settings-height: 210px;
 
   .back-btn {
     display: inline-block;
+  }
+
+  .header-info {
+    position: absolute;
+    left: 70px;
+    right: 70px;
+    top: 0;
+    bottom: 0;
+    input {
+      background-color: #273950;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      margin: 0 auto;
+      display: block;
+      color: white;
+      text-align: center;
+    }
+
   }
 
   .minimize-btn {
@@ -240,10 +260,10 @@ $settings-height: 210px;
   overflow-x: scroll;
   z-index: 2;
   transition: left 0.5s;
-//  -webkit-transition: -webkit-transform 0.5s;
+  //  -webkit-transition: -webkit-transform 0.5s;
 
-//  transform: translate(100%, 0);
-//  -webkit-transform: translate(100%, 0);
+  //  transform: translate(100%, 0);
+  //  -webkit-transform: translate(100%, 0);
   &.active {
     left: 0;
   }
@@ -277,7 +297,7 @@ $settings-height: 210px;
 
 }
 
-$add-view-height: 100px;
+$add-view-height: 140px;
 
 .add-view {
   background: #2D3C4D;
@@ -378,6 +398,33 @@ ul.font-list {
     display: block;
     visibility: hidden;
     height: 0px;
+  }
+}
+
+.font-family-options {
+  text-align: center;
+  height: 100%;
+  padding: 0.5em 0;
+
+  a {
+    display: inline-block;
+    height: 100%;
+
+    &.btn-bold {
+      font-weight: bold;
+    }
+
+    &.btn-italic {
+      font-style: italic;
+    }
+
+    &.disabled {
+      opacity: 0.4;
+    }
+
+    &.active {
+      color: $color-j;
+    }
   }
 }
 
@@ -524,8 +571,23 @@ ul {
   top: 30px;
   left: 0;
   right: 0;
-  bottom: 1px;
+  bottom: 0;
 }
+
+//.last-used-colors {
+//  position: absolute;
+//  text-align: center;
+//  left: 0;
+//  bottom: 0;
+//  background: rgb(20, 28, 37);
+//  top: 30px;
+//  width: 30px;
+//
+//  .color-bubble {
+//    display: block;
+//    margin: 8px auto;
+//  }
+//}
 
 .color-picker-palette {
   display: inline-block;

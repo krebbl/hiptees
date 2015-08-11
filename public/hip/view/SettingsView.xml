@@ -9,6 +9,7 @@
         <a class="remove-btn" onclick="removeConfiguration()">
             <i class="fa fa-trash-o"/>
         </a>
+        <ui:ContentPlaceHolder name="headerInfo" cid="headerInfo" class="header-info" />
         <a class="clone-btn" onclick="cloneConfiguration()">
             <i class="fa fa-files-o"/>
         </a>

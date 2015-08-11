@@ -8,7 +8,7 @@
     </js:Router>
 
     <js:Content name="header">
-         Hiptees
+        Hiptees
     </js:Content>
 
 
@@ -46,6 +46,7 @@
         <div class="setting-views" selected="{settingsSelected}">
             <view:TextSettingsView oncloseClicked="hideSettings"/>
             <view:ImageSettingsView oncloseClicked="hideSettings"/>
+            <view:ShapeSettingsView oncloseClicked="hideSettings"/>
         </div>
 
         <div class="add-view" selected="{addViewSelected}">
@@ -57,6 +58,14 @@
                 <a onclick="add('image')">
                     <i class="fa fa-picture-o"/>
                     Add Image
+                </a>
+                <a onclick="add('rectangle')">
+                    <i class="fa fa-stop"/>
+                    Add Rectangle
+                </a>
+                <a onclick="add('circle')">
+                    <i class="fa fa-circle"/>
+                    Add Circle
                 </a>
             </div>
 

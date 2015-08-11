@@ -16,6 +16,7 @@ define(["xaml!hip/view/SettingsView",
         defaults: {
             leafColor: null,
             paragraphStyle: null,
+            selectedFontFamily: "{_getFontFamily(paragraphStyle.fontFamily)}",
             leafStyle: null,
             componentClass: "settings-view text-settings-view",
             fontFamilies: fonts.fontFamilies,
@@ -54,15 +55,21 @@ define(["xaml!hip/view/SettingsView",
             if (configuration) {
                 var range = configuration.$.textFlow.$.selection || new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
                 var leafStyle = range.getCommonLeafStyle(configuration.$.textFlow);
-                if(!leafStyle.$.color){
+                if (!leafStyle.$.color) {
                     var l = configuration.$.textFlow.getFirstLeaf();
                     leafStyle = l.$.style;
                 }
-                this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000').toHSB());
+                this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000'));
             }
         },
 
         _getFontFamily: function (fontFamily) {
+            return _.find(this.$.fontFamilies, function (ff) {
+                return ff.regular == fontFamily || ff.bold == fontFamily || ff.italic == fontFamily || ff.boldItalic == fontFamily;
+            });
+        },
+
+        _fontFamilySupportsStyle: function (fontFamily, style) {
             return _.find(this.$.fontFamilies, function (ff) {
                 return ff.regular == fontFamily || ff.bold == fontFamily || ff.italic == fontFamily || ff.boldItalic == fontFamily;
             });
@@ -73,11 +80,33 @@ define(["xaml!hip/view/SettingsView",
             return fontFamily ? fontFamily.image : "";
         },
 
-        _selectFont: function (fontFamily) {
+        _selectFont: function (fontFamily, style, selected) {
+            var currentFont = this.$.paragraphStyle.$.fontFamily,
+                newFont;
+
+            if (!selected) {
+                if ((this.isBold(currentFont) && style == "italic" || this.isItalic(currentFont) && style == "bold")) {
+                    newFont = fontFamily.boldItalic || fontFamily[style];
+                } else {
+                    newFont = fontFamily[style] || fontFamily.regular;
+                }
+            } else {
+                var isBold = this.isBold(currentFont),
+                    isItalic = this.isItalic(currentFont);
+
+                if (isBold && isItalic) {
+                    style = style == "bold" ? "italic" : "bold";
+                } else {
+                    style = "regular"
+                }
+
+                newFont = fontFamily[style] || fontFamily.regular;
+            }
+
             this.$.executor.storeAndExecute(new ChangeStyle({
                 textFlow: this.$.configuration.$.textFlow,
                 paragraphStyle: {
-                    'fontFamily': fontFamily.regular
+                    'fontFamily': newFont
                 }
             }));
         },
@@ -89,6 +118,14 @@ define(["xaml!hip/view/SettingsView",
                     "textAlign": alignment
                 }
             }));
+        },
+
+        isBold: function (fontFamilyName) {
+            return fontFamilyName ? /bold/ig.test(fontFamilyName) : false;
+        },
+
+        isItalic: function (fontFamilyName) {
+            return fontFamilyName ? /italic/ig.test(fontFamilyName) : false;
         },
 
         _decreaseFontSize: function (by) {
@@ -106,12 +143,13 @@ define(["xaml!hip/view/SettingsView",
             this.$.executor.execute(this.$previewCommand);
         },
 
-        _updateColor: function (color) {
+        _updateColor: function (e) {
+            var color = e.$.color;
             if (color) {
                 this.$.executor.execute(new ChangeStyle({
                     textFlow: this.$.configuration.$.textFlow,
                     leafStyle: {
-                        'color': "#" + color.toHexString()
+                        'color': color
                     }
                 }));
             }
