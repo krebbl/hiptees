@@ -29,7 +29,6 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
             var self = this;
 
             this.bindDomEvent('click', function (e) {
-                console.log(e);
                 self.$.executor.storeAndExecute(new SelectConfiguration());
             }, false);
         },

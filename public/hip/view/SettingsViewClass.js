@@ -56,7 +56,15 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
             }));
         },
 
-        moveBackward: function () {
+        layerUp: function () {
+            var product = this.$.productHandler.$.product;
+            this.$.executor.storeAndExecute(new ChangeOrder({
+                configuration: this.$.configuration,
+                index: Math.min(product.numConfigurations() - 1, product.getIndexOfConfiguration(this.$.configuration) + 1)
+            }));
+        },
+
+        layerDown: function () {
             var product = this.$.productHandler.$.product;
             this.$.executor.storeAndExecute(new ChangeOrder({
                 configuration: this.$.configuration,

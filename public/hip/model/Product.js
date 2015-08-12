@@ -32,7 +32,7 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
             return -1;
         },
         numConfigurations: function () {
-            return this.$.configurations.$.size();
+            return this.$.configurations.size();
         }
     })
 });

@@ -2,11 +2,11 @@
                                       xmlns:parent="hip.svg" xmlns:js="js.core" minWidth="5" minHeight="5">
     <js:Content name="renderer">
         <parent:ContentPlaceHolder name="shape"
-                                   stroke="{configuration.stroke}"
+                                   stroke="{configuration.stroke.toString()}"
                                    stroke-location="inside"
                                    stroke-width="{configuration.strokeWidth}"
                                    fill-opacity="{configuration.fillOpacity}"
-                                   fill="{configuration.fill}"/>
+                                   fill="{configuration.fill.toString()}"/>
 
     </js:Content>
 </parent:ShapeConfigurationViewerClass>

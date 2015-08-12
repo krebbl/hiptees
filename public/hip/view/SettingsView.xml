@@ -1,18 +1,30 @@
 <view:SettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
-                            xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+                        xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
 
     <div class="settings-header" selected="{not(subContentSelected)}">
         <a class="back-btn" onclick="_selectSubContent(null)">
-            <i class="fa fa-angle-left"/> Back
+            <i class="fa fa-angle-left"/>
+            Back
+        </a>
+        <div class="default-options">
 
-        </a>
-        <a class="remove-btn" onclick="removeConfiguration()">
-            <i class="fa fa-trash-o"/>
-        </a>
-        <ui:ContentPlaceHolder name="headerInfo" cid="headerInfo" class="header-info" />
-        <a class="clone-btn" onclick="cloneConfiguration()">
-            <i class="fa fa-files-o"/>
-        </a>
+            <a class="remove-btn" onclick="removeConfiguration()">
+                <i class="fa fa-trash-o"/>
+            </a>
+            <a class="clone-btn" onclick="cloneConfiguration()">
+                <i class="fa fa-files-o"/>
+            </a>
+
+            <a class="layer-btn" onclick="layerDown">
+                <i class="fa fa-level-down"/>
+            </a>
+            <a class="layer-btn" onclick="layerUp">
+                <i class="fa fa-level-up"/>
+            </a>
+        </div>
+
+
+        <ui:ContentPlaceHolder name="headerInfo" cid="headerInfo" class="header-info"/>
 
         <a class="minimize-btn" onclick="toggle()">
             Close

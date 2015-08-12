@@ -147,17 +147,32 @@ $settings-height: 210px;
 }
 
 .settings-header {
-  background-color: rgba(15, 21, 29, 0.81);;
+  background-color: rgba(15, 21, 29, 0.81);
   height: 30px;
-  padding: 0.5em 1em;
   position: absolute;
   width: 100%;
   z-index: 3;
   color: white;
 
+  .default-options {
+    padding-left: 0.5em;
+    display: none;
+  }
+
+  &.active {
+    .default-options {
+      display: inline-block;
+    }
+    .back-btn {
+      display: none;
+    }
+
+  }
+
   a {
     color: white;
-    margin-right: 15px;
+    padding: 7px 8px;
+    display: inline-block;
   }
 
   .back-btn {
@@ -166,7 +181,7 @@ $settings-height: 210px;
 
   .header-info {
     position: absolute;
-    left: 70px;
+    left: 110px;
     right: 70px;
     top: 0;
     bottom: 0;
@@ -202,19 +217,6 @@ $settings-height: 210px;
 
   }
 
-  .remove-btn, .clone-btn {
-    display: none;
-  }
-
-  &.active {
-    .back-btn {
-      display: none;
-    }
-
-    .remove-btn, .clone-btn {
-      display: inline-block;
-    }
-  }
 }
 
 .settings-content {
@@ -566,12 +568,53 @@ ul {
   }
 }
 
+
+.color-picker-wrapper {
+  background-color: rgba(15, 21, 29, 0.81);
+  display: block;
+  height: 100%;
+}
+
 .color-picker {
   position: absolute;
   top: 30px;
-  left: 0;
+  left: 30px;
   right: 0;
   bottom: 0;
+  overflow: hidden;
+}
+
+.fill-settings {
+  width: 30px;
+  position: absolute;
+  top: 30px;
+  left: 0;
+
+  a {
+    color: white;
+    display: block;
+    text-align: center;
+    padding: 8px 0;
+    background-color: rgba(15, 21, 29, 0.81);
+    font-size: 14px;
+
+    .fa-square-o {
+      display: inline;
+    }
+    .fa-square {
+      display: none;
+    }
+
+    &.active {
+      .fa-square-o {
+        display: none;
+      }
+      .fa-square {
+        display: inline;
+      }
+    }
+
+  }
 }
 
 //.last-used-colors {
@@ -595,6 +638,8 @@ ul {
 
 .color-picker-hue {
   display: inline-block;
+  overflow: hidden;
+  height: 100%;
   .color-picker-hue-bar {
     width: 30px !important;
   }
@@ -603,12 +648,13 @@ ul {
 .color-picker-circle {
   z-index: 4;
   > div {
+    position: absolute;
     width: 14px;
     height: 14px;
     border: 1px solid gray;
     border-radius: 7px;
-    margin-top: -7px;
-    margin-left: -7px;
+    top: -7px;
+    left: -7px;
     pointer-events: none;
   }
 
@@ -629,8 +675,9 @@ ul {
   > div {
     width: 16px;
     height: 16px;
-    margin-left: 4px;
-    margin-top: -8px;
+    position: absolute;
+    left: 4px;
+    top: -8px;
     border: 5px solid transparent;
     border-radius: 25px;
     background: #FFFFFF;

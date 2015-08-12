@@ -7,8 +7,9 @@ define([
     "hip/command/SaveProduct",
     "hip/command/LoadProduct",
     "hip/model/ProductType",
-    "js/data/Collection"
-], function (BaseModule, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, ProductType, Collection) {
+    "js/data/Collection",
+    "js/type/Color"
+], function (BaseModule, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, ProductType, Collection, Color) {
     return BaseModule.inherit({
         defaults: {
             productHandler: null,
@@ -67,6 +68,7 @@ define([
                         textAlign: "center",
                         lineHeight: 1.3,
                         fontSize: 30,
+                        letterSpacing: 0,
                         fontFamily: "HammersmithOne"
                     },
                     leafStyle: {

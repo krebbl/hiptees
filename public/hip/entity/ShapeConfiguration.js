@@ -1,10 +1,10 @@
-define(["hip/entity/Configuration", "js/core/List"], function (Configuration) {
+define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, Color) {
     return Configuration.inherit('hip.entity.ShapeConfiguration', {
         defaults: {
             type: "rectangle",
-            fill: "#ffffff",
+            fill: "#000000",
             fillOpacity: 1,
-            stroke: "#ff0000",
+            stroke: "#000000",
             strokeWidth: 6
         },
         schema: {

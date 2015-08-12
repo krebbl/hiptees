@@ -1,28 +1,28 @@
 <view:ShapeSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
-                                 xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core"
-                                 xmlns:setting="hip.view.setting">
+                             xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core"
+                             xmlns:setting="hip.view.setting">
 
     <js:Content name="settings">
         <ul class="settings">
             <li>
-                <a onclick="_selectColorContent('fill')">
+                <a onclick="_selectSubContent(colorContent)">
                     <span class="label">
                         Fill Color
                     </span>
                     <span class="value">
-                        <span class="meta">{fillColor.toString()}</span>
-                        <span class="color-bubble" backgroundColor="{fillColor.toString()}"/>
+                        <span class="meta">{fillColor}</span>
+                        <span class="color-bubble" backgroundColor="{fillColor}"/>
                     </span>
                 </a>
             </li>
             <li>
-                <a onclick="_selectColorContent('stroke')">
+                <a onclick="_selectSubContent(strokeColorContent)">
                     <span class="label">
                         Stroke Color
                     </span>
                     <span class="value">
-                        <span class="meta">{strokeColor.toString()}</span>
-                        <span class="color-bubble" backgroundColor="{strokeColor.toString()}"/>
+                        <span class="meta">{strokeColor}</span>
+                        <span class="color-bubble" backgroundColor="{strokeColor}"/>
                     </span>
                 </a>
             </li>
@@ -48,6 +48,17 @@
                        value="{configuration.strokeWidth}"/>
         </div>
     </js:Content>
-    <setting:ColorSetting cid="colorContent" selectedColor="{selectedColor(_attr)}" oncolorSelect="_updateColor(event)"/>
+    <setting:ColorSetting cid="colorContent" selectedColor="{fillColor}"
+                          oncolorSelect="_updateColor(event, 'fill')">
+        <div class="fill-settings">
+            <a onclick="_toggleFill()" selected="{configuration.fillOpacity}">
+                <i class="fa fa-square-o"/>
+                <i class="fa fa-square"/>
+            </a>
+        </div>
+    </setting:ColorSetting>
+
+    <setting:ColorSetting cid="strokeColorContent" selectedColor="{strokeColor}"
+                          oncolorSelect="_updateColor(event, 'stroke')"/>
 
 </view:ShapeSettingsViewClass>

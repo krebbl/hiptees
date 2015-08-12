@@ -2,12 +2,14 @@
                           xmlns:parent="hip.view.setting" xmlns:js="js.core" xmlns:ui="js.ui">
 
     <js:Content name="headerInfo">
-        <input type="text" value="#{selectedColor.toHexString()}" onchange="_dispatch(value)" onblur="_fixZoom"/>
+        <input type="text" value="{_innerColor.toString()}" onchange="_dispatch(value)" onblur="_fixZoom"/>
     </js:Content>
-    <ui:ColorPicker widthUpdatePolicy="in" heightUpdatePolicy="in"
-                    width="auto" height="auto"
-                    color="{selectedColor}"
-                    paletteWidth="{minus(width,30)}" paletteHeight="{height}"
-                    oncolorSelect="_dispatch(color)"/>
+    <div class="color-picker-wrapper">
+        <ui:ColorPicker widthUpdatePolicy="in" heightUpdatePolicy="in"
+                        width="auto" height="auto"
+                        color="{{_innerColor}}"
+                        paletteWidth="{minus(width,30)}" paletteHeight="{height}"
+                        oncolorSelect="_dispatch(color)"/>
+    </div>
 
 </parent:ColorSettingClass>

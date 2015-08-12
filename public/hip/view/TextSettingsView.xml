@@ -29,8 +29,8 @@
                         Color
                     </span>
                     <span class="value">
-                        <span class="meta">{leafColor.toString()}</span>
-                        <span class="color-bubble" backgroundColor="{leafColor.toString()}"/>
+                        <span class="meta">{leafColor}</span>
+                        <span class="color-bubble" backgroundColor="{leafColor}"/>
                     </span>
                 </a>
 

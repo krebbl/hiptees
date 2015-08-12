@@ -32,7 +32,7 @@ define(["xaml!hip/view/SettingsView",
 
             this.bind('textFlowHandler', 'on:selectionChanged', this._updateLeafStyle, this);
             this.bind('textFlowHandler', 'on:paragraphStyleChanged', this._updateParagraphStyle, this);
-            this.bind('textFlowHandler', 'on:leafStyleChanged', this._updateLeafStyle, this);
+//            this.bind('textFlowHandler', 'on:leafStyleChanged', this._updateLeafStyle, this);
 
         },
 
@@ -59,7 +59,7 @@ define(["xaml!hip/view/SettingsView",
                     var l = configuration.$.textFlow.getFirstLeaf();
                     leafStyle = l.$.style;
                 }
-                this.set('leafColor', Color.fromHexString(leafStyle.$.color || '#000000'));
+                this.set('leafColor', leafStyle.$.color);
             }
         },
 
@@ -146,6 +146,7 @@ define(["xaml!hip/view/SettingsView",
         _updateColor: function (e) {
             var color = e.$.color;
             if (color) {
+                this.set('leafColor', color);
                 this.$.executor.execute(new ChangeStyle({
                     textFlow: this.$.configuration.$.textFlow,
                     leafStyle: {

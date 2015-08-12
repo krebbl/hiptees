@@ -8,7 +8,6 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
             textFlow: null,
             measureResult: null,
             maxWidth: null,
-            textColor: "",
             componentClass: "text-renderer"
         },
 
@@ -66,15 +65,6 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                 this._updateAlignment();
             }
 
-        },
-
-        _renderTextColor: function (textColor) {
-            if (textColor) {
-                for (var i = 0; i < this.$el.childNodes.length; i++) {
-                    var child = this.$el.childNodes[i];
-                    child.setAttribute("fill", textColor);
-                }
-            }
         },
 
         _updateLineHeight: function () {
@@ -229,7 +219,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                         x = maxWidth - line.width;
                     }
                     text.setAttribute("font-size", style.$.fontSize);
-                    text.setAttribute("fill", style.$.color);
+//                    text.setAttribute("fill", style.$.color);
                     text.setAttribute("font-family", style.$.fontFamily);
                     text.setAttribute("letter-spacing", style.$.letterSpacing || 0);
                     text.setAttribute("transform", "translate(" + x + "," + y + ")");

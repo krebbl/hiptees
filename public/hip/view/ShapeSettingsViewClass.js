@@ -13,8 +13,8 @@ define(["xaml!hip/view/SettingsView",
         defaults: {
             _attr: null,
             colorContent: null,
-            strokeColor: "{hexToColor(configuration.stroke)}",
-            fillColor: "{hexToColor(configuration.fill)}",
+            strokeColor: "{configuration.stroke}",
+            fillColor: "{configuration.fill}",
             componentClass: "settings-view rect-settings-view"
         },
 
@@ -26,10 +26,10 @@ define(["xaml!hip/view/SettingsView",
             return hex ? Color.fromHexString(hex) : null;
         },
 
-        _updateColor: function (e) {
+        _updateColor: function (e, attr) {
             var color = e.$.color;
             if (color) {
-                this._updateAttribute(this.$._attr, color);
+                this._updateAttribute(attr, color);
             }
         },
 
@@ -51,6 +51,9 @@ define(["xaml!hip/view/SettingsView",
             return this.get(attr + "Color")
         }.onChange("strokeColor", "fillColor"),
 
+        _toggleFill: function (opacity) {
+            this._updateAttribute("fillOpacity", this.$.configuration.$.fillOpacity ? 0 : 1);
+        },
 
         format: function (n) {
             if (n != null) {

@@ -110,19 +110,26 @@ body {
 .settings-header {
   background-color: rgba(15, 21, 29, 0.81);
   height: 30px;
-  padding: 0.5em 1em;
   position: absolute;
   width: 100%;
   z-index: 3;
   color: white; }
+  .settings-header .default-options {
+    padding-left: 0.5em;
+    display: none; }
+  .settings-header.active .default-options {
+    display: inline-block; }
+  .settings-header.active .back-btn {
+    display: none; }
   .settings-header a {
     color: white;
-    margin-right: 15px; }
+    padding: 7px 8px;
+    display: inline-block; }
   .settings-header .back-btn {
     display: inline-block; }
   .settings-header .header-info {
     position: absolute;
-    left: 70px;
+    left: 110px;
     right: 70px;
     top: 0;
     bottom: 0; }
@@ -144,12 +151,6 @@ body {
       display: none; }
     .settings-header .minimize-btn.active .fa-chevron-up {
       display: inline; }
-  .settings-header .remove-btn, .settings-header .clone-btn {
-    display: none; }
-  .settings-header.active .back-btn {
-    display: none; }
-  .settings-header.active .remove-btn, .settings-header.active .clone-btn {
-    display: inline-block; }
 
 .settings-content {
   padding-top: 30px;
@@ -391,30 +392,60 @@ ul {
 .filter-presets img.filtering {
   visibility: hidden; }
 
+.color-picker-wrapper {
+  background-color: rgba(15, 21, 29, 0.81);
+  display: block;
+  height: 100%; }
+
 .color-picker {
   position: absolute;
   top: 30px;
-  left: 0;
+  left: 30px;
   right: 0;
-  bottom: 0; }
+  bottom: 0;
+  overflow: hidden; }
+
+.fill-settings {
+  width: 30px;
+  position: absolute;
+  top: 30px;
+  left: 0; }
+  .fill-settings a {
+    color: white;
+    display: block;
+    text-align: center;
+    padding: 8px 0;
+    background-color: rgba(15, 21, 29, 0.81);
+    font-size: 14px; }
+    .fill-settings a .fa-square-o {
+      display: inline; }
+    .fill-settings a .fa-square {
+      display: none; }
+    .fill-settings a.active .fa-square-o {
+      display: none; }
+    .fill-settings a.active .fa-square {
+      display: inline; }
 
 .color-picker-palette {
   display: inline-block; }
 
 .color-picker-hue {
-  display: inline-block; }
+  display: inline-block;
+  overflow: hidden;
+  height: 100%; }
   .color-picker-hue .color-picker-hue-bar {
     width: 30px !important; }
 
 .color-picker-circle {
   z-index: 4; }
   .color-picker-circle > div {
+    position: absolute;
     width: 14px;
     height: 14px;
     border: 1px solid gray;
     border-radius: 7px;
-    margin-top: -7px;
-    margin-left: -7px;
+    top: -7px;
+    left: -7px;
     pointer-events: none; }
   .color-picker-circle span {
     width: 12px;
@@ -429,8 +460,9 @@ ul {
   .color-picker-hue-slider > div {
     width: 16px;
     height: 16px;
-    margin-left: 4px;
-    margin-top: -8px;
+    position: absolute;
+    left: 4px;
+    top: -8px;
     border: 5px solid transparent;
     border-radius: 25px;
     background: #FFFFFF;

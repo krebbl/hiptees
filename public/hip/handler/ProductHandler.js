@@ -95,12 +95,15 @@ define([
                     this.trigger('on:configurationOrderChanged', {configuration: configuration, index: command.$.index});
                 }
             } else if (command instanceof AddText) {
-
                 var textFlow = TextFlow.initializeFromText(command.$.text || "TEXT");
 
                 offset = this._convertOffset(command.$.offset);
 
-                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, command.$.leafStyle || {}, command.$.paragraphStyle || {})).doOperation();
+                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, command.$.leafStyle || {}, command.$.paragraphStyle || {
+                    letterSpacing: 0,
+                    fontSize: 30,
+                    lineHeight: 1.3
+                })).doOperation();
 
 
                 configuration = new TextConfiguration({
@@ -109,10 +112,13 @@ define([
                     offset: offset
                 });
 
-                this.$.product.$.configurations.add(configuration);
+                this._loadConfiguration(configuration, false, function () {
+                    self.$.product.$.configurations.add(configuration);
 
-                this.trigger('on:configurationAdded', {configuration: configuration});
-                this._selectConfiguration(configuration);
+                    self.trigger('on:configurationAdded', {configuration: configuration});
+                    self._selectConfiguration(configuration);
+                });
+
             } else if (command instanceof AddImageFile) {
                 var file = command.$.file;
 
