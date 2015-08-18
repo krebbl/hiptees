@@ -107,6 +107,10 @@ fs.readdir('./fonts', function (err, files) {
 
     });
 
+    fontFamilies.sort(function (f1, f2) {
+        return f1.name > f2.name ? 1 : -1;
+    });
+
     var families = JSON.stringify({fontFamilies: fontFamilies}, null, 2);
 
 
