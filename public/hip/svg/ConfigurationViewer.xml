@@ -1,4 +1,4 @@
-<parent:ConfigurationViewerClass xmlns:parent="hip.svg" xmlns="js.svg" onclick="_handleClick" xmlns:js="js.core">
+<parent:ConfigurationViewerClass xmlns:parent="hip.svg" xmlns="js.svg" class="needsclick" onclick="_handleClick" xmlns:js="js.core">
 
     <mask id="{_maskId}">
         <rect x="0" y="0" width="{printArea.size.width}" height="{printArea.size.height}"

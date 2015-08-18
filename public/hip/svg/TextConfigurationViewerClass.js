@@ -4,7 +4,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
         defaults: {
             textRenderer: null,
             verticalStretchable: false,
-            componentClass: "text-configuration-viewer",
+            componentClass: "text-configuration-viewer needsclick",
             maxWidth: "{configuration.size.width}"
         },
 
@@ -101,7 +101,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
 
 
         handlePointerUp: function () {
-            console.log("UP");
             if (this.$.selected && !this.$moved && !this.$resized) {
 
                 var rect = this.getBoundRectInPx();

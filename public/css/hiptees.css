@@ -10,24 +10,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 500px;
+  font-weight: normal;
   min-height: 100%;
   line-height: 1.2;
   padding: 0;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   background: #d9dbda;
   font-size: 14px; }
-
-.bikoblack {
-  position: absolute;
-  font-family: "bikoblack";
-  /*visibility: hidden;*/ }
-
-.dense {
-  position: absolute;
-  font-family: "denseregular";
-  /*visibility: hidden;*/ }
 
 .product-viewer {
   position: relative;
@@ -48,7 +39,7 @@ body {
   right: -40px;
   height: 40px;
   width: 40px;
-  background-color: #05AD56; }
+  background-color: #26C281; }
 
 .delete-handle {
   position: absolute;
@@ -60,19 +51,19 @@ body {
   color: white; }
 
 .active > .configuration-boundary {
-  stroke: #05AD56;
+  stroke: #26C281;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 1 2; }
 
 .configuration-handle {
   fill: white;
-  stroke: #05AD56;
+  stroke: #26C281;
   stroke-width: 1;
   vector-effect: non-scaling-stroke; }
 
 .nav-bar {
-  background: #05AD56;
+  background: #26C281;
   position: absolute;
   top: 0;
   left: 0;
@@ -80,21 +71,35 @@ body {
   height: 44px; }
 
 .header {
+  opacity: 0.9;
   text-align: center;
   height: 50px;
   position: fixed;
   z-index: 15;
-  color: gray;
-  background-color: #ffffff;
+  color: white;
+  background-color: #26C281;
   top: 0;
   width: 100%; }
+  .header .back-btn {
+    position: absolute;
+    display: block;
+    left: 0;
+    font-size: 30px;
+    padding: 6px 15px;
+    color: white; }
+  .header > h2 {
+    color: white;
+    margin: 0;
+    padding: 0.5em 0;
+    font-size: 25px;
+    text-rendering: "optimizeLegibility"; }
 
 .footer {
   position: fixed;
   bottom: 0;
   width: 100%;
   color: white;
-  background: #425060; }
+  background: #333; }
   .footer a {
     padding: 1em;
     text-align: center;
@@ -193,7 +198,7 @@ body {
     left: 0; }
 
 .settings-view {
-  background: #2D3C4D;
+  background: #323232;
   position: fixed;
   bottom: -210px;
   width: 100%;
@@ -240,9 +245,9 @@ body {
 ul.settings {
   font-weight: 300; }
   ul.settings > li {
-    border-bottom: 1px solid #425060; }
+    border-bottom: 1px solid #444444; }
     ul.settings > li.active, ul.settings > li:focus {
-      background: #2fc743;
+      background: #26C281;
       border-bottom: 1px solid transparent; }
   ul.settings > li > a {
     color: white;
@@ -280,8 +285,7 @@ ul.font-list:after {
 
 .font-family-options {
   text-align: center;
-  height: 100%;
-  padding: 0.5em 0; }
+  height: 100%; }
   .font-family-options a {
     display: inline-block;
     height: 100%; }
@@ -292,7 +296,7 @@ ul.font-list:after {
     .font-family-options a.disabled {
       opacity: 0.4; }
     .font-family-options a.active {
-      color: #2fc743; }
+      color: #26C281; }
 
 .text-align ul > li {
   text-align: center;
@@ -301,7 +305,7 @@ ul.font-list:after {
   padding: 1em 0;
   color: white; }
   .text-align ul > li.active {
-    background-color: #2fc743; }
+    background-color: #26C281; }
 
 ul {
   list-style: none;
@@ -320,7 +324,7 @@ ul {
   .font-size .increase-button, .line-height .increase-button {
     float: right; }
 
-.view-content {
+.inner-content {
   position: absolute;
   top: 0;
   bottom: -100px;
@@ -330,8 +334,8 @@ ul {
 
 .product-viewer-wrapper {
   position: absolute;
-  left: 50%;
-  margin-top: -44px; }
+  top: 0;
+  left: 50%; }
 
 .editing .configuration-handle {
   display: none; }
@@ -385,12 +389,17 @@ ul {
   display: inline-block;
   height: 30px; }
 
-.filter-presets > li {
-  display: inline-block;
-  margin-right: 5px; }
-
-.filter-presets img.filtering {
-  visibility: hidden; }
+.filter-presets {
+  position: absolute;
+  top: 30px;
+  bottom: 0;
+  overflow-y: hidden; }
+  .filter-presets > li {
+    height: 100%;
+    display: inline-block;
+    margin-right: 1px; }
+  .filter-presets img.filtering {
+    visibility: hidden; }
 
 .color-picker-wrapper {
   background-color: rgba(15, 21, 29, 0.81);
@@ -481,3 +490,30 @@ ul {
   display: block;
   visibility: hidden;
   height: 0px; }
+
+.module-loader > .content {
+  padding-top: 50px;
+  width: 100%; }
+
+.appearances > li {
+  display: inline-block;
+  width: 50%;
+  position: relative; }
+  .appearances > li img {
+    width: 100%;
+    display: block; }
+  .appearances > li .label {
+    color: white;
+    text-align: center;
+    width: 100%;
+    background-color: #141431;
+    padding: 1em 0; }
+
+.preset-list > li > a {
+  height: 200px;
+  display: block;
+  overflow: hidden;
+  border-bottom: 1px solid gray; }
+  .preset-list > li > a img {
+    width: 100%;
+    margin-top: -40px; }

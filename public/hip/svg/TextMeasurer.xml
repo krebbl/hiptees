@@ -2,5 +2,8 @@
                        xmlns:xml="http://www.w3.org/XML/1998/namespace"
                        xmlns:text="hip.svg">
 
-    <text cid="_textContainer" xml:space="preserve"/>
+    <svg cid="svg">
+        <text cid="_textContainer" xml:space="preserve" fill="red" text-rendering="optimizeSpeed"/>
+    </svg>
+
 </text:TextMeasurerClass>

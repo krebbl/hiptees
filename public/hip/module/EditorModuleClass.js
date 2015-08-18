@@ -6,10 +6,11 @@ define([
     "hip/command/ChangeProductType",
     "hip/command/SaveProduct",
     "hip/command/LoadProduct",
+    "hip/command/Navigate",
     "hip/model/ProductType",
     "js/data/Collection",
     "js/type/Color"
-], function (BaseModule, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, ProductType, Collection, Color) {
+], function (BaseModule, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, Navigate, ProductType, Collection, Color) {
     return BaseModule.inherit({
         defaults: {
             productHandler: null,
@@ -59,6 +60,12 @@ define([
             routeContext.callback();
 
         }.async(),
+
+        goBack: function () {
+            this.$.executor.storeAndExecute(new Navigate({
+                fragment: "presets/" + this.get('product.productType.id') + "/appearance/" + this.get('product.appearance.id')
+            }));
+        },
 
         add: function (what) {
             if (what == "text") {

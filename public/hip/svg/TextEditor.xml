@@ -11,6 +11,5 @@
         <g>
             <parent:TextRenderer cid="$textContainer" maxWidth="{maxWidth}" textFlow="{textFlow}" class="text-renderer" onsizeChanged="_handleSizeChange"/>
         </g>
-        <!--<circle cy="50" cx="50" r="50" fill="red"/>-->
     </svg>
 </parent:TextEditorClass>

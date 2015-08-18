@@ -27,7 +27,7 @@ define(["js/svg/SvgElement"], function (SvgElement) {
                         nsv * luR + sv, nsv * luG, nsv * luB, 0, 0,
                         nsv * luR, nsv * luG + sv, nsv * luB, 0, 0,
                         nsv * luR, nsv * luG, nsv * luB + sv, 0, 0,
-                        0, 0, 0, 1, 0
+                    0, 0, 0, 1, 0
                 ];
 
                 return a.join(" ");
@@ -39,14 +39,15 @@ define(["js/svg/SvgElement"], function (SvgElement) {
         _commit_tintColor: function (color) {
             if (color) {
 
-                console.log('%c Color ', 'background: rgb(' + [color.color.r, color.color.g, color.color.b].join(",") + ');');
+                console.log(color);
+//                console.log('%c Color ', 'background: rgb(' + [color.color.r, color.color.g, color.color.b].join(",") + ');');
 
-                var c = color.$l / 100 * 2;
+                var c = (color.$l / 100) / 100;
                 var tintSlope = 1 - c;
                 var tintIntercepts = {
-                    r: color.color.r / 255 * c,
-                    g: color.color.g / 255 * c,
-                    b: color.color.b / 255 * c
+                    r: color.color.r * c,
+                    g: color.color.g * c,
+                    b: color.color.b * c
                 };
 
                 this.set({
@@ -61,14 +62,15 @@ define(["js/svg/SvgElement"], function (SvgElement) {
         },
 
         convertContrast: function (contrast) {
-            return contrast == 0 ? 1 : (contrast * (0.6) + 100) / 100;
+            contrast *= contrast > 0 ? 1.2 : 0.6;
+            return contrast == 0 ? 1 : (contrast + 100) / 100;
         },
         convertBrightness: function (brightness) {
             return brightness / 100 * 0.5;
         },
 
         convertBlur: function (blur) {
-            return   0.125 * blur;
+            return   0.05 * blur;
         },
 
         contrastIntercept: function (a) {

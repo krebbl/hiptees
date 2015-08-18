@@ -98,7 +98,7 @@
             <strong>{format(paragraphStyle.letterSpacing)}</strong>
         </div>
         <div class="slider-wrapper">
-            <ui:Slider min="-5" max="10" step="0.5" oninput="_previewStyle('letterSpacing', value)"
+            <ui:Slider min="-5" max="10" step="1" oninput="_previewStyle('letterSpacing', value)"
                        value="{paragraphStyle.letterSpacing}"/>
         </div>
     </js:Content>

@@ -17,6 +17,8 @@ define(["js/data/Entity"], function (Entity) {
             }
         },
 
+        idField: false,
+
         getTintRGB: function () {
             var a = this.$.tint;
             if (a == 0) {

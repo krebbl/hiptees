@@ -8,7 +8,10 @@
     </js:Router>
 
     <js:Content name="header">
-        Hiptees
+        <a onclick="goBack" class="back-btn">
+            <i class="fa fa-angle-left"/>
+        </a>
+        <h2>Hiptees</h2>
     </js:Content>
 
 
@@ -17,10 +20,13 @@
             Undo
         </a>
 
-        <div class="view-content" cid="viewContent" heightUpdatePolicy="in">
-            <div class="product-viewer-wrapper" height="{viewContent.height}" width="{viewContent.height}"
-                 marginLeft="{minusHalf(width)}px">
-                <svg:ProductViewer height="{height}" width="{width}" product="{product}"
+        <div class="inner-content" heightUpdatePolicy="in" height="100%" >
+            <div class="product-viewer-wrapper" cid="wrapper"
+                 height="{height}"
+                 width="{height}"
+                 marginLeft="{minusHalf(width)}px"
+                 onclick="hideAddView">
+                <svg:ProductViewer height="{height}" width="{height}" product="{product}"
                                    style="display: block; -webkit-transform: translateZ(0);"/>
             </div>
         </div>
@@ -55,7 +61,7 @@
                     <i class="fa fa-font"/>
                     Add Text
                 </a>
-                <a onclick="add('image')">
+                <a onclick="add('image')" class="needsclick">
                     <i class="fa fa-picture-o"/>
                     Add Image
                 </a>

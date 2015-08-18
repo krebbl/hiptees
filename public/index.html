@@ -9,6 +9,8 @@
 
     <!-- VERSION="${VERSION}" -->
     <script type="text/javascript" src="hip/lib/glfx.js" data-usage="lib"></script>
+    <script type="text/javascript" src="lib/fastclick.js" data-usage="lib"></script>
+    <script type="text/javascript" src="lib/exif.js" data-usage="lib"></script>
     <script type="text/javascript" src="js/lib/require.js" data-usage="lib"></script>
     <script type="text/javascript" src="js/lib/rAppid.js" data-usage="lib"></script>
 
@@ -20,6 +22,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <style type="text/css">
+        @font-face {
+            font-family: 'BrandFont';
+            src: url('./font/LeckerliOne-Regular.woff') format('woff'),
+                 url('./font/LeckerliOne-Regular.ttf') format('truetype');
+        }
+    </style>
 
     <script type="text/javascript">
         var viewportTag;
@@ -54,6 +64,8 @@
 </head>
 <body>
 <script type="text/javascript" data-usage="bootstrap">
+    window.ptFactor = 1;
+    FastClick.attach(document.body);
     rAppid.bootStrap("hip/Hiptees.xml");
 </script>
 </body>

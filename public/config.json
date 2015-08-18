@@ -54,6 +54,7 @@
     "namespaceMap": null,
     "rewriteMap": null,
     "paths": {
+        "exif": "lib/exif",
         "xaml": "js/plugin/xaml",
         "json": "js/plugin/json",
         "raw": "js/plugin/raw",
@@ -66,6 +67,9 @@
         "RestConditionParser": "srv/lib/RestConditionParser"
     },
     "shim": {
+        "exif": {
+            "exports": "EXIF"
+        },
         "inherit": {
             "exports": "inherit"
         },

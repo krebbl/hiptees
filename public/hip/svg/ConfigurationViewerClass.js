@@ -74,7 +74,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         _updateHandleSize: function () {
-            this.set('handleWidth', 16 * this.globalToLocalFactor().x);
+            this.set('handleWidth', 8 * this.globalToLocalFactor().x);
 
         },
 
@@ -364,7 +364,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         quarter: function (value) {
-            return value * 0.25;
+            return value * 0.5;
         },
 
         and: function (a, b, c) {

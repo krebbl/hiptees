@@ -14,18 +14,19 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/ProductType", 
 
             this.set('productTypes', productTypes);
 
+            // TODO: show loading
             productTypes.fetch({}, function (err) {
 
             });
         },
-        selectProductType: function (productType) {
-            this.$.executor.storeAndExecute(new ChangeProductType({
-                productType: productType
-            }));
-
+        selectProductType: function (productTypeId, appearanceId) {
             this.$.executor.storeAndExecute(new Navigate({
-                fragment: "presets/" + productType.$.id
+                fragment: "presets/" + productTypeId + "/appearance/" + appearanceId
             }));
+        },
+        resourceUrl: function (productType, appearanceId) {
+            return productType.$.resources.BASE + productType.$.id +
+                "-" + appearanceId + ".jpg"
         }
     })
 });

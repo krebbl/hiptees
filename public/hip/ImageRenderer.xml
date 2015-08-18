@@ -8,6 +8,7 @@
     <js:Injection cid="injection">
         <data:HipDataSource cid="api" gateway="/api/v1" endPoint=""/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
+        <util:ImageFileReader/>
         <svg:TextMeasurer/>
         <command:EventBus cid="eventBus"/>
         <command:Executor cid="executor" eventBus="{eventBus}"/>
@@ -30,7 +31,7 @@
     <svg:PrintoutViewer visible="{isPrintout}" width="4000" height="{width2Height(width)}" product="{product}"
                        style="display: block; -webkit-transform: translateZ(0);"/>
 
-    <svg:ProductViewer visible="{not(isPrintout)}" width="800" height="800" product="{product}"
+    <svg:ProductViewer visible="{not(isPrintout)}" width="1600" height="1600" product="{product}"
                        style="display: block; -webkit-transform: translateZ(0);"/>
 
 </hip:ImageRendererClass>

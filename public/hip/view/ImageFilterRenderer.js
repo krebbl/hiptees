@@ -15,7 +15,9 @@ define(["js/core/Component", "js/core/Base"], function (Component, Base) {
 
                 var self = this;
 
-                image.crossOrigin = "Anonymous";
+                if (/^http/.test(imageSrc)) {
+                    image.crossOrigin = 'anonymous';
+                }
                 image.onload = function () {
                     try {
                         self.$canvas = self.$canvas || fx.canvas();
@@ -40,7 +42,7 @@ define(["js/core/Component", "js/core/Base"], function (Component, Base) {
             if (canvas) {
                 canvas.draw(this.$texture, this.$image.width, this.$image.height);
 
-                if (this.$stage.$browser.isIOS) {
+                if (this.$stage.$browser.isSafari) {
                     canvas.matrix(flipMatrix);
                 }
 
@@ -55,13 +57,18 @@ define(["js/core/Component", "js/core/Base"], function (Component, Base) {
 
                     var a = filter.getTintRGB();
                     if (a) {
+                        console.log(a);
                         canvas.colorize(a.color.r, a.color.g, a.color.b, a.$l / 100);
                     }
                 }
 
                 canvas.update();
 
-                callback && callback(null, canvas.toDataURL());
+                try {
+                    callback && callback(null, canvas.toDataURL());
+                } catch (e) {
+                    console.log(e);
+                }
 
                 this.context.notifyWorkerFinished(this);
             }

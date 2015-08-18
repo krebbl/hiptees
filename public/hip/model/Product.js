@@ -11,7 +11,8 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
     return Model.inherit('hip.model.Product', {
         defaults: {
             name: '',
-            configurations: List
+            configurations: List,
+            tags: ["preset"]
         },
         schema: {
             name: {
@@ -23,7 +24,11 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
                 type: Appearance,
                 isReference: true
             },
-            configurations: [typeResolver]
+            configurations: [typeResolver],
+            tags: {
+                type: Array,
+                required: false
+            }
         },
         getIndexOfConfiguration: function (configuration) {
             if (this.$.configurations) {

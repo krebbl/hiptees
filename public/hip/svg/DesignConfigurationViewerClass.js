@@ -43,7 +43,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'hip/view/ImageFilterRenderer'], fun
         updateFilter: function () {
             var self = this,
                 configuration = this.$.configuration;
-            if (this.$.renderedImage) {
+            if (this.$.renderedImage && this.hasWebGl()) {
                 this.$.imageFilter.filterImage(configuration.get('design.resources.SCREEN'), configuration.get('filter'), function (err, data) {
                     if (!err) {
                         self.$.renderedImage.$el.setAttribute('href', data);

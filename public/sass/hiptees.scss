@@ -1,10 +1,10 @@
-$brand-color: #05AD56;
+$brand-color: #26C281;
 $bg-color: #E2E2E2;
 $footer-color: #282828;
 $footer-select-color: #191919;
 
-$color-m: #425060;
-$color-j: #2fc743;
+$color-m: #333;
+$color-j: #26C281;
 //#64AB23
 
 $nav-bar-height: 44px;
@@ -24,26 +24,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-  font-weight: 500px;
+  font-weight: normal;
   min-height: 100%;
   line-height: 1.2;
   padding: 0;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   background: rgb(217, 219, 218);
   font-size: 14px;
-}
-
-.bikoblack {
-  position: absolute;
-  font-family: "bikoblack";
-  /*visibility: hidden;*/
-}
-
-.dense {
-  position: absolute;
-  font-family: "denseregular";
-  /*visibility: hidden;*/
 }
 
 .product-viewer {
@@ -108,14 +97,32 @@ body {
 $settings-height: 210px;
 
 .header {
+  opacity: 0.9;
   text-align: center;
   height: 50px;
   position: fixed;
   z-index: 15;
-  color: gray;
-  background-color: #ffffff;
+  color: white;
+  background-color: $color-j;
   top: 0;
   width: 100%;
+
+  .back-btn {
+    position: absolute;
+    display: block;
+    left: 0;
+    font-size: 30px;
+    padding: 6px 15px;
+    color: white;
+  }
+
+  > h2 {
+    color: white;
+    margin: 0;
+    padding: 0.5em 0;
+    font-size: 25px;
+    text-rendering: "optimizeLegibility";
+  }
 
 }
 
@@ -272,7 +279,7 @@ $settings-height: 210px;
 }
 
 .settings-view {
-  background: #2D3C4D;
+  background: #323232;
   position: fixed;
   bottom: -$settings-height;
   width: 100%;
@@ -341,7 +348,7 @@ $add-view-height: 140px;
 ul.settings {
   font-weight: 300;
   > li {
-    border-bottom: 1px solid #425060;
+    border-bottom: 1px solid #444444;
 
     &.active, &:focus {
       background: $color-j;
@@ -406,7 +413,6 @@ ul.font-list {
 .font-family-options {
   text-align: center;
   height: 100%;
-  padding: 0.5em 0;
 
   a {
     display: inline-block;
@@ -471,7 +477,7 @@ ul {
   }
 }
 
-.view-content {
+.inner-content {
   position: absolute;
   top: 0;
   bottom: -100px;
@@ -482,8 +488,9 @@ ul {
 
 .product-viewer-wrapper {
   position: absolute;
+  top: 0;
   left: 50%;
-  margin-top: -1 * $nav-bar-height;
+  //  margin-top: -1 * $nav-bar-height;
 }
 
 .svg-text-editor {
@@ -558,16 +565,21 @@ ul {
 }
 
 .filter-presets {
+  position: absolute;
+  top: 30px;
+  bottom: 0;
+  overflow-y: hidden;
+
   > li {
+    height: 100%;
     display: inline-block;
-    margin-right: 5px;
+    margin-right: 1px;
   }
 
   img.filtering {
     visibility: hidden;
   }
 }
-
 
 .color-picker-wrapper {
   background-color: rgba(15, 21, 29, 0.81);
@@ -699,4 +711,49 @@ ul {
   display: block;
   visibility: hidden;
   height: 0px;
+}
+
+.module-loader {
+  > .content {
+    padding-top: 50px;
+    width: 100%;
+  }
+}
+
+.appearances {
+  > li {
+    display: inline-block;
+    width: 50%;
+    position: relative;
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    .label {
+      color: white;
+      text-align: center;
+      width: 100%;
+      background-color: #141431;
+      padding: 1em 0;
+
+    }
+
+  }
+}
+
+.preset-list {
+
+  > li > a {
+    height: 200px;
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid gray;
+    img {
+      width: 100%;
+      margin-top: -40px;
+    }
+  }
+
 }

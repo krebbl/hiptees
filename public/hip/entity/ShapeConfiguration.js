@@ -11,7 +11,8 @@ define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, C
             type: String,
             fill: String,
             stroke: String,
-            strokeWidth: Number
+            strokeWidth: Number,
+            fillOpacity: Number
         }
     })
 });

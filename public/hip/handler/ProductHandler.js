@@ -18,6 +18,7 @@ define([
     "hip/model/Design",
     "hip/model/Product",
     "hip/util/CloudinaryImageUploader",
+    "hip/util/ImageFileReader",
     "xaml!hip/svg/TextMeasurer",
     "xaml!hip/data/HipDataSource",
     "js/data/Collection",
@@ -26,7 +27,7 @@ define([
     "text/entity/TextFlow",
     "flow",
     "underscore"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
     return Handler.inherit({
         defaults: {
             api: null,
@@ -38,12 +39,18 @@ define([
         inject: {
             api: HipDataSource,
             imageUploader: ImageUploader,
+            imageFileReader: ImageFileReader,
             textMeasurer: TextMeasurer
         },
 
         isResponsibleForCommand: function (command) {
             return command instanceof ProductCommand;
         },
+
+        _commitProduct: function (p) {
+            console.log(p);
+        },
+
         handleCommand: function (command) {
             var configuration = command.$.configuration,
                 offset,
@@ -65,20 +72,23 @@ define([
             } else if (command instanceof CloneConfiguration) {
                 if (configuration) {
 
+                    var newConfig = this.$.product.createEntity(configuration.factory, this._generateConfigurationId());
                     var clone = configuration.clone();
+                    clone.unset('id');
                     clone.set({
-                        id: this._generateConfigurationId(),
                         offset: {
                             x: configuration.get('offset.x') + 10,
                             y: configuration.get('offset.y') + 10
                         }
                     });
 
-                    this.$.product.$.configurations.add(clone);
+                    newConfig.set(clone.$);
 
-                    this.trigger('on:configurationCloned', {configuration: clone});
-                    this.trigger('on:configurationAdded', {configuration: clone});
-                    this._selectConfiguration(clone);
+                    this.$.product.$.configurations.add(newConfig);
+
+                    this.trigger('on:configurationCloned', {configuration: newConfig});
+                    this.trigger('on:configurationAdded', {configuration: newConfig});
+                    this._selectConfiguration(newConfig);
                 }
             } else if (command instanceof ChangeOrder) {
                 if (configuration) {
@@ -106,8 +116,9 @@ define([
                 })).doOperation();
 
 
-                configuration = new TextConfiguration({
-                    id: this._generateConfigurationId(),
+                configuration = this.$.product.createEntity(TextConfiguration, this._generateConfigurationId());
+
+                configuration.set({
                     textFlow: textFlow,
                     offset: offset
                 });
@@ -122,13 +133,12 @@ define([
             } else if (command instanceof AddImageFile) {
                 var file = command.$.file;
 
-                var reader = new FileReader();
 
                 offset = this._convertOffset(command.$.offset);
 
-                var image = new Image();
+                var imageFileReader = this.$.imageFileReader;
 
-                image.onload = function (evt) {
+                imageFileReader.readFile(file, function (err, image) {
                     var designs = self.$.api.createCollection(Collection.of(Design));
 
                     var design = designs.createItem();
@@ -138,9 +148,8 @@ define([
                         file: file,
                         type: "image",
                         resources: {
-                            original: image.src,
-                            SCREEN: self._resizeImage(image, 800, 800),
-                            SMALL: self._resizeImage(image, 100, 100)
+                            SCREEN: imageFileReader.resizeImage(image, 800, 800),
+                            SMALL: imageFileReader.resizeImage(image, 100, 100)
                         },
                         size: {
                             width: image.width,
@@ -150,8 +159,8 @@ define([
 
                     var printAreaWidth = self.get('product.productType.printArea.size.width');
                     var height = design.getAspectRatio() * self.get('product.productType.printArea.size.width');
-                    configuration = new DesignConfiguration({
-                        id: self._generateConfigurationId(),
+                    configuration = self.$.product.createEntity(DesignConfiguration, self._generateConfigurationId());
+                    configuration.set({
                         offset: {
                             x: printAreaWidth * 0.5,
                             y: height * 0.5
@@ -168,14 +177,9 @@ define([
                     self.trigger('on:configurationAdded', {configuration: configuration});
 
                     self._selectConfiguration(configuration);
-                };
+                });
 
 
-                reader.onload = function (evt) {
-                    image.src = evt.target.result;
-                };
-
-                reader.readAsDataURL(file);
             } else if (command instanceof AddShape) {
                 var printAreaWidth = self.get('product.productType.printArea.size.width'),
                     printAreaHeight = self.get('product.productType.printArea.size.height');
@@ -189,9 +193,8 @@ define([
                 }
 
                 if (Factory) {
-                    configuration = new Factory({
-                        id: self._generateConfigurationId(),
-
+                    configuration = this.$.product.createEntity(Factory, self._generateConfigurationId());
+                    configuration.set({
                         offset: {
                             x: printAreaWidth * 0.5,
                             y: printAreaHeight * 0.2
@@ -220,6 +223,10 @@ define([
                     return app.$.id == command.$.productType.$.defaultAppearanceId
                 });
 
+                if (!defaultAppearance) {
+                    defaultAppearance = command.$.productType.$.appearances.at(0);
+                }
+
                 this.$.product.set({
                     'appearance': defaultAppearance,
                     'productType': command.$.productType
@@ -241,9 +248,21 @@ define([
                     .seq("productType", function (cb) {
                         this.vars.product.$.productType.fetch({}, cb);
                     })
-                    .seq(function (cb) {
+                    .par(function (cb) {
+                        if (!loadLazy) {
+                            var img = new Image();
+
+                            img.onload = function () {
+                                cb();
+                            };
+                            img.src = this.vars.productType.$.resources.BASE + this.vars.productType.get('id') +
+                                "-" + this.vars.product.get('appearance.id') + ".jpg";
+                        } else {
+                            cb();
+                        }
+                    }, function (cb) {
                         flow()
-                            .parEach(this.vars.product.$.configurations, function (configuration, cb) {
+                            .parEach(this.vars.product.$.configurations.toArray(), function (configuration, cb) {
                                 self._loadConfiguration(configuration, loadLazy, cb);
                             })
                             .exec(cb);
@@ -314,37 +333,6 @@ define([
             }
 
             return ret;
-        },
-
-        _resizeImage: function (image, maxWidth, maxHeight) {
-            var width = image.width;
-            var height = image.height;
-
-            if (width > height) {
-                if (width > maxWidth) {
-                    height *= maxWidth / width;
-                    width = maxWidth;
-                }
-            } else {
-                if (height > maxHeight) {
-                    width *= maxHeight / height;
-                    height = maxHeight;
-                }
-            }
-
-            if (!this.$canvas) {
-                this.$canvas = this.$stage.$document.createElement("canvas");
-                this.$stage.$document.body.appendChild(this.$canvas);
-            }
-
-
-            this.$canvas.width = width;
-            this.$canvas.height = height;
-            var ctx = this.$canvas.getContext("2d");
-            ctx.drawImage(image, 0, 0, width, height);
-
-
-            return this.$canvas.toDataURL();
         },
 
         _selectConfiguration: function (configuration) {

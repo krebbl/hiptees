@@ -93,9 +93,9 @@ define(
                     callback: function (err) {
                         if (!err) {
                         }
-                        alert("loaded");
-
-                        console.log("loaded");
+                        setTimeout(function(){
+                            alert("loaded");
+                        },50);
                     }
                 }));
                 routeContext.callback();

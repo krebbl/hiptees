@@ -5,16 +5,16 @@
     <feColorMatrix type="matrix" values="{saturationMatrix(filter.saturation)}"
                    color-interpolation-filters="sRGB"/>
 
-    <feComponentTransfer visible="{filter.contrast}" result="contrast" color-interpolation-filters="sRGB">
-        <feFuncR type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
-        <feFuncG type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
-        <feFuncB type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
-    </feComponentTransfer>
-
     <feComponentTransfer visible="{filter.brightness}" color-interpolation-filters="sRGB">
         <feFuncR type="linear" intercept="{_brightnessIntercept}" slope="1"/>
         <feFuncG type="linear" intercept="{_brightnessIntercept}" slope="1"/>
         <feFuncB type="linear" intercept="{_brightnessIntercept}" slope="1"/>
+    </feComponentTransfer>
+
+    <feComponentTransfer visible="{filter.contrast}" result="contrast" color-interpolation-filters="sRGB">
+        <feFuncR type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
+        <feFuncG type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
+        <feFuncB type="linear" slope="{_contrastSlop}" intercept="{contrastIntercept(_contrastSlop)}"/>
     </feComponentTransfer>
 
     <feComponentTransfer visible="{filter.tint}" color-interpolation-filters="sRGB">

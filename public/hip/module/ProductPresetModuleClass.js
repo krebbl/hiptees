@@ -1,17 +1,18 @@
-define(["hip/module/BaseModule", "js/data/Query", "js/data/Collection", "hip/model/Product"], function (BaseModule, Query, Collection, Product) {
+define(["hip/module/BaseModule", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate"], function (BaseModule, Query, Collection, Product, Navigate) {
     return BaseModule.inherit({
         defaults: {
             loading: false,
             products: null
         },
 
-        loadPresets: function (routeContext, productTypeId) {
+        loadPresets: function (routeContext, productTypeId, appearanceId) {
+            this.set('loading', true);
 
             var api = this.$.api;
 
             var products = api.createCollection(Collection.of(Product));
 
-            var query = new Query().in("tags", ["preset"]).eql('productType.id', productTypeId);
+            var query = new Query().eql("tags", "preset").eql('productType', productTypeId).eql('appearance', appearanceId);
 
             var queryCollection = products.query(query),
                 self = this;
@@ -19,6 +20,7 @@ define(["hip/module/BaseModule", "js/data/Query", "js/data/Collection", "hip/mod
             queryCollection.fetch({
                 limit: 10
             }, function (err, productPresets) {
+                self.set('loading', false);
                 if (!err) {
                     self.set('products', productPresets);
                 }
@@ -26,7 +28,14 @@ define(["hip/module/BaseModule", "js/data/Query", "js/data/Collection", "hip/mod
 
         },
         selectProductPreset: function (product) {
-
+            this.$.executor.storeAndExecute(new Navigate({
+                fragment: "editor/" + product.$.id
+            }));
+        },
+        goBack: function () {
+            this.$.executor.storeAndExecute(new Navigate({
+                fragment: "productTypes"
+            }));
         }
     })
 });

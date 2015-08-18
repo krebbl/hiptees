@@ -1,12 +1,16 @@
-define(["js/data/RestDataSource"], function (RestDataSource) {
+define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataSource, QueryComposer) {
     return RestDataSource.inherit({
         defaults: {
 
         },
         extractListMetaData: function (collectionPage, payload, options, xhr) {
             return {
-                count: payload.length
+                count: payload.total || payload.length
             }
+        },
+
+        getQueryComposer: function () {
+            return QueryComposer;
         },
 
 //        _handleXHRError: function (request, cb) {
@@ -23,7 +27,7 @@ define(["js/data/RestDataSource"], function (RestDataSource) {
 
 
         extractListData: function (collectionPage, payload, options, xhr) {
-            return payload;
+            return payload.results || payload;
         }
     })
 })
