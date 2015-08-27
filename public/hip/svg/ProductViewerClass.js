@@ -1,4 +1,4 @@
-define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "hip/command/SelectConfiguration", "js/svg/SvgElement"], function (Svg, PrintAreaViewerSvg, Executor, SelectConfiguration, SvgElement) {
+define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "hip/command/SelectConfiguration", "hip/handler/ProductHandler"], function (Svg, PrintAreaViewerSvg, Executor, SelectConfiguration, ProductHandler) {
 
     return Svg.inherit('', {
 
@@ -6,11 +6,13 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
             width: 1000,
             height: 1000,
             product: null,
+            appearance: "{product.appearance}",
             productType: "{product.productType}",
             printArea: "{productType.printArea}"
         },
 
         inject: {
+            productHandler: ProductHandler,
             executor: Executor
         },
 
@@ -53,6 +55,13 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
                 // TODO: clear the stuff
             }
 
+        },
+        getSelectedConfigurationViewer: function () {
+            var selectedConfiguration = this.get('productHandler.selectedConfiguration');
+            if (selectedConfiguration) {
+                return this.$.printAreaViewer.getViewerForConfiguration(selectedConfiguration);
+            }
+            return null;
         }
 
     });

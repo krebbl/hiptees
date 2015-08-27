@@ -17,14 +17,16 @@ define(['js/svg/SvgElement', 'js/core/List',
             product: null,
             printArea: null,
             componentClass: "print-area",
-            activeViewer: null
+            showActiveViewer: false,
+            activeViewer: null,
+            handleWidth: 10
         },
 
         inject: {
             productHandler: ProductHandler
         },
 
-        $classAttributes: ["product", "printArea"],
+        $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer"],
 
         ctor: function () {
             this.callBase();
@@ -37,13 +39,29 @@ define(['js/svg/SvgElement', 'js/core/List',
             this.bind('productHandler', 'on:configurationAdded', function (e) {
                 self._addConfiguration(e.$.configuration);
             });
+
+            this.bind('productHandler', 'on:configurationSelected', function (e) {
+                var viewer = self.getViewerForConfiguration(e.$.configuration);
+                if (viewer) {
+                    self.set('activeViewer', viewer);
+                }
+                self.set('showActiveViewer', !!viewer);
+            });
+
             this.bind('productHandler', 'on:configurationOrderChanged', function (e) {
                 var viewer = self.getViewerForConfiguration(e.$.configuration);
                 self.$.configurations.setChildIndex(viewer, e.$.index);
             });
         },
-        _renderProduct: function (product) {
+        _onDomAdded: function () {
+            this.callBase();
 
+            if (!this.$configurationInfo) {
+                this.$configurationInfo = this.$templates.configurationInfo.createInstance();
+                this.$stage.$el.appendChild(this.$configurationInfo.render());
+            }
+        },
+        _renderProduct: function (product) {
             if (product) {
                 var self = this;
                 while (this.$.configurations.$children.length) {
@@ -54,7 +72,6 @@ define(['js/svg/SvgElement', 'js/core/List',
                     self._addConfiguration(configuration);
                 });
             }
-
         },
         _addConfiguration: function (configuration) {
 
@@ -80,11 +97,13 @@ define(['js/svg/SvgElement', 'js/core/List',
                 configurationViewer.bind('on:configurationPointerUp', function () {
                     self.$.snapLines.$children[0].set('stroke-opacity', 0);
                     self.$.snapLines.$children[1].set('stroke-opacity', 0);
-                    self.set('activeViewer', null);
                 });
 
                 configurationViewer.bind('on:configurationPointerDown', function (e) {
-                    self.set('activeViewer', e.target);
+                    self.set({
+                        activeViewer: e.target,
+                        showActiveViewer: true
+                    });
                 });
 
                 this.$.configurations.addChild(configurationViewer);
@@ -175,14 +194,14 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         format: function (val) {
-            return val != null ? val.toFixed(2) : 0;
+            return val != null ? val.toFixed(0) : 0;
         },
 
         or: function (a, b) {
             return a || b;
 
         },
-        half: function(a){
+        half: function (a) {
             return a * 0.5;
         }
 

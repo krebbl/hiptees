@@ -8,18 +8,23 @@
           cid="border"
           height="{printArea.size.height}"
           fill="none"
-          />
+            />
 
-    <g translateX="{half(printArea.size.width)}" translateY="-30">
-        <rect x="-55" y="0" rx="5" ry="5" width="110" height="20" style="fill:black;opacity:0.8"
-              visible="{or(activeViewer._moving,activeViewer._resizing)}"/>
-        <text y="13" x="0" fill="white" font-size="11" visible="{activeViewer._moving}" text-anchor="middle">x: {format(activeViewer._realOffset.x)} y:
-            {format(activeViewer._realOffset.y)}
-        </text>
-        <text y="13" x="0" fill="white" font-size="11" visible="{activeViewer._resizing}" text-anchor="middle">w: {format(activeViewer._size.width)} h:
-            {format(activeViewer._size.height)}
-        </text>
-    </g>
+    <js:Template name="configurationInfo">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="configuration-info">
+            <div selected="{showActiveViewer}">
+                <div visible="{activeViewer._moving}">
+                    x : {format(activeViewer._realOffset.x)}
+                    y : {format(activeViewer._realOffset.y)}
+                </div>
+                <div visible="{not(activeViewer._moving)}">
+                    w : {format(activeViewer._size.width)}
+                    h : {format(activeViewer._size.height)}
+                </div>
+            </div>
+        </div>
+    </js:Template>
+
 
     <g cid="configurations"/>
 

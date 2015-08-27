@@ -1,14 +1,14 @@
 define(["js/data/Entity"], function (Entity) {
-    return Entity.inherit('hip.entity.Appearance',{
+    return Entity.inherit('hip.entity.Appearance', {
         defaults: {
             name: null,
-            color: null,
-            resources: null
+            color: null
         },
 
         schema: {
             name: Object,
-            color: String
+            color: String,
+            resources: Object
         }
     })
 });

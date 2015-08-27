@@ -117,8 +117,16 @@ define(
                 return "dev";
             },
 
+            goTo: function(moduleName){
+                this.$.swipeView.goTo(moduleName);
+            },
+
+            goBack: function(){
+                this.$.swipeView.goBack();
+            },
+
             defaultRoute: function (routeContext) {
-                routeContext.navigate(this.$lastFragment || "productTypes");
+                routeContext.navigate(this.$lastFragment || "login");
             },
 
             statusClass: function () {

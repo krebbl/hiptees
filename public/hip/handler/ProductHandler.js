@@ -47,10 +47,6 @@ define([
             return command instanceof ProductCommand;
         },
 
-        _commitProduct: function (p) {
-            console.log(p);
-        },
-
         handleCommand: function (command) {
             var configuration = command.$.configuration,
                 offset,
@@ -240,6 +236,7 @@ define([
                     callback = command.$.callback || function () {
                     };
 
+                self._selectConfiguration(null);
 
                 flow()
                     .seq("product", function (cb) {
@@ -249,14 +246,19 @@ define([
                         this.vars.product.$.productType.fetch({}, cb);
                     })
                     .par(function (cb) {
+                        var appearanceId = this.vars.product.get('appearance.id');
+                        var appearance = this.vars.productType.$.appearances.find(function (a) {
+                            return a.$.id == appearanceId;
+                        });
+                        product.set('appearance', appearance);
                         if (!loadLazy) {
                             var img = new Image();
 
                             img.onload = function () {
                                 cb();
                             };
-                            img.src = this.vars.productType.$.resources.BASE + this.vars.productType.get('id') +
-                                "-" + this.vars.product.get('appearance.id') + ".jpg";
+
+                            img.src = appearance.$.resources.MEDIUM;
                         } else {
                             cb();
                         }

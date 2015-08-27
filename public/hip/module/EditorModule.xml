@@ -2,32 +2,32 @@
                           xmlns:parent="hip.module" xmlns:js="js.core" xmlns:svg="hip.svg" xmlns:view="hip.view"
                           xmlns:conf="js.conf">
 
-    <js:Router cid="router">
-        <conf:RouteConfiguration route="^editor$" onexec="loadEditor"/>
-        <conf:RouteConfiguration route="^editor\/(\w+)" onexec="loadProduct"/>
-    </js:Router>
-
-    <js:Content name="header">
+    <div class="header">
         <a onclick="goBack" class="back-btn">
             <i class="fa fa-angle-left"/>
         </a>
         <h2>Hiptees</h2>
-    </js:Content>
+    </div>
 
 
-    <js:Content name="content">
+    <div class="content">
         <a>
             Undo
         </a>
 
-        <div class="inner-content" heightUpdatePolicy="in" height="100%" >
+        <a class="zoom-btn" onclick="toggleZoom" selected="{zoomVisible}">
+            <i class="fa fa-search-plus" visible="{not(zoomed)}"/>
+            <i class="fa fa-search-minus" visible="{zoomed}"/>
+        </a>
+
+        <div cid="innerContent" class="inner-content" heightUpdatePolicy="in" height="100%">
             <div class="product-viewer-wrapper" cid="wrapper"
                  height="{height}"
                  width="{height}"
                  marginLeft="{minusHalf(width)}px"
+                 left="50%"
                  onclick="hideAddView">
-                <svg:ProductViewer height="{height}" width="{height}" product="{product}"
-                                   style="display: block; -webkit-transform: translateZ(0);"/>
+                <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" product="{product}"/>
             </div>
         </div>
 
@@ -80,8 +80,6 @@
                 <i class="fa fa-chevron-down"/>
             </a>
         </div>
-
-
-    </js:Content>
+    </div>
 
 </parent:EditorModuleClass>

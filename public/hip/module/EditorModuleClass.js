@@ -17,14 +17,13 @@ define([
             product: "{productHandler.product}",
             selectedConfiguration: "{productHandler.selectedConfiguration}",
             settingsSelected: false,
-            addViewSelected: false
+            addViewSelected: false,
+            zoomed: false,
+            zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}"
         },
 
         inject: {
 
-        },
-
-        _commitProduct: function (product) {
         },
 
         _commitSelectedConfiguration: function (selected) {
@@ -33,10 +32,23 @@ define([
             }
         },
 
-        loadEditor: function (routeContext) {
-            if (!this.get('product.productType')) {
-                var self = this;
+        or: function (a, b) {
+            return a || b;
+        },
 
+        prepare: function (fragment, callback) {
+            var self = this;
+            var match = fragment.match(/^editor\/(\w+)/);
+
+            if (match) {
+                var productId = match[1];
+
+                this.$.executor.execute(new LoadProduct({
+                    productId: productId,
+                    lazy: true,
+                    callback: callback
+                }));
+            } else {
                 var productTypes = this.$.api.createCollection(Collection.of(ProductType));
 
                 productTypes.fetch({}, function (err, productTypes) {
@@ -45,27 +57,18 @@ define([
                             productType: productTypes.at(0)
                         }));
                     }
-                    routeContext.callback(err);
+                    callback(err);
                 });
             }
 
-        }.async(),
+        },
 
         loadProduct: function (routeContext, productId) {
 
-            this.$.executor.execute(new LoadProduct({
-                productId: productId
-            }));
 
             routeContext.callback();
 
         }.async(),
-
-        goBack: function () {
-            this.$.executor.storeAndExecute(new Navigate({
-                fragment: "presets/" + this.get('product.productType.id') + "/appearance/" + this.get('product.appearance.id')
-            }));
-        },
 
         add: function (what) {
             if (what == "text") {
@@ -119,6 +122,55 @@ define([
         },
         minusHalf: function (n) {
             return -0.5 * n;
+        },
+
+        toggleZoom: function () {
+            if (!this.$heightBefore) {
+                this.$heightBefore = this.$.wrapper.$.height;
+            }
+
+            var self = this;
+
+            if (this.$.zoomed) {
+                this.$.wrapper.set({
+                    'left': "0",
+                    'height': this.$heightBefore
+                });
+                this.$.innerContent.set('overflow', 'hidden');
+                setTimeout(function () {
+                    self.$.wrapper.set({
+                        'left': "50%"
+                    });
+                }, 10);
+                this.set('zoomed', false);
+            } else {
+                var viewer = this.$.productViewer.getSelectedConfigurationViewer();
+                if (viewer) {
+                    var offsetWidth = this.$.innerContent.$el.offsetWidth;
+                    var rect = viewer.$el.getBoundingClientRect();
+                    var zoomHeight = Math.min(2000, (0.95 * offsetWidth) / rect.width * this.$.innerContent.$.height);
+                    this.$.wrapper.set({
+                        'height': zoomHeight
+                    });
+                    this.$.wrapper.set('marginLeft', (this.minusHalf(this.$heightBefore)) + "px");
+                    this.$.innerContent.set('overflow', 'scroll');
+
+                    var rectAfter = viewer.$el.getBoundingClientRect();
+                    this.$.innerContent.$el.scrollLeft = rectAfter.left - (offsetWidth - rectAfter.width) * 0.5;
+                    this.$.innerContent.$el.scrollTop = rectAfter.top - (this.$.innerContent.$el.offsetHeight - rectAfter.height) * 0.5;
+
+                    this.set('zoomed', true);
+                }
+
+            }
+        },
+
+        goBack: function(){
+            if(this.$.zoomed){
+                this.toggleZoom();
+            }
+
+            this.callBase();
         },
 
         saveProduct: function () {

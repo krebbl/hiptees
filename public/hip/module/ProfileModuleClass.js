@@ -6,24 +6,15 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/ProductType", 
             productTypes: null
         },
 
-        loadProductTypes: function (routeContext) {
-            routeContext.callback(null);
-        },
-
         prepare: function (fragment, callback) {
-            var api = this.$.api;
+            // TODO: load user data
 
-            var productTypes = api.createCollection(Collection.of(ProductType));
-
-            this.set('productTypes', productTypes);
-
-            // TODO: show loading
-            productTypes.fetch({}, callback);
+            callback();
         },
 
-        selectProductType: function (productTypeId, appearanceId) {
+        goCreate: function () {
             this.$.executor.storeAndExecute(new Navigate({
-                fragment: "presets/" + productTypeId + "/appearance/" + appearanceId
+                fragment: "productTypes"
             }));
         }
     })

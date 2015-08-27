@@ -93,9 +93,9 @@ define(
                     callback: function (err) {
                         if (!err) {
                         }
-                        setTimeout(function(){
+                        setTimeout(function () {
                             alert("loaded");
-                        },50);
+                        }, 50);
                     }
                 }));
                 routeContext.callback();
@@ -128,12 +128,12 @@ define(
                 return ret;
             }.onChange('selectedConfiguration'),
 
-            width2Height: function (width) {
+            height2With: function (height) {
                 var s = this.get('product.productType.printArea.size');
                 if (s) {
-                    return width * s.height / s.width;
+                    return height * s.width / s.height;
                 } else {
-                    return width;
+                    return height;
                 }
             }.onChange('product.productType.printArea')
         });

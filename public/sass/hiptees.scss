@@ -7,12 +7,29 @@ $color-m: #333;
 $color-j: #26C281;
 //#64AB23
 
-$nav-bar-height: 44px;
+$header-height: 70px;
 
 * {
   outline: none;
   box-sizing: border-box;
   line-height: 1.2;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  -ms-user-drag: none;
+  user-drag: none;
+}
+
+input, *[contenteditable="true"], text, tspan {
+  -webkit-user-select: auto !important;
+  -khtml-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
 }
 
 html {
@@ -35,6 +52,15 @@ body {
   font-size: 14px;
 }
 
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-family: 'BrandFont';
+  margin: 0;
+}
+
 .product-viewer {
   position: relative;
   max-width: 1000px;
@@ -46,8 +72,74 @@ body {
   pointer-events: none;
 }
 
-.container {
+.swipe-container {
+  width: 100%;
+  overflow: hidden;
   max-width: 1000px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  .module-a {
+    background-color: blue;
+  }
+
+  .module-b {
+    background-color: green;
+  }
+
+  .module-c {
+    background-color: yellow;
+  }
+
+  .swipe-view {
+    transform: translateZ(0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
+    -webkit-transition: left 0.5s;
+    -moz-transition: left 0.5s;
+    -ms-transition: left 0.5s;
+    -o-transition: left 0.5s;
+    transition: left 0.5s;
+
+    //    a {
+    //      z-index: 2;
+    //    }
+
+    > .content {
+      background-color: white;
+      position: absolute;
+      top: $header-height;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      overflow-x: hidden;
+      overflow-y: scroll;
+
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  .previous-module {
+    z-index: 0;
+    left: -20px;
+  }
+
+  .next-module {
+    left: 100%;
+  }
+
+  .module-swiper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background-color: transparent;
+  }
 }
 
 .move-handle {
@@ -84,23 +176,14 @@ body {
   vector-effect: non-scaling-stroke;
 }
 
-.nav-bar {
-  background: $brand-color;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: $nav-bar-height;
-}
-
 //$settings-height: 224px;
 $settings-height: 210px;
 
 .header {
-  opacity: 0.9;
   text-align: center;
-  height: 50px;
-  position: fixed;
+  height: $header-height;
+  padding-top: 20px;
+  position: absolute;
   z-index: 15;
   color: white;
   background-color: $color-j;
@@ -114,14 +197,17 @@ $settings-height: 210px;
     font-size: 30px;
     padding: 6px 15px;
     color: white;
+    top: 20px;
+    z-index: 2;
   }
 
   > h2 {
     color: white;
     margin: 0;
     padding: 0.5em 0;
-    font-size: 25px;
-    text-rendering: "optimizeLegibility";
+    font-size: 22px;
+    font-family: sans-serif;
+    font-weight: 100;
   }
 
 }
@@ -145,7 +231,6 @@ $settings-height: 210px;
 
     padding: 1em;
     text-align: center;
-    text-decoration: none;
     width: 33.33%;
     display: inline-block;
     color: white;
@@ -189,7 +274,7 @@ $settings-height: 210px;
   .header-info {
     position: absolute;
     left: 110px;
-    right: 70px;
+    right: 110px;
     top: 0;
     bottom: 0;
     input {
@@ -298,10 +383,6 @@ $settings-height: 210px;
       visibility: visible;
       bottom: 0;
     }
-  }
-
-  a {
-    text-decoration: none;
   }
 
 }
@@ -479,18 +560,23 @@ ul {
 
 .inner-content {
   position: absolute;
-  top: 0;
-  bottom: -100px;
+  top: -20px;
+  bottom: 0;
   left: 0;
   right: 0;
   overflow: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .product-viewer-wrapper {
   position: absolute;
   top: 0;
-  left: 50%;
   //  margin-top: -1 * $nav-bar-height;
+}
+
+.product-viewer {
+  display: block;
+  -webkit-transform: translateZ(0);
 }
 
 .svg-text-editor {
@@ -592,7 +678,7 @@ ul {
   top: 30px;
   left: 30px;
   right: 0;
-  bottom: 0;
+  bottom: 15px;
   overflow: hidden;
 }
 
@@ -715,9 +801,56 @@ ul {
 
 .module-loader {
   > .content {
-    padding-top: 50px;
+    padding-top: $header-height;
     width: 100%;
   }
+
+  &.module-login {
+    .header {
+      display: none;
+    }
+
+    > .content {
+      background-color: white;
+      position: absolute;
+      top: $header-height;
+      bottom: 0;
+      right: 0;
+      left: 0;
+
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      font-size: 3rem;
+      padding-top: 30%;
+    }
+
+    .login-options {
+      margin-top: 130px;
+
+      > li {
+        display: block;
+        margin: 2em 30px;
+      }
+    }
+
+    .login-btn {
+      text-decoration: none;
+      display: block;
+      height: 55px;
+      border-radius: 30px;
+      line-height: 55px;
+      padding: 0px 30px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #FFF;
+      background: #3498DB;
+      text-align: center;
+    }
+  }
+
 }
 
 .appearances {
@@ -756,4 +889,108 @@ ul {
     }
   }
 
+}
+
+.zoom-btn {
+  color: black;
+  display: block;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  font-size: 26px;
+  position: fixed;
+  z-index: 10;
+  top: 80px;
+  left: 20px;
+
+  opacity: 0;
+
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.configuration-info {
+  position: fixed;
+  pointer-events: none;
+  width: 100%;
+
+  > div {
+    margin: 0 auto;
+    width: 100px;
+    text-align: center;
+    color: white;
+    background-color: #212121;
+    border-radius: 17px;
+    padding: 5px 10px;
+    opacity: 0;
+    font-size: 12px;
+
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -ms-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+
+    &.active {
+      opacity: 0.8;
+    }
+  }
+}
+
+.user-image {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: green;
+  border-radius: 60px;
+  border: 1px solid grey;
+  overflow: hidden;
+}
+
+.user-name {
+  position: absolute;
+  left: 100px;
+  top: 30px;
+  font-size: 14px;
+}
+
+.list-options {
+  display: block;
+  position: absolute;
+  font-size: 12px;
+  left: 20px;
+  right: 20px;
+  top: 100px;
+  border: 1px solid grey;
+  border-radius: 8px;
+  overflow: hidden;
+
+  > li {
+    width: 50%;
+    display: inline-block;
+    a {
+      padding: 8px;
+      display: block;
+      text-align: center;
+      color: grey;
+
+      &.selected {
+        background-color: grey;
+        color: white;
+      }
+    }
+
+    &:first-child {
+      border-right: 1px solid grey;
+    }
+  }
 }

@@ -27,7 +27,7 @@
         @font-face {
             font-family: 'BrandFont';
             src: url('./font/LeckerliOne-Regular.woff') format('woff'),
-                 url('./font/LeckerliOne-Regular.ttf') format('truetype');
+            url('./font/LeckerliOne-Regular.ttf') format('truetype');
         }
     </style>
 
@@ -49,7 +49,7 @@
 
             meta = document.createElement("meta");
             meta.setAttribute("name", "viewport");
-            meta.setAttribute("content", "initial-scale=" + scale + ", maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes");
+            meta.setAttribute("content", "width=device-width, height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0; user-scalable=no");
 
             viewportTag = meta;
 
@@ -64,9 +64,12 @@
 </head>
 <body>
 <script type="text/javascript" data-usage="bootstrap">
-    window.ptFactor = 1;
     FastClick.attach(document.body);
-    rAppid.bootStrap("hip/Hiptees.xml");
+    rAppid.bootStrap("hip/Hiptees.xml", null, null, null, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
 </script>
 </body>
 </html>

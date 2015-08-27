@@ -1,0 +1,48 @@
+<parent:ProfileModuleClass xmlns="http://www.w3.org/1999/xhtml"
+                           xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
+
+
+    <!--<js:Router cid="router">-->
+    <!--<conf:RouteConfiguration route="^productType" onexec="loadProductTypes"/>-->
+    <!--</js:Router>-->
+
+    <div class="header">
+        <h1>Hiptees</h1>
+    </div>
+
+    <div class="content">
+        <div class="user-profile">
+            <div class="user-image">
+                <img src="" alt="userImage"/>
+            </div>
+
+            <div class="user-name">
+                Marcus Krejpowicz
+            </div>
+            <div class="user-stats">
+                0 Published
+            </div>
+        </div>
+        <div>
+            <ul class="list-options">
+                <li>
+                    <a class="login-btn selected">PUBLISHED</a>
+                </li>
+                <li>
+                    <a class="login-btn">DRAFTS</a>
+                </li>
+            </ul>
+            <div class="list-wrapper">
+                <ul class="publish-list">
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <a onclick="goCreate">Create</a>
+    </div>
+
+</parent:ProfileModuleClass>

@@ -1,0 +1,29 @@
+<parent:LoginModuleClass xmlns="http://www.w3.org/1999/xhtml"
+                         xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
+
+
+    <!--<js:Router cid="router">-->
+    <!--<conf:RouteConfiguration route="^productType" onexec="loadProductTypes"/>-->
+    <!--</js:Router>-->
+
+    <js:Content name="header">
+    </js:Content>
+
+    <js:Content name="content">
+        <h1>
+            Hiptees
+        </h1>
+        <div>
+            <ul class="login-options">
+                <li>
+                    <a class="login-btn" href="/productTypes">Facebook</a>
+                </li>
+                <li>
+                    <a class="login-btn">Twitter</a>
+                </li>
+            </ul>
+        </div>
+
+    </js:Content>
+
+</parent:LoginModuleClass>

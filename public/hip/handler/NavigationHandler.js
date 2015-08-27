@@ -1,4 +1,4 @@
-define(["hip/handler/CommandHandler", "hip/command/Navigate"], function (Handler, Navigate) {
+define(["hip/handler/CommandHandler", "hip/command/Navigate", "hip/command/NavigateBack"], function (Handler, Navigate, NavigateBack) {
     return Handler.inherit({
         defaults: {
             router: null
@@ -7,8 +7,10 @@ define(["hip/handler/CommandHandler", "hip/command/Navigate"], function (Handler
             return command instanceof Navigate;
         },
         handleCommand: function (command) {
-            if (command instanceof Navigate && this.$.router) {
-                this.$.router.navigate(command.$.fragment);
+            if (command instanceof NavigateBack) {
+                this.trigger('on:navigateBack', {});
+            } else if (command.$.fragment) {
+                this.trigger('on:navigate', {fragment: command.$.fragment});
             }
         }
     })
