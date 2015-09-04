@@ -68,7 +68,7 @@ define(["hip/handler/CommandHandler",
                         });
                     } else if (command instanceof SelectText) {
                         if (!textFlow.$.selection) {
-                            textFlow.set('selection', new TextRange(0, command.$.textFlow.textLength() - 1));
+                            textFlow.set('selection', TextRange.createTextRange(0, command.$.textFlow.textLength() - 1));
                         }
 
                         textFlow.$.selection.set({

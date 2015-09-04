@@ -11,6 +11,11 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
             navigationHandler: NavigationHandler
         },
 
+        events: [
+            "on:goTo",
+            "on:goToFinished"
+        ],
+
         $classAttributes: ["currentView"],
 
         ctor: function () {
@@ -32,10 +37,10 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                 this.$swipeChildren.push(child);
                 child.set('container', this);
 //                child.bind('on:pointerdown', this.swipe, this);
-                if (!this.$.currentView) {
-                    this.set('currentView', child);
-                    child.set('status', 'current');
-                }
+//                if (!this.$.currentView) {
+//                    this.set('currentView', child);
+//                    child.set('status', 'current');
+//                }
             }
         },
 
@@ -68,8 +73,14 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
             }
 
             if (newView) {
+                this.trigger('on:goTo', {}, this);
                 var self = this;
                 this.addClass("loading");
+                if(!this.$.currentView) {
+                    this.addClass('no-transition');
+                } else {
+                    this.removeClass('no-transition');
+                }
                 flow()
                     .seq(function (cb) {
                         newView.prepare(fragment, cb)
@@ -90,6 +101,8 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                         }
 
                         self.removeClass('loading');
+
+                        self.trigger('on:goToFinished', {}, self);
                     });
             }
 

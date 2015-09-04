@@ -2,21 +2,14 @@
                          xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
 
 
-    <!--<js:Router cid="router">-->
-    <!--<conf:RouteConfiguration route="^productType" onexec="loadProductTypes"/>-->
-    <!--</js:Router>-->
-
-    <js:Content name="header">
-    </js:Content>
-
-    <js:Content name="content">
+    <div class="content">
         <h1>
             Hiptees
         </h1>
         <div>
             <ul class="login-options">
                 <li>
-                    <a class="login-btn" href="/productTypes">Facebook</a>
+                    <a class="login-btn" onclick="loginWithFB">Facebook</a>
                 </li>
                 <li>
                     <a class="login-btn">Twitter</a>
@@ -24,6 +17,6 @@
             </ul>
         </div>
 
-    </js:Content>
+    </div>
 
 </parent:LoginModuleClass>

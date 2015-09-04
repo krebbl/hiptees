@@ -1,39 +1,57 @@
 <view:ImageSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
-                            xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+                             xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+
+    <js:Content name="headerInfo">
+        <div class="image-setting-options">
+            <a onclick="scrollTo(presetContainer)" selected="{presetsInView}">
+                presets
+            </a>
+            <a onclick="scrollTo(manualContainer)" selected="{not(presetsInView)}">
+                manual
+            </a>
+        </div>
+    </js:Content>
 
     <js:Content name="settings">
-        <!--<ui:SelectionView items="{presets}" class="filter-presets" tagName="ul" selectedItem="{selectedPreset}">-->
-            <!--<js:Template name="item">-->
-                <!--<li>-->
-                    <!--<a onclick="_selectPreset(item)">-->
-                        <!--<view:FilteredImage src="{configuration.design.resources.SMALL}" filter="${createFilter(item)}"-->
-                                            <!--width="auto" height="50%"/>-->
-                    <!--</a>-->
-                <!--</li>-->
-            <!--</js:Template>-->
-        <!--</ui:SelectionView>-->
+        <div cid="presetContainer" class="filter-presets">
+            <ui:SelectionView items="{presets}" class="filter-preset-list" tagName="ul" selectedItem="{selectedPreset}">
+                <js:Template name="item">
+                    <li>
+                        <a onclick="_selectPreset(item)">
+                            <view:FilteredImage src="{configuration.design.resources.SMALL}"
+                                                filter="${createFilter(item)}"
+                                                width="auto" height="100%"/>
+                        </a>
+                    </li>
+                </js:Template>
+            </ui:SelectionView>
+        </div>
 
-        <div>
+        <div cid="manualContainer" class="filter-manual">
             <div class="slider-label">
-                Brightness {configuration.filter.brightness}
+                Brightness <strong>{configuration.filter.brightness}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('brightness', value)"
+                           oninput="_showInput(value)"
                            value="{configuration.filter.brightness}"/>
             </div>
             <div class="slider-label">
-                Saturation {configuration.filter.saturation}
+                Saturation <strong>{configuration.filter.saturation}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('saturation', value)"
                            value="{configuration.filter.saturation}"/>
             </div>
             <div class="slider-label">
-                Contrast {configuration.filter.contrast}
+                Contrast <strong>{configuration.filter.contrast}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('contrast', value)"
                            value="{configuration.filter.contrast}"/>
+            </div>
+            <div class="slider-label">
+                Color tint <strong>{configuration.filter.tint}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('tint', value)"
@@ -41,13 +59,15 @@
             </div>
 
             <div class="slider-label">
-                Vignette {configuration.filter.vignette}
+                Vignette <strong>{configuration.filter.vignette}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="0" max="100" step="1" onhandleUp="_updateFilter('vignette', value)"
                            value="{configuration.filter.vignette}"/>
             </div>
-
+            <div class="slider-label">
+                Blur <strong>{configuration.filter.blur}</strong>
+            </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('blur', value)"
                            value="{configuration.filter.blur}"/>

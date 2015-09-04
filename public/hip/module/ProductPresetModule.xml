@@ -1,10 +1,6 @@
 <parent:ProductPresetModuleClass xmlns="http://www.w3.org/1999/xhtml"
                                  xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
 
-    <js:Router cid="router">
-        <conf:RouteConfiguration route="^presets\/(\w+)\/appearance/(\w+)" onexec="loadPresets"/>
-    </js:Router>
-
     <div class="header">
         <a onclick="goBack" class="back-btn">
             <i class="fa fa-angle-left"/>

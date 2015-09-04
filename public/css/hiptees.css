@@ -19,6 +19,9 @@ input, *[contenteditable="true"], text, tspan {
   -ms-user-select: auto !important;
   user-select: auto !important; }
 
+input[type="file"] {
+  visibility: hidden; }
+
 html {
   height: 100%; }
 
@@ -43,6 +46,21 @@ h1 {
   font-family: 'BrandFont';
   margin: 0; }
 
+.loading-overlay {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+.ios-loader {
+  display: inherit;
+  margin: 0 auto;
+  margin-top: 66%;
+  width: 10%;
+  stroke: grey; }
+
 .product-viewer {
   position: relative;
   max-width: 1000px;
@@ -58,26 +76,28 @@ h1 {
   max-width: 1000px;
   position: absolute;
   top: 0;
-  bottom: 0; }
-  .swipe-container .module-a {
-    background-color: blue; }
-  .swipe-container .module-b {
-    background-color: green; }
-  .swipe-container .module-c {
-    background-color: yellow; }
+  bottom: 0;
+  background-color: white; }
+  .swipe-container.no-transition .swipe-view {
+    transition: none;
+    -webkit-transition: none; }
   .swipe-container .swipe-view {
-    transform: translateZ(0);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     bottom: 0;
     z-index: 1;
-    -webkit-transition: left 0.5s;
-    -moz-transition: left 0.5s;
-    -ms-transition: left 0.5s;
-    -o-transition: left 0.5s;
-    transition: left 0.5s; }
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
+    -moz-box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
+    box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
+    -webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    -ms-transition: -ms-transform 0.5s;
+    -o-transition: -o-transform 0.5s;
+    transition: transform 0.5s; }
     .swipe-container .swipe-view > .content {
       background-color: white;
       position: absolute;
@@ -88,17 +108,46 @@ h1 {
       overflow-x: hidden;
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch; }
+    .swipe-container .swipe-view.with-footer > .content {
+      bottom: 44px; }
   .swipe-container .previous-module {
     z-index: 0;
-    left: -20px; }
+    -webkit-transform: translate3d(-20px, 0, 0); }
   .swipe-container .next-module {
-    left: 100%; }
-  .swipe-container .module-swiper {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 80px;
-    background-color: transparent; }
+    -webkit-transform: translate3d(100%, 0, 0);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none; }
+  .swipe-container .swipe-view-editor > .content {
+    overflow: hidden !important; }
+  .swipe-container .swipe-view-login {
+    background: #26C281; }
+    .swipe-container .swipe-view-login .header {
+      display: none; }
+    .swipe-container .swipe-view-login > .content {
+      background: #26C281; }
+    .swipe-container .swipe-view-login h1 {
+      color: white;
+      text-align: center;
+      font-size: 3rem;
+      padding-top: 30%; }
+    .swipe-container .swipe-view-login .login-options {
+      margin-top: 130px; }
+      .swipe-container .swipe-view-login .login-options > li {
+        display: block;
+        margin: 2em 30px; }
+    .swipe-container .swipe-view-login .login-btn {
+      text-decoration: none;
+      display: block;
+      height: 55px;
+      border-radius: 30px;
+      line-height: 55px;
+      padding: 0px 30px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #FFF;
+      background: #3498DB;
+      text-align: center; }
 
 .move-handle {
   position: absolute;
@@ -158,7 +207,7 @@ h1 {
     font-weight: 100; }
 
 .footer {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   color: white;
@@ -219,6 +268,14 @@ h1 {
     .settings-header .minimize-btn.active .fa-chevron-up {
       display: inline; }
 
+.image-setting-options a {
+  display: inline-block;
+  width: 50%;
+  text-align: center; }
+  .image-setting-options a.active {
+    color: #26C281;
+    font-weight: bold; }
+
 .settings-content {
   padding-top: 30px;
   position: absolute;
@@ -261,7 +318,7 @@ h1 {
 
 .settings-view {
   background: #323232;
-  position: fixed;
+  position: absolute;
   bottom: -210px;
   width: 100%;
   height: 210px;
@@ -276,8 +333,9 @@ h1 {
     bottom: 0; }
 
 .add-view {
+  z-index: 2;
   background: #2D3C4D;
-  position: fixed;
+  position: absolute;
   bottom: -140px;
   width: 100%;
   height: 140px;
@@ -454,12 +512,10 @@ ul {
   height: 30px; }
 
 .filter-presets {
-  position: absolute;
-  top: 30px;
   bottom: 0;
   overflow-y: hidden; }
-  .filter-presets > li {
-    height: 100%;
+  .filter-presets > ul > li {
+    height: 100px;
     display: inline-block;
     margin-right: 1px; }
   .filter-presets img.filtering {
@@ -555,46 +611,6 @@ ul {
   visibility: hidden;
   height: 0px; }
 
-.module-loader > .content {
-  padding-top: 70px;
-  width: 100%; }
-
-.module-loader.module-login .header {
-  display: none; }
-
-.module-loader.module-login > .content {
-  background-color: white;
-  position: absolute;
-  top: 70px;
-  bottom: 0;
-  right: 0;
-  left: 0; }
-
-.module-loader.module-login h1 {
-  color: white;
-  text-align: center;
-  font-size: 3rem;
-  padding-top: 30%; }
-
-.module-loader.module-login .login-options {
-  margin-top: 130px; }
-  .module-loader.module-login .login-options > li {
-    display: block;
-    margin: 2em 30px; }
-
-.module-loader.module-login .login-btn {
-  text-decoration: none;
-  display: block;
-  height: 55px;
-  border-radius: 30px;
-  line-height: 55px;
-  padding: 0px 30px;
-  font-size: 17px;
-  font-weight: 600;
-  color: #FFF;
-  background: #3498DB;
-  text-align: center; }
-
 .appearances > li {
   display: inline-block;
   width: 50%;
@@ -613,21 +629,23 @@ ul {
   height: 200px;
   display: block;
   overflow: hidden;
-  border-bottom: 1px solid gray; }
+  border-bottom: 1px solid gray;
+  background: lightgray; }
   .preset-list > li > a img {
     width: 100%;
     margin-top: -40px; }
 
 .zoom-btn {
+  text-shadow: 0 0 15px white;
   color: black;
   display: block;
   width: 30px;
   height: 30px;
   padding: 2px;
   font-size: 26px;
-  position: fixed;
+  position: absolute;
   z-index: 10;
-  top: 80px;
+  top: 5px;
   left: 20px;
   opacity: 0;
   -webkit-transition: opacity 0.5s;
@@ -639,9 +657,11 @@ ul {
     opacity: 1; }
 
 .configuration-info {
-  position: fixed;
+  position: absolute;
+  top: 10px;
   pointer-events: none;
-  width: 100%; }
+  width: 100%;
+  z-index: 1; }
   .configuration-info > div {
     margin: 0 auto;
     width: 100px;
@@ -657,8 +677,13 @@ ul {
     -ms-transition: opacity 0.5s;
     -o-transition: opacity 0.5s;
     transition: opacity 0.5s; }
-    .configuration-info > div.active {
-      opacity: 0.8; }
+  .configuration-info.active > div {
+    opacity: 0.8; }
+  .configuration-info.text-configuration-info {
+    top: auto;
+    bottom: 10px; }
+    .configuration-info.text-configuration-info > div {
+      width: 80%; }
 
 .user-image {
   position: absolute;
@@ -666,16 +691,23 @@ ul {
   top: 20px;
   width: 60px;
   height: 60px;
-  background-color: green;
+  background-color: #26C281;
   border-radius: 60px;
   border: 1px solid grey;
   overflow: hidden; }
+  .user-image > img {
+    width: 100%; }
 
 .user-name {
   position: absolute;
   left: 100px;
   top: 30px;
   font-size: 14px; }
+
+.user-stats {
+  position: absolute;
+  top: 54px;
+  left: 100px; }
 
 .list-options {
   display: block;
@@ -688,15 +720,38 @@ ul {
   border-radius: 8px;
   overflow: hidden; }
   .list-options > li {
-    width: 50%;
+    width: 33.33%;
     display: inline-block; }
     .list-options > li a {
       padding: 8px;
       display: block;
       text-align: center;
       color: grey; }
-      .list-options > li a.selected {
+      .list-options > li a.active {
         background-color: grey;
         color: white; }
     .list-options > li:first-child {
       border-right: 1px solid grey; }
+
+.list-wrapper {
+  position: absolute;
+  top: 145px;
+  bottom: 0;
+  width: 100%;
+  background: lightgray; }
+  .list-wrapper > ul > li {
+    display: block;
+    height: 200px;
+    overflow: hidden; }
+    .list-wrapper > ul > li a {
+      display: block;
+      height: auto; }
+    .list-wrapper > ul > li img {
+      width: 100%; }
+
+.logout {
+  position: absolute;
+  right: 0;
+  top: 13px;
+  padding: 1em;
+  z-index: 121; }

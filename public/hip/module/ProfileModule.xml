@@ -1,5 +1,6 @@
 <parent:ProfileModuleClass xmlns="http://www.w3.org/1999/xhtml"
-                           xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
+                           xmlns:parent="hip.module" xmlns:ui="js.ui"
+                           class="with-footer">
 
 
     <!--<js:Router cid="router">-->
@@ -8,40 +9,62 @@
 
     <div class="header">
         <h1>Hiptees</h1>
+        <a class="logout" onclick="logout">
+            Logout
+        </a>
     </div>
 
     <div class="content">
         <div class="user-profile">
             <div class="user-image">
-                <img src="" alt="userImage"/>
+                <img src="{user.profileImage}" alt="userImage"/>
             </div>
 
             <div class="user-name">
-                Marcus Krejpowicz
+                {user.name}
             </div>
             <div class="user-stats">
-                0 Published
+                {user.countPublished} Published
+                {user.countDrafts} Drafts
             </div>
         </div>
         <div>
             <ul class="list-options">
                 <li>
-                    <a class="login-btn selected">PUBLISHED</a>
+                    <a selected="{publishedSelected}" onclick="showPublished">PUBLISHED</a>
                 </li>
                 <li>
-                    <a class="login-btn">DRAFTS</a>
+                    <a onclick="showDrafts">PRIVATE</a>
+                </li>
+                <li>
+                    <a selected="{not(publishedSelected)}" onclick="showDrafts">DRAFTS</a>
                 </li>
             </ul>
             <div class="list-wrapper">
-                <ul class="publish-list">
 
-                </ul>
+                <ui:ItemsView visible="{publishedSelected}" items="{published}" tagName="ul">
+                    <li>
+                        <a onclick="selectProductPreset(item)">
+                            <img src="${item.resources.MEDIUM}"/>
+                        </a>
+                    </li>
+                </ui:ItemsView>
+
+                <ui:ItemsView visible="{not(publishedSelected)}" items="{drafts}" tagName="ul">
+                    <li>
+                        <a onclick="selectDraft(item)">
+                            <img src="${item.resources.MEDIUM}?${item.__v}"/>
+                        </a>
+                    </li>
+                </ui:ItemsView>
 
             </div>
         </div>
     </div>
 
     <div class="footer">
+        <a>Stream</a>
+        <a>Profile</a>
         <a onclick="goCreate">Create</a>
     </div>
 

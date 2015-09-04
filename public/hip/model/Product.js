@@ -30,6 +30,21 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
                 required: false
             }
         },
+
+        parse: function () {
+            var ret = this.callBase();
+
+            if (ret.productType && ret.appearance && ret.productType.$.appearances) {
+                var pa = ret.productType.$.appearances.find(function (app) {
+                    return app.$.id == ret.appearance.$.id;
+                });
+
+                ret.appearance = pa;
+            }
+
+            return ret;
+        },
+
         getIndexOfConfiguration: function (configuration) {
             if (this.$.configurations) {
                 return this.$.configurations.indexOf(configuration);

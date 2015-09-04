@@ -38,10 +38,6 @@ define(["js/svg/SvgElement"], function (SvgElement) {
 
         _commit_tintColor: function (color) {
             if (color) {
-
-                console.log(color);
-//                console.log('%c Color ', 'background: rgb(' + [color.color.r, color.color.g, color.color.b].join(",") + ');');
-
                 var c = (color.$l / 100) / 100;
                 var tintSlope = 1 - c;
                 var tintIntercepts = {

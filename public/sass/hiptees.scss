@@ -32,6 +32,10 @@ input, *[contenteditable="true"], text, tspan {
   user-select: auto !important;
 }
 
+input[type="file"] {
+  visibility: hidden;
+}
+
 html {
   height: 100%;
 }
@@ -61,6 +65,23 @@ h1 {
   margin: 0;
 }
 
+.loading-overlay {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.ios-loader {
+  display: inherit;
+  margin: 0 auto;
+  margin-top: 66%;
+  width: 10%;
+  stroke: grey;
+}
+
 .product-viewer {
   position: relative;
   max-width: 1000px;
@@ -79,32 +100,33 @@ h1 {
   position: absolute;
   top: 0;
   bottom: 0;
+  background-color: white;
 
-  .module-a {
-    background-color: blue;
-  }
-
-  .module-b {
-    background-color: green;
-  }
-
-  .module-c {
-    background-color: yellow;
+  &.no-transition .swipe-view {
+    transition: none;
+    -webkit-transition: none;
   }
 
   .swipe-view {
-    transform: translateZ(0);
+
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     bottom: 0;
     z-index: 1;
-    -webkit-transition: left 0.5s;
-    -moz-transition: left 0.5s;
-    -ms-transition: left 0.5s;
-    -o-transition: left 0.5s;
-    transition: left 0.5s;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+
+    -webkit-box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
+    -moz-box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
+    box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
+
+    -webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    -ms-transition: -ms-transform 0.5s;
+    -o-transition: -o-transform 0.5s;
+    transition: transform 0.5s;
 
     //    a {
     //      z-index: 2;
@@ -122,23 +144,71 @@ h1 {
 
       -webkit-overflow-scrolling: touch;
     }
+
+    &.with-footer > .content {
+      bottom: 44px;
+    }
   }
 
   .previous-module {
     z-index: 0;
-    left: -20px;
+
+    -webkit-transform: translate3d(-20px, 0, 0);
   }
 
   .next-module {
-    left: 100%;
+    -webkit-transform: translate3d(100%, 0, 0);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
   }
 
-  .module-swiper {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 80px;
-    background-color: transparent;
+  .swipe-view-editor {
+    > .content {
+      overflow: hidden !important;
+    }
+  }
+
+  .swipe-view-login {
+    background: $color-j;
+
+    .header {
+      display: none;
+    }
+
+    > .content {
+      background: $color-j;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      font-size: 3rem;
+      padding-top: 30%;
+    }
+
+    .login-options {
+      margin-top: 130px;
+
+      > li {
+        display: block;
+        margin: 2em 30px;
+      }
+    }
+
+    .login-btn {
+      text-decoration: none;
+      display: block;
+      height: 55px;
+      border-radius: 30px;
+      line-height: 55px;
+      padding: 0px 30px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #FFF;
+      background: #3498DB;
+      text-align: center;
+    }
   }
 }
 
@@ -213,7 +283,7 @@ $settings-height: 210px;
 }
 
 .footer {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   color: white;
@@ -311,6 +381,20 @@ $settings-height: 210px;
 
 }
 
+.image-setting-options {
+
+  a {
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+
+    &.active {
+      color: $color-j;
+      font-weight: bold;
+    }
+  }
+}
+
 .settings-content {
   padding-top: 30px;
   position: absolute;
@@ -365,7 +449,7 @@ $settings-height: 210px;
 
 .settings-view {
   background: #323232;
-  position: fixed;
+  position: absolute;
   bottom: -$settings-height;
   width: 100%;
   height: $settings-height;
@@ -390,8 +474,9 @@ $settings-height: 210px;
 $add-view-height: 140px;
 
 .add-view {
+  z-index: 2;
   background: #2D3C4D;
-  position: fixed;
+  position: absolute;
   bottom: -$add-view-height;
   width: 100%;
   height: $add-view-height;
@@ -651,15 +736,18 @@ ul {
 }
 
 .filter-presets {
-  position: absolute;
-  top: 30px;
+  //  position: absolute;
+  //  top: 30px;
   bottom: 0;
   overflow-y: hidden;
 
-  > li {
-    height: 100%;
-    display: inline-block;
-    margin-right: 1px;
+  > ul {
+
+    > li {
+      height: 100px;
+      display: inline-block;
+      margin-right: 1px;
+    }
   }
 
   img.filtering {
@@ -799,60 +887,6 @@ ul {
   height: 0px;
 }
 
-.module-loader {
-  > .content {
-    padding-top: $header-height;
-    width: 100%;
-  }
-
-  &.module-login {
-    .header {
-      display: none;
-    }
-
-    > .content {
-      background-color: white;
-      position: absolute;
-      top: $header-height;
-      bottom: 0;
-      right: 0;
-      left: 0;
-
-    }
-
-    h1 {
-      color: white;
-      text-align: center;
-      font-size: 3rem;
-      padding-top: 30%;
-    }
-
-    .login-options {
-      margin-top: 130px;
-
-      > li {
-        display: block;
-        margin: 2em 30px;
-      }
-    }
-
-    .login-btn {
-      text-decoration: none;
-      display: block;
-      height: 55px;
-      border-radius: 30px;
-      line-height: 55px;
-      padding: 0px 30px;
-      font-size: 17px;
-      font-weight: 600;
-      color: #FFF;
-      background: #3498DB;
-      text-align: center;
-    }
-  }
-
-}
-
 .appearances {
   > li {
     display: inline-block;
@@ -883,6 +917,7 @@ ul {
     display: block;
     overflow: hidden;
     border-bottom: 1px solid gray;
+    background: lightgray;
     img {
       width: 100%;
       margin-top: -40px;
@@ -892,15 +927,17 @@ ul {
 }
 
 .zoom-btn {
+
+  text-shadow: 0 0 15px white;
   color: black;
   display: block;
   width: 30px;
   height: 30px;
   padding: 2px;
   font-size: 26px;
-  position: fixed;
+  position: absolute;
   z-index: 10;
-  top: 80px;
+  top: 5px;
   left: 20px;
 
   opacity: 0;
@@ -917,9 +954,11 @@ ul {
 }
 
 .configuration-info {
-  position: fixed;
+  position: absolute;
+  top: 10px;
   pointer-events: none;
   width: 100%;
+  z-index: 1;
 
   > div {
     margin: 0 auto;
@@ -938,8 +977,17 @@ ul {
     -o-transition: opacity 0.5s;
     transition: opacity 0.5s;
 
-    &.active {
-      opacity: 0.8;
+  }
+
+  &.active > div {
+    opacity: 0.8;
+  }
+
+  &.text-configuration-info {
+    top: auto;
+    bottom: 10px;
+    > div {
+      width: 80%;
     }
   }
 }
@@ -950,10 +998,14 @@ ul {
   top: 20px;
   width: 60px;
   height: 60px;
-  background-color: green;
+  background-color: $color-j;
   border-radius: 60px;
   border: 1px solid grey;
   overflow: hidden;
+
+  > img {
+    width: 100%;
+  }
 }
 
 .user-name {
@@ -961,6 +1013,12 @@ ul {
   left: 100px;
   top: 30px;
   font-size: 14px;
+}
+
+.user-stats {
+  position: absolute;
+  top: 54px;
+  left: 100px;
 }
 
 .list-options {
@@ -975,7 +1033,7 @@ ul {
   overflow: hidden;
 
   > li {
-    width: 50%;
+    width: 33.33%;
     display: inline-block;
     a {
       padding: 8px;
@@ -983,7 +1041,7 @@ ul {
       text-align: center;
       color: grey;
 
-      &.selected {
+      &.active {
         background-color: grey;
         color: white;
       }
@@ -993,4 +1051,35 @@ ul {
       border-right: 1px solid grey;
     }
   }
+}
+
+.list-wrapper {
+  position: absolute;
+  top: 145px;
+  bottom: 0;
+  width: 100%;
+  background: lightgray;
+
+  > ul > li {
+    display: block;
+    height: 200px;
+    overflow: hidden;
+
+    a {
+      display: block;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.logout {
+  position: absolute;
+  right: 0;
+  top: 13px;
+  padding: 1em;
+  z-index: 121;
 }

@@ -1,24 +1,37 @@
 <parent:EditorModuleClass xmlns="http://www.w3.org/1999/xhtml"
-                          xmlns:parent="hip.module" xmlns:js="js.core" xmlns:svg="hip.svg" xmlns:view="hip.view"
-                          xmlns:conf="js.conf">
+                          xmlns:parent="hip.module" xmlns:svg="hip.svg" xmlns:view="hip.view"
+                          class="with-footer">
 
     <div class="header">
         <a onclick="goBack" class="back-btn">
             <i class="fa fa-angle-left"/>
         </a>
-        <h2>Hiptees</h2>
+        <h2>Style your own</h2>
     </div>
 
 
-    <div class="content">
-        <a>
-            Undo
-        </a>
+    <div class="content {appearanceClass()}">
+        <!--<a>-->
+        <!--Undo-->
+        <!--</a>-->
 
         <a class="zoom-btn" onclick="toggleZoom" selected="{zoomVisible}">
             <i class="fa fa-search-plus" visible="{not(zoomed)}"/>
             <i class="fa fa-search-minus" visible="{zoomed}"/>
         </a>
+
+        <div class="configuration-info" selected="{configurationViewer}">
+            <div>
+                <div visible="{configurationViewer._moving}">
+                    x : {format(configurationViewer._realOffset.x)}
+                    y : {format(configurationViewer._realOffset.y)}
+                </div>
+                <div visible="{not(configurationViewer._moving)}">
+                    w : {format(configurationViewer._size.width)}
+                    h : {format(configurationViewer._size.height)}
+                </div>
+            </div>
+        </div>
 
         <div cid="innerContent" class="inner-content" heightUpdatePolicy="in" height="100%">
             <div class="product-viewer-wrapper" cid="wrapper"
@@ -31,55 +44,64 @@
             </div>
         </div>
 
-        <input cid="fileInput" type="file" onchange="handleUpload"/>
-
-        <div class="footer">
-            <a onclick="showSettings" enabled="{selectedConfiguration}">
-                <i class="fa fa-pencil"/>
-                Edit
-            </a>
-            <a onclick="showAddView">
-                <i class="fa fa-plus"/>
-                Add
-            </a>
-
-            <a onclick="saveProduct">
-                <i class="fa fa-check"/>
-                Finish
-            </a>
-
-        </div>
-        <div class="setting-views" selected="{settingsSelected}">
-            <view:TextSettingsView oncloseClicked="hideSettings"/>
-            <view:ImageSettingsView oncloseClicked="hideSettings"/>
-            <view:ShapeSettingsView oncloseClicked="hideSettings"/>
-        </div>
-
-        <div class="add-view" selected="{addViewSelected}">
+        <div class="configuration-info text-configuration-info" selected="{showTextHint}">
             <div>
-                <a onclick="add('text')">
-                    <i class="fa fa-font"/>
-                    Add Text
-                </a>
-                <a onclick="add('image')" class="needsclick">
-                    <i class="fa fa-picture-o"/>
-                    Add Image
-                </a>
-                <a onclick="add('rectangle')">
-                    <i class="fa fa-stop"/>
-                    Add Rectangle
-                </a>
-                <a onclick="add('circle')">
-                    <i class="fa fa-circle"/>
-                    Add Circle
-                </a>
+                Tap text twice to edit
             </div>
+        </div>
 
-            <a class="close-btn" onclick="hideAddView">
-                Close
-                <i class="fa fa-chevron-down"/>
+    </div>
+
+    <div class="footer">
+        <a onclick="showSettings" enabled="{selectedConfiguration}">
+            <i class="fa fa-pencil"/>
+            Edit
+        </a>
+        <a onclick="showAddView">
+            <i class="fa fa-plus"/>
+            Add
+        </a>
+
+        <a onclick="saveProduct">
+            <i class="fa fa-check"/>
+            Save
+        </a>
+
+    </div>
+
+    <div class="setting-views" selected="{settingsSelected}">
+        <view:TextSettingsView oncloseClicked="hideSettings"/>
+        <view:ImageSettingsView oncloseClicked="hideSettings"/>
+        <view:ShapeSettingsView oncloseClicked="hideSettings"/>
+    </div>
+
+    <input cid="fileInput" type="file" onchange="handleUpload"/>
+
+
+    <div class="add-view" selected="{addViewSelected}">
+        <div>
+            <a onclick="add('text',event)">
+                <i class="fa fa-font"/>
+                Add Text
+            </a>
+            <a onclick="add('image')" class="needsclick">
+                <i class="fa fa-picture-o"/>
+                Add Image
+            </a>
+            <a onclick="add('rectangle')">
+                <i class="fa fa-stop"/>
+                Add Rectangle
+            </a>
+            <a onclick="add('circle')">
+                <i class="fa fa-circle"/>
+                Add Circle
             </a>
         </div>
+
+        <a class="close-btn" onclick="hideAddView">
+            Close
+            <i class="fa fa-chevron-down"/>
+        </a>
     </div>
 
 </parent:EditorModuleClass>

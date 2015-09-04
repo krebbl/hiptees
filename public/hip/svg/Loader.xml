@@ -1,0 +1,13 @@
+<parent:LoaderClass viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:parent="hip.svg" xmlns:js="js.core">
+
+    <g stroke-width="4" stroke-linecap="round">
+        <js:Repeat items="{lines}">
+            <line y1="17" y2="29" translateX="32" translateY="32" rotation="{rotateForIndex(index)}">
+                <animate attributeName="stroke-opacity" dur="750ms" values="{animationForIndex(index)}"
+                         repeatCount="indefinite"/>
+            </line>
+        </js:Repeat>
+    </g>
+
+</parent:LoaderClass>

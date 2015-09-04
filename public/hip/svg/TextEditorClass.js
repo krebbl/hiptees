@@ -12,7 +12,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             viewBox: "0 0 100 100",
             contenteditable: true,
             textFlow: null,
-            textAlign: "{textFlow.textAlign}"
+            selection: "{textFlow.selection}"
         },
 
         inject: {
@@ -33,6 +33,12 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             }
             if (this.$.textFlow.$.selection) {
                 this.setCursor(this.$.textFlow.$.selection.$.anchorIndex, this.$.textFlow.$.selection.$.activeIndex);
+            }
+        },
+
+        _renderSelection: function (selection) {
+            if (selection) {
+//               this.setCursor(selection.$.anchorIndex, selection.$.activeIndex);
             }
         },
 
@@ -57,7 +63,6 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 this.$selectTimeout && clearTimeout(this.$selectTimeout);
                 this.$selectTimeout = setTimeout(function () {
                     var selection = self.getAbsoluteSelection();
-                    console.log(selection.anchorOffset, selection.focusOffset);
                     self.$.executor.execute(new SelectText({
                         textFlow: self.$.textFlow,
                         anchorOffset: selection.anchorOffset,
@@ -94,6 +99,9 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 textContainer = this.$.$textContainer.$el;
 
             function getAbsoluteOffset(node, offset) {
+                if(!node){
+                    return 0;
+                }
                 var length = 0;
                 for (var i = 0; i < textContainer.childNodes.length; i++) {
                     var child = textContainer.childNodes[i];

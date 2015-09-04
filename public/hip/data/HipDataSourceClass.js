@@ -5,12 +5,22 @@ define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataS
         },
         extractListMetaData: function (collectionPage, payload, options, xhr) {
             return {
-                count: payload.total || payload.length
+                count: payload.hasOwnProperty("total") || payload.length
             }
         },
 
         getQueryComposer: function () {
             return QueryComposer;
+        },
+
+        getHeaderParameters: function (method, resource) {
+            if (this.$.sessionToken) {
+                return {
+                    "session-token": this.$.sessionToken
+                }
+            } else {
+                return this.callBase();
+            }
         },
 
 //        _handleXHRError: function (request, cb) {

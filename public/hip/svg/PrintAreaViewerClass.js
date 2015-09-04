@@ -44,6 +44,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                 var viewer = self.getViewerForConfiguration(e.$.configuration);
                 if (viewer) {
                     self.set('activeViewer', viewer);
+                    self._updateHandleSize();
                 }
                 self.set('showActiveViewer', !!viewer);
             });
@@ -56,11 +57,30 @@ define(['js/svg/SvgElement', 'js/core/List',
         _onDomAdded: function () {
             this.callBase();
 
-            if (!this.$configurationInfo) {
-                this.$configurationInfo = this.$templates.configurationInfo.createInstance();
-                this.$stage.$el.appendChild(this.$configurationInfo.render());
-            }
+//            if (!this.$configurationInfo) {
+//                this.$configurationInfo = this.$templates.configurationInfo.createInstance();
+//                var root = this.getSvgRoot(),
+//                    renderParent = root.$renderParent;
+//                renderParent.$el.appendChild(this.$configurationInfo.render());
+//            }
+
+            this._updateHandleSize();
+
         },
+
+        _updateHandleSize: function () {
+            this.set('handleWidth', 8 * this.globalToLocalFactor().x);
+
+        },
+
+        _initializationComplete: function () {
+            this.callBase();
+
+            var self = this;
+            this.getSvgRoot().bind('change:width', this._updateHandleSize, this);
+
+        },
+
         _renderProduct: function (product) {
             if (product) {
                 var self = this;
@@ -102,7 +122,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                 configurationViewer.bind('on:configurationPointerDown', function (e) {
                     self.set({
                         activeViewer: e.target,
-                        showActiveViewer: true
+                        showActiveViewer: false
                     });
                 });
 
@@ -193,16 +213,25 @@ define(['js/svg/SvgElement', 'js/core/List',
             return null;
         },
 
-        format: function (val) {
-            return val != null ? val.toFixed(0) : 0;
+        handlePointerDown: function (t, p, e) {
+            this.$.activeViewer && this.$.activeViewer.handlePointerDown(t, p, e);
         },
 
         or: function (a, b) {
             return a || b;
-
         },
+        and: function (a, b, c) {
+            return a && b && c;
+        },
+
         half: function (a) {
             return a * 0.5;
+        },
+        quarter: function (value) {
+            return value * 0.5;
+        },
+        handleClick: function () {
+            console.log("wasdasd");
         }
 
     });

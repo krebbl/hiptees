@@ -5,20 +5,10 @@ define(
         "js/data/Collection",
         "hip/model/Design",
         "hip/model/Product",
-        "hip/entity/DesignConfiguration",
-        "hip/entity/TextConfiguration",
-        'hip/entity/RectangleConfiguration',
-        "hip/entity/Filter",
-        "hip/command/ApplyFilter",
-        "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText",
-        "hip/command/AddText",
-        "hip/command/AddImageFile",
-        "text/entity/TextFlow",
-        "text/entity/TextRange",
-        "text/operation/ApplyStyleToElementOperation",
-        "text/type/Style"
+        "hip/command/LoginCommand",
+        "hip/command/Navigate"
     ],
-    function (Application, List, Bindable, Collection, Design, Product, DesignConfiguration, TextConfiguration, RectangleConfiguration, Filter, ApplyFilter, DeleteText, InsertLine, InsertText, AddText, AddImageFile, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
+    function (Application, List, Bindable, Collection, Design, Product, LoginCommand, Navigate) {
 
         return Application.inherit({
             supportEnvironments: true,
@@ -36,7 +26,8 @@ define(
                 textColor: "{selectedConfiguration.color}",
                 fontSize: "{selectedConfiguration.fontSize}",
                 settingsSelected: false,
-                addViewSelected: false
+                addViewSelected: false,
+                loaderVisible: false
             },
             /**
              *  initializes the application variables
@@ -51,15 +42,6 @@ define(
                 }
             },
 
-            _selectFont: function (font) {
-
-                var command = new ChangeFontFamily({
-                    fontFamily: font.name,
-                    configuration: this.$.selectedConfiguration
-                });
-                this.$.executor.storeAndExecute(command);
-            },
-
             /***
              * Starts the application
              * @param parameter
@@ -70,14 +52,14 @@ define(
 
                 this.$.navigationHandler.set('router', this.$.router);
 
-                this.$.executor.addCommandHandler(this.$.navigationHandler);
-                this.$.executor.addCommandHandler(this.$.textConfigurationHandler);
-                this.$.executor.addCommandHandler(this.$.shapeConfigurationHandler);
-                this.$.executor.addCommandHandler(this.$.imageConfigurationHandler);
-                this.$.executor.addCommandHandler(this.$.applyFilterHandler);
-                this.$.executor.addCommandHandler(this.$.productHandler);
-                this.$.executor.addCommandHandler(this.$.configurationHandler);
-                this.$.executor.addCommandHandler(this.$.textFlowHandler);
+                var handlers = ["navigationHandler", "loginHandler", "textConfigurationHandler",
+                    "shapeConfigurationHandler", "imageConfigurationHandler", "applyFilterHandler",
+                    "productHandler", "configurationHandler", "textFlowHandler"];
+
+                for (var i = 0; i < handlers.length; i++) {
+                    var handler = handlers[i];
+                    this.$.executor.addCommandHandler(this.get(handler));
+                }
 
                 var api = this.$.api;
 
@@ -100,7 +82,55 @@ define(
                 // false - disables autostart
                 this.callBase(parameter, false);
 
-                callback();
+                var executor = this.$.executor;
+
+                var appStarted = false;
+
+                this.$.loginHandler.bind("on:userLoggedIn", function () {
+                    if (!appStarted) {
+                        appStarted = true;
+                        callback();
+                    }
+                    executor.storeAndExecute(new Navigate({
+                        fragment: "profile"
+                    }));
+                });
+
+                this.$.loginHandler.bind('on:loginFailed', function () {
+                    if (!appStarted) {
+                        appStarted = true;
+                        callback();
+                    }
+                    executor.storeAndExecute(new Navigate({
+                        fragment: "login"
+                    }));
+                });
+
+                this.$.loginHandler.bind('on:loggedOut', function () {
+                    executor.storeAndExecute(new Navigate({
+                        fragment: "login"
+                    }));
+                });
+
+                var hasParams = location.hash.replace(/^\#\//, "").split("&"),
+                    params = {};
+
+                for (var j = 0; j < hasParams.length; j++) {
+                    var splitted = hasParams[j].split("=");
+                    params[splitted[0]] = splitted[1] || "";
+                }
+
+                if (params.access_token) {
+                    this.$.executor.storeAndExecute(new LoginCommand({
+                        type: "accessToken",
+                        accessToken: params.access_token
+                    }));
+                } else {
+                    this.$.executor.storeAndExecute(new LoginCommand({
+                        type: "localStorage"
+                    }));
+                }
+
             },
 
             _getEnvironment: function () {
@@ -117,11 +147,11 @@ define(
                 return "dev";
             },
 
-            goTo: function(moduleName){
+            goTo: function (moduleName) {
                 this.$.swipeView.goTo(moduleName);
             },
 
-            goBack: function(){
+            goBack: function () {
                 this.$.swipeView.goBack();
             },
 
@@ -137,7 +167,12 @@ define(
                 }
 
                 return ret;
-            }.onChange('selectedConfiguration')
+            }.onChange('selectedConfiguration'),
+
+            toggleLoading: function (visible) {
+                this.set('loaderVisible', visible);
+
+            }
         });
     }
 );

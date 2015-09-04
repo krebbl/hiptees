@@ -5,6 +5,7 @@ define([
     "hip/command/SaveProduct",
     "hip/command/LoadProduct",
     "hip/command/SelectConfiguration",
+    "hip/command/PointDownConfiguration",
     "hip/command/CloneConfiguration",
     "hip/command/ChangeOrder",
     "hip/command/AddText",
@@ -27,7 +28,7 @@ define([
     "text/entity/TextFlow",
     "flow",
     "underscore"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, PointDownConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
     return Handler.inherit({
         defaults: {
             api: null,
@@ -65,6 +66,8 @@ define([
                 this._saveProduct(this.$.product);
             } else if (command instanceof SelectConfiguration) {
                 this._selectConfiguration(command.$.configuration);
+            } else if (command instanceof PointDownConfiguration) {
+                this.trigger('on:configurationPointDown', {configuration: command.$.configuration}, this);
             } else if (command instanceof CloneConfiguration) {
                 if (configuration) {
 
@@ -105,7 +108,10 @@ define([
 
                 offset = this._convertOffset(command.$.offset);
 
-                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, command.$.leafStyle || {}, command.$.paragraphStyle || {
+                var leafStyle = command.$.leafStyle ||{};
+                leafStyle.color = this.get('product.appearance.name') == "black" ? "#ffffff" : "#000000";
+
+                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, leafStyle, command.$.paragraphStyle || {
                     letterSpacing: 0,
                     fontSize: 30,
                     lineHeight: 1.3
@@ -118,6 +124,10 @@ define([
                     textFlow: textFlow,
                     offset: offset
                 });
+//
+                if (!textFlow.$.selection) {
+                    textFlow.set('selection', TextRange.createTextRange(0, textFlow.textLength() - 1));
+                }
 
                 this._loadConfiguration(configuration, false, function () {
                     self.$.product.$.configurations.add(configuration);
@@ -265,13 +275,18 @@ define([
                     }, function (cb) {
                         flow()
                             .parEach(this.vars.product.$.configurations.toArray(), function (configuration, cb) {
-                                self._loadConfiguration(configuration, loadLazy, cb);
+                                self._loadConfiguration(configuration, command.$.lazyLoadConfigurations, cb);
                             })
                             .exec(cb);
                     })
                     .exec(function (err, results) {
                         if (!err) {
-                            self.set('product', results.product);
+                            var p = results.product;
+                            if (command.$.asPreset) {
+                                p = p.clone();
+                                p.set('id', null);
+                            }
+                            self.set('product', p);
                         }
                         callback && callback();
                     });
@@ -375,9 +390,15 @@ define([
                         .exec(cb);
                 })
                 .seq(function (cb) {
-                    product.save(cb);
+                    product.save(null, cb);
                 })
-                .exec(cb);
+                .exec(function (err, results) {
+                    if (!err) {
+                        self.trigger('on:productSaved', {}, self);
+                    }
+
+                    cb && cb(err, product);
+                });
 
         }
     })

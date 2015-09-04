@@ -15,22 +15,60 @@ define([
         defaults: {
             productHandler: null,
             product: "{productHandler.product}",
+            appearance: "{product.appearance}",
             selectedConfiguration: "{productHandler.selectedConfiguration}",
+            configurationViewer: null,
             settingsSelected: false,
             addViewSelected: false,
             zoomed: false,
-            zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}"
+            zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}",
+            showTextHint: false
         },
 
         inject: {
 
         },
 
-        _commitSelectedConfiguration: function (selected) {
-            if (!selected) {
-                this.set('settingsSelected', false);
-            }
+        ctor: function () {
+            this.callBase();
+
+            var self = this;
+            this.bind('productHandler', 'on:configurationAdded', function (e) {
+                var configuration = e.$.configuration;
+                if (configuration.$.type == "text") {
+                    setTimeout(function () {
+                        var viewer = self.$.productViewer.getViewerForConfiguration(configuration);
+                        viewer._enableEditing();
+                    }, 10);
+                }
+            });
+
+            this.bind('productHandler', 'on:configurationPointDown', function (e) {
+                if (self.$.productViewer) {
+                    var viewer = self.$.productViewer.getViewerForConfiguration(e.$.configuration);
+                    self.set('configurationViewer', viewer);
+                }
+            });
         },
+
+        _commitSelectedConfiguration: function (configuration) {
+            var showTextHint = false;
+            if (!configuration) {
+                this.set('settingsSelected', false);
+                this.set('configurationViewer', null);
+            } else {
+                if (configuration.$.type == "text") {
+                    showTextHint = true;
+                }
+            }
+
+
+            this.set('showTextHint', showTextHint);
+        },
+
+        appearanceClass: function () {
+            return this.get('appearance.color') == "black" ? "dark-appearance" : "";
+        }.onChange('appearance'),
 
         or: function (a, b) {
             return a || b;
@@ -38,14 +76,21 @@ define([
 
         prepare: function (fragment, callback) {
             var self = this;
-            var match = fragment.match(/^editor\/(\w+)/);
+            var match = fragment.match(/^editor\/(\w+)\/(\w+)/);
 
             if (match) {
-                var productId = match[1];
+                var action = match[1];
+                var productId = match[2],
+                    asPreset = false;
+
+                if (action == "preset") {
+                    asPreset = true;
+                }
 
                 this.$.executor.execute(new LoadProduct({
                     productId: productId,
                     lazy: true,
+                    asPreset: asPreset,
                     callback: callback
                 }));
             } else {
@@ -70,7 +115,7 @@ define([
 
         }.async(),
 
-        add: function (what) {
+        add: function (what, e) {
             if (what == "text") {
                 this.$.executor.storeAndExecute(new AddText({
                     text: "New Text",
@@ -81,9 +126,7 @@ define([
                         letterSpacing: 0,
                         fontFamily: "HammersmithOne"
                     },
-                    leafStyle: {
-                        color: "#000000"
-                    }
+                    leafStyle: {}
                 }));
             } else if (what == "image") {
                 // Simulate click on the element.
@@ -132,11 +175,13 @@ define([
             var self = this;
 
             if (this.$.zoomed) {
-                this.$.wrapper.set({
-                    'left': "0",
-                    'height': this.$heightBefore
-                });
                 this.$.innerContent.set('overflow', 'hidden');
+                self.$.wrapper.set({
+                    'left': "0",
+                    'height': self.$heightBefore
+                });
+                this.$.innerContent.$el.scrollLeft = 0;
+                this.$.innerContent.$el.scrollTop = 0;
                 setTimeout(function () {
                     self.$.wrapper.set({
                         'left': "50%"
@@ -149,11 +194,11 @@ define([
                     var offsetWidth = this.$.innerContent.$el.offsetWidth;
                     var rect = viewer.$el.getBoundingClientRect();
                     var zoomHeight = Math.min(2000, (0.95 * offsetWidth) / rect.width * this.$.innerContent.$.height);
+                    this.$.innerContent.set('overflow', 'scroll');
                     this.$.wrapper.set({
                         'height': zoomHeight
                     });
                     this.$.wrapper.set('marginLeft', (this.minusHalf(this.$heightBefore)) + "px");
-                    this.$.innerContent.set('overflow', 'scroll');
 
                     var rectAfter = viewer.$el.getBoundingClientRect();
                     this.$.innerContent.$el.scrollLeft = rectAfter.left - (offsetWidth - rectAfter.width) * 0.5;
@@ -165,8 +210,12 @@ define([
             }
         },
 
-        goBack: function(){
-            if(this.$.zoomed){
+        format: function (val) {
+            return val != null ? val.toFixed(0) : 0;
+        },
+
+        goBack: function () {
+            if (this.$.zoomed) {
                 this.toggleZoom();
             }
 

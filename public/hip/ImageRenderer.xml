@@ -6,7 +6,7 @@
         xmlns:data="hip.data" xmlns:conf="js.conf">
 
     <js:Injection cid="injection">
-        <data:HipDataSource cid="api" gateway="/api/v1" endPoint=""/>
+        <data:HipDataSource cid="api" gateway="api/v1" endPoint="http://app.hiptees.com/api/v1"/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
         <util:ImageFileReader/>
         <svg:TextMeasurer/>

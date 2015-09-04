@@ -1,17 +1,22 @@
 {
     "modules": [
         {
-            "name": "hip/Hipstee",
+            "name": "hip/Hiptees",
             "include": [
-                "xaml!hip/Hipstee"
+                "xaml!hip/Hiptees",
+                "json!hip/env/default",
+                "json!hip/env/dev",
+                "xaml!hip/module/LoginModule",
+                "xaml!hip/module/ProductTypeModule",
+                "xaml!hip/module/ProductPresetModule",
+                "xaml!hip/module/EditorModule",
+                "exif"
             ]
         }
     ],
     "indexFile": "index.html",
     "targetDir": "public-build",
-    "uglify": {
-        "max_line_length": 250
-    },
-    "usePackageVersion": true,
+    "uglify": false,
+    "usePackageVersion": false,
     "removeSpaces": true
 }

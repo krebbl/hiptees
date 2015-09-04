@@ -10,10 +10,28 @@ define(["xaml!hip/view/SettingsView",
         defaults: {
             componentClass: "settings-view image-settings-view",
             presets: filters.filters,
-            selectedPreset: null
+            selectedPreset: null,
+            presetsInView: true
         },
 
         supportedConfiguration: DesignConfiguration,
+
+        _bindDomEvents: function () {
+            this.callBase();
+
+            var self = this;
+            this.$.settingsContainer.bindDomEvent('scroll', function (e) {
+                self._updateScrollTop(e.target.scrollTop);
+            });
+        },
+
+        _updateScrollTop: function (top) {
+            this.set('presetsInView', top < 100);
+        },
+
+        _selectSubContent: function () {
+
+        },
 
         _selectPreset: function (preset) {
             this.$.executor.storeAndExecute(new ApplyFilter({
@@ -33,6 +51,16 @@ define(["xaml!hip/view/SettingsView",
                 configuration: this.$.configuration,
                 filterChange: change
             }));
+        },
+
+        _showInput: function (val) {
+            console.log(val);
+        },
+
+        scrollTo: function (container) {
+            var top = container.$el.offsetTop;
+
+            this.$.settingsContainer.$el.scrollTop = top - 30;
         }
 
     })

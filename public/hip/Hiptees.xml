@@ -6,13 +6,14 @@
         xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module">
 
     <js:Injection>
-        <data:HipDataSource cid="api" endPoint="http://hip.js/api/v1"/>
+        <data:HipDataSource cid="api" endPoint="http://app.hiptees.com/api/v1"/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
         <util:ImageFileReader/>
         <svg:TextMeasurer/>
         <command:EventBus cid="eventBus"/>
         <command:Executor cid="executor" eventBus="{eventBus}"/>
         <handler:NavigationHandler cid="navigationHandler"/>
+        <handler:LoginHandler cid="loginHandler"/>
         <handler:ImageConfigurationHandler cid="imageConfigurationHandler"/>
         <handler:TextConfigurationHandler cid="textConfigurationHandler"/>
         <handler:ShapeConfigurationHandler cid="shapeConfigurationHandler"/>
@@ -28,24 +29,17 @@
         <conf:RouteConfiguration route="^$" onexec="defaultRoute"/>
     </js:Router>
 
-    <view:SwipeContainer cid="swipeView" class="container" defaultFragment="profile">
+    <div class="loading-overlay" visible="{loaderVisible}">
+        <svg:Loader width="50%"/>
+    </div>
+
+    <view:SwipeContainer cid="swipeView" class="container" ongoTo="toggleLoading(true)"
+                         ongoToFinished="toggleLoading(false)">
+        <module:LoginModule name="login" handles="^login.*"/>
         <module:ProfileModule name="profile" handles="^profile.*"/>
-        <module:ProductTypeModule name="product-types" handles="^productTypes.*" />
-        <module:ProductPresetModule name="presets" handles="^preset.*" />
-        <module:EditorModule name="editor" handles="^editor.*" />
+        <module:ProductTypeModule name="product-types" handles="^productTypes.*"/>
+        <module:ProductPresetModule name="presets" handles="^preset.*"/>
+        <module:EditorModule name="editor" handles="^editor.*"/>
     </view:SwipeContainer>
-
-    <!--<js:ModuleLoader router="{router}" class="container {statusClass()}" cid="moduleLoader">-->
-    <!--<conf:ModuleConfiguration name="login" moduleClass="hip.module.LoginModule"-->
-    <!--route="^login$"/>-->
-    <!--<conf:ModuleConfiguration name="productType" moduleClass="hip.module.ProductTypeModule"-->
-    <!--route="^productTypes.*"/>-->
-    <!--<conf:ModuleConfiguration name="preset" moduleClass="hip.module.ProductPresetModule" route="^presets.*"/>-->
-    <!--<conf:ModuleConfiguration name="editor" moduleClass="hip.module.EditorModule" route="^editor.*"/>-->
-
-    <!--<ui:ContentPlaceHolder class="header" name="header"/>-->
-    <!--<ui:ContentPlaceHolder class="content" name="content"/>-->
-
-    <!--</js:ModuleLoader>-->
 
 </hip:HipteesClass>

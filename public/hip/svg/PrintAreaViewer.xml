@@ -10,24 +10,93 @@
           fill="none"
             />
 
-    <js:Template name="configurationInfo">
-        <div xmlns="http://www.w3.org/1999/xhtml" class="configuration-info">
-            <div selected="{showActiveViewer}">
-                <div visible="{activeViewer._moving}">
-                    x : {format(activeViewer._realOffset.x)}
-                    y : {format(activeViewer._realOffset.y)}
-                </div>
-                <div visible="{not(activeViewer._moving)}">
-                    w : {format(activeViewer._size.width)}
-                    h : {format(activeViewer._size.height)}
-                </div>
-            </div>
-        </div>
-    </js:Template>
-
-
     <g cid="configurations"/>
 
+    <g _v="{activeViewer}" visible="{showActiveViewer}" translateX="{_v._realOffset.x}" translateY="{_v._realOffset.y}"
+            _cornerHandleVisible="{and(_v.verticalStretchable,_v.horizontalStretchable, _v.cornerHandleVisible())}">
+
+        <g translateX="{half(_v._size.width)}" translateY="{_v._size.height}" visible="{_v.verticalStretchable}">
+            <circle r="{_v.handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','b',event)"/>
+
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g visible="{_cornerHandleVisible}">
+            <circle r="{handleWidth}"
+                    fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','lt',event)"/>
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateY="{half(_v._size.height)}">
+            <circle r="{handleWidth}"
+                    fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','l',event)"/>
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateX="{_v._size.width}" translateY="{half(_v._size.height)}">
+            <circle r="{handleWidth}"
+                    fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','r',event)"/>
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateY="{_v._size.height}"
+           visible="{_cornerHandleVisible}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','lb',event)"/>
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateX="{_v._size.width}" translateY="{_v._size.height}"
+           visible="{_cornerHandleVisible}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','rb',event)"/>
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+        </g>
+
+        <g translateX="{_v._size.width}"
+           visible="{_cornerHandleVisible}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','rt',event)"/>
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+
+        </g>
+
+        <g translateX="{half(_v._size.width)}" visible="{_v.verticalStretchable}">
+            <circle r="{handleWidth}" fill-opacity="0"
+                    onpointerdown="handlePointerDown('resize','t',event)"/>
+
+            <circle r="{quarter(handleWidth)}"
+                    class="configuration-handle"
+                    style="pointer-events: none;"/>
+        </g>
+
+
+    </g>
 
     <g cid="snapLines">
         <line x1="0" x2="0" y1="0" y2="0" stroke-opacity="0" stroke="aqua"/>

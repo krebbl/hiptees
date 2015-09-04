@@ -1,4 +1,5 @@
-<parent:ConfigurationViewerClass xmlns:parent="hip.svg" xmlns="js.svg" class="needsclick" onclick="_handleClick" xmlns:js="js.core">
+<parent:ConfigurationViewerClass xmlns:parent="hip.svg" xmlns="js.svg" class="needsclick"
+                                 onclick="_handleClick">
 
     <mask id="{_maskId}">
         <rect x="0" y="0" width="{printArea.size.width}" height="{printArea.size.height}"
@@ -15,97 +16,13 @@
         <parent:ContentPlaceholder name="renderer"/>
     </g>
 
-    <rect class="configuration-boundary"
+    <rect class="configuration-boundary needsclick"
           cid="_boundingBox"
           x="0" y="0"
+          fill="black"
           fill-opacity="0"
           onpointerdown="handlePointerDown('move','', event)"
           width="{_size.width}" height="{_size.height}"/>
-
-    <g visible="{selected}">
-
-        <g translateX="{half(_size.width)}" translateY="{_size.height}" visible="{verticalStretchable}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','b',event)"/>
-
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g visible="{and(verticalStretchable,horizontalStretchable, cornerHandleVisible())}">
-            <circle r="{handleWidth}"
-                    fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','lt',event)"/>
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateY="{half(_size.height)}">
-            <circle r="{handleWidth}"
-                    fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','l',event)"/>
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateX="{_size.width}" translateY="{half(_size.height)}">
-            <circle r="{handleWidth}"
-                    fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','r',event)"/>
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateY="{_size.height}"
-           visible="{and(verticalStretchable,horizontalStretchable, cornerHandleVisible())}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','lb',event)"/>
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateX="{_size.width}" translateY="{_size.height}"
-           visible="{and(verticalStretchable,horizontalStretchable, cornerHandleVisible())}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','rb',event)"/>
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateX="{_size.width}"
-           visible="{and(verticalStretchable,horizontalStretchable, cornerHandleVisible())}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','rt',event)"/>
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-
-        </g>
-
-        <g translateX="{half(_size.width)}" visible="{verticalStretchable}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','t',event)"/>
-
-            <circle r="{quarter(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-
-    </g>
 
 
 </parent:ConfigurationViewerClass>

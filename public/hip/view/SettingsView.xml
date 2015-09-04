@@ -32,7 +32,7 @@
         </a>
 
     </div>
-    <ui:ContentPlaceHolder name="settings" class="settings-content" selected="{not(subContentSelected)}"/>
+    <ui:ContentPlaceHolder cid="settingsContainer" name="settings" class="settings-content" selected="{not(subContentSelected)}"/>
     <ui:ContentPlaceHolder class="settings-sub-content" selected="{subContentSelected}" cid="placeholder"/>
 
 </view:SettingsViewClass>

@@ -1,6 +1,11 @@
 <parent:HipDataSourceClass xmlns="http://www.w3.org/1999/xhtml"
                            xmlns:parent="hip.data" xmlns:conf="js.conf">
     <conf:DataSourceConfiguration>
+        <conf:ResourceConfiguration modelClassName="hip.model.User" path="users">
+            <conf:ResourceConfiguration modelClassName="hip.model.PublishedProduct" path="published"/>
+            <conf:ResourceConfiguration modelClassName="hip.model.ProductDraft" path="drafts"/>
+        </conf:ResourceConfiguration>
+        <conf:ResourceConfiguration modelClassName="hip.model.Session" path="sessions"/>
         <conf:ResourceConfiguration modelClassName="hip.model.Product" path="products"/>
         <conf:ResourceConfiguration modelClassName="hip.model.Design" path="designs"/>
         <conf:ResourceConfiguration modelClassName="hip.model.ProductType" path="productTypes"/>
