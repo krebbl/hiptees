@@ -59,7 +59,7 @@
 
             meta = document.createElement("meta");
             meta.setAttribute("name", "viewport");
-            meta.setAttribute("content", "width=device-width, height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0; user-scalable=no");
+            meta.setAttribute("content", "width=device-width, height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no");
 
             viewportTag = meta;
 
@@ -79,10 +79,11 @@
     FastClick.attach(document.body);
     // version is optional. It refers to the version of API you may want to use.
 
-    rAppid.bootStrap("hip/Hiptees.xml", null, null, null, function (err) {
+    rAppid.bootStrap("hip/Hiptees.xml", null, null, null, function (err, stage) {
         if (err) {
             console.log(err);
         }
+        window.application = stage.$application;
     });
 </script>
 <div id="fb-root"></div>

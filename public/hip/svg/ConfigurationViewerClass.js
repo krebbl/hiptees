@@ -310,7 +310,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         handlePointerUp: function (event) {
-            console.log("up:" + this.get('configuration.type'));
             this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
 

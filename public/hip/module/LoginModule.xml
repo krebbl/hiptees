@@ -9,10 +9,16 @@
         <div>
             <ul class="login-options">
                 <li>
-                    <a class="login-btn" onclick="loginWithFB">Facebook</a>
+                    <a class="login-btn facebook" onclick="loginWithFB">
+                        <i class="fa fa-facebook"></i>
+                        Login with Facebook
+                    </a>
                 </li>
                 <li>
-                    <a class="login-btn">Twitter</a>
+                    <a class="login-btn twitter">
+                        <i class="fa fa-twitter"></i>
+                        Login in Twitter
+                    </a>
                 </li>
             </ul>
         </div>

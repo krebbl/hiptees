@@ -1,4 +1,4 @@
-define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function (ConfigurationViewerSvg, SvgTextEditor) {
+define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/entity/TextRange'], function (ConfigurationViewerSvg, SvgTextEditor, TextRange) {
     return ConfigurationViewerSvg.inherit('sprd.svg.ConfigurationViewerClass', {
 
         defaults: {
@@ -97,6 +97,16 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
                     this.removeClass("editing");
                 }
 
+                var textFlow = this.$.configuration.$.textFlow;
+
+                if (textFlow.$.selection) {
+                    var totalLength = textFlow.textLength() - 1;
+                    textFlow.$.selection.set({
+                        anchorIndex: totalLength,
+                        activeIndex: totalLength
+                    });
+                }
+
                 this._updateSnapPoints();
             }
         },
@@ -105,6 +115,13 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
             var rect = this.getBoundRectInPx();
             var root = this.getSvgRoot();
             var svgTextEditor = this.$.svgTextEditor;
+
+            var textFlow = this.$.configuration.$.textFlow;
+
+            if (!textFlow.$.selection) {
+                var totalLength = textFlow.textLength() - 1;
+                textFlow.set('selection', TextRange.createTextRange(totalLength, totalLength));
+            }
 
             svgTextEditor.set({
 //                    visible: true,
@@ -119,7 +136,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
                 svgHeight: root.$.height,
                 maxWidth: this.$.maxWidth,
                 viewBox: this.getSvgRoot().$.viewBox,
-                textFlow: this.$.configuration.$.textFlow
+                textFlow: textFlow
             }, {force: true});
             // TODO: bind on blur event to remove editing class
             if (!svgTextEditor.isRendered()) {
@@ -133,19 +150,11 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor'], function
             this.$.textRenderer.set('visible', false);
             this.addClass("editing");
 
-//            var evt = document.createEvent('Event');
-//            evt.initEvent('click', true, true);
-//
-//            this.$.svgTextEditor.$el.dispatchEvent(evt);
             svgTextEditor.focus();
-
-            console.log("focused");
-
         },
 
 
         handlePointerUp: function () {
-            console.log(this.$moved, this.$resized);
             if (this.$.selected && !this.$moved && !this.$resized) {
 
                 this._enableEditing();

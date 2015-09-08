@@ -12,7 +12,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             viewBox: "0 0 100 100",
             contenteditable: true,
             textFlow: null,
-            selection: "{textFlow.selection}"
+            selection: null
         },
 
         inject: {
@@ -21,6 +21,15 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
         },
 
         $domAttributes: ["contenteditable"],
+
+        _onDomAdded: function () {
+            this.callBase();
+
+            var selection = this.get('textFlow.selection');
+            if (selection) {
+                this.setCursor(selection.$.anchorIndex, selection.$.activeIndex);
+            }
+        },
 
         _handleSizeChange: function (e) {
             var rect = e.target.$el.getBoundingClientRect();
@@ -36,12 +45,6 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             }
         },
 
-        _renderSelection: function (selection) {
-            if (selection) {
-//               this.setCursor(selection.$.anchorIndex, selection.$.activeIndex);
-            }
-        },
-
         _renderMaxWidth: function () {
             // IMPORTANT: DON'T REMOVE THIS METHOD
             // do nothing
@@ -49,11 +52,12 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
         _commitVisible: function (visible) {
             if (!visible && this.$.textFlow) {
-                this.$.executor.execute(new SelectText({
-                    textFlow: this.$.textFlow,
-                    anchorOffset: 0,
-                    focusOffset: 0
-                }));
+
+//                this.$.executor.execute(new SelectText({
+//                    textFlow: this.$.textFlow,
+//                    anchorOffset: 0,
+//                    focusOffset: 0
+//                }));
             }
         },
 
@@ -91,7 +95,13 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 if (e.$.textFlow === self.$.textFlow) {
                     self.setCursor(e.$.anchorOffset);
                 }
-            });
+            }, this);
+
+            this.bind('textFlowHandler', 'on:selectionChanged', function (e) {
+                if (e.$.textFlow === self.$.textFlow) {
+                    self.setCursor(e.$.anchorIndex, e.$.focusOffset);
+                }
+            }, this);
         },
 
         getAbsoluteSelection: function () {
@@ -99,7 +109,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 textContainer = this.$.$textContainer.$el;
 
             function getAbsoluteOffset(node, offset) {
-                if(!node){
+                if (!node) {
                     return 0;
                 }
                 var length = 0;
@@ -124,14 +134,26 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 return 0;
             }
 
+            var absoluteOffset = getAbsoluteOffset(selection.anchorNode, selection.anchorOffset),
+                absoluteEnd = getAbsoluteOffset(selection.focusNode, selection.focusOffset);
+
+            this.$absoluteOffset = absoluteOffset;
+            this.$absoluteEnd = absoluteEnd;
+
             return {
-                anchorOffset: getAbsoluteOffset(selection.anchorNode, selection.anchorOffset),
-                focusOffset: getAbsoluteOffset(selection.focusNode, selection.focusOffset)
+                anchorOffset: absoluteOffset,
+                focusOffset: absoluteEnd
             };
 
         },
 
         setCursor: function (absoluteOffset, absoluteEnd) {
+            if(!this.$addedToDom || !this.$.visible){
+                return;
+            }
+            if (this.$absoluteOffset == absoluteOffset && this.$absoluteEnd == absoluteEnd) {
+                return;
+            }
             var selection = window.getSelection(),
                 textContainer = this.$.$textContainer.$el;
 
@@ -182,6 +204,8 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                     range.setEnd(relativeData.node.firstChild || relativeData.node, relativeData.offset);
                 }
                 selection.addRange(range);
+                this.$absoluteOffset = absoluteOffset;
+                this.$absoluteEnd = absoluteEnd;
             }
         },
 

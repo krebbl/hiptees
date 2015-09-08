@@ -19,10 +19,12 @@ define([
             selectedConfiguration: "{productHandler.selectedConfiguration}",
             configurationViewer: null,
             settingsSelected: false,
-            addViewSelected: false,
+            finishView: null,
+            addView: null,
             zoomed: false,
             zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}",
-            showTextHint: false
+            showTextHint: false,
+            makePublic: false
         },
 
         inject: {
@@ -156,13 +158,12 @@ define([
             this.set('settingsSelected', false);
         },
 
-        showAddView: function () {
-            this.set('addViewSelected', true);
+        toggleView: function (view, selected) {
+            if (view) {
+                view.set('selected', selected);
+            }
         },
 
-        hideAddView: function () {
-            this.set('addViewSelected', false);
-        },
         minusHalf: function (n) {
             return -0.5 * n;
         },

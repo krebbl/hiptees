@@ -39,7 +39,7 @@
                  width="{height}"
                  marginLeft="{minusHalf(width)}px"
                  left="50%"
-                 onclick="hideAddView">
+                 onclick="toggleView(addView, false)">
                 <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" product="{product}"/>
             </div>
         </div>
@@ -57,12 +57,12 @@
             <i class="fa fa-pencil"/>
             Edit
         </a>
-        <a onclick="showAddView">
+        <a onclick="toggleView(addView, true)">
             <i class="fa fa-plus"/>
             Add
         </a>
 
-        <a onclick="saveProduct">
+        <a onclick="toggleView(finishView, true)">
             <i class="fa fa-check"/>
             Save
         </a>
@@ -78,7 +78,7 @@
     <input cid="fileInput" type="file" onchange="handleUpload"/>
 
 
-    <div class="add-view" selected="{addViewSelected}">
+    <div class="add-view" cid="addView">
         <div>
             <a onclick="add('text',event)">
                 <i class="fa fa-font"/>
@@ -98,10 +98,35 @@
             </a>
         </div>
 
-        <a class="close-btn" onclick="hideAddView">
+        <a class="close-btn" onclick="toggleView(addView, false)">
             Close
             <i class="fa fa-chevron-down"/>
         </a>
+    </div>
+
+    <div class="finish-view" cid="finishView">
+        <div>
+            <a class="close-btn" onclick="toggleView(finishView, false)">Close</a>
+            <div>
+                PRODUCT
+            </div>
+            <div>
+                <textarea>
+                    Give it a title
+                </textarea>
+            </div>
+
+            <a>
+                Save as draft
+            </a>
+            <div>
+                Make product public
+                <input type="checkbox" checked="{{makePublic}}"/>
+            </div>
+            <a>
+                Save and add to basket
+            </a>
+        </div>
     </div>
 
 </parent:EditorModuleClass>

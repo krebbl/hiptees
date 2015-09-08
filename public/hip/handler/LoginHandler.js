@@ -13,10 +13,11 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
 
         handleCommand: function (command) {
             var self = this;
-            var api = this.$.api;
+            var api = this.$.api,
+                session;
 
             if (command instanceof LoginCommand) {
-                var session = api.createEntity(Session);
+                session = api.createEntity(Session);
 
                 if (command.$.type == "localStorage") {
                     var sessionToken = this._loadSessionToken();
@@ -36,8 +37,7 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                     }
 
                     if ("standalone" in navigator && navigator.standalone) {
-                        var permissionUrl = "https://m.facebook.com/dialog/oauth?client_id=" + 164321440569168 + "&response_type=token&redirect_uri=" + window.location + "&scope=" + "email";
-                        window.location = permissionUrl;
+                        window.location = "https://m.facebook.com/dialog/oauth?client_id=" + 164321440569168 + "&response_type=token&redirect_uri=" + window.location + "&scope=" + "email";
                     } else {
                         facebookConnectPlugin.login(["email"], function (response) {
                             if (!response.error && response.status == "connected") {
@@ -74,7 +74,7 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
 
             } else if (command instanceof LogoutCommand) {
 
-                var session = this.$.session;
+                session = this.$.session;
                 if (session) {
 
 
@@ -88,8 +88,9 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                                 self.set('session', null);
                                 self._clearSessionToken();
                             }
-                            alert("https://www.facebook.com/logout.php?next=" + encodeURIComponent("http://local.hiptees.com") + "&access_token=" + session.$.auth.accessToken);
-                            window.location = "https://www.facebook.com/logout.php?next=" + encodeURIComponent("http://local.hiptees.com") + "&access_token=" + session.$.auth.accessToken;
+                            if ("standalone" in navigator && navigator.standalone) {
+                                window.location = "https://www.facebook.com/logout.php?next=" + encodeURIComponent("http://local.hiptees.com") + "&access_token=" + session.$.auth.accessToken;
+                            }
 
                             self.trigger('on:loggedOut', {}, self);
                         })
