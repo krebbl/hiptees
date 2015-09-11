@@ -13,7 +13,8 @@
     <g cid="configurations"/>
 
     <g _v="{activeViewer}" visible="{showActiveViewer}" translateX="{_v._realOffset.x}" translateY="{_v._realOffset.y}"
-            _cornerHandleVisible="{and(_v.verticalStretchable,_v.horizontalStretchable, _v.cornerHandleVisible())}">
+            _cornerHandleVisible="{and(_v.verticalStretchable,_v.horizontalStretchable, _v.cornerHandleVisible())}"
+            class="needsClick">
 
         <g translateX="{half(_v._size.width)}" translateY="{_v._size.height}" visible="{_v.verticalStretchable}">
             <circle r="{_v.handleWidth}" fill-opacity="0"

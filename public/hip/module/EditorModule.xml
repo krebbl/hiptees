@@ -23,12 +23,12 @@
         <div class="configuration-info" selected="{configurationViewer}">
             <div>
                 <div visible="{configurationViewer._moving}">
-                    x : {format(configurationViewer._realOffset.x)}
-                    y : {format(configurationViewer._realOffset.y)}
+                    X: {format(configurationViewer._realOffset.x)} mm
+                    Y: {format(configurationViewer._realOffset.y)} mm
                 </div>
                 <div visible="{not(configurationViewer._moving)}">
-                    w : {format(configurationViewer._size.width)}
-                    h : {format(configurationViewer._size.height)}
+                    B: {format(configurationViewer._size.width)} mm
+                    H: {format(configurationViewer._size.height)} mm
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
                  width="{height}"
                  marginLeft="{minusHalf(width)}px"
                  left="50%"
-                 onclick="toggleView(addView, false)">
+                 onclick="showView(null)">
                 <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" product="{product}"/>
             </div>
         </div>
@@ -57,12 +57,12 @@
             <i class="fa fa-pencil"/>
             Edit
         </a>
-        <a onclick="toggleView(addView, true)">
+        <a onclick="showView(addView)">
             <i class="fa fa-plus"/>
             Add
         </a>
 
-        <a onclick="toggleView(finishView, true)">
+        <a onclick="showView(finishView)">
             <i class="fa fa-check"/>
             Save
         </a>
@@ -98,7 +98,7 @@
             </a>
         </div>
 
-        <a class="close-btn" onclick="toggleView(addView, false)">
+        <a class="close-btn" onclick="showView(null)">
             Close
             <i class="fa fa-chevron-down"/>
         </a>
@@ -106,25 +106,28 @@
 
     <div class="finish-view" cid="finishView">
         <div>
-            <a class="close-btn" onclick="toggleView(finishView, false)">Close</a>
-            <div>
-                PRODUCT
-            </div>
-            <div>
-                <textarea>
-                    Give it a title
-                </textarea>
+            <!--<a class="close-btn" onclick="showView(null)">Close</a>-->
+            <div class="product-name-wrapper">
+                <input type="text" placeholder="Geb dem Shirt einen Namen"/>
             </div>
 
-            <a>
-                Save as draft
-            </a>
-            <div>
-                Make product public
-                <input type="checkbox" checked="{{makePublic}}"/>
+
+            <div class="publish-wrapper">
+                <div class="checkbox-control">
+                    <label>
+                        T-Shirt veröffentlichen
+                        <input type="checkbox" checked="{{makePublic}}" class="fa fa-check"/>
+                        <span class="hint">
+                            So können es auch andere Leute kaufen
+                        </span>
+                    </label>
+                </div>
+                <a class="btn btn-success" onclick="saveProductFinal()">
+                    Final speichern
+                </a>
             </div>
-            <a>
-                Save and add to basket
+            <a class="btn btn-secondary" onclick="saveProduct()">
+                Als Entwurf speichern
             </a>
         </div>
     </div>

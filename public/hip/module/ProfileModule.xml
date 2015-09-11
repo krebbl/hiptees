@@ -42,7 +42,7 @@
             </ul>
             <div class="list-wrapper">
 
-                <ui:ItemsView visible="{publishedSelected}" items="{published}" tagName="ul">
+                <ui:ItemsView visible="{publishedSelected}" items="{published}" tagName="ul" class="product-list">
                     <li>
                         <a onclick="selectProductPreset(item)">
                             <img src="${item.resources.MEDIUM}"/>
@@ -50,7 +50,7 @@
                     </li>
                 </ui:ItemsView>
 
-                <ui:ItemsView visible="{not(publishedSelected)}" items="{drafts}" tagName="ul">
+                <ui:ItemsView visible="{not(publishedSelected)}" items="{drafts}" tagName="ul" class="product-list">
                     <li>
                         <a onclick="selectDraft(item)">
                             <img src="${item.resources.MEDIUM}?${item.__v}"/>

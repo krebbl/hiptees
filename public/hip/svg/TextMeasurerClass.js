@@ -257,7 +257,7 @@ define(["js/ui/View"], function (View) {
                 extension = "woff";
             }
 
-            this.$.svg.fontManager.loadExternalFont(font, "./font/" + font + "." + extension, callback)
+            this.$.svg.fontManager.loadExternalFont(font, "./font/" + font + "." + extension, callback);
         }
 
     })

@@ -3,8 +3,9 @@ $bg-color: #E2E2E2;
 $footer-color: #282828;
 $footer-select-color: #191919;
 
-$color-m: #333;
+$color-m: #151A20;
 $color-j: #26C281;
+$color-k: #323232;
 //#64AB23
 
 $header-height: 70px;
@@ -66,6 +67,7 @@ h1 {
 }
 
 .loading-overlay {
+  background: rgba(0, 0, 0, 0.5);
   position: absolute;
   z-index: 1000;
   top: 0;
@@ -131,6 +133,10 @@ h1 {
     //    a {
     //      z-index: 2;
     //    }
+
+    h1 {
+      margin-top: 5px;
+    }
 
     > .content {
       background-color: white;
@@ -366,7 +372,7 @@ $settings-height: 210px;
     top: 0;
     bottom: 0;
     input {
-      background-color: #273950;
+      background-color: $color-k;
       height: 100%;
       border: none;
       border-radius: 0;
@@ -466,7 +472,7 @@ $settings-height: 210px;
 }
 
 .settings-view {
-  background: #323232;
+  background: rgba($color-m,0.93);
   position: absolute;
   bottom: -$settings-height;
   width: 100%;
@@ -494,7 +500,7 @@ $add-view-height: 140px;
 
 .add-view {
   z-index: 2;
-  background: #2D3C4D;
+  background: rgba($color-m, 0.93);
   position: absolute;
   bottom: -$add-view-height;
   width: 100%;
@@ -514,6 +520,10 @@ $add-view-height: 140px;
   }
 
   a {
+    i {
+      font-size: 14px;
+      margin-right: 7px;
+    }
     display: block;
     color: white;
     text-decoration: none;
@@ -530,19 +540,81 @@ $add-view-height: 140px;
 
 }
 
-$finish-view-height : 500px;
+$finish-view-height: 250px;
 
 .finish-view {
   z-index: 2;
-  background: white;
+  background: rgba($color-m, 0.93);
   position: absolute;
   bottom: -$finish-view-height;
-  width: 100%;
+  left: 0;
+  right: 0;
   height: $finish-view-height;
   transition: bottom 0.5s;
 
   &.active {
     bottom: 0;
+  }
+
+  .publish-wrapper {
+    border-bottom: 1px solid #C5C5C5;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+  }
+
+  .product-name-wrapper {
+    padding: 5px 0;
+
+    input {
+      background-color: transparent;
+      border: 0;
+      border-bottom: 1px solid #C5C5C5;
+      color: white;
+      padding: 8px 15px;
+      /* margin: 5px 18px; */
+      width: 100%;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+
+  .checkbox-control {
+    padding: 10px 12px;
+
+    .hint {
+      display: block;
+      margin-top: 6px;
+      color: white;
+      font-size: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 300;
+      color: white;
+    }
+
+    input {
+      float: right;
+    }
+  }
+
+  .btn {
+    background-color: $color-j;
+    color: white;
+    padding: 13px 15px;
+    display: block;
+    margin: 5px 11px;
+    border-radius: 7px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .btn-secondary {
+    background-color: #525252;
+    color: white;
+    font-weight: 300;
   }
 }
 
@@ -770,6 +842,20 @@ ul {
   }
 }
 
+ul.product-list {
+  > li > a {
+    height: 200px;
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid lightgray;
+    background: lightgray;
+    img {
+      width: 100%;
+      margin-top: -40px;
+    }
+  }
+}
+
 .filter-presets {
   //  position: absolute;
   //  top: 30px;
@@ -945,22 +1031,6 @@ ul {
   }
 }
 
-.preset-list {
-
-  > li > a {
-    height: 200px;
-    display: block;
-    overflow: hidden;
-    border-bottom: 1px solid gray;
-    background: lightgray;
-    img {
-      width: 100%;
-      margin-top: -40px;
-    }
-  }
-
-}
-
 .zoom-btn {
 
   text-shadow: 0 0 15px white;
@@ -997,7 +1067,7 @@ ul {
 
   > div {
     margin: 0 auto;
-    width: 100px;
+    width: 160px;
     text-align: center;
     color: white;
     background-color: #212121;
@@ -1094,21 +1164,7 @@ ul {
   bottom: 0;
   width: 100%;
   background: lightgray;
-
-  > ul > li {
-    display: block;
-    height: 200px;
-    overflow: hidden;
-
-    a {
-      display: block;
-      height: auto;
-    }
-
-    img {
-      width: 100%;
-    }
-  }
+  border-top: 1px solid lightgray;
 }
 
 .logout {
@@ -1118,3 +1174,20 @@ ul {
   padding: 1em;
   z-index: 121;
 }
+
+input[type=checkbox], input[type=radio] {
+  appearance: none;
+  -webkit-appearance: none;
+  color: rgba(255, 255, 255, 0.39);
+  font-size: 18px;
+  display: inline-block;
+  border-radius: 18px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.39);
+}
+
+input[type=checkbox]:checked, input[type=radio]:checked {
+  color: $color-j;
+  border-color:$color-j;
+}
+

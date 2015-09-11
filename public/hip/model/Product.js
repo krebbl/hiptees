@@ -12,6 +12,7 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
         defaults: {
             name: '',
             configurations: List,
+            state: "draft",
             tags: ["preset"]
         },
         schema: {
@@ -24,6 +25,10 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
                 type: Appearance,
                 isReference: true
             },
+            state: {
+                type: String,
+                required: true
+            },
             configurations: [typeResolver],
             tags: {
                 type: Array,
@@ -34,13 +39,10 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
         parse: function () {
             var ret = this.callBase();
 
-            if (ret.productType && ret.appearance && ret.productType.$.appearances) {
-                var pa = ret.productType.$.appearances.find(function (app) {
-                    return app.$.id == ret.appearance.$.id;
-                });
+            var appearance = ret.productType.createEntity(Appearance, ret.appearance.$.id);
 
-                ret.appearance = pa;
-            }
+
+            ret.appearance = appearance;
 
             return ret;
         },

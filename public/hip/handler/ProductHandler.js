@@ -63,7 +63,7 @@ define([
                     this.trigger('on:configurationRemoved', {configuration: command.$.configuration});
                 }
             } else if (command instanceof SaveProduct) {
-                this._saveProduct(this.$.product);
+                this._saveProduct(this.$.product, command.$.state);
             } else if (command instanceof SelectConfiguration) {
                 this._selectConfiguration(command.$.configuration);
             } else if (command instanceof PointDownConfiguration) {
@@ -108,7 +108,7 @@ define([
 
                 offset = this._convertOffset(command.$.offset);
 
-                var leafStyle = command.$.leafStyle ||{};
+                var leafStyle = command.$.leafStyle || {};
                 leafStyle.color = this.get('product.appearance.name') == "black" ? "#ffffff" : "#000000";
 
                 (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, leafStyle, command.$.paragraphStyle || {
@@ -357,8 +357,9 @@ define([
             this.trigger('on:configurationSelected', {configuration: configuration});
         },
 
-        _saveProduct: function (product, cb) {
+        _saveProduct: function (product, state, cb) {
             var newDesigns = [];
+            var stateBefore = product.get('state');
 
             product.$.configurations.each(function (configuration) {
                 if (configuration instanceof DesignConfiguration) {
@@ -390,11 +391,16 @@ define([
                         .exec(cb);
                 })
                 .seq(function (cb) {
+                    if (state) {
+                        product.set('state', state);
+                    }
                     product.save(null, cb);
                 })
                 .exec(function (err, results) {
                     if (!err) {
                         self.trigger('on:productSaved', {}, self);
+                    } else {
+                        product.set('state', stateBefore);
                     }
 
                     cb && cb(err, product);

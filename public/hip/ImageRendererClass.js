@@ -59,6 +59,8 @@ define(
                 // false - disables autostart
                 this.callBase(parameter, false);
 
+                console.log("rendererStarted");
+
                 callback();
             },
 
@@ -94,7 +96,7 @@ define(
                         if (!err) {
                         }
                         setTimeout(function () {
-                            alert("loaded");
+                            console.log("rendered " + productId);
                         }, 50);
                     }
                 }));

@@ -141,7 +141,7 @@ define([
                 }));
             }
 
-            this.set('addViewSelected', false);
+            this.showView(null);
         },
 
         handleUpload: function (e) {
@@ -158,10 +158,17 @@ define([
             this.set('settingsSelected', false);
         },
 
-        toggleView: function (view, selected) {
-            if (view) {
-                view.set('selected', selected);
+        _commitCurrentView: function (currentView, oldView) {
+            if (oldView) {
+                oldView.set('selected', false);
             }
+            if (currentView) {
+                currentView.set('selected', true);
+            }
+        },
+
+        showView: function (view) {
+            this.set('currentView', view);
         },
 
         minusHalf: function (n) {
@@ -211,6 +218,10 @@ define([
             }
         },
 
+        saveProductFinal: function () {
+            this.$.executor.storeAndExecute(new SaveProduct({state: this.$.makePublic ? "public" : "private"}));
+        },
+
         format: function (val) {
             return val != null ? val.toFixed(0) : 0;
         },
@@ -224,7 +235,7 @@ define([
         },
 
         saveProduct: function () {
-            this.$.executor.storeAndExecute(new SaveProduct());
+            this.$.executor.storeAndExecute(new SaveProduct({state: "draft"}));
         }
     })
 });
