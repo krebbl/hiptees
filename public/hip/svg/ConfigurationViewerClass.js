@@ -138,12 +138,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$moved = false;
             this.$resized = false;
 
-            if (action == "resize") {
-                this.set('_resizing', true);
-            } else {
-                this.set('_moving', true);
-            }
-
             this.$.executor.storeAndExecute(new PointDownConfiguration({
                 configuration: this.$.configuration
             }));
@@ -164,6 +158,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         handleDocumentClick: function (e) {
+            console.log("document click");
             if (this.$moved || this.$resized) {
                 e.stopPropagation();
             }
@@ -184,8 +179,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
             if (event.touches && event.touches.length == 2) {
                 var length = this.vectorLength([
-                            event.touches[0].pageX - event.touches[1].pageX,
-                            event.touches[0].pageY - event.touches[1].pageY]
+                        event.touches[0].pageX - event.touches[1].pageX,
+                        event.touches[0].pageY - event.touches[1].pageY]
                 );
                 if (!this.$startLength) {
                     this.$startLength = length;
@@ -202,6 +197,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
 
             if (this.$action == "resize") {
+                this.set('_resizing', true);
+
                 this.$resized = true;
                 var snapped;
 
@@ -257,6 +254,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
 
                 change._size = size;
             } else if (this.$action == "move") {
+                this.set('_moving', true);
                 this.$moved = true;
                 if (!event.touches || event.touches.length === 1) {
 
@@ -338,8 +336,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$originalSize = null;
             this.$originalOffset = null;
             this.$startLength = null;
-
             this.trigger('on:configurationPointerUp', null, this);
+
+            var self = this;
+            setTimeout(function(){
+                self.$moved = self.$resized = false;
+            },10);
         },
 
         cornerHandleVisible: function () {
@@ -396,7 +398,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         getSnappingPoints: function () {
             return this.$snappingPoints;
         }
-
 
 
     });

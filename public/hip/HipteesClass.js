@@ -96,6 +96,14 @@ define(
                     }));
                 });
 
+                this.$.productHandler.bind('on:productSave', function () {
+                    this.toggleLoading(true);
+                }, this);
+
+                this.$.productHandler.bind('on:productSaved', function () {
+                    this.toggleLoading(false);
+                }, this);
+
                 this.$.loginHandler.bind('on:loginFailed', function () {
                     if (!appStarted) {
                         appStarted = true;

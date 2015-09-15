@@ -1,0 +1,29 @@
+<parent:ProductModuleClass xmlns="http://www.w3.org/1999/xhtml"
+                           xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
+
+    <div class="header">
+        <a onclick="goBack" class="back-btn">
+            <i class="fa fa-angle-left"/>
+        </a>
+        <h2>Kaufen und Teilen</h2>
+        <a class="basket-btn">
+            <i class="fa fa-shopping-cart"/>
+        </a>
+    </div>
+
+    <div class="content">
+        <h2>{productName()}</h2>
+        <div class="subtitle">Erstellt von <strong>Krebbl</strong></div>
+        <div class="full-product-image" style="background-image: url({product.resources.LARGE});">
+            <div class="share">
+                <i class="fa fa-facebook"/>
+            </div>
+        </div>
+        <div class="options">
+            <span class="price">19,99 €</span>
+        </div>
+        <!--<div class="designed-by">Erstellt von <strong>dir</strong></div>-->
+        <div class="select-size">Zum Warenkorb hinzufügen</div>
+    </div>
+
+</parent:ProductModuleClass>

@@ -8,7 +8,7 @@ define(["xaml!hip/svg/ConfigurationViewer"], function (ConfigurationViewer) {
             return a * 0.5;
         },
         inner: function (a, b, c) {
-            return a - b * c;
+            return Math.max(0,a - b * c);
         }
     })
 });

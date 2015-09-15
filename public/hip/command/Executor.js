@@ -36,7 +36,7 @@ define(["js/core/Component"], function (Component) {
         },
 
         storeAndExecute: function (command) {
-            this.$history.push(command);
+            //this.$history.push(command);
 
             this.execute(command);
         },

@@ -119,13 +119,6 @@ define(['js/svg/SvgElement', 'js/core/List',
                     self.$.snapLines.$children[1].set('stroke-opacity', 0);
                 });
 
-                configurationViewer.bind('on:configurationPointerDown', function (e) {
-                    self.set({
-                        activeViewer: e.target,
-                        showActiveViewer: false
-                    });
-                });
-
                 this.$.configurations.addChild(configurationViewer);
             }
 

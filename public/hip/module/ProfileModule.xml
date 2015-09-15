@@ -31,29 +31,29 @@
         <div>
             <ul class="list-options">
                 <li>
-                    <a selected="{publishedSelected}" onclick="showPublished">PUBLISHED</a>
+                    <a selected="{listSelected('published')}" onclick="showList('published')">PUBLISHED</a>
                 </li>
                 <li>
-                    <a onclick="showDrafts">PRIVATE</a>
+                    <a selected="{listSelected('private')}" onclick="showList('private')">PRIVATE</a>
                 </li>
                 <li>
-                    <a selected="{not(publishedSelected)}" onclick="showDrafts">DRAFTS</a>
+                    <a selected="{listSelected('drafts')}" onclick="showList('drafts')">DRAFTS</a>
                 </li>
             </ul>
             <div class="list-wrapper">
 
-                <ui:ItemsView visible="{publishedSelected}" items="{published}" tagName="ul" class="product-list">
+                <ui:ItemsView visible="{listSelected('published')}" items="{list}" tagName="ul" class="product-list">
                     <li>
-                        <a onclick="selectProductPreset(item)">
+                        <a onclick="selectProduct(item)">
                             <img src="${item.resources.MEDIUM}"/>
                         </a>
                     </li>
                 </ui:ItemsView>
 
-                <ui:ItemsView visible="{not(publishedSelected)}" items="{drafts}" tagName="ul" class="product-list">
+                <ui:ItemsView visible="{listSelected('drafts')}" items="{list}" tagName="ul" class="product-list">
                     <li>
                         <a onclick="selectDraft(item)">
-                            <img src="${item.resources.MEDIUM}?${item.__v}"/>
+                            <img src="${item.resources.MEDIUM}?{item.__v}"/>
                         </a>
                     </li>
                 </ui:ItemsView>

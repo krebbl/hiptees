@@ -24,12 +24,11 @@ define([
             zoomed: false,
             zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}",
             showTextHint: false,
-            makePublic: false
+            makePublic: false,
+            showConfigurationInfo: "{selectedConfiguration}"
         },
 
-        inject: {
-
-        },
+        inject: {},
 
         ctor: function () {
             this.callBase();
@@ -37,7 +36,7 @@ define([
             var self = this;
             this.bind('productHandler', 'on:configurationAdded', function (e) {
                 var configuration = e.$.configuration;
-                if (configuration.$.type == "text") {
+                if (configuration.$.type == "text" && e.$.cloned == false) {
                     setTimeout(function () {
                         var viewer = self.$.productViewer.getViewerForConfiguration(configuration);
                         viewer._enableEditing();
@@ -51,17 +50,30 @@ define([
                     self.set('configurationViewer', viewer);
                 }
             });
+
+            this.bind('productHandler', 'on:configurationSelected', function (e) {
+                if (e.$.configuration && self.$.productViewer) {
+                    var viewer = self.$.productViewer.getViewerForConfiguration(e.$.configuration);
+                    self.set('configurationViewer', viewer);
+                }
+
+            });
         },
 
         _commitSelectedConfiguration: function (configuration) {
             var showTextHint = false;
             if (!configuration) {
-                this.set('settingsSelected', false);
-                this.set('configurationViewer', null);
+                this.set({
+                    'settingsSelected': false,
+                    'showConfigurationInfo': false
+                });
             } else {
                 if (configuration.$.type == "text") {
                     showTextHint = true;
                 }
+                this.set({
+                    'showConfigurationInfo': true
+                });
             }
 
 
@@ -231,11 +243,14 @@ define([
                 this.toggleZoom();
             }
 
+            this.showView(null);
+
             this.callBase();
         },
 
         saveProduct: function () {
             this.$.executor.storeAndExecute(new SaveProduct({state: "draft"}));
+            this.showView(null);
         }
     })
 });

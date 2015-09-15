@@ -7,7 +7,8 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             published: null,
             drafts: null,
             user: null,
-            publishedSelected: false
+            publishedSelected: false,
+            list: null
         },
 
         inject: {
@@ -18,17 +19,10 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             this.callBase();
 
             this.bind('productHandler', 'on:productSaved', function () {
-                if (this.$.drafts) {
-                    this.$.drafts.invalidatePageCache();
-                    this.showDrafts();
+                if (this.$.list) {
+                    this.$.list.invalidatePageCache();
+                    this.showList(this.$.activeList);
                 }
-
-                if (this.$.published) {
-                    this.$.published.invalidatePageCache();
-                    this.showPublished();
-                }
-
-
             }, this);
         },
 
@@ -43,40 +37,37 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                 callback && callback(err);
             });
 
-            if (this.$.publishedSelected) {
-                this.showPublished();
-            } else {
-                this.showDrafts();
-            }
-
+            this.showList("published");
         },
 
-        showPublished: function () {
-            this.set('publishedSelected', true);
-            var published = this.$.user.getCollection("published");
+        showList: function (list) {
+            var collection = this.$.user.getCollection(list);
 
             var self = this;
-            published.fetch(function (err) {
+            collection.fetchPage(0, {noCache: true}, function (err) {
                 if (!err) {
-                    self.set('published', published);
+                    self.set({
+                        activeList: list,
+                        list: collection
+                    });
                 }
             });
+
         },
 
-        showDrafts: function () {
-            this.set('publishedSelected', false);
-            var drafts = this.$.user.getCollection("drafts");
-            var self = this;
-            drafts.fetch(function (err, drafts) {
-                if (!err) {
-                    self.set('drafts', drafts);
-                }
-            });
-        },
+        listSelected: function (list) {
+            return this.$.activeList == list;
+        }.onChange('activeList'),
 
         selectDraft: function (product) {
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "editor/edit/" + product.$.id
+            }));
+        },
+
+        selectProduct: function (product) {
+            this.$.executor.storeAndExecute(new Navigate({
+                fragment: "product/" + product.$.id
             }));
         },
 

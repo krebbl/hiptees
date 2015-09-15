@@ -40,6 +40,7 @@
         <module:ProductTypeModule name="product-types" handles="^productTypes.*"/>
         <module:ProductPresetModule name="presets" handles="^preset.*"/>
         <module:EditorModule name="editor" handles="^editor.*"/>
+        <module:ProductModule name="product" handles="^product.*"/>
     </view:SwipeContainer>
 
 </hip:HipteesClass>

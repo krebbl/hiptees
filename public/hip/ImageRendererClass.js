@@ -44,6 +44,10 @@ define(
                 }
             },
 
+            apiEndpoint: function () {
+                return window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/api/v1";
+            },
+
             /***
              * Starts the application
              * @param parameter
@@ -91,6 +95,7 @@ define(
 
                 this.$.executor.execute(new LoadProduct({
                     productId: productId,
+                    noCache: true,
                     loadLazy: false,
                     callback: function (err) {
                         if (!err) {

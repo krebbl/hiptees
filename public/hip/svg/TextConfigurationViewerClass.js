@@ -18,7 +18,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             this.callBase();
 
             if (this.$stage.$browser.isIOS) {
-                this.bind('svgTextEditor', 'on:blur', this._disableEditing, this);
+                this.bind('svgTextEditor', 'on:blur', function(){
+                    this._disableEditing();
+                }, this);
             }
         },
 
@@ -44,6 +46,14 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 this.set('maxWidth', this.get('_size.width'));
             }
 
+        },
+
+        handleDocumentClick: function(e){
+            if(this.$editing == true){
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            this.callBase();
         },
 
         _handleSizeChange: function (e) {
@@ -106,7 +116,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                         activeIndex: totalLength
                     });
                 }
-
+                this.$editing = false;
                 this._updateSnapPoints();
             }
         },
@@ -148,6 +158,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 });
             }
             this.$.textRenderer.set('visible', false);
+            this.$editing = true;
             this.addClass("editing");
 
             svgTextEditor.focus();
@@ -162,7 +173,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
             this.callBase();
         }
-
 
 
     });

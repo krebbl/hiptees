@@ -213,6 +213,15 @@ h1 {
     color: white;
     top: 20px;
     z-index: 2; }
+  .header .basket-btn {
+    position: absolute;
+    display: block;
+    right: 0;
+    font-size: 30px;
+    padding: 6px 15px;
+    color: white;
+    top: 20px;
+    z-index: 2; }
   .header > h2 {
     color: white;
     margin: 0;
@@ -272,7 +281,8 @@ h1 {
       margin: 0 auto;
       display: block;
       color: white;
-      text-align: center; }
+      text-align: center;
+      font-size: 0.9em; }
   .settings-header .minimize-btn {
     float: right;
     margin-right: 0; }
@@ -795,7 +805,8 @@ ul.product-list > li > a {
   overflow: hidden; }
   .list-options > li {
     width: 33.33%;
-    display: inline-block; }
+    display: inline-block;
+    border-right: 1px solid grey; }
     .list-options > li a {
       padding: 8px;
       display: block;
@@ -804,8 +815,8 @@ ul.product-list > li > a {
       .list-options > li a.active {
         background-color: grey;
         color: white; }
-    .list-options > li:first-child {
-      border-right: 1px solid grey; }
+    .list-options > li:last-child {
+      border-right: none; }
 
 .list-wrapper {
   position: absolute;
@@ -835,3 +846,59 @@ input[type=checkbox], input[type=radio] {
 input[type=checkbox]:checked, input[type=radio]:checked {
   color: #26C281;
   border-color: #26C281; }
+
+.full-product-image {
+  position: relative;
+  width: auto;
+  height: 70%;
+  background-size: auto 100%;
+  background-position: center;
+  margin: 0 -15px; }
+
+.swipe-view-product .content {
+  padding: 0 15px; }
+
+.swipe-view-product .content h2 {
+  font-size: 15px;
+  margin-top: 10px;
+  color: #2b2b2b;
+  margin-bottom: 10px; }
+
+.swipe-view-product .subtitle {
+  color: #323232;
+  margin-top: -7px;
+  font-size: 12px;
+  margin-bottom: 10px; }
+
+.swipe-view-product .select-size {
+  text-align: center;
+  padding: 0.7em;
+  border: 1px solid #26C281;
+  border-radius: 10px;
+  color: #26C281; }
+
+.swipe-view-product .share {
+  position: absolute;
+  bottom: -36px;
+  right: 15px;
+  color: white;
+  width: 30px;
+  height: 30px;
+  background-color: #3B5998;
+  border-radius: 30px;
+  text-align: center;
+  padding: 8px;
+  font-size: 22px;
+  overflow: hidden; }
+
+.swipe-view-product .options {
+  height: 42px;
+  border-bottom: 1px solid lightgray;
+  margin: 0 -15px;
+  margin-bottom: 10px; }
+
+.swipe-view-product .price {
+  padding: 10px 10px;
+  font-weight: bold;
+  display: inline-block;
+  font-size: 17px; }

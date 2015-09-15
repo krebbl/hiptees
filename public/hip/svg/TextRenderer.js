@@ -14,7 +14,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
 
         $classAttributes: ['textFlow', 'maxWidth', 'measureResult'],
 
-        events: ["on:sizeChanged"],
+        events: ["on:sizeChanged", "on:textflowRendered"],
 
         inject: {
             textFlowHandler: TextFlowHandler,

@@ -47,6 +47,14 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
             return ret;
         },
 
+        compose: function () {
+            var ret = this.callBase();
+
+            delete ret.id;
+
+            return ret;
+        },
+
         getIndexOfConfiguration: function (configuration) {
             if (this.$.configurations) {
                 return this.$.configurations.indexOf(configuration);

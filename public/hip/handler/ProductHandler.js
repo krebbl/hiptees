@@ -29,6 +29,8 @@ define([
     "flow",
     "underscore"
 ], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, PointDownConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+    var undefined;
+
     return Handler.inherit({
         defaults: {
             api: null,
@@ -86,7 +88,7 @@ define([
                     this.$.product.$.configurations.add(newConfig);
 
                     this.trigger('on:configurationCloned', {configuration: newConfig});
-                    this.trigger('on:configurationAdded', {configuration: newConfig});
+                    this.trigger('on:configurationAdded', {configuration: newConfig, cloned: true});
                     this._selectConfiguration(newConfig);
                 }
             } else if (command instanceof ChangeOrder) {
@@ -101,7 +103,10 @@ define([
                     this.$.product.$.configurations.remove(configuration);
                     this.$.product.$.configurations.add(configuration, {index: newIndex});
 
-                    this.trigger('on:configurationOrderChanged', {configuration: configuration, index: command.$.index});
+                    this.trigger('on:configurationOrderChanged', {
+                        configuration: configuration,
+                        index: command.$.index
+                    });
                 }
             } else if (command instanceof AddText) {
                 var textFlow = TextFlow.initializeFromText(command.$.text || "TEXT");
@@ -132,7 +137,7 @@ define([
                 this._loadConfiguration(configuration, false, function () {
                     self.$.product.$.configurations.add(configuration);
 
-                    self.trigger('on:configurationAdded', {configuration: configuration});
+                    self.trigger('on:configurationAdded', {configuration: configuration, cloned: false});
                     self._selectConfiguration(configuration);
                 });
 
@@ -244,13 +249,15 @@ define([
                 var product = products.createItem(command.$.productId),
                     loadLazy = command.$.lazy,
                     callback = command.$.callback || function () {
-                    };
+                        };
 
                 self._selectConfiguration(null);
 
                 flow()
                     .seq("product", function (cb) {
-                        product.fetch({}, cb);
+                        product.fetch({
+                            noCache: command.$.noCache || false
+                        }, cb);
                     })
                     .seq("productType", function (cb) {
                         this.vars.product.$.productType.fetch({}, cb);
@@ -284,7 +291,7 @@ define([
                             var p = results.product;
                             if (command.$.asPreset) {
                                 p = p.clone();
-                                p.set('id', null);
+                                p.set('id', undefined);
                             }
                             self.set('product', p);
                         }
@@ -353,11 +360,18 @@ define([
         },
 
         _selectConfiguration: function (configuration) {
+            if (this.$.selectedConfiguration instanceof TextConfiguration) {
+                if (this.$.selectedConfiguration.$.textFlow.textLength() <= 1) {
+                    this.$.product.$.configurations.remove(this.$.selectedConfiguration);
+                    this.trigger('on:configurationRemoved', {configuration: this.$.selectedConfiguration});
+                }
+            }
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});
         },
 
         _saveProduct: function (product, state, cb) {
+            this.trigger('on:productSave', {product: product});
             var newDesigns = [];
             var stateBefore = product.get('state');
 
@@ -371,7 +385,7 @@ define([
 
             // filter out duplicate designs
             newDesigns = _.uniq(newDesigns, false, function (a, b) {
-                return  a && b && a.$.file === b.$.file;
+                return a && b && a.$.file === b.$.file;
             });
 
             var self = this;
@@ -400,6 +414,7 @@ define([
                     if (!err) {
                         self.trigger('on:productSaved', {}, self);
                     } else {
+                        self.trigger('on:productSavedFailed', {err: err});
                         product.set('state', stateBefore);
                     }
 

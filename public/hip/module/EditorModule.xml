@@ -20,7 +20,7 @@
             <i class="fa fa-search-minus" visible="{zoomed}"/>
         </a>
 
-        <div class="configuration-info" selected="{configurationViewer}">
+        <div class="configuration-info" selected="{showConfigurationInfo}">
             <div>
                 <div visible="{configurationViewer._moving}">
                     X: {format(configurationViewer._realOffset.x)} mm
@@ -108,7 +108,7 @@
         <div>
             <!--<a class="close-btn" onclick="showView(null)">Close</a>-->
             <div class="product-name-wrapper">
-                <input type="text" placeholder="Geb dem Shirt einen Namen"/>
+                <input type="text" placeholder="Geb dem Shirt einen Namen" value="{{product.name}}"/>
             </div>
 
 

@@ -22,15 +22,6 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
         $domAttributes: ["contenteditable"],
 
-        _onDomAdded: function () {
-            this.callBase();
-
-            var selection = this.get('textFlow.selection');
-            if (selection) {
-                this.setCursor(selection.$.anchorIndex, selection.$.activeIndex);
-            }
-        },
-
         _handleSizeChange: function (e) {
             var rect = e.target.$el.getBoundingClientRect();
             if (this.$.maxWidth == null && rect.width > 0) {
@@ -40,9 +31,6 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 });
 
             }
-            if (this.$.textFlow.$.selection) {
-                this.setCursor(this.$.textFlow.$.selection.$.anchorIndex, this.$.textFlow.$.selection.$.activeIndex);
-            }
         },
 
         _renderMaxWidth: function () {
@@ -50,15 +38,15 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             // do nothing
         },
 
-        _commitVisible: function (visible) {
-            if (!visible && this.$.textFlow) {
+        focus: function(){
+            this.callBase();
 
-//                this.$.executor.execute(new SelectText({
-//                    textFlow: this.$.textFlow,
-//                    anchorOffset: 0,
-//                    focusOffset: 0
-//                }));
-            }
+            var self = this;
+            //setTimeout(function(){
+                if (self.$.textFlow.$.selection) {
+                    self.setCursor(self.$.textFlow.$.selection.$.anchorIndex, self.$.textFlow.$.selection.$.activeIndex);
+                }
+            //},1)
         },
 
         _onPointerUp: function () {
@@ -97,11 +85,11 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 }
             }, this);
 
-            this.bind('textFlowHandler', 'on:selectionChanged', function (e) {
-                if (e.$.textFlow === self.$.textFlow) {
-                    self.setCursor(e.$.anchorIndex, e.$.focusOffset);
-                }
-            }, this);
+            //this.bind('textFlowHandler', 'on:selectionChanged', function (e) {
+            //    if (e.$.textFlow === self.$.textFlow) {
+            //        self.setCursor(e.$.anchorIndex, e.$.focusOffset);
+            //    }
+            //}, this);
         },
 
         getAbsoluteSelection: function () {
@@ -360,6 +348,9 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 }));
             }
 
+        },
+        _handleTextFlowRendered: function(){
+            console.log("textflow rendered");
         }
     })
 });
