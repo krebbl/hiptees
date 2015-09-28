@@ -27,7 +27,8 @@ define(
                 fontSize: "{selectedConfiguration.fontSize}",
                 settingsSelected: false,
                 addViewSelected: false,
-                loaderVisible: false
+                loaderVisible: false,
+                started: false
             },
             /**
              *  initializes the application variables
@@ -54,7 +55,7 @@ define(
 
                 var handlers = ["navigationHandler", "loginHandler", "textConfigurationHandler",
                     "shapeConfigurationHandler", "imageConfigurationHandler", "applyFilterHandler",
-                    "productHandler", "configurationHandler", "textFlowHandler"];
+                    "productHandler", "configurationHandler", "textFlowHandler", "basketHandler"];
 
                 for (var i = 0; i < handlers.length; i++) {
                     var handler = handlers[i];
@@ -86,6 +87,22 @@ define(
 
                 var appStarted = false;
 
+                var self = this;
+
+                function startLogin() {
+                    if (params.access_token) {
+                        self.$.executor.storeAndExecute(new LoginCommand({
+                            type: "accessToken",
+                            accessToken: params.access_token
+                        }));
+                    } else {
+                        self.$.executor.storeAndExecute(new LoginCommand({
+                            type: "localStorage"
+                        }));
+                    }
+                };
+
+
                 this.$.loginHandler.bind("on:userLoggedIn", function () {
                     if (!appStarted) {
                         appStarted = true;
@@ -96,13 +113,13 @@ define(
                     }));
                 });
 
-                this.$.productHandler.bind('on:productSave', function () {
-                    this.toggleLoading(true);
-                }, this);
+                this.$.productHandler.bind('on:productSave', this.showLoading, this);
+                this.$.productHandler.bind('on:productSaved', this.hideLoading, this);
 
-                this.$.productHandler.bind('on:productSaved', function () {
-                    this.toggleLoading(false);
-                }, this);
+
+                this.$.productHandler.bind('on:addingImage', this.showLoading, this);
+                this.$.productHandler.bind('on:', this.hideLoading, this);
+
 
                 this.$.loginHandler.bind('on:loginFailed', function () {
                     if (!appStarted) {
@@ -128,16 +145,10 @@ define(
                     params[splitted[0]] = splitted[1] || "";
                 }
 
-                if (params.access_token) {
-                    this.$.executor.storeAndExecute(new LoginCommand({
-                        type: "accessToken",
-                        accessToken: params.access_token
-                    }));
-                } else {
-                    this.$.executor.storeAndExecute(new LoginCommand({
-                        type: "localStorage"
-                    }));
-                }
+                this.$.i18n.loadLocale(this.$.i18n.$.locale, function () {
+                    self.set('started', true);
+                    startLogin();
+                });
 
             },
 
@@ -153,6 +164,14 @@ define(
                 }
 
                 return "dev";
+            },
+
+            showLoading: function () {
+                this.toggleLoading(true);
+            },
+
+            hideLoading: function () {
+                this.toggleLoading(false);
             },
 
             goTo: function (moduleName) {

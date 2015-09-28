@@ -6,7 +6,8 @@
         xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module">
 
     <js:Injection>
-        <data:HipDataSource cid="api" endPoint="http://app.hiptees.com/api/v1"/>
+        <js:I18n cid="i18n" path="hip/locale" locale="de"/>
+        <data:HipDataSource cid="api" gateway="api/v1"/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
         <util:ImageFileReader/>
         <svg:TextMeasurer/>
@@ -21,26 +22,35 @@
         <handler:ProductHandler cid="productHandler" product="{product}"/>
         <handler:ConfigurationHandler cid="configurationHandler"/>
         <handler:TextFlowHandler cid="textFlowHandler"/>
+        <handler:BasketHandler cid="basketHandler"/>
         <svg:TextEditor class="needsclick"/>
         <view:ImageFilterRenderer/>
+        <js:NotificationManager>
+            <js:Template name="default">
+                <div class="callout callout-{type}">
+                    <p>{message}</p>
+                </div>
+            </js:Template>
+        </js:NotificationManager>
     </js:Injection>
 
     <js:Router cid="router">
         <conf:RouteConfiguration route="^$" onexec="defaultRoute"/>
     </js:Router>
 
-    <div class="loading-overlay" visible="{loaderVisible}">
+    <div class="loading-overlay" visible="false">
         <svg:Loader width="50%"/>
     </div>
 
     <view:SwipeContainer cid="swipeView" class="container" ongoTo="toggleLoading(true)"
-                         ongoToFinished="toggleLoading(false)">
+                         ongoToFinished="toggleLoading(false)" visible="{started}">
         <module:LoginModule name="login" handles="^login.*"/>
         <module:ProfileModule name="profile" handles="^profile.*"/>
         <module:ProductTypeModule name="product-types" handles="^productTypes.*"/>
         <module:ProductPresetModule name="presets" handles="^preset.*"/>
-        <module:EditorModule name="editor" handles="^editor.*"/>
         <module:ProductModule name="product" handles="^product.*"/>
+        <module:EditorModule name="editor" handles="^editor.*"/>
+        <module:BasketModule name="basket" handles="^basket.*"/>
     </view:SwipeContainer>
 
 </hip:HipteesClass>

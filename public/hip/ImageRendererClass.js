@@ -92,17 +92,19 @@ define(
 
                 var $document = this.$stage.$document;
                 $document.title = "";
+                var self = this;
 
                 this.$.executor.execute(new LoadProduct({
                     productId: productId,
                     noCache: true,
+                    lazyLoadConfigurations: false,
                     loadLazy: false,
-                    callback: function (err) {
-                        if (!err) {
-                        }
+                    callback: function () {
+                        console.log(self.get('productHandler.product.configurations').size());
+
                         setTimeout(function () {
                             console.log("rendered " + productId);
-                        }, 50);
+                        }, 5 * self.get('productHandler.product.configurations').size());
                     }
                 }));
                 routeContext.callback();

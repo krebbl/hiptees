@@ -10,7 +10,8 @@
   -webkit-user-drag: none;
   -moz-user-drag: none;
   -ms-user-drag: none;
-  user-drag: none; }
+  user-drag: none;
+  -webkit-tap-highlight-color: transparent; }
 
 input, *[contenteditable="true"], text, tspan {
   -webkit-user-select: auto !important;
@@ -37,7 +38,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   background: #d9dbda;
-  font-size: 14px; }
+  font-size: 13px; }
 
 a {
   text-decoration: none; }
@@ -45,6 +46,40 @@ a {
 h1 {
   font-family: 'BrandFont';
   margin: 0; }
+
+select {
+  -webkit-appearance: none;
+  text-align: center;
+  padding: 0.7em;
+  border: 1px solid grey;
+  border-radius: 10px;
+  font-size: 13px; }
+
+.back-to-top-wrapper {
+  position: absolute;
+  top: 87px;
+  z-index: 1000;
+  text-align: center;
+  width: 100%;
+  pointer-events: none; }
+  .back-to-top-wrapper > a {
+    margin: 0 auto;
+    width: auto;
+    text-align: center;
+    color: white;
+    background-color: #26C281;
+    border-radius: 17px;
+    padding: 5px 10px;
+    opacity: 0;
+    font-size: 12px;
+    pointer-events: all;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -ms-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    transition: opacity 0.5s; }
+  .back-to-top-wrapper.active > a {
+    opacity: 0.8; }
 
 .loading-overlay {
   background: rgba(0, 0, 0, 0.5);
@@ -67,6 +102,8 @@ h1 {
   max-width: 1000px;
   width: 100%;
   transform: translateZ(0); }
+  .product-viewer image {
+    background-color: transparent; }
 
 .print-area-viewer {
   pointer-events: none; }
@@ -74,7 +111,7 @@ h1 {
 .swipe-container {
   width: 100%;
   overflow: hidden;
-  max-width: 1000px;
+  max-width: 700px;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -83,6 +120,7 @@ h1 {
     transition: none;
     -webkit-transition: none; }
   .swipe-container .swipe-view {
+    background: white;
     position: absolute;
     top: 0;
     left: 0;
@@ -94,17 +132,21 @@ h1 {
     -webkit-box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
     -moz-box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
     box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
-    -webkit-transition: -webkit-transform 0.5s;
-    -moz-transition: -moz-transform 0.5s;
-    -ms-transition: -ms-transform 0.5s;
-    -o-transition: -o-transform 0.5s;
-    transition: transform 0.5s; }
+    -webkit-transition: -webkit-transform 0.3s;
+    -moz-transition: -moz-transform 0.3s;
+    -ms-transition: -ms-transform 0.3s;
+    -o-transition: -o-transform 0.3s;
+    transition: transform 0.3s; }
+    .swipe-container .swipe-view.loading {
+      background: white url(../img/loader.gif) no-repeat center 150px;
+      background-size: 50px; }
+      .swipe-container .swipe-view.loading > .content > * {
+        visibility: hidden; }
     .swipe-container .swipe-view h1 {
       margin-top: 5px; }
     .swipe-container .swipe-view > .content {
-      background-color: white;
       position: absolute;
-      top: 70px;
+      top: 66px;
       bottom: 0;
       right: 0;
       left: 0;
@@ -112,15 +154,19 @@ h1 {
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch; }
     .swipe-container .swipe-view.with-footer > .content {
-      bottom: 44px; }
+      bottom: 40px; }
   .swipe-container .previous-module {
     z-index: 0;
     -webkit-transform: translate3d(-20px, 0, 0); }
+    .swipe-container .previous-module.loading {
+      background: white; }
   .swipe-container .next-module {
     -webkit-transform: translate3d(100%, 0, 0);
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
+    .swipe-container .next-module.loading {
+      background: white; }
   .swipe-container .swipe-view-editor > .content {
     overflow: hidden !important; }
   .swipe-container .swipe-view-login {
@@ -196,7 +242,7 @@ h1 {
 
 .header {
   text-align: center;
-  height: 70px;
+  height: 66px;
   padding-top: 20px;
   position: absolute;
   z-index: 15;
@@ -595,15 +641,31 @@ ul {
   display: inline-block;
   height: 30px; }
 
+.lazy-image.loading {
+  background: green; }
+
+.lazy-image > img {
+  width: 100%; }
+
 ul.product-list > li > a {
   height: 200px;
   display: block;
   overflow: hidden;
   border-bottom: 1px solid lightgray;
-  background: lightgray; }
+  background: lightgray;
+  position: relative; }
   ul.product-list > li > a img {
-    width: 100%;
     margin-top: -40px; }
+  ul.product-list > li > a > .lazy-image {
+    height: 100%; }
+
+ul.product-list .draft-tag {
+  position: absolute;
+  right: 0;
+  bottom: 30px;
+  padding: 7px 15px;
+  color: white;
+  background-color: rgba(38, 194, 129, 0.83); }
 
 .filter-presets {
   bottom: 0;
@@ -771,8 +833,8 @@ ul.product-list > li > a {
 
 .user-image {
   position: absolute;
-  left: 20px;
-  top: 20px;
+  left: 10px;
+  top: 10px;
   width: 60px;
   height: 60px;
   background-color: #26C281;
@@ -784,25 +846,26 @@ ul.product-list > li > a {
 
 .user-name {
   position: absolute;
-  left: 100px;
-  top: 30px;
-  font-size: 14px; }
+  left: 85px;
+  top: 15px;
+  font-size: 14px;
+  font-weight: bold; }
 
 .user-stats {
   position: absolute;
-  top: 54px;
-  left: 100px; }
+  top: 45px;
+  left: 85px; }
 
 .list-options {
   display: block;
   position: absolute;
   font-size: 12px;
-  left: 20px;
-  right: 20px;
-  top: 100px;
-  border: 1px solid grey;
-  border-radius: 8px;
-  overflow: hidden; }
+  left: 0;
+  right: 0;
+  top: 85px;
+  border-bottom: 1px solid grey;
+  overflow: hidden;
+  border-top: 1px solid grey; }
   .list-options > li {
     width: 33.33%;
     display: inline-block;
@@ -820,11 +883,13 @@ ul.product-list > li > a {
 
 .list-wrapper {
   position: absolute;
-  top: 145px;
+  top: 117px;
   bottom: 0;
   width: 100%;
-  background: lightgray;
-  border-top: 1px solid lightgray; }
+  background: lightgray; }
+  .list-wrapper.loading {
+    background: white url(../img/loader.gif) no-repeat center 20px;
+    background-size: 50px; }
 
 .logout {
   position: absolute;
@@ -841,7 +906,9 @@ input[type=checkbox], input[type=radio] {
   display: inline-block;
   border-radius: 18px;
   padding: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.39); }
+  border: 1px solid rgba(255, 255, 255, 0.39);
+  width: auto;
+  height: auto; }
 
 input[type=checkbox]:checked, input[type=radio]:checked {
   color: #26C281;
@@ -850,8 +917,8 @@ input[type=checkbox]:checked, input[type=radio]:checked {
 .full-product-image {
   position: relative;
   width: auto;
-  height: 70%;
-  background-size: auto 100%;
+  height: 58%;
+  background-size: auto 120%;
   background-position: center;
   margin: 0 -15px; }
 
@@ -867,38 +934,76 @@ input[type=checkbox]:checked, input[type=radio]:checked {
 .swipe-view-product .subtitle {
   color: #323232;
   margin-top: -7px;
-  font-size: 12px;
-  margin-bottom: 10px; }
+  font-size: 12px; }
 
-.swipe-view-product .select-size {
+.swipe-view-product .btn {
   text-align: center;
   padding: 0.7em;
   border: 1px solid #26C281;
   border-radius: 10px;
-  color: #26C281; }
-
-.swipe-view-product .share {
-  position: absolute;
-  bottom: -36px;
-  right: 15px;
+  background-color: #26C281;
   color: white;
-  width: 30px;
-  height: 30px;
-  background-color: #3B5998;
-  border-radius: 30px;
-  text-align: center;
-  padding: 8px;
-  font-size: 22px;
-  overflow: hidden; }
+  display: block; }
+
+.swipe-view-product select {
+  width: 48%;
+  margin-right: 2%; }
+
+.swipe-view-product .btn-size-table {
+  display: inline-block;
+  width: 48%;
+  margin-left: 2%;
+  background: white;
+  border-color: #B5B5B5;
+  color: #000000; }
+
+.swipe-view-product .btn-add-to-basket {
+  font-weight: bold;
+  margin-bottom: 20px; }
+
+.swipe-view-product .btn-remix {
+  background: orange;
+  border-color: #ffb733;
+  margin-bottom: 20px; }
+
+.swipe-view-product .share-options {
+  position: absolute;
+  bottom: 8px;
+  right: 15px; }
+  .swipe-view-product .share-options > a {
+    vertical-align: bottom;
+    color: white;
+    width: 26px;
+    height: 26px;
+    margin-left: 10px;
+    border-radius: 30px;
+    text-align: center;
+    overflow: hidden;
+    padding: 7px; }
+    .swipe-view-product .share-options > a.fa-facebook {
+      background-color: #3B5998;
+      font-size: 20px; }
+    .swipe-view-product .share-options > a.fa-twitter {
+      background-color: #4099FF;
+      font-size: 14px; }
+    .swipe-view-product .share-options > a.fa-instagram {
+      background-color: #AD6848; }
+    .swipe-view-product .share-options > a.fa-chain {
+      background-color: #000000; }
 
 .swipe-view-product .options {
+  position: relative;
   height: 42px;
   border-bottom: 1px solid lightgray;
   margin: 0 -15px;
   margin-bottom: 10px; }
 
+.swipe-view-product .size-options {
+  margin-bottom: 10px; }
+
 .swipe-view-product .price {
-  padding: 10px 10px;
+  color: #424242;
+  padding: 10px 14px;
   font-weight: bold;
   display: inline-block;
   font-size: 17px; }

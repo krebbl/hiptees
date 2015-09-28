@@ -49,6 +49,10 @@ define(['js/svg/SvgElement', 'js/core/List',
                 self.set('showActiveViewer', !!viewer);
             });
 
+            this.bind('productHandler', 'on:productLoaded', function (e) {
+                self._renderProduct(e.$.product);
+            });
+
             this.bind('productHandler', 'on:configurationOrderChanged', function (e) {
                 var viewer = self.getViewerForConfiguration(e.$.configuration);
                 self.$.configurations.setChildIndex(viewer, e.$.index);
@@ -85,7 +89,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             if (product) {
                 var self = this;
                 while (this.$.configurations.$children.length) {
-                    this.$.configurations.removeChild(this.$.configurations.$children[0]);
+                    this._removeConfiguration(this.$.configurations.$children[0].$.configuration);
                 }
 
                 product.$.configurations.each(function (configuration) {

@@ -4,10 +4,10 @@
     <js:Content name="headerInfo">
         <div class="image-setting-options">
             <a onclick="scrollTo(presetContainer)" selected="{presetsInView}">
-                presets
+                ${i18n.t('imageSettings.presets')}
             </a>
             <a onclick="scrollTo(manualContainer)" selected="{not(presetsInView)}">
-                manual
+                ${i18n.t('imageSettings.manual')}
             </a>
         </div>
     </js:Content>
@@ -29,7 +29,7 @@
 
         <div cid="manualContainer" class="filter-manual">
             <div class="slider-label">
-                Brightness <strong>{configuration.filter.brightness}</strong>
+                ${i18n.t('imageSettings.brightness')} <strong>{configuration.filter.brightness}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('brightness', value)"
@@ -37,21 +37,21 @@
                            value="{configuration.filter.brightness}"/>
             </div>
             <div class="slider-label">
-                Saturation <strong>{configuration.filter.saturation}</strong>
+                ${i18n.t('imageSettings.saturation')} <strong>{configuration.filter.saturation}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('saturation', value)"
                            value="{configuration.filter.saturation}"/>
             </div>
             <div class="slider-label">
-                Contrast <strong>{configuration.filter.contrast}</strong>
+                ${i18n.t('imageSettings.contrast')} <strong>{configuration.filter.contrast}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('contrast', value)"
                            value="{configuration.filter.contrast}"/>
             </div>
             <div class="slider-label">
-                Color tint <strong>{configuration.filter.tint}</strong>
+                ${i18n.t('imageSettings.tint')} <strong>{configuration.filter.tint}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('tint', value)"
@@ -59,14 +59,14 @@
             </div>
 
             <div class="slider-label">
-                Vignette <strong>{configuration.filter.vignette}</strong>
+                ${i18n.t('imageSettings.vignette')} <strong>{configuration.filter.vignette}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="0" max="100" step="1" onhandleUp="_updateFilter('vignette', value)"
                            value="{configuration.filter.vignette}"/>
             </div>
             <div class="slider-label">
-                Blur <strong>{configuration.filter.blur}</strong>
+                ${i18n.t('imageSettings.blur')} <strong>{configuration.filter.blur}</strong>
             </div>
             <div class="slider-wrapper">
                 <ui:Slider min="-100" max="100" step="1" onhandleUp="_updateFilter('blur', value)"
@@ -75,31 +75,5 @@
 
         </div>
     </js:Content>
-
-
-    <!--<ui:TabView>-->
-    <!--<ui:Tab title="Format">-->
-    <!--<div class="font-family">-->
-
-    <!--</div>-->
-    <!--<div class="font-size">-->
-    <!--<a class="decrease-button button" >-</a>-->
-    <!--<span>{format(configuration.fontSize)}</span>-->
-    <!--<a class="increase-button button" >+</a>-->
-    <!--</div>-->
-    <!--<div class="line-height">-->
-    <!--<a class="decrease-button button" onclick="_decreaseLineHeight(-0.1)">-</a>-->
-    <!--<span>{format(configuration.lineHeight)}</span>-->
-    <!--<a class="increase-button button" onclick="_increaseLineHeight(0.1)">+</a>-->
-    <!--</div>-->
-    <!--</ui:Tab>-->
-    <!--<ui:Tab title="Color">-->
-    <!--<div>-->
-
-    <!--</div>-->
-    <!--</ui:Tab>-->
-    <!--</ui:TabView>-->
-
-    <!--<a class="delete-button button" onclick="_deleteConfiguration">Delete</a>-->
 
 </view:ImageSettingsViewClass>

@@ -4,7 +4,7 @@
     <div class="settings-header" selected="{not(subContentSelected)}">
         <a class="back-btn" onclick="_selectSubContent(null)">
             <i class="fa fa-angle-left"/>
-            Back
+            ${i18n.t('general.back')}
         </a>
         <div class="default-options">
 
@@ -27,7 +27,6 @@
         <ui:ContentPlaceHolder name="headerInfo" cid="headerInfo" class="header-info"/>
 
         <a class="minimize-btn" onclick="toggle()">
-            Close
             <i class="fa fa-chevron-down"/>
         </a>
 

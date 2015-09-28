@@ -6,7 +6,7 @@
             <li>
                 <a onclick="_selectSubContent(fontFamilyContent)">
                     <span class="label">
-                        Font Family
+                        ${i18n.t('textSettings.fontFamily')}
                     </span>
                     <span class="value">
                         <img src="./font/{_getFontImageSrc(paragraphStyle.fontFamily)}"/>
@@ -16,7 +16,7 @@
             <li>
                 <a onclick="_selectSubContent(fontSizeContent)">
                     <span class="label">
-                        Font Size &amp; Settings
+                        ${i18n.t('textSettings.fontSizeAndSettings')}
                     </span>
                     <span class="value">
                         {paragraphStyle.fontSize} pt
@@ -26,7 +26,7 @@
             <li>
                 <a onclick="_selectSubContent(colorContent)">
                     <span class="label">
-                        Color
+                        ${i18n.t('settings.color')}
                     </span>
                     <span class="value">
                         <span class="meta">{leafColor}</span>
@@ -55,12 +55,12 @@
                 <a class="btn-bold" enabled="{selectedFontFamily.bold}"
                    onclick="_selectFont(selectedFontFamily, 'bold', selected)"
                    selected="{isBold(paragraphStyle.fontFamily)}">
-                    bold
+                    ${i18n.t('textSettings.bold')}
                 </a>
                 <a class="btn-italic" enabled="{selectedFontFamily.italic}"
                    onclick="_selectFont(selectedFontFamily, 'italic', selected)"
                    selected="{isItalic(paragraphStyle.fontFamily)}">
-                    italic
+                    ${i18n.t('textSettings.italic')}
                 </a>
             </div>
         </js:Content>
@@ -78,7 +78,7 @@
     </js:Content>
     <js:Content cid="fontSizeContent">
         <div class="slider-label">
-            Font Size
+            ${i18n.t('textSettings.fontSize')}
             <strong>{paragraphStyle.fontSize} Pt</strong>
         </div>
         <div class="slider-wrapper">
@@ -86,7 +86,7 @@
                        value="{paragraphStyle.fontSize}"/>
         </div>
         <div class="slider-label">
-            Line Height Size
+            ${i18n.t('textSettings.lineHeight')}
             <strong>{format(paragraphStyle.lineHeight)}</strong>
         </div>
         <div class="slider-wrapper">
@@ -94,7 +94,7 @@
                        value="{paragraphStyle.lineHeight}"/>
         </div>
         <div class="slider-label">
-            Letter spacing
+            ${i18n.t('textSettings.letterSpacing')}
             <strong>{format(paragraphStyle.letterSpacing)}</strong>
         </div>
         <div class="slider-wrapper">

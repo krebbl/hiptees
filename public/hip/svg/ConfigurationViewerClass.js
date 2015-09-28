@@ -146,7 +146,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.dom(this.$stage.$document).bindDomEvent("click", this.$clickDelegate, true);
             this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
 
-            this.trigger('on:configurationPointerDown', null, this);
+            this.trigger('on:configurationPointerDown', {configuration: this.$.configuration}, this);
         },
 
         multiplyVectors: function (a, b) {
@@ -317,11 +317,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$preventClick = !this.$.selected;
 
             if (this.$moved || this.$resized) {
-                // only unbind if target wasnt the configuration itself
-//                if (event.target == this.$._boundingBox.$el) {
-//                    this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
-//                }
-
                 this.$.executor.storeAndExecute(new MoveConfiguration({
                     configuration: this.$.configuration,
                     offset: this.$._offset,
@@ -336,12 +331,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$originalSize = null;
             this.$originalOffset = null;
             this.$startLength = null;
-            this.trigger('on:configurationPointerUp', null, this);
+            this.trigger('on:configurationPointerUp', {configuration: this.$.configuration}, this);
 
             var self = this;
-            setTimeout(function(){
+            setTimeout(function () {
                 self.$moved = self.$resized = false;
-            },10);
+            }, 10);
         },
 
         cornerHandleVisible: function () {

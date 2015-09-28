@@ -1,0 +1,8 @@
+<parent:BackToTopClass xmlns="http://www.w3.org/1999/xhtml"
+                       xmlns:parent="hip.view">
+
+    <a onclick="goBackToTop">
+        <i class="fa fa-arrow-up"/> {text}
+    </a>
+
+</parent:BackToTopClass>

@@ -1,18 +1,28 @@
-define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/command/Navigate"], function (BaseModule, Collection, Product, Navigate) {
+define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/command/AddToBasket"], function (BaseModule, Collection, Product, Navigate, AddToBasket) {
     return BaseModule.inherit({
         defaults: {
             handles: "",
-            product: null
+            product: null,
+            selectedSize: null,
+            sizes: [{
+                "id": "1",
+                "name": "S"
+            }, {
+                "id": "2",
+                "name": "M"
+            }]
         },
 
         productName: function () {
-            return this.get('product.name') || "White T-Shirt - Published" ;
+            return this.get('product.name') || "White T-Shirt - Published";
         }.onChange('product'),
 
         prepare: function (fragment, callback) {
             var api = this.$.api;
 
             var match = fragment.match(/product\/(\w+)/);
+
+            this.set('selectedSize', null);
 
             if (match) {
                 var product = api.createCollection(Collection.of(Product)).createItem(match[1]);
@@ -33,6 +43,16 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "editor/preset/" + this.$.product.$.id
             }));
+        },
+        addToBasket: function () {
+            this.$.executor.storeAndExecute(new AddToBasket({
+                size: this.$.selectedSize,
+                product: this.$.product,
+                quantity: 1
+            }));
+        },
+        sizeString: function (size) {
+            return "Größe: " + size;
         }
 
     })

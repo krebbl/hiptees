@@ -1,0 +1,55 @@
+<parent:BasketModuleClass xmlns="http://www.w3.org/1999/xhtml"
+                                 xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui"
+                                 xmlns:view="hip.view">
+
+    <div class="header">
+        <a onclick="goBack" class="back-btn">
+            <i class="fa fa-angle-left"/>
+        </a>
+        <h2>${i18n.t('basket.basket')}</h2>
+    </div>
+
+    <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>
+
+    <div class="content" cid="content">
+        <div class="basket-item">
+            <div class="basket-item__image">
+
+            </div>
+            <div class="basket-item__options">
+                <div class="basket-item__price">
+                     19,99 €
+                </div>
+                <div class="basket-item__description">
+                    BLABLK
+                </div>
+                <div class="basket-item__size">
+
+                </div>
+                <div class="basket-item__quantity">
+
+                </div>
+                <a class="basket-item__delete-btn">d</a>
+            </div>
+        </div>
+        <div class="basket__total">
+            <div class="basket__total-price">
+                19,99 €
+            </div>
+        </div>
+        <div>
+            <button>JETZT BEZAHLEN</button>
+        </div>
+        <!--<ui:ItemsView items="{products}" tagName="ul" class="product-list">-->
+            <!--<js:Template name="item">-->
+                <!--<li>-->
+                    <!--<a onclick="selectProductPreset(item, event)">-->
+                        <!--<view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>-->
+                    <!--</a>-->
+                <!--</li>-->
+            <!--</js:Template>-->
+        <!--</ui:ItemsView>-->
+    </div>
+
+
+</parent:BasketModuleClass>

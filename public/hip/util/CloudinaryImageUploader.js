@@ -1,4 +1,4 @@
-define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore"], function (Component, rAppid, flow, SHA1, _) {
+define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore", "xaml!hip/data/HipDataSource", "hip/model/CloudinaryFormData"], function (Component, rAppid, flow, SHA1, _, HipDataSource, CloudinaryFormData) {
 
     return Component.inherit({
 
@@ -6,8 +6,12 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore"], f
             formDataUrl: "/api/v1/cloudinaryFormData",
             baseUrl: "https://api.cloudinary.com/v1_1/",
             cloudName: "drbxi29nk",
-            name: "cloudinary"
+            name: "cloudinary",
+            sessionToken: null
+        },
 
+        inject: {
+            api: HipDataSource
         },
 
         uploadFile: function (id, file, options, callback) {
@@ -24,7 +28,7 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore"], f
                     self._requestFormData(options, cb);
                 })
                 .seq('uploadedImage', function (cb) {
-                    _.extend(options, this.vars.signatureOptions);
+                    _.extend(options, this.vars.signatureOptions.$);
                     self._uploadFile(id, file, options, cb);
                 })
                 .exec(function (err) {
@@ -34,17 +38,12 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore"], f
 
         _requestFormData: function (options, callback) {
             options = options || {};
-            this.makeAjaxCall(this.$.formDataUrl, {
-                type: "POST",
-                contentType: 'application/json',
-                data: JSON.stringify(options)
+            var formData = this.$.api.createEntity(CloudinaryFormData);
 
-            }, function (err, xhr) {
-                if (xhr.status === 201) {
-                    var ret = JSON.parse(xhr.responses.text);
-                }
-                callback && callback(xhr.status === 201 ? null : xhr, ret);
-            })
+            formData.set(options);
+            formData.save(null, function(err, result){
+                callback && callback(err, result);
+            });
         },
 
         _uploadFile: function (id, file, options, callback) {

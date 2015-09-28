@@ -73,34 +73,43 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
             }
 
             if (newView) {
+                var currentIndex = this.$swipeChildren.indexOf(this.$.currentView),
+                    newIndex = i,
+                    isNext = currentIndex < newIndex;
+
                 this.trigger('on:goTo', {}, this);
                 var self = this;
-                this.addClass("loading");
-                if(!this.$.currentView) {
+                if (!this.$.currentView) {
                     this.addClass('no-transition');
                 } else {
                     this.removeClass('no-transition');
                 }
                 flow()
                     .seq(function (cb) {
-                        newView.prepare(fragment, cb)
+                        newView.set({
+                            'loading': true,
+                            'status': 'current'
+                        });
+
+                        self.$viewStack = self.$viewStack || [];
+                        var currentView = self.$.currentView;
+
+                        if (currentView && currentView !== newView) {
+                            currentView.set('status', isNext ? 'prev' : 'next');
+                            self.$viewStack.push(currentView);
+                        }
+
+                        self.set('currentView', newView);
+                        setTimeout(function () {
+                            newView.prepare(fragment, cb)
+                        }, 300);
                     })
                     .exec(function (err) {
                         if (!err) {
-                            newView.set('status', 'current');
 
-                            self.$viewStack = self.$viewStack || [];
-                            var currentView = self.$.currentView;
-
-                            if (currentView && currentView !== newView) {
-                                currentView.set('status', 'prev');
-                                self.$viewStack.push(currentView);
-                            }
-
-                            self.set('currentView', newView);
                         }
-
-                        self.removeClass('loading');
+                        newView.set('loading', false);
+                        //self.removeClass('loading');
 
                         self.trigger('on:goToFinished', {}, self);
                     });

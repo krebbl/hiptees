@@ -6,7 +6,7 @@
         <a onclick="goBack" class="back-btn">
             <i class="fa fa-angle-left"/>
         </a>
-        <h2>Style your own</h2>
+        <h2>${i18n.t('editor.edit')}</h2>
     </div>
 
 
@@ -46,7 +46,7 @@
 
         <div class="configuration-info text-configuration-info" selected="{showTextHint}">
             <div>
-                Tap text twice to edit
+                ${i18n.t('editor.tapTwiceToEdit')}
             </div>
         </div>
 
@@ -55,16 +55,16 @@
     <div class="footer">
         <a onclick="showSettings" enabled="{selectedConfiguration}">
             <i class="fa fa-pencil"/>
-            Edit
+            ${i18n.t('editor.edit')}
         </a>
         <a onclick="showView(addView)">
             <i class="fa fa-plus"/>
-            Add
+            ${i18n.t('editor.add')}
         </a>
 
         <a onclick="showView(finishView)">
             <i class="fa fa-check"/>
-            Save
+            ${i18n.t('editor.save')}
         </a>
 
     </div>
@@ -82,24 +82,24 @@
         <div>
             <a onclick="add('text',event)">
                 <i class="fa fa-font"/>
-                Add Text
+                ${i18n.t('editor.addText')}
             </a>
             <a onclick="add('image')" class="needsclick">
                 <i class="fa fa-picture-o"/>
-                Add Image
+                ${i18n.t('editor.addImage')}
             </a>
             <a onclick="add('rectangle')">
                 <i class="fa fa-stop"/>
-                Add Rectangle
+                ${i18n.t('editor.addRectangle')}
             </a>
             <a onclick="add('circle')">
                 <i class="fa fa-circle"/>
-                Add Circle
+                ${i18n.t('editor.addCircle')}
             </a>
         </div>
 
         <a class="close-btn" onclick="showView(null)">
-            Close
+            ${i18n.t('general.close')}
             <i class="fa fa-chevron-down"/>
         </a>
     </div>
@@ -108,26 +108,26 @@
         <div>
             <!--<a class="close-btn" onclick="showView(null)">Close</a>-->
             <div class="product-name-wrapper">
-                <input type="text" placeholder="Geb dem Shirt einen Namen" value="{{product.name}}"/>
+                <input type="text" placeholder="${i18n.t('editor.giveItAName')}" value="{{product.name}}"/>
             </div>
 
 
             <div class="publish-wrapper">
                 <div class="checkbox-control">
                     <label>
-                        T-Shirt veröffentlichen
+                        <span>${i18n.t('editor.publishShirt')}</span>
                         <input type="checkbox" checked="{{makePublic}}" class="fa fa-check"/>
                         <span class="hint">
-                            So können es auch andere Leute kaufen
+                            ${i18n.t('editor.publishShirtHint')}
                         </span>
                     </label>
                 </div>
                 <a class="btn btn-success" onclick="saveProductFinal()">
-                    Final speichern
+                    ${i18n.t('editor.saveFinal')}
                 </a>
             </div>
             <a class="btn btn-secondary" onclick="saveProduct()">
-                Als Entwurf speichern
+                ${i18n.t('editor.saveAsDraft')}
             </a>
         </div>
     </div>

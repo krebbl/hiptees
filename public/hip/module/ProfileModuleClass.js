@@ -1,4 +1,12 @@
 define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/model/User", "hip/command/ChangeProductType", "hip/command/Navigate", "hip/handler/ProductHandler", "hip/command/LogoutCommand"], function (BaseModule, Collection, Product, User, ChangeProductType, Navigate, ProductHandler, LogoutCommand) {
+
+
+    var stateCountMap = {
+        "draft": "countDrafts",
+        "private": "countPrivates",
+        "public": "countPublished"
+    };
+
     return BaseModule.inherit({
         defaults: {
             handles: "",
@@ -8,7 +16,9 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             drafts: null,
             user: null,
             publishedSelected: false,
-            list: null
+            list: null,
+            backToTop: false,
+            listLoading: false
         },
 
         inject: {
@@ -18,9 +28,25 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         ctor: function () {
             this.callBase();
 
-            this.bind('productHandler', 'on:productSaved', function () {
+            this.bind('productHandler', 'on:productSaved', function (e) {
+                var product = e.$.product,
+                    stateBefore = e.$.stateBefore;
+
+                if (stateBefore && stateBefore !== product.$.state) {
+                    var decreaseProperty = stateCountMap[stateBefore];
+                    this.$.user.set(decreaseProperty, Math.max(0, this.$.user.get(decreaseProperty) - 1));
+                }
+
+                var increaseProperty = stateCountMap[product.$.state];
+                this.$.user.set(increaseProperty, this.$.user.get(increaseProperty) + 1);
+
                 if (this.$.list) {
-                    this.$.list.invalidatePageCache();
+                    var lists = ["drafts", "published", "private"];
+                    for (var i = 0; i < lists.length; i++) {
+                        var list = lists[i];
+                        var collection = this.$.user.getCollection(list);
+                        collection.invalidatePageCache();
+                    }
                     this.showList(this.$.activeList);
                 }
             }, this);
@@ -37,23 +63,33 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                 callback && callback(err);
             });
 
-            this.showList("published");
+            if (!this.$.activeList) {
+                this.showList("published");
+            }
         },
 
         showList: function (list) {
             var collection = this.$.user.getCollection(list);
 
             var self = this;
+            this.set({
+                'activeList': list,
+                listLoading: true
+            });
             collection.fetchPage(0, {noCache: true}, function (err) {
                 if (!err) {
                     self.set({
-                        activeList: list,
+                        listLoading: false,
                         list: collection
                     });
                 }
             });
 
         },
+
+        listLoadingClass: function () {
+            return this.$.listLoading ? "loading" : ""
+        }.onChange('listLoading'),
 
         listSelected: function (list) {
             return this.$.activeList == list;

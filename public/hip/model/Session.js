@@ -4,7 +4,11 @@ define(["js/data/Model"], function (Model) {
             auth: null
         },
         schema: {
-            auth: Object
+            auth: Object,
+            email: {
+                type: String,
+                required: false
+            }
         }
     })
 });

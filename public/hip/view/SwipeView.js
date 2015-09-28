@@ -4,13 +4,15 @@ define(["js/ui/View"], function (View) {
             handles: null,
             name: null,
             container: null,
+            loading: true,
             status: "next",
             moduleClass: "",
-            componentClass: "swipe-view swipe-view-{name} {statusClass(status)}"
+            componentClass: "swipe-view swipe-view-{name} {statusClass()} {loadingClass()}"
         },
         $classAttributes: ["name", "container", "status"],
 
-        statusClass: function (status) {
+        statusClass: function () {
+            var status = this.$.status;
             if (status == "current") {
                 return "";
             } else if (status == "next") {
@@ -18,7 +20,11 @@ define(["js/ui/View"], function (View) {
             } else if (status == "prev") {
                 return "previous-module";
             }
-        },
+        }.onChange("status"),
+
+        loadingClass: function () {
+            return this.$.loading ? "loading" : "";
+        }.onChange("loading"),
 
         handlesFragment: function (fragment) {
             if (this.$.handles) {

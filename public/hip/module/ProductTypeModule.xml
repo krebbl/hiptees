@@ -10,7 +10,7 @@
         <a onclick="goBack" class="back-btn">
             <i class="fa fa-angle-left"/>
         </a>
-        <h2>Choose your type</h2>
+        <h2>${i18n.t('productType.chooseATee')}</h2>
     </div>
 
     <div class="content">

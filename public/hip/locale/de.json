@@ -1,0 +1,67 @@
+{
+  "general": {
+    "backToTop": "Nach oben",
+    "close": "Schließen",
+    "back": "Zurück"
+  },
+  "profile": {
+    "yourProfile": "Dein Profil",
+    "published": "Veröffentlicht",
+    "private": "Privat",
+    "drafts": "Entwürfe",
+    "draft": "Entwurf",
+    "create": "Neues Shirt entwerfen"
+  },
+  "product": {
+    "buyAndShare": "Kaufen und Teilen",
+    "createBy": "Erstellt von ",
+    "addToBasket": "In den Warenkorb legen",
+    "remix": "Shirt als Vorlage verwenden",
+    "sizeTable": "Größentabelle",
+    "chooseSize": "Größe wählen"
+  },
+  "productType": {
+    "chooseATee": "Wähle ein Shirt"
+  },
+  "presets": {
+    "chooseAPreset": "Wähle eine Vorlage"
+  },
+  "editor": {
+    "edit": "Bearbeiten",
+    "tapTwiceToEdit": "Zum Text bearbeiten, noch mal anklicken",
+    "add": "Hinzufügen",
+    "save": "Speichern",
+    "addText": "Text",
+    "addImage": "Bild",
+    "addRectangle": "Rechteck",
+    "addCircle": "Kreis",
+    "publishShirt": "Shirt veröffentlichen",
+    "publishShirtHint": "So können es auch andere kaufen",
+    "saveFinal": "Final speichern",
+    "saveAsDraft": "Als Entwurf speichern",
+    "giveItAName": "Geb dem Shirt einen Namen"
+  },
+  "settings": {
+    "color": "Farbe",
+    "fillColor": "Füllfarbe",
+    "strokeColor": "Linienfarbe",
+    "strokeWidth": "Linienbreite"
+  },
+  "textSettings": {
+    "fontFamily": "Schriftart",
+    "fontSizeAndSettings": "Schriftgröße und Einstellungen",
+    "fontSize": "Schriftgröße",
+    "lineHeight": "Zeilenabstand",
+    "letterSpacing": "Zeichenabstand"
+  },
+  "imageSettings": {
+    "presets": "Vorlagen",
+    "manual": "Manuell",
+    "brightness": "Helligkeit",
+    "saturation": "Sättigung",
+    "contrast": "Kontrast",
+    "tint": "Farbton",
+    "vignette": "Vignette",
+    "blur": "Weichzeichner"
+  }
+}

@@ -8,6 +8,12 @@ define(["hip/module/BaseModule", "hip/command/LoginCommand"], function (BaseModu
             this.$.executor.storeAndExecute(new LoginCommand({
                 type: "fb"
             }))
+        },
+        loginAsTest: function(){
+            this.$.executor.storeAndExecute(new LoginCommand({
+                type: "test",
+                email: "krebbl@gmail.com"
+            }))
         }
     })
 });

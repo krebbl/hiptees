@@ -58,6 +58,17 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                             alert("failed");
                         });
                     }
+                } else if (command.$.type == "test") {
+                    session.set({
+                        'auth': {
+                            "type": "test"
+                        },
+                        'email': command.$.email
+                    });
+
+                    session.save(null, function (err, session) {
+                        self._handleSessionResponse(err, session);
+                    });
 
                 } else if (command.$.type == "twitter") {
                     // TODO: implement

@@ -2,13 +2,15 @@
                            xmlns:parent="hip.data" xmlns:conf="js.conf">
     <conf:DataSourceConfiguration>
         <conf:ResourceConfiguration modelClassName="hip.model.User" path="users">
-            <conf:ResourceConfiguration modelClassName="hip.model.PublishedProduct" path="published"/>
-            <conf:ResourceConfiguration modelClassName="hip.model.ProductDraft" path="drafts"/>
+            <conf:ResourceConfiguration modelClassName="hip.model.Draft" path="drafts"/>
+            <conf:ResourceConfiguration modelClassName="hip.model.PrivateProduct" path="private"/>
+            <conf:ResourceConfiguration modelClassName="hip.model.PublicProduct" path="published"/>
         </conf:ResourceConfiguration>
         <conf:ResourceConfiguration modelClassName="hip.model.Session" path="sessions"/>
         <conf:ResourceConfiguration modelClassName="hip.model.Product" path="products"/>
         <conf:ResourceConfiguration modelClassName="hip.model.Design" path="designs"/>
         <conf:ResourceConfiguration modelClassName="hip.model.ProductType" path="productTypes"/>
+        <conf:ResourceConfiguration modelClassName="hip.model.CloudinaryFormData" path="cloudinaryFormData"/>
     </conf:DataSourceConfiguration>
 
 </parent:HipDataSourceClass>

@@ -7,7 +7,7 @@
             <li>
                 <a onclick="_selectSubContent(colorContent)">
                     <span class="label">
-                        Fill Color
+                        ${i18n.t('settings.fillColor')}
                     </span>
                     <span class="value">
                         <span class="meta">{fillColor}</span>
@@ -18,7 +18,7 @@
             <li>
                 <a onclick="_selectSubContent(strokeColorContent)">
                     <span class="label">
-                        Stroke Color
+                        ${i18n.t('settings.strokeColor')}
                     </span>
                     <span class="value">
                         <span class="meta">{strokeColor}</span>
@@ -29,7 +29,7 @@
             <li>
                 <a onclick="_selectSubContent(strokeContent)">
                     <span class="label">
-                        Stroke Width
+                        ${i18n.t('settings.strokeWidth')}
                     </span>
                     <span class="value">
                         {configuration.strokeWidth}
@@ -40,7 +40,7 @@
     </js:Content>
     <js:Content cid="strokeContent">
         <div class="slider-label">
-            Stroke Width
+            ${i18n.t('settings.strokeWidth')}
             <strong>{configuration.strokeWidth}</strong>
         </div>
         <div class="slider-wrapper">

@@ -1,29 +1,42 @@
 <parent:ProductModuleClass xmlns="http://www.w3.org/1999/xhtml"
-                           xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui">
+                           xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui"
+                           xmlns:view="hip.view">
 
     <div class="header">
         <a onclick="goBack" class="back-btn">
             <i class="fa fa-angle-left"/>
         </a>
-        <h2>Kaufen und Teilen</h2>
-        <a class="basket-btn">
+        <h2>${i18n.t('product.buyAndShare')}</h2>
+        <a class="basket-btn" onclick="goToBasket()">
             <i class="fa fa-shopping-cart"/>
         </a>
     </div>
 
     <div class="content">
+        <div class="full-product-image" style="background-image: url({product.resources.MEDIUM});"/>
         <h2>{productName()}</h2>
-        <div class="subtitle">Erstellt von <strong>Krebbl</strong></div>
-        <div class="full-product-image" style="background-image: url({product.resources.LARGE});">
-            <div class="share">
-                <i class="fa fa-facebook"/>
-            </div>
+        <div class="subtitle">${i18n.t('product.createdBy')}
+            <strong>Krebbl</strong>
         </div>
         <div class="options">
             <span class="price">19,99 €</span>
+            <div class="share-options">
+                <a class="fa fa-instagram"/>
+                <a class="fa fa-twitter"/>
+                <a class="fa fa-facebook"/>
+                <a class="fa fa-chain"/>
+            </div>
         </div>
-        <!--<div class="designed-by">Erstellt von <strong>dir</strong></div>-->
-        <div class="select-size">Zum Warenkorb hinzufügen</div>
+        <div class="size-options">
+            <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true" items="{sizes}"
+                             enableAutoFillCheck="false"
+                             selectedItem="{{selectedSize}}"
+                             valuePath="id"/>
+            <a class="btn btn-size-table">${i18n.t('product.sizeTable')}</a>
+        </div>
+        <a class="btn btn-add-to-basket" onclick="addToBasket">${i18n.t('product.addToBasket')}</a>
+        <a class="btn btn-remix" onclick="remixProduct">${i18n.t('product.remix')}</a>
+
     </div>
 
 </parent:ProductModuleClass>

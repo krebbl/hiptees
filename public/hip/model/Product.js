@@ -36,6 +36,9 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
             }
         },
 
+
+        hrefField: false,
+
         parse: function () {
             var ret = this.callBase();
 

@@ -17,7 +17,8 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         $classAttributes: ['configuration', 'executor'],
         inject: {
             executor: Executor,
-            productHandler: ProductHandler
+            productHandler: ProductHandler,
+            i18n: I18n
         },
 
         events: ['on:closeClicked'],

@@ -144,50 +144,57 @@ define([
             } else if (command instanceof AddImageFile) {
                 var file = command.$.file;
 
+                if (!file) {
+                    return;
+                }
 
                 offset = this._convertOffset(command.$.offset);
 
                 var imageFileReader = this.$.imageFileReader;
 
                 imageFileReader.readFile(file, function (err, image) {
-                    var designs = self.$.api.createCollection(Collection.of(Design));
+                    if (!err) {
+                        var designs = self.$.api.createCollection(Collection.of(Design));
 
-                    var design = designs.createItem();
+                        var design = designs.createItem();
 
-                    design.set({
-                        id: null,
-                        file: file,
-                        type: "image",
-                        resources: {
-                            SCREEN: imageFileReader.resizeImage(image, 800, 800),
-                            SMALL: imageFileReader.resizeImage(image, 100, 100)
-                        },
-                        size: {
-                            width: image.width,
-                            height: image.height
-                        }
-                    });
+                        design.set({
+                            id: null,
+                            file: file,
+                            type: "image",
+                            resources: {
+                                SCREEN: imageFileReader.resizeImage(image, 800, 800),
+                                SMALL: imageFileReader.resizeImage(image, 100, 100)
+                            },
+                            size: {
+                                width: image.width,
+                                height: image.height
+                            }
+                        });
 
-                    var printAreaWidth = self.get('product.productType.printArea.size.width');
-                    var height = design.getAspectRatio() * self.get('product.productType.printArea.size.width');
-                    configuration = self.$.product.createEntity(DesignConfiguration, self._generateConfigurationId());
-                    configuration.set({
-                        offset: {
-                            x: printAreaWidth * 0.5,
-                            y: height * 0.5
-                        },
-                        size: {
-                            width: printAreaWidth,
-                            height: height
-                        },
-                        design: design
-                    });
+                        var printAreaWidth = self.get('product.productType.printArea.size.width');
+                        var height = design.getAspectRatio() * self.get('product.productType.printArea.size.width');
+                        configuration = self.$.product.createEntity(DesignConfiguration, self._generateConfigurationId());
+                        configuration.set({
+                            offset: {
+                                x: printAreaWidth * 0.5,
+                                y: height * 0.5
+                            },
+                            size: {
+                                width: printAreaWidth,
+                                height: height
+                            },
+                            design: design
+                        });
 
-                    self.$.product.$.configurations.add(configuration);
+                        self.$.product.$.configurations.add(configuration);
 
-                    self.trigger('on:configurationAdded', {configuration: configuration});
+                        self.trigger('on:configurationAdded', {configuration: configuration});
 
-                    self._selectConfiguration(configuration);
+                        self._selectConfiguration(configuration);
+
+                    }
+                    self.trigger('on:imageAdded', {});
                 });
 
 
@@ -287,15 +294,17 @@ define([
                             .exec(cb);
                     })
                     .exec(function (err, results) {
+                        var p = results.product;
                         if (!err) {
-                            var p = results.product;
                             if (command.$.asPreset) {
                                 p = p.clone();
                                 p.set('id', undefined);
+                                p.set('state', null);
                             }
-                            self.set('product', p);
+                            self.set('product', p, {force: true});
+                            self.trigger('on:productLoaded', {product: p});
                         }
-                        callback && callback();
+                        callback && callback(err, p);
                     });
 
             }
@@ -412,7 +421,7 @@ define([
                 })
                 .exec(function (err, results) {
                     if (!err) {
-                        self.trigger('on:productSaved', {}, self);
+                        self.trigger('on:productSaved', {product: product, stateBefore: stateBefore}, self);
                     } else {
                         self.trigger('on:productSavedFailed', {err: err});
                         product.set('state', stateBefore);

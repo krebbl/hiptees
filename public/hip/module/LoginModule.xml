@@ -20,6 +20,12 @@
                         Login in Twitter
                     </a>
                 </li>
+                <li>
+                    <a class="login-btn" onclick="loginAsTest">
+                        <i class="fa fa-user"></i>
+                        Login for testing
+                    </a>
+                </li>
             </ul>
         </div>
 

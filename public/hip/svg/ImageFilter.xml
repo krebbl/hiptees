@@ -28,7 +28,7 @@
     <feGaussianBlur visible="{gt(filter.blur,0)}" stdDeviation="{_blurDeviation}"/>
 
     <feComponentTransfer>
-        <feFuncA type="discrete" tableValues="1 1"/>
+        <feFuncA type="discrete" tableValues="0 1"/>
     </feComponentTransfer>
 
 </parent:ImageFilterClass>

@@ -17,6 +17,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
             executor: Executor
         },
 
+        events: ['on:configurationLongTapped'],
         $classAttributes: ["product", "productType"],
 
         ctor: function () {
@@ -65,6 +66,12 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
                 return this.$.printAreaViewer.getViewerForConfiguration(selectedConfiguration);
             }
             return null;
+        },
+        notifyLongTabOnConfiguration: function (configuration) {
+            if (configuration) {
+                this.trigger('on:configurationLongTapped', {configuration: configuration});
+            }
+
         }
 
     });

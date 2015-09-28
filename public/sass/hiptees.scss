@@ -8,7 +8,9 @@ $color-j: #26C281;
 $color-k: #323232;
 //#64AB23
 
-$header-height: 70px;
+$header-height: 66px;
+$color-fb: #3B5998;
+$color-twitter: #4099FF;
 
 * {
   outline: none;
@@ -23,6 +25,7 @@ $header-height: 70px;
   -moz-user-drag: none;
   -ms-user-drag: none;
   user-drag: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 input, *[contenteditable="true"], text, tspan {
@@ -54,7 +57,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   background: rgb(217, 219, 218);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 a {
@@ -64,6 +67,48 @@ a {
 h1 {
   font-family: 'BrandFont';
   margin: 0;
+}
+
+select {
+  -webkit-appearance: none;
+  text-align: center;
+  padding: 0.7em;
+  border: 1px solid grey;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.back-to-top-wrapper {
+  position: absolute;
+  top: 87px;
+  z-index: 1000;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+
+  > a {
+    margin: 0 auto;
+    width: auto;
+    text-align: center;
+    color: white;
+    background-color: $color-j;
+    border-radius: 17px;
+    padding: 5px 10px;
+    opacity: 0;
+    font-size: 12px;
+    pointer-events: all;
+
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -ms-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+
+  }
+
+  &.active > a {
+    opacity: 0.8;
+  }
 }
 
 .loading-overlay {
@@ -89,6 +134,10 @@ h1 {
   max-width: 1000px;
   width: 100%;
   transform: translateZ(0);
+
+  image {
+    background-color: transparent;
+  }
 }
 
 .print-area-viewer {
@@ -98,7 +147,7 @@ h1 {
 .swipe-container {
   width: 100%;
   overflow: hidden;
-  max-width: 1000px;
+  max-width: 700px;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -110,7 +159,7 @@ h1 {
   }
 
   .swipe-view {
-
+    background: white;
     position: absolute;
     top: 0;
     left: 0;
@@ -124,12 +173,20 @@ h1 {
     -moz-box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
     box-shadow: -3px 0px 36px 0px rgba(0, 0, 0, 0.42);
 
-    -webkit-transition: -webkit-transform 0.5s;
-    -moz-transition: -moz-transform 0.5s;
-    -ms-transition: -ms-transform 0.5s;
-    -o-transition: -o-transform 0.5s;
-    transition: transform 0.5s;
+    -webkit-transition: -webkit-transform 0.3s;
+    -moz-transition: -moz-transform 0.3s;
+    -ms-transition: -ms-transform 0.3s;
+    -o-transition: -o-transform 0.3s;
+    transition: transform 0.3s;
 
+    &.loading {
+      background: white url(../img/loader.gif) no-repeat center 150px;
+      background-size: 50px;
+
+      > .content > * {
+        visibility: hidden;;
+      }
+    }
     //    a {
     //      z-index: 2;
     //    }
@@ -139,7 +196,6 @@ h1 {
     }
 
     > .content {
-      background-color: white;
       position: absolute;
       top: $header-height;
       bottom: 0;
@@ -152,14 +208,17 @@ h1 {
     }
 
     &.with-footer > .content {
-      bottom: 44px;
+      bottom: 40px;
     }
   }
 
   .previous-module {
     z-index: 0;
-
     -webkit-transform: translate3d(-20px, 0, 0);
+
+    &.loading {
+      background: white;
+    }
   }
 
   .next-module {
@@ -167,6 +226,10 @@ h1 {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+
+    &.loading {
+      background: white;
+    }
   }
 
   .swipe-view-editor {
@@ -226,11 +289,11 @@ h1 {
       }
 
       &.facebook {
-        background-color: #3B5998;
+        background-color: $color-fb;
       }
 
       &.twitter {
-        background: #4099FF;
+        background: $color-twitter;
       }
     }
   }
@@ -854,6 +917,15 @@ ul {
   }
 }
 
+.lazy-image {
+  &.loading {
+    background: green;
+  }
+  > img {
+    width: 100%;
+  }
+}
+
 ul.product-list {
   > li > a {
     height: 200px;
@@ -861,10 +933,24 @@ ul.product-list {
     overflow: hidden;
     border-bottom: 1px solid lightgray;
     background: lightgray;
+    position: relative;
+
     img {
-      width: 100%;
       margin-top: -40px;
     }
+
+    > .lazy-image {
+      height: 100%;
+    }
+  }
+
+  .draft-tag {
+    position: absolute;
+    right: 0;
+    bottom: 30px;
+    padding: 7px 15px;
+    color: white;
+    background-color: rgba(38, 194, 129, 0.83);
   }
 }
 
@@ -1111,11 +1197,11 @@ ul.product-list {
 
 .user-image {
   position: absolute;
-  left: 20px;
-  top: 20px;
+  left: 10px;
+  top: 10px;
   width: 60px;
   height: 60px;
-  background-color: $color-j;
+  background-color: #26C281;
   border-radius: 60px;
   border: 1px solid grey;
   overflow: hidden;
@@ -1127,27 +1213,29 @@ ul.product-list {
 
 .user-name {
   position: absolute;
-  left: 100px;
-  top: 30px;
+  left: 85px;
+  top: 15px;
   font-size: 14px;
+  font-weight: bold;
 }
 
 .user-stats {
   position: absolute;
-  top: 54px;
-  left: 100px;
+  top: 45px;
+  left: 85px;
+
 }
 
 .list-options {
   display: block;
   position: absolute;
   font-size: 12px;
-  left: 20px;
-  right: 20px;
-  top: 100px;
-  border: 1px solid grey;
-  border-radius: 8px;
+  left: 0;
+  right: 0;
+  top: 85px;
+  border-bottom: 1px solid grey;
   overflow: hidden;
+  border-top: 1px solid grey;
 
   > li {
     width: 33.33%;
@@ -1173,11 +1261,15 @@ ul.product-list {
 
 .list-wrapper {
   position: absolute;
-  top: 145px;
+  top: 117px;
   bottom: 0;
   width: 100%;
   background: lightgray;
-  border-top: 1px solid lightgray;
+
+  &.loading {
+    background: white url(../img/loader.gif) no-repeat center 20px;
+    background-size: 50px;
+  }
 }
 
 .logout {
@@ -1197,6 +1289,8 @@ input[type=checkbox], input[type=radio] {
   border-radius: 18px;
   padding: 4px;
   border: 1px solid rgba(255, 255, 255, 0.39);
+  width: auto;
+  height: auto;
 }
 
 input[type=checkbox]:checked, input[type=radio]:checked {
@@ -1207,8 +1301,8 @@ input[type=checkbox]:checked, input[type=radio]:checked {
 .full-product-image {
   position: relative;
   width: auto;
-  height: 70%;
-  background-size: auto 100%;
+  height: 58%;
+  background-size: auto 120%;
   background-position: center;
   margin: 0 -15px;
 }
@@ -1230,46 +1324,100 @@ input[type=checkbox]:checked, input[type=radio]:checked {
     color: #323232;
     margin-top: -7px;
     font-size: 12px;
-    margin-bottom: 10px;
   }
 
-  .select-size {
+  .btn {
     text-align: center;
     padding: 0.7em;
-    border: 1px solid $color-j;
+    border: 1px solid #26C281;
     border-radius: 10px;
-    color: $color-j;
+    background-color: #26C281;
+    color: white;
+    display: block;
   }
 
-  .share {
+  select {
+    width: 48%;
+    margin-right: 2%;
+  }
+
+  .btn-size-table {
+    display: inline-block;
+    width: 48%;
+    margin-left: 2%;
+    background: white;
+    border-color: #B5B5B5;
+    color: #000000;
+  }
+
+  .btn-add-to-basket {
+//    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .btn-remix {
+    background: orange;
+    border-color: lighten(#FFA500, 10%);
+    margin-bottom: 20px;
+  }
+
+  .share-options {
     position: absolute;
-    bottom: -36px;
+    bottom: 8px;
     right: 15px;
-    color: white;
-    width: 30px;
-    height: 30px;
-    background-color: #3B5998;
-    border-radius: 30px;
-    text-align: center;
-    padding: 8px;
-    font-size: 22px;
-    overflow: hidden;
+    > a {
+      vertical-align: bottom;
+      color: white;
+      width: 26px;
+      height: 26px;
+      margin-left: 10px;
+      border-radius: 30px;
+      text-align: center;
+      overflow: hidden;
+      padding: 7px;
+
+      &.fa-facebook {
+        background-color: $color-fb;
+        font-size: 20px;
+      }
+
+      &.fa-twitter {
+        background-color: $color-twitter;
+        font-size: 14px;
+      }
+
+      &.fa-instagram {
+        background-color: #AD6848;
+      }
+
+      &.fa-chain {
+        background-color: #000000;
+
+      }
+
+
+    }
   }
 
   .options {
+    position: relative;
     height: 42px;
     border-bottom: 1px solid lightgray;
     margin: 0 -15px;
     margin-bottom: 10px;
   }
 
+  .size-options {
+    margin-bottom: 10px;
+  }
+
   .price {
-    padding: 10px 10px;
+    color: #424242;
+    padding: 10px 14px;
     font-weight: bold;
     display: inline-block;
     font-size: 17px;
   }
-
-
 
 }

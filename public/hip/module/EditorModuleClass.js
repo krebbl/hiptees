@@ -157,9 +157,12 @@ define([
         },
 
         handleUpload: function (e) {
-            this.$.executor.storeAndExecute(new AddImageFile({
-                file: e.domEvent.target.files[0]
-            }));
+            var files = e.domEvent.target.files;
+            if (files && files.length) {
+                this.$.executor.storeAndExecute(new AddImageFile({
+                    file: files[0]
+                }));
+            }
         },
 
         showSettings: function () {
@@ -195,13 +198,18 @@ define([
             var self = this;
 
             if (this.$.zoomed) {
-                this.$.innerContent.set('overflow', 'hidden');
-                self.$.wrapper.set({
-                    'left': "0",
-                    'height': self.$heightBefore
-                });
-                this.$.innerContent.$el.scrollLeft = 0;
-                this.$.innerContent.$el.scrollTop = 0;
+                var innerContent = this.$.innerContent;
+                setTimeout(function () {
+                    innerContent.set('overflow', 'hidden');
+                    innerContent.$el.scrollLeft = 0;
+                    innerContent.$el.scrollTop = 0;
+                }, 1);
+                setTimeout(function () {
+                    self.$.wrapper.set({
+                        'left': "0",
+                        'height': self.$heightBefore
+                    });
+                }, 2);
                 setTimeout(function () {
                     self.$.wrapper.set({
                         'left': "50%"
@@ -251,6 +259,7 @@ define([
         saveProduct: function () {
             this.$.executor.storeAndExecute(new SaveProduct({state: "draft"}));
             this.showView(null);
+            this.$.executor.storeAndExecute(new Navigate({fragment: "profile"}));
         }
     })
 });
