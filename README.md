@@ -12,7 +12,7 @@
 ## Fonts
 * Download fonts into **fonts** dir
 * Install imagemagick (for example with homebrew)
-* Install ttf2woff
+* Install ttf2woff : `npm install -g ttf2woff`
 * Run `node convert-font-dir.js`
 
 ## Web-Server
