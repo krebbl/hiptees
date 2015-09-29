@@ -6,6 +6,7 @@ fonts
 public/js
 public/font/*.ttf
 public/font/*.woff
+public/font/images/*.png
 env/dev.json
 
 node_modules
