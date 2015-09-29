@@ -8,7 +8,7 @@
 * Link **js** dir into public dir via `ln -s`
 * Clone https://github.com/rappid/rappidjs-text in some directory
 * Link **text** dir into public dir via `ln -s`
-* Download fonts into fonts dir
+* Download fonts into **fonts** dir
 * Run `node convert-font-dir.js`
 
 ## Web-Server
