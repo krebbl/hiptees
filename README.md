@@ -1,4 +1,4 @@
-# hiptees
+# Hiptees App
 
 
 ## Installation
