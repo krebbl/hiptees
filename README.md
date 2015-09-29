@@ -8,7 +8,11 @@
 * Link **js** dir into public dir via `ln -s`
 * Clone https://github.com/rappid/rappidjs-text in some directory
 * Link **text** dir into public dir via `ln -s`
+
+## Fonts
 * Download fonts into **fonts** dir
+* Install imagemagick (for example with homebrew)
+* Install ttf2woff
 * Run `node convert-font-dir.js`
 
 ## Web-Server
