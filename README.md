@@ -3,11 +3,11 @@
 
 ## Installation
 
-* run "npm install"
-* Clone https://github.com/rappid/rAppid.js
-* Link "js" dir into public dir via "ln -s"
+* run *npm install*
+* Clone https://github.com/rappid/rAppid.js in some directory
+* Link *js* dir into public dir via *ln -s*
 * Clone https://github.com/rappid/rappidjs-text
-* Link "text" dir into public dir via "ln -s"
+* Link *text* dir into public dir via *ln -s'
 
 ## Web-Server
 
