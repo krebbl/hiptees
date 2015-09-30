@@ -919,7 +919,9 @@ ul {
 
 .lazy-image {
   &.loading {
-    background: green;
+    background: transparent url(../img/hiptees.png) no-repeat center center;
+    background-size: 50%;
+    opacity: 0.5;
   }
   > img {
     width: 100%;
@@ -1242,6 +1244,7 @@ ul.product-list {
     display: inline-block;
     border-right: 1px solid grey;
     a {
+      text-transform: uppercase;
       padding: 8px;
       display: block;
       text-align: center;
@@ -1351,7 +1354,7 @@ input[type=checkbox]:checked, input[type=radio]:checked {
   }
 
   .btn-add-to-basket {
-//    font-size: 14px;
+    //    font-size: 14px;
     font-weight: bold;
     margin-bottom: 20px;
   }
@@ -1396,7 +1399,6 @@ input[type=checkbox]:checked, input[type=radio]:checked {
 
       }
 
-
     }
   }
 
@@ -1418,6 +1420,54 @@ input[type=checkbox]:checked, input[type=radio]:checked {
     font-weight: bold;
     display: inline-block;
     font-size: 17px;
+  }
+
+}
+
+.notifications {
+  position: absolute;
+  top: $header-height;
+  z-index: 111;
+  width: 100%;
+  overflow: hidden;
+
+  &__message {
+    background-color: #FF7171;
+    width: 100%;
+    display: block;
+    color: white;
+
+    > p {
+      padding: 12px 20px;
+      margin: 0;
+    }
+
+  }
+
+  &__message-add {
+    animation: flyin 1s;
+  }
+
+  &__message-remove {
+    animation: fadeout 1s;
+  }
+
+  @keyframes flyin {
+    from {
+      margin-top: -100px;
+    }
+    to {
+      margin-top: 0;
+    }
+  }
+
+  @keyframes fadeout {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 
 }

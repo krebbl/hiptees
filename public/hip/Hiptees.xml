@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <hip:HipteesClass
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:js="js.core" xmlns:ui="js.ui" xmlns:hip="hip" xmlns:view="hip.view"
+        xmlns:js="js.core" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
         xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module">
 
@@ -25,10 +25,10 @@
         <handler:BasketHandler cid="basketHandler"/>
         <svg:TextEditor class="needsclick"/>
         <view:ImageFilterRenderer/>
-        <js:NotificationManager>
+        <js:NotificationManager cid="notificationManager">
             <js:Template name="default">
-                <div class="callout callout-{type}">
-                    <p>{message}</p>
+                <div animationClass="notifications__message" class="notifications__message">
+                    <p>HALLO</p>
                 </div>
             </js:Template>
         </js:NotificationManager>

@@ -39,6 +39,10 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             }
         },
 
+        showNotification: function () {
+            this.$.notificationManager.showNotification('default', {message: "Yeah"}, {duration: 3});
+        },
+
         remixProduct: function () {
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "editor/preset/" + this.$.product.$.id

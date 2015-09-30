@@ -642,7 +642,9 @@ ul {
   height: 30px; }
 
 .lazy-image.loading {
-  background: green; }
+  background: transparent url(../img/hiptees.png) no-repeat center center;
+  background-size: 50%;
+  opacity: 0.5; }
 
 .lazy-image > img {
   width: 100%; }
@@ -871,6 +873,7 @@ ul.product-list .draft-tag {
     display: inline-block;
     border-right: 1px solid grey; }
     .list-options > li a {
+      text-transform: uppercase;
       padding: 8px;
       display: block;
       text-align: center;
@@ -1007,3 +1010,34 @@ input[type=checkbox]:checked, input[type=radio]:checked {
   font-weight: bold;
   display: inline-block;
   font-size: 17px; }
+
+.notifications {
+  position: absolute;
+  top: 66px;
+  z-index: 111;
+  width: 100%;
+  overflow: hidden; }
+  .notifications__message {
+    background-color: #FF7171;
+    width: 100%;
+    display: block;
+    color: white; }
+    .notifications__message > p {
+      padding: 12px 20px;
+      margin: 0; }
+  .notifications__message-add {
+    animation: flyin 1s; }
+  .notifications__message-remove {
+    animation: fadeout 1s; }
+
+@keyframes flyin {
+  from {
+    margin-top: -100px; }
+  to {
+    margin-top: 0; } }
+
+@keyframes fadeout {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }

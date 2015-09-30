@@ -115,7 +115,7 @@
             <div class="publish-wrapper">
                 <div class="checkbox-control">
                     <label>
-                        <span>${i18n.t('editor.publishShirt')}</span>
+                        <strong>${i18n.t('editor.publishShirt')}</strong>
                         <input type="checkbox" checked="{{makePublic}}" class="fa fa-check"/>
                         <span class="hint">
                             ${i18n.t('editor.publishShirtHint')}

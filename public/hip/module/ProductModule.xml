@@ -32,7 +32,7 @@
                              enableAutoFillCheck="false"
                              selectedItem="{{selectedSize}}"
                              valuePath="id"/>
-            <a class="btn btn-size-table">${i18n.t('product.sizeTable')}</a>
+            <a class="btn btn-size-table" onclick="showNotification">${i18n.t('product.sizeTable')}</a>
         </div>
         <a class="btn btn-add-to-basket" onclick="addToBasket">${i18n.t('product.addToBasket')}</a>
         <a class="btn btn-remix" onclick="remixProduct">${i18n.t('product.remix')}</a>
