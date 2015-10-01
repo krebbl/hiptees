@@ -24,6 +24,8 @@
             <div class="user-stats">
                 <strong>{user.countPublished}</strong>
                 ${i18n.t('profile.published')}
+                <strong>{user.countPrivates}</strong>
+                ${i18n.t('profile.private')}
                 <strong>{user.countDrafts}</strong>
                 ${i18n.t('profile.drafts')}
             </div>
@@ -53,6 +55,14 @@
                     </li>
                 </ui:ItemsView>
 
+                <ui:ItemsView visible="{listSelected('private')}" items="{list}" tagName="ul" class="product-list">
+                    <li>
+                        <a onclick="selectProduct(item)">
+                            <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>
+                        </a>
+                    </li>
+                </ui:ItemsView>
+
                 <ui:ItemsView visible="{listSelected('drafts')}" items="{list}" tagName="ul" class="product-list">
                     <li>
                         <a onclick="selectDraft(item)">
@@ -61,6 +71,13 @@
                         </a>
                     </li>
                 </ui:ItemsView>
+
+                <div class="empty-list-message" visible="{list.isEmpty()}" onclick="goCreate">
+                    <div class="big-add-btn">
+                        <i class="fa fa-pencil-square-o"/>
+                    </div>
+                    ${i18n.t('profile.create')}
+                </div>
 
             </div>
         </div>
