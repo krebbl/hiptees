@@ -9,6 +9,13 @@
   "author": "krebbl",
   "license": "ISC",
   "dependencies": {
-    "node-sass": "^3.2.0"
+    "flow.js": "^0.2.6",
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.0.4",
+    "gulp-webserver": "^0.9.1",
+    "http-proxy-middleware": "^0.9.0",
+    "node-sass": "^3.2.0",
+    "rAppid.js": "git+https://github.com/rappid/rAppid.js.git",
+    "require-dir": "^0.3.0"
   }
 }
