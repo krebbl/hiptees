@@ -19,7 +19,7 @@ define([
             selectedConfiguration: "{productHandler.selectedConfiguration}",
             configurationViewer: null,
             settingsSelected: false,
-            finishView: null,
+            saveView: null,
             addView: null,
             zoomed: false,
             zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}",

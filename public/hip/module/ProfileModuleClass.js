@@ -76,7 +76,7 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             });
             collection.fetchPage(0, {noCache: true}, function (err) {
                 if (!err) {
-                    console.log(collection);
+                    // TODO: implement scroll paging
                     self.set({
                         listLoading: false,
                         list: collection

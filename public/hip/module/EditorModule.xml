@@ -62,7 +62,7 @@
             ${i18n.t('editor.add')}
         </a>
 
-        <a onclick="showView(finishView)">
+        <a onclick="showView(saveView)">
             <i class="fa fa-check"/>
             ${i18n.t('editor.save')}
         </a>
@@ -104,15 +104,14 @@
         </a>
     </div>
 
-    <div class="finish-view" cid="finishView">
+    <div class="save-view" cid="saveView">
         <div>
             <!--<a class="close-btn" onclick="showView(null)">Close</a>-->
-            <div class="product-name-wrapper">
+            <div class="save-view__product-name">
                 <input type="text" placeholder="${i18n.t('editor.giveItAName')}" value="{{product.name}}"/>
             </div>
 
-
-            <div class="publish-wrapper">
+            <div class="save-view__publish">
                 <div class="checkbox-control">
                     <label>
                         <strong>${i18n.t('editor.publishShirt')}</strong>
@@ -126,9 +125,11 @@
                     ${i18n.t('editor.saveFinal')}
                 </a>
             </div>
-            <a class="btn btn-secondary" onclick="saveProduct()">
-                ${i18n.t('editor.saveAsDraft')}
-            </a>
+            <div class="save-view__draft">
+                <a class="btn btn-secondary" onclick="saveProduct()">
+                    ${i18n.t('editor.saveAsDraft')}
+                </a>
+            </div>
         </div>
     </div>
 
