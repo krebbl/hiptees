@@ -1,3 +1,175 @@
 {
-  "fontFamilies": []
+  "fontFamilies": [
+    {
+      "name": "Abril Fatface",
+      "image": "images/AbrilFatface.png",
+      "regular": "AbrilFatface-Regular"
+    },
+    {
+      "name": "Aileron",
+      "bold": "Aileron-Bold",
+      "boldItalic": "Aileron-BoldItalic",
+      "italic": "Aileron-Italic",
+      "image": "images/Aileron.png",
+      "regular": "Aileron-Regular"
+    },
+    {
+      "name": "Alfa Slab One",
+      "image": "images/AlfaSlabOne.png",
+      "regular": "AlfaSlabOne-Regular"
+    },
+    {
+      "name": "Alike",
+      "image": "images/Alike.png",
+      "regular": "Alike-Regular"
+    },
+    {
+      "name": "Amatic SC",
+      "bold": "AmaticSC-Bold",
+      "image": "images/AmaticSC.png",
+      "regular": "AmaticSC-Regular"
+    },
+    {
+      "name": "Anonymous Pro",
+      "image": "images/AnonymousPro.png",
+      "regular": "AnonymousPro",
+      "bold": "AnonymousPro_Bold",
+      "boldItalic": "AnonymousPro_BoldItalic",
+      "italic": "AnonymousPro_Italic"
+    },
+    {
+      "name": "BELLABOO",
+      "image": "images/BELLABOO.png",
+      "regular": "BELLABOO-Regular"
+    },
+    {
+      "name": "Biko",
+      "bold": "Biko-Bold",
+      "image": "images/Biko.png",
+      "regular": "Biko"
+    },
+    {
+      "name": "Cabin Sketch",
+      "bold": "CabinSketch-Bold",
+      "image": "images/CabinSketch.png",
+      "regular": "CabinSketch-Regular"
+    },
+    {
+      "name": "Codystar",
+      "image": "images/Codystar.png",
+      "regular": "Codystar-Regular"
+    },
+    {
+      "name": "Dense",
+      "image": "images/Dense.png",
+      "regular": "dense-regular"
+    },
+    {
+      "name": "Fabfelt Script",
+      "image": "images/FabfeltScript.png",
+      "regular": "FabfeltScript"
+    },
+    {
+      "name": "Graduate",
+      "image": "images/Graduate.png",
+      "regular": "Graduate-Regular"
+    },
+    {
+      "name": "Hammersmith One",
+      "image": "images/HammersmithOne.png",
+      "regular": "HammersmithOne"
+    },
+    {
+      "name": "Josefin Sans",
+      "bold": "JosefinSans-Bold",
+      "boldItalic": "JosefinSans-BoldItalic",
+      "italic": "JosefinSans-Italic",
+      "image": "images/JosefinSans.png",
+      "regular": "JosefinSans-Regular"
+    },
+    {
+      "name": "Knewave",
+      "image": "images/Knewave.png",
+      "regular": "knewave"
+    },
+    {
+      "name": "LOT",
+      "image": "images/LOT.png",
+      "regular": "LOT"
+    },
+    {
+      "name": "Lato",
+      "bold": "Lato-Bold",
+      "boldItalic": "Lato-BoldItalic",
+      "image": "images/Lato.png",
+      "regular": "Lato-Regular"
+    },
+    {
+      "name": "Leckerli One",
+      "image": "images/LeckerliOne.png",
+      "regular": "LeckerliOne-Regular"
+    },
+    {
+      "name": "Lobster Two",
+      "bold": "LobsterTwo-Bold",
+      "boldItalic": "LobsterTwo-BoldItalic",
+      "italic": "LobsterTwo-Italic",
+      "image": "images/LobsterTwo.png",
+      "regular": "LobsterTwo-Regular"
+    },
+    {
+      "name": "Lynchburg Script",
+      "image": "images/LynchburgScript.png",
+      "regular": "LynchburgScript"
+    },
+    {
+      "name": "Norwester",
+      "image": "images/Norwester.png",
+      "regular": "Norwester-Regular"
+    },
+    {
+      "name": "Oswald",
+      "bold": "Oswald-Bold",
+      "image": "images/Oswald.png",
+      "regular": "Oswald-Regular"
+    },
+    {
+      "name": "Overthe Rainbow",
+      "image": "images/OvertheRainbow.png",
+      "regular": "OvertheRainbow"
+    },
+    {
+      "name": "Raleway Heavy",
+      "image": "images/RalewayHeavy.png",
+      "regular": "ralewayHeavy"
+    },
+    {
+      "name": "Raleway Regular",
+      "image": "images/RalewayRegular.png",
+      "regular": "ralewayRegular"
+    },
+    {
+      "name": "Raleway Thin",
+      "image": "images/RalewayThin.png",
+      "regular": "ralewayThin"
+    },
+    {
+      "name": "Roboto",
+      "bold": "Roboto-Bold",
+      "boldItalic": "Roboto-BoldItalic",
+      "italic": "Roboto-Italic",
+      "image": "images/Roboto.png",
+      "regular": "Roboto-Regular"
+    },
+    {
+      "name": "Saniretro",
+      "image": "images/Saniretro.png",
+      "regular": "Saniretro"
+    },
+    {
+      "name": "Sofia",
+      "image": "images/Sofia.png",
+      "regular": "Sofia-Regular"
+    }
+  ]
 }

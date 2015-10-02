@@ -1471,3 +1471,20 @@ input[type=checkbox]:checked, input[type=radio]:checked {
   }
 
 }
+.empty-list-message {
+  margin: 48px 70px;
+  text-align: center;
+  text-transform: UPPERCASE;
+  line-height: 1.3em;
+  border-radius: 10px;
+  border: 2px dashed grey;
+  padding: 5px;
+  color: grey;
+}
+
+.big-add-btn {
+  font-size: 54px;
+  padding: 5px 20px;
+  text-align: center;
+  color: gray;
+}

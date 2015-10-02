@@ -1,4 +1,4 @@
-define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/Session", "hip/command/LoginCommand", "hip/command/LogoutCommand", "flow"], function (CommandHandler, HipDataSource, Session, LoginCommand, LogoutCommand, flow) {
+define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/Session", "hip/command/LoginCommand", "hip/command/LogoutCommand", "flow", "js/data/Collection", "hip/model/User"], function (CommandHandler, HipDataSource, Session, LoginCommand, LogoutCommand, flow, Collection, User) {
     return CommandHandler.inherit({
         defaults: {
             session: null
@@ -109,6 +109,18 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                 }
 
             }
+        },
+
+        loadCurrentUser: function (callback) {
+            var user = this.$.api.createCollection(Collection.of(User)).createItem("me");
+
+            this.set('user', user);
+
+            user.fetch(function (err) {
+                callback && callback(err, user);
+            });
+
+            return user;
         },
 
         _handleSessionResponse: function (err, session) {

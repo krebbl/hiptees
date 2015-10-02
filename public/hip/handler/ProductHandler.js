@@ -303,6 +303,8 @@ define([
                             }
                             self.set('product', p, {force: true});
                             self.trigger('on:productLoaded', {product: p});
+                        } else {
+                            console.warn(err);
                         }
                         callback && callback(err, p);
                     });

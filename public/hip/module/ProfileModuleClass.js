@@ -1,4 +1,4 @@
-define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/model/User", "hip/command/ChangeProductType", "hip/command/Navigate", "hip/handler/ProductHandler", "hip/command/LogoutCommand"], function (BaseModule, Collection, Product, User, ChangeProductType, Navigate, ProductHandler, LogoutCommand) {
+define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/model/User", "hip/command/ChangeProductType", "hip/command/Navigate", "hip/handler/ProductHandler", "hip/command/LogoutCommand", "hip/handler/LoginHandler"], function (BaseModule, Collection, Product, User, ChangeProductType, Navigate, ProductHandler, LogoutCommand, LoginHandler) {
 
 
     var stateCountMap = {
@@ -22,7 +22,8 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         },
 
         inject: {
-            productHandler: ProductHandler
+            productHandler: ProductHandler,
+            loginHandler: LoginHandler
         },
 
         ctor: function () {
@@ -53,15 +54,12 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         },
 
         prepare: function (fragment, callback) {
-            var api = this.$.api;
-
-            var user = api.createCollection(Collection.of(User)).createItem("me");
-
-            this.set('user', user);
-
-            user.fetch(function (err) {
+            var self = this;
+            var user = this.$.loginHandler.loadCurrentUser(function (err, user) {
                 callback && callback(err);
             });
+
+            this.set('user', user);
 
             if (!this.$.activeList) {
                 this.showList("published");
@@ -78,6 +76,7 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             });
             collection.fetchPage(0, {noCache: true}, function (err) {
                 if (!err) {
+                    console.log(collection);
                     self.set({
                         listLoading: false,
                         list: collection

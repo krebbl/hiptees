@@ -5,7 +5,7 @@ define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataS
         },
         extractListMetaData: function (collectionPage, payload, options, xhr) {
             return {
-                count: payload.hasOwnProperty("total") || payload.length
+                count: payload.hasOwnProperty("total") ? payload.total : payload.length
             }
         },
 

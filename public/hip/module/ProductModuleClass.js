@@ -1,9 +1,10 @@
-define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/command/AddToBasket"], function (BaseModule, Collection, Product, Navigate, AddToBasket) {
+define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/command/AddToBasket", "hip/handler/LoginHandler"], function (BaseModule, Collection, Product, Navigate, AddToBasket, LoginHandler) {
     return BaseModule.inherit({
         defaults: {
             handles: "",
             product: null,
             selectedSize: null,
+            user: "{loginHandler.user}",
             sizes: [{
                 "id": "1",
                 "name": "S"
@@ -13,9 +14,17 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             }]
         },
 
+        inject: {
+            loginHandler: LoginHandler
+        },
+
         productName: function () {
             return this.get('product.name') || "White T-Shirt - Published";
         }.onChange('product'),
+
+        remixAllowed: function (product) {
+            return product && (product.get('remixAllowed') || product.get('creator.id') == this.get('user._id'));
+        }.onChange('user'),
 
         prepare: function (fragment, callback) {
             var api = this.$.api;
