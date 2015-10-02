@@ -16,8 +16,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             rotatable: false,
             verticalStretchable: true,
             horizontalStretchable: true,
-            minHeight: 10,
-            minWidth: 10,
+            _minHeight: 10,
+            _minWidth: 10,
             _configurationWidth: 0,
             _configurationHeight: 0,
             _boundingBox: null,
@@ -37,7 +37,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             productHandler: ProductHandler
         },
 
-        $classAttributes: ["handleWidth", "product", "printArea", "configuration", "keepAspectRatio", "selected", "verticalStretchable", "horizontalStretchable", "rotatable"],
+        $classAttributes: ["handleWidth", "product", "printArea", "configuration", "keepAspectRatio", "selected", "verticalStretchable", "horizontalStretchable", "rotatable", "printAreaViewer"],
 
         ctor: function (attr) {
             attr._maskId = "mask" + (++maskId);
@@ -229,8 +229,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 diffY = Math.abs(rootVector[1]) * lf;
 
 
-                var minHeight = this.$.minHeight,
-                    minWidth = this.$.minWidth;
+                var minHeight = this.$._minHeight,
+                    minWidth = this.$._minWidth;
                 if (this.$originalSize.width + diffX * 2 < minWidth) {
                     diffX = (minWidth - this.$originalSize.width) / 2;
                 }

@@ -19,14 +19,15 @@ define(['js/svg/SvgElement', 'js/core/List',
             componentClass: "print-area",
             showActiveViewer: false,
             activeViewer: null,
-            handleWidth: 10
+            handleWidth: 10,
+            snapLines: null
         },
 
         inject: {
             productHandler: ProductHandler
         },
 
-        $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer"],
+        $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer", "handleWidth", "border", "configurations", "snapLines"],
 
         ctor: function () {
             this.callBase();
