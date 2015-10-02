@@ -7,9 +7,12 @@
                 "json!hip/env/default",
                 "json!hip/env/dev",
                 "xaml!hip/module/LoginModule",
+                "xaml!hip/module/ProfileModule",
                 "xaml!hip/module/ProductTypeModule",
                 "xaml!hip/module/ProductPresetModule",
                 "xaml!hip/module/EditorModule",
+                "xaml!hip/module/ProductModule",
+                "xaml!hip/module/BasketModule",
                 "exif"
             ]
         }
