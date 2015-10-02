@@ -1,0 +1,36 @@
+.btn {
+  display: inline-block;
+  background-color: white;
+  color: black;
+  padding: 0.7em 1em;
+  border-radius: 0.5em;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.btn-secondary {
+  background-color: $color-gray;
+  color: white;
+  font-weight: 300;
+}
+
+.btn-green, .btn-success {
+  background-color: $color-green;
+  color: white;
+}
+
+.btn-success {
+  font-weight: 600;
+}
+
+.btn-white {
+  background: white;
+  border-color: $color-lightgray;
+  color: $color-dark1;
+}
+
+.btn-whitesmoke {
+  background: whitesmoke;
+  color: $color-dark1;
+  border-color: $color-lightgray;
+}

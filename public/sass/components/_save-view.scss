@@ -1,0 +1,69 @@
+$save-view-height: 250px;
+
+.save-view {
+  z-index: 2;
+  background: rgba($color-dark1, 0.93);
+  position: absolute;
+  bottom: -$save-view-height;
+  left: 0;
+  right: 0;
+  height: $save-view-height;
+  transition: bottom 0.5s;
+
+  &.active {
+    bottom: 0;
+  }
+
+  &__product-name {
+    padding: 0;
+
+    > input {
+      background-color: transparent;
+      border: 0;
+      border-bottom: 1px solid #C5C5C5;
+      color: white;
+      padding: 8px 15px;
+      /* margin: 5px 18px; */
+      width: 100%;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+  }
+
+  &__publish {
+    border-bottom: 1px solid #C5C5C5;
+    padding: 15px;
+  }
+
+  .checkbox-control {
+    margin-bottom: 15px;
+
+    .hint {
+      display: block;
+      margin-top: 6px;
+      color: white;
+      font-size: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 300;
+      color: white;
+    }
+
+    input {
+      float: right;
+    }
+  }
+
+  &__draft {
+    padding: 15px;
+  }
+
+  .btn {
+    display: block;
+    text-transform: uppercase;
+  }
+}
