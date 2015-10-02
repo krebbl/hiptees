@@ -7,7 +7,8 @@ gulp.task('webserver', function () {
         .pipe(webserver({
             livereload: false,
             directoryListing: false,
-            open: true,
+            host: "0.0.0.0",
+            open: false,
             middleware: [
                 proxy('/api/v1', {target: 'http://localhost:3000', changeOrigin: true, xfwd: true})
             ]
