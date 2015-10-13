@@ -2,7 +2,13 @@
   "general": {
     "backToTop": "Nach oben",
     "close": "Schließen",
-    "back": "Zurück"
+    "back": "Zurück",
+    "size": "Größe",
+    "quantity": "Anzahl",
+    "article": "Artikel"
+  },
+  "message": {
+    "productSaved": "Shirt gespeichert!"
   },
   "profile": {
     "yourProfile": "Dein Profil",
@@ -19,6 +25,11 @@
     "remix": "Shirt als Vorlage verwenden",
     "sizeTable": "Größentabelle",
     "chooseSize": "Größe wählen"
+  },
+  "sizeTable": {
+    "for": "Größentabelle für ",
+    "length": "Länge",
+    "brust" : "Brust"
   },
   "productType": {
     "chooseATee": "Wähle ein Shirt"
@@ -63,5 +74,10 @@
     "tint": "Farbton",
     "vignette": "Vignette",
     "blur": "Weichzeichner"
+  },
+  "basket": {
+    "basket": "Warenkorb",
+    "subTotalWithoutShipping": "Zwischensumme ohne Lieferkosten",
+    "toCheckout": "Jetzt zur Kasse"
   }
 }

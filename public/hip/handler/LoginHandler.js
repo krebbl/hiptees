@@ -128,7 +128,7 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                 this.set('session', session);
                 this._saveSessionToken(session.$.id);
                 this.$.api.set('sessionToken', session.$.id);
-                this.trigger('on:userLoggedIn', {session: session}, this);
+                this.trigger('on:userLoggedIn', {session: session, user: session.$.user}, this);
             } else {
                 this._clearSessionToken();
                 this.trigger('on:loginFailed', {}, this);

@@ -108,7 +108,7 @@ define(["js/html/HtmlElement", "js/core/List"], function (HtmlElement, List) {
                 if (option) {
                     option.selected = true;
                 }
-            } else if (this.$.emptyOption) {
+            } else if (this.$.emptyOption && this.$el.childNodes.length) {
                 this.$el.childNodes[0].selected = true;
             }
         },

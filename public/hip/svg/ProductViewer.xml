@@ -4,6 +4,8 @@
 
     <image href="{appearance.resources.MEDIUM}" width="100%" height="100%"/>
 
+    <rect fill="url(#p-img)" width="100" height="200" />
+
     <g cid="printAreaContainer">
         <parent:PrintAreaViewer cid="printAreaViewer" printArea="{productType.printArea}"/>
     </g>

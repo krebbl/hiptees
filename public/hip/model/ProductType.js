@@ -1,13 +1,15 @@
-define(["js/data/Model", "hip/entity/PrintArea", "hip/entity/Appearance"], function (Model, PrintArea, Appearance) {
-    return Model.inherit('hip.model.ProductType',{
-        defaults: {
-
-        },
+define(["js/data/Model", "hip/entity/PrintArea", "hip/entity/Appearance", "hip/entity/Size"], function (Model, PrintArea, Appearance, Size) {
+    return Model.inherit('hip.model.ProductType', {
+        defaults: {},
         schema: {
-            size: Object,
+            size: Size,
+            sizes: [Size],
             printArea: PrintArea,
             appearances: [Appearance],
-            resources: Object
+            resources: {
+                type: Object,
+                generated: true
+            }
         }
     })
 });

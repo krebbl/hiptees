@@ -394,7 +394,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             return this.$snappingPoints;
         }
 
-
     });
 
 

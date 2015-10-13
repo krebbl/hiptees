@@ -1,0 +1,5 @@
+<parent:MiniBasketButtonClass xmlns="http://www.w3.org/1999/xhtml"
+                       xmlns:parent="hip.view">
+    <i class="fa fa-shopping-cart"/>
+    <span class="mini-basket-btn__quantity" visible="{basket.totalQuantity}">{basket.totalQuantity}</span>
+</parent:MiniBasketButtonClass>

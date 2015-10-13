@@ -1,6 +1,18 @@
 <parent:TextConfigurationViewerClass xmlns="http://www.w3.org/2000/svg"
                                     xmlns:parent="hip.svg" xmlns:js="js.core">
 
+    <pattern
+            id="p-img"
+            viewBox="0 0 {printArea.size.width} {printArea.size.height}"
+            patternUnits="userSpaceOnUse"
+            patternContentUnits="objectBoundingBox"
+            width="{printArea.size.width}" height="{printArea.size.height}"
+            x="{negate(_realOffset.x)}"
+            y="{negate(_realOffset.y)}">
+        <image href="http://4vector.com/i/free-vector-beautiful-pattern-background-08-vector_015048_all-free-download.com_109591202.jpg"
+               width="{printArea.size.height}" height="{printArea.size.height}"/>
+    </pattern>
+
     <js:Content name="renderer">
         <parent:TextRenderer cid="textRenderer" textFlow="{configuration.textFlow}" maxWidth="{maxWidth}" onclick="_preventDefault" onsizeChanged="_handleSizeChange"/>
     </js:Content>

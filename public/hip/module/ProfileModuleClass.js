@@ -48,7 +48,7 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                         var collection = this.$.user.getCollection(list);
                         collection.invalidatePageCache();
                     }
-                    this.showList(this.$.activeList);
+                    this.showList(product.$.state == "draft" ? "drafts" : product.$.state);
                 }
             }, this);
         },

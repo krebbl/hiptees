@@ -1,0 +1,28 @@
+<parent:RegisterModuleClass xmlns="http://www.w3.org/1999/xhtml"
+                            xmlns:parent="hip.module">
+
+    <div class="header">
+        <div class="register__profile-image">
+            <img src="{user.profileImage}" alt="profile image"/>
+        </div>
+    </div>
+
+    <div class="content" cid="content">
+        <div>
+            <div class="register__username">
+                <input type="text" value="{username}"/>
+            </div>
+        </div>
+        <div class="register__final-step">
+            <p>
+
+            </p>
+            <a class="btn btn-success" onclick="finishRegistration">
+                REGISTER
+            </a>
+
+        </div>
+
+    </div>
+
+</parent:RegisterModuleClass>

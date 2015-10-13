@@ -1,0 +1,94 @@
+.basket {
+  color: $color-dark1;
+
+  &__total {
+    padding: 8px 15px;
+    border-bottom: 1px solid lightgrey;
+    text-align: right;
+    font-size: 0.8em;
+  }
+
+  &__item {
+    position: relative;
+    padding: 15px;
+    border-bottom: 1px solid lightgrey;
+
+  }
+
+  &__item-image {
+    width: 100px;
+    background-color: #B1B1B1;
+    height: 100px;
+    display: inline-block;
+    vertical-align: top;
+
+    > img {
+      width: 100%;
+    }
+  }
+
+  &__item-options {
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  &__item-size {
+
+    > .btn {
+      position: relative;
+      width: 135px;
+    }
+  }
+
+  &__item-options label {
+    vertical-align: top;
+    width: 55px;
+    display: inline-block;
+    padding-top: 6px;
+  }
+
+
+  &__item-price {
+    color: $color-dark1;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  &__item-quantity {
+    margin-top: 8px;
+    > input {
+      -webkit-appearance: none;
+      border: 1px solid lightgray;
+      padding: 7px 8px;
+      border-radius: 5px;
+      width: 135px;
+    }
+  }
+
+  &__item-delete-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 16px;
+    color: $color-dark2;
+  }
+
+  &__summary {
+    padding: 15px 15px;
+  }
+
+  &__total-price {
+    float: right;
+    font-weight: bold;
+  }
+
+  &__btn-wrapper {
+    padding: 7px 15px;
+    > .btn {
+      display: block;
+      width: 100%;
+    }
+  }
+
+}

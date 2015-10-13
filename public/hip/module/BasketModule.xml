@@ -1,6 +1,6 @@
 <parent:BasketModuleClass xmlns="http://www.w3.org/1999/xhtml"
-                                 xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui"
-                                 xmlns:view="hip.view">
+                          xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui"
+                          xmlns:view="hip.view">
 
     <div class="header">
         <a onclick="goBack" class="back-btn">
@@ -12,42 +12,64 @@
     <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>
 
     <div class="content" cid="content">
-        <div class="basket-item">
-            <div class="basket-item__image">
-
-            </div>
-            <div class="basket-item__options">
-                <div class="basket-item__price">
-                     19,99 €
-                </div>
-                <div class="basket-item__description">
-                    BLABLK
-                </div>
-                <div class="basket-item__size">
-
-                </div>
-                <div class="basket-item__quantity">
-
-                </div>
-                <a class="basket-item__delete-btn">d</a>
-            </div>
-        </div>
         <div class="basket__total">
+            {basket.totalQuantity} {i18n.t('general.article')}
+        </div>
+        <ui:ItemsView items="{basket.items}">
+            <js:Template name="item">
+                <div class="basket__item">
+                    <a class="basket__item-image" onclick="_gotoProduct(item.product)">
+                        <img src="{item.product.resources.SMALL}"/>
+                    </a>
+                    <div class="basket__item-options">
+                        <div class="basket__item-price">
+                            {item.price} €
+                        </div>
+                        <div class="basket__item-description">
+                            {item.product.description}
+                        </div>
+                        <div class="basket__item-size">
+                            <label>${i18n.t('general.size')}:</label>
+                            <div class="btn btn-whitesmoke">
+                                <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true"
+                                                 items="{item.product.productType.sizes}"
+                                                 enableAutoFillCheck="false"
+                                                 selectedItem="{item.size}"
+                                                 onchange="_updateSize(item, event)"
+                                                 valuePath="id"/>
+                                <i class=" fa fa-angle-down pull-right"/>
+                            </div>
+                        </div>
+                        <div class="basket__item-quantity">
+                            <label>${i18n.t('general.quantity')}:</label>
+                            <input type="text" value="{item.quantity}"
+                                   onchange="_handleQuantityChange(item,event)"
+                                   onblur="_handleQuantityChange(item,event)"/>
+                        </div>
+                        <a class="basket__item-delete-btn" onclick="_removeItem(item)">
+                            <i class=" fa fa-trash"/>
+                        </a>
+                    </div>
+                </div>
+            </js:Template>
+        </ui:ItemsView>
+        <div class="basket__summary">
+            <label>${i18n.t('basket.subTotalWithoutShipping')}</label>
             <div class="basket__total-price">
-                19,99 €
+                <div>{basket.totalPrice} €</div>
             </div>
         </div>
-        <div>
-            <button>JETZT BEZAHLEN</button>
+        <div class="basket__btn-wrapper">
+            <button class="btn btn-orange">${i18n.t('basket.toCheckout')}</button>
         </div>
         <!--<ui:ItemsView items="{products}" tagName="ul" class="product-list">-->
-            <!--<js:Template name="item">-->
-                <!--<li>-->
-                    <!--<a onclick="selectProductPreset(item, event)">-->
-                        <!--<view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>-->
-                    <!--</a>-->
-                <!--</li>-->
-            <!--</js:Template>-->
+        <!--<js:Template name="item">-->
+        <!--<li>-->
+        <!--<a onclick="selectProductPreset(item, event)">-->
+        <!--<view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--</js:Template>-->
         <!--</ui:ItemsView>-->
     </div>
 

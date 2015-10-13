@@ -4,9 +4,7 @@
 
     <div class="header">
         <h2>${i18n.t('profile.yourProfile')}</h2>
-        <a class="logout" onclick="logout">
-            Logout
-        </a>
+        <view:MiniBasketButton onclick="goToBasket()"/>
     </div>
 
     <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>

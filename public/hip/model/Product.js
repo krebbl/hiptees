@@ -42,10 +42,9 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
         parse: function () {
             var ret = this.callBase();
 
-            var appearance = ret.productType.createEntity(Appearance, ret.appearance.$.id);
-
-
-            ret.appearance = appearance;
+            if(ret.productType){
+                ret.appearance = ret.productType.createEntity(Appearance, ret.appearance.$.id);
+            }
 
             return ret;
         },

@@ -1,0 +1,24 @@
+.mini-basket-btn {
+  position: absolute;
+  display: block;
+  right: 0;
+  font-size: 30px;
+  padding: 6px 15px;
+  color: white;
+  top: 20px;
+  z-index: 2;
+
+  &__quantity {
+    font-size: 8px;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    background-color: $color-dark1;
+    width: 17px;
+    height: 17px;
+    padding: 4px;
+    border-radius: 10px;
+  }
+
+
+}

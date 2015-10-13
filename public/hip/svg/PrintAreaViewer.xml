@@ -3,6 +3,10 @@
                              translateX="{printArea.offset.x}"
                              translateY="{printArea.offset.y}">
 
+    <pattern id="muster_a" patternUnits="userSpaceOnUse" width="308" x="0"
+             y="0">
+        <image href="http://img.pr0gramm.com/2015/09/29/fa8ecc8cd5549029.jpg" width="100%"/>
+    </pattern>
 
     <rect width="{printArea.size.width}"
           cid="border"
@@ -21,7 +25,7 @@
                     onpointerdown="handlePointerDown('resize','b',event)"/>
 
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
@@ -31,7 +35,7 @@
                     fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','lt',event)"/>
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
@@ -41,7 +45,7 @@
                     fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','l',event)"/>
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
@@ -51,7 +55,7 @@
                     fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','r',event)"/>
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
@@ -61,7 +65,7 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','lb',event)"/>
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
@@ -71,7 +75,7 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','rb',event)"/>
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>
@@ -81,7 +85,7 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','rt',event)"/>
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
 
@@ -91,7 +95,7 @@
             <circle r="{handleWidth}" fill-opacity="0"
                     onpointerdown="handlePointerDown('resize','t',event)"/>
 
-            <circle r="{quarter(handleWidth)}"
+            <circle r="{half(handleWidth)}"
                     class="configuration-handle"
                     style="pointer-events: none;"/>
         </g>

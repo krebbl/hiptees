@@ -1,14 +1,14 @@
 @import "settings/colors";
 //#64AB23
-
 @import "settings/layout";
 @import "generic/resets";
-
 @import "base/elements";
-
 @import "components/btn";
+@import "components/notifications";
 @import "components/save-view";
-
+@import "components/size-table-view";
+@import "components/basket";
+@import "components/mini-basket-btn";
 
 .back-to-top-wrapper {
   position: absolute;
@@ -283,17 +283,6 @@ $settings-height: 210px;
     position: absolute;
     display: block;
     left: 0;
-    font-size: 30px;
-    padding: 6px 15px;
-    color: white;
-    top: 20px;
-    z-index: 2;
-  }
-
-  .basket-btn {
-    position: absolute;
-    display: block;
-    right: 0;
     font-size: 30px;
     padding: 6px 15px;
     color: white;
@@ -1183,8 +1172,9 @@ input[type=checkbox]:checked, input[type=radio]:checked {
     font-size: 12px;
   }
 
-  .btn {
+  .btn-success, .btn-secondary {
     display: block;
+    margin-bottom: 10px;
   }
 
   .btn-remix {
@@ -1243,6 +1233,8 @@ input[type=checkbox]:checked, input[type=radio]:checked {
     > * {
       display: inline-block;
       width: 48%;
+      position: relative;
+      vertical-align: top;
     }
 
     > *:first-child {
@@ -1252,7 +1244,6 @@ input[type=checkbox]:checked, input[type=radio]:checked {
     > *:last-child {
       margin-left: 2%;
     }
-
   }
 
   .price {
@@ -1265,53 +1256,6 @@ input[type=checkbox]:checked, input[type=radio]:checked {
 
 }
 
-.notifications {
-  position: absolute;
-  top: $header-height;
-  z-index: 111;
-  width: 100%;
-  overflow: hidden;
-
-  &__message {
-    background-color: #FF7171;
-    width: 100%;
-    display: block;
-    color: white;
-
-    > p {
-      padding: 12px 20px;
-      margin: 0;
-    }
-
-  }
-
-  &__message-add {
-    animation: flyin 1s;
-  }
-
-  &__message-remove {
-    animation: fadeout 1s;
-  }
-
-  @keyframes flyin {
-    from {
-      margin-top: -100px;
-    }
-    to {
-      margin-top: 0;
-    }
-  }
-
-  @keyframes fadeout {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
-}
 .empty-list-message {
   margin: 48px 70px;
   text-align: center;

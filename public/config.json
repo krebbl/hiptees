@@ -26,6 +26,7 @@
         "hip/view/BackToTop",
         "hip/view/ImageSettingsView",
         "hip/view/LazyImage",
+        "hip/view/MiniBasketButton",
         "hip/view/SettingsView",
         "hip/view/ShapeSettingsView",
         "hip/view/SwipeContainer",

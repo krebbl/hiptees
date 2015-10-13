@@ -28,7 +28,7 @@
         <js:NotificationManager cid="notificationManager">
             <js:Template name="default">
                 <div animationClass="notifications__message" class="notifications__message">
-                    <p>HALLO</p>
+                    <p>{message}</p>
                 </div>
             </js:Template>
         </js:NotificationManager>

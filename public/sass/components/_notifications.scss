@@ -1,0 +1,48 @@
+.notifications {
+  position: absolute;
+  top: $header-height;
+  z-index: 111;
+  width: 100%;
+  overflow: hidden;
+
+  &__message {
+    background-color: #4dff6f;
+    width: 100%;
+    display: block;
+    color: white;
+
+    > p {
+      text-align: center;
+      padding: 12px 20px;
+      margin: 0;
+    }
+
+  }
+
+  &__message-add {
+    animation: flyin 1s;
+  }
+
+  &__message-remove {
+    animation: fadeout 1s;
+  }
+
+  @keyframes flyin {
+    from {
+      margin-top: -100px;
+    }
+    to {
+      margin-top: 0;
+    }
+  }
+
+  @keyframes fadeout {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+}

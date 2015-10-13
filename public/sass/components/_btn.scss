@@ -6,6 +6,18 @@
   border-radius: 0.5em;
   text-align: center;
   border: 1px solid transparent;
+
+  > select {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    font-size: inherit;
+    padding-left: 0.7em;
+    background-color: transparent;
+    border: none;
+  }
 }
 
 .btn-secondary {
@@ -33,4 +45,11 @@
   background: whitesmoke;
   color: $color-dark1;
   border-color: $color-lightgray;
+}
+
+.btn-orange {
+  background: orange;
+  border-color: lighten(#FFA500, 10%);
+  color: white;
+
 }

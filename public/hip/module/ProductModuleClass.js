@@ -11,7 +11,8 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             }, {
                 "id": "2",
                 "name": "M"
-            }]
+            }],
+            sizeTableVisible: false
         },
 
         inject: {
@@ -37,12 +38,20 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                 var product = api.createCollection(Collection.of(Product)).createItem(match[1]);
                 var self = this;
 
-                product.fetch({}, function (err, product) {
-                    if (!err) {
-                        self.set('product', product);
-                    }
-                    callback && callback(err);
-                });
+                flow()
+                    .seq(function (cb) {
+                        product.fetch({}, cb);
+                    })
+                    .seq(function (cb) {
+                        product.$.productType.fetch({}, cb);
+                    })
+                    .exec(function (err) {
+                        if (!err) {
+                            self.set('product', product);
+                        }
+
+                        callback && callback(err);
+                    })
             } else {
                 callback && callback();
             }
@@ -64,6 +73,23 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                 quantity: 1
             }));
         },
+
+        mmToMm: function (value) {
+            if (value == null) {
+                return 0;
+            }
+
+            return (value / 10).toFixed(2);
+        },
+
+        oddClass: function (index) {
+            return index % 2 == 0 ? "even" : "odd";
+        },
+
+        toggleSizeTable: function (show) {
+            this.set('sizeTableVisible', show);
+        },
+
         sizeString: function (size) {
             return "Größe: " + size;
         }

@@ -7,9 +7,7 @@
             <i class="fa fa-angle-left"/>
         </a>
         <h2>${i18n.t('product.buyAndShare')}</h2>
-        <a class="basket-btn" onclick="goToBasket()">
-            <i class="fa fa-shopping-cart"/>
-        </a>
+        <view:MiniBasketButton onclick="goToBasket()"/>
     </div>
 
     <div class="content">
@@ -28,15 +26,59 @@
             </div>
         </div>
         <div class="size-options">
-            <view:FastSelect class="btn btn-whitesmoke"
-                             emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true" items="{sizes}"
-                             enableAutoFillCheck="false"
-                             selectedItem="{{selectedSize}}"
-                             valuePath="id"/>
-            <a class="btn btn-white btn-size-table" onclick="showNotification">${i18n.t('product.sizeTable')}</a>
+            <div class="btn btn-whitesmoke">
+                <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true" items="{product.productType.sizes}"
+                                 enableAutoFillCheck="false"
+                                 selectedItem="{{selectedSize}}"
+                                 valuePath="id"/>
+
+                <i class="fa fa-angle-down pull-right"/>
+            </div>
+            <a class="btn btn-white btn-size-table" onclick="toggleSizeTable(true)">${i18n.t('product.sizeTable')}</a>
         </div>
         <a class="btn btn-success" onclick="addToBasket">${i18n.t('product.addToBasket')}</a>
         <a class="btn btn-secondary" onclick="remixProduct" visible="{remixAllowed(product)}">${i18n.t('product.remix')}</a>
+
+    </div>
+
+    <div class="size-table-view" selected="{sizeTableVisible}">
+        <h2 class="size-table-view__heading">${i18n.t('sizeTable.for')} {product.productType.name}</h2>
+        <a class="size-table-view__close" onclick="toggleSizeTable(false)">
+            <i class="fa fa-times"/>
+        </a>
+        <table class="size-table-view__table" border="1" cellpadding="4">
+            <thead>
+                <tr>
+                    <th>
+                        <b>${i18n.t('general.size')}</b>
+                    </th>
+                    <th>
+                        <b>${i18n.t('sizeTable.length')}</b>
+                    </th>
+                    <th>
+                        <b>${i18n.t('sizeTable.brust')}</b>
+                    </th>
+                </tr>
+                <tr>
+                    <th/>
+                    <th>CM</th>
+                    <th>CM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <js:Repeat items="{product.productType.sizes}" itemKey="size">
+                    <js:Template name="item">
+                        <tr class="{oddClass(index)}">
+                            <td>
+                                <b>{size.name}</b>
+                            </td>
+                            <td>{mmToMm(size.measures.[0].value.value)}</td>
+                            <td>{mmToMm(size.measures.[1].value.value)}</td>
+                        </tr>
+                    </js:Template>
+                </js:Repeat>
+            </tbody>
+        </table>
 
     </div>
 

@@ -1,9 +1,9 @@
 <parent:ShapeConfigurationViewer xmlns="http://www.w3.org/2000/svg"
                                  xmlns:parent="hip.svg" xmlns:js="js.core" minWidth="5" minHeight="5">
     <js:Content name="shape">
-        <rect   x="{half(configuration.strokeWidth)}"
-                y="{half(configuration.strokeWidth)}"
-                width="{inner(_size.width, 1, configuration.strokeWidth)}"
-                height="{inner(_size.height, 1, configuration.strokeWidth)}"/>
+        <rect x="{half(configuration.strokeWidth)}"
+              y="{half(configuration.strokeWidth)}"
+              width="{inner(_size.width, 1, configuration.strokeWidth)}"
+              height="{inner(_size.height, 1, configuration.strokeWidth)}"/>
     </js:Content>
 </parent:ShapeConfigurationViewer>

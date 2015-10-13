@@ -103,14 +103,22 @@ define(
                 };
 
 
-                this.$.loginHandler.bind("on:userLoggedIn", function () {
+                this.$.loginHandler.bind("on:userLoggedIn", function (e) {
                     if (!appStarted) {
                         appStarted = true;
                         callback();
                     }
-                    executor.storeAndExecute(new Navigate({
-                        fragment: "profile"
-                    }));
+                    var data = e.$;
+                    var userRegistered = data.session.get('user.state') == "registered";
+                    //if (userRegistered) {
+                        executor.storeAndExecute(new Navigate({
+                            fragment: "profile"
+                        }));
+                    //} else {
+                    //    executor.storeAndExecute(new Navigate({
+                    //        fragment: "register"
+                    //    }));
+                    //}
                 });
 
                 this.$.productHandler.bind('on:productSave', this.showLoading, this);
@@ -118,8 +126,8 @@ define(
 
 
                 this.$.productHandler.bind('on:addingImage', this.showLoading, this);
-                this.$.productHandler.bind('on:', this.hideLoading, this);
 
+                this.$.productHandler.bind('on:productSaved', this.goToProfileModule, this);
 
                 this.$.loginHandler.bind('on:loginFailed', function () {
                     if (!appStarted) {
@@ -164,6 +172,15 @@ define(
                 }
 
                 return "dev";
+            },
+
+            goToProfileModule: function () {
+                this.$.swipeView.goTo("profile");
+                var self = this;
+                setTimeout(function () {
+                    self.$.notificationManager.showNotification('default', {message: self.$.i18n.t('message.productSaved')}, {duration: 3});
+                }, 300);
+
             },
 
             showLoading: function () {

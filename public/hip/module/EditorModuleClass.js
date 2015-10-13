@@ -239,6 +239,7 @@ define([
         },
 
         saveProductFinal: function () {
+            this.showView(null);
             this.$.executor.storeAndExecute(new SaveProduct({state: this.$.makePublic ? "public" : "private"}));
         },
 

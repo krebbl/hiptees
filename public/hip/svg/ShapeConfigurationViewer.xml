@@ -1,12 +1,25 @@
 <parent:ShapeConfigurationViewerClass xmlns="http://www.w3.org/2000/svg"
                                       xmlns:parent="hip.svg" xmlns:js="js.core" minWidth="5" minHeight="5">
+    <pattern
+            id="p-img"
+            viewBox="0 0 {printArea.size.width} {printArea.size.height}"
+            patternUnits="userSpaceOnUse"
+            patternContentUnits="objectBoundingBox"
+            width="{printArea.size.width}" height="{printArea.size.height}"
+            x="{negate(_realOffset.x)}"
+            y="{negate(_realOffset.y)}">
+        <image href="http://4vector.com/i/free-vector-beautiful-pattern-background-08-vector_015048_all-free-download.com_109591202.jpg"
+               width="{printArea.size.height}" height="{printArea.size.height}"
+               preserveAspectRatio="xMinYMax slice"/>
+    </pattern>
+
     <js:Content name="renderer">
         <parent:ContentPlaceHolder name="shape"
                                    stroke="{configuration.stroke.toString()}"
                                    stroke-location="inside"
                                    stroke-width="{configuration.strokeWidth}"
                                    fill-opacity="{configuration.fillOpacity}"
-                                   fill="{configuration.fill.toString()}"/>
+                                   fill="url(#p-img)"/>
 
     </js:Content>
 </parent:ShapeConfigurationViewerClass>
