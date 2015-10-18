@@ -10,15 +10,17 @@
     <div class="content" cid="content">
         <div>
             <div class="register__username">
-                <input type="text" value="{username}"/>
+                <i class="fa fa-user"/>
+                <input type="text" value="{{username}}"/>
+                <span>vorgeschlagen</span>
             </div>
         </div>
         <div class="register__final-step">
             <p>
-
+               indem du dich registrierst, stimmst du den AGB's und Datenschutzbestimmungen zu
             </p>
             <a class="btn btn-success" onclick="finishRegistration">
-                REGISTER
+                Account erstellen
             </a>
 
         </div>

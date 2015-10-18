@@ -1,14 +1,15 @@
-define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/Session", "hip/command/LoginCommand", "hip/command/LogoutCommand", "flow", "js/data/Collection", "hip/model/User"], function (CommandHandler, HipDataSource, Session, LoginCommand, LogoutCommand, flow, Collection, User) {
+define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/Session", "hip/command/LoginCommand", "hip/command/LogoutCommand", "flow", "js/data/Collection", "hip/model/User", "hip/command/RegisterCommand", "hip/model/RegisterUser"], function (CommandHandler, HipDataSource, Session, LoginCommand, LogoutCommand, flow, Collection, User, RegisterCommand, RegisterUser) {
     return CommandHandler.inherit({
         defaults: {
-            session: null
+            session: null,
+            user: "{session.user}"
         },
         inject: {
             api: HipDataSource
         },
 
         isResponsibleForCommand: function (command) {
-            return command instanceof LoginCommand || command instanceof LogoutCommand;
+            return command instanceof LoginCommand || command instanceof LogoutCommand || command instanceof RegisterCommand;
         },
 
         handleCommand: function (command) {
@@ -82,13 +83,28 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                         self._handleSessionResponse(err, session);
                     })
                 }
+            } else if (command instanceof RegisterCommand) {
+
+                session = this.$.session;
+                if (session) {
+                    var registerUser = this.$.api.createEntity(RegisterUser);
+
+                    registerUser.set('username', command.$.username);
+                    registerUser.save({}, function (err, user) {
+                        if (!err) {
+                            session.set('user', user);
+                            self.trigger('on:registrationCompleted');
+                        } else {
+                            self.trigger('on:registrationFailed', err);
+                        }
+                    });
+
+                }
 
             } else if (command instanceof LogoutCommand) {
 
                 session = this.$.session;
                 if (session) {
-
-
                     self.trigger('on:logout', {}, self);
                     flow()
                         .seq(function (cb) {
@@ -130,6 +146,7 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                 this.$.api.set('sessionToken', session.$.id);
                 this.trigger('on:userLoggedIn', {session: session, user: session.$.user}, this);
             } else {
+                this.unset('session');
                 this._clearSessionToken();
                 this.trigger('on:loginFailed', {}, this);
             }

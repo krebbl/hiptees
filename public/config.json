@@ -10,6 +10,7 @@
         "hip/module/ProductPresetModule",
         "hip/module/ProductTypeModule",
         "hip/module/ProfileModule",
+        "hip/module/RegisterModule",
         "hip/svg/CircleConfigurationViewer",
         "hip/svg/ConfigurationViewer",
         "hip/svg/DesignConfigurationViewer",

@@ -110,20 +110,25 @@ define(
                     }
                     var data = e.$;
                     var userRegistered = data.session.get('user.state') == "registered";
-                    //if (userRegistered) {
+                    if (userRegistered) {
                         executor.storeAndExecute(new Navigate({
                             fragment: "profile"
                         }));
-                    //} else {
-                    //    executor.storeAndExecute(new Navigate({
-                    //        fragment: "register"
-                    //    }));
-                    //}
+                    } else {
+                        executor.storeAndExecute(new Navigate({
+                            fragment: "register"
+                        }));
+                    }
+                });
+
+                this.$.loginHandler.bind('on:registrationCompleted', function () {
+                    executor.storeAndExecute(new Navigate({
+                        fragment: "profile"
+                    }));
                 });
 
                 this.$.productHandler.bind('on:productSave', this.showLoading, this);
                 this.$.productHandler.bind('on:productSaved', this.hideLoading, this);
-
 
                 this.$.productHandler.bind('on:addingImage', this.showLoading, this);
 

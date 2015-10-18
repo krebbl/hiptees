@@ -9,6 +9,7 @@
 @import "components/size-table-view";
 @import "components/basket";
 @import "components/mini-basket-btn";
+@import "components/register";
 
 .back-to-top-wrapper {
   position: absolute;
@@ -154,6 +155,7 @@
   }
 
   .next-module {
+    z-index: 1;
     -webkit-transform: translate3d(100%, 0, 0);
     -webkit-box-shadow: none;
     -moz-box-shadow: none;

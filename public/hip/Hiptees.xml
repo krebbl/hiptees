@@ -45,6 +45,7 @@
     <view:SwipeContainer cid="swipeView" class="container" ongoTo="toggleLoading(true)"
                          ongoToFinished="toggleLoading(false)" visible="{started}">
         <module:LoginModule name="login" handles="^login.*"/>
+        <module:RegisterModule name="register" handles="^register.*"/>
         <module:ProfileModule name="profile" handles="^profile.*"/>
         <module:ProductTypeModule name="product-types" handles="^productTypes.*"/>
         <module:ProductPresetModule name="presets" handles="^preset.*"/>
