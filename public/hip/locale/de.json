@@ -50,7 +50,8 @@
     "publishShirtHint": "So können es auch andere kaufen",
     "saveFinal": "Final speichern",
     "saveAsDraft": "Als Entwurf speichern",
-    "giveItAName": "Geb dem Shirt einen Namen"
+    "giveItAName": "Geb dem Shirt einen Namen",
+    "confirmGoBack": "Willst du wirklich zurück? Alle deine Änderungen gehen verloren!"
   },
   "settings": {
     "color": "Farbe",
@@ -59,6 +60,8 @@
     "strokeWidth": "Linienbreite"
   },
   "textSettings": {
+    "bold": "fett",
+    "italic": "kursiv",
     "fontFamily": "Schriftart",
     "fontSizeAndSettings": "Schriftgröße und Einstellungen",
     "fontSize": "Schriftgröße",
