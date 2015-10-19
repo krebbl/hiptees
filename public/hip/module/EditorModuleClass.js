@@ -247,6 +247,12 @@ define([
             return val != null ? val.toFixed(0) : 0;
         },
 
+        confirmGoBack: function(){
+            var yes = window.confirm(this.$.i18n.t('editor.confirmGoBack'));
+            if(yes){
+                this.goBack();
+            }
+        },
         goBack: function () {
             if (this.$.zoomed) {
                 this.toggleZoom();
