@@ -12,6 +12,7 @@ define([
     "hip/command/AddImageFile",
     "hip/command/AddShape",
     "hip/command/ChangeProductType",
+    "hip/command/ReplaceImageFile",
     "hip/entity/TextConfiguration",
     "hip/entity/DesignConfiguration",
     "hip/entity/RectangleConfiguration",
@@ -28,7 +29,7 @@ define([
     "text/entity/TextFlow",
     "flow",
     "underscore"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, PointDownConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, PointDownConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, ReplaceImageFile, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
     var undefined;
 
     return Handler.inherit({
@@ -117,10 +118,10 @@ define([
                 leafStyle.color = this.get('product.appearance.name') == "black" ? "#ffffff" : "#000000";
 
                 (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, leafStyle, command.$.paragraphStyle || {
-                    letterSpacing: 0,
-                    fontSize: 30,
-                    lineHeight: 1.3
-                })).doOperation();
+                        letterSpacing: 0,
+                        fontSize: 30,
+                        lineHeight: 1.3
+                    })).doOperation();
 
 
                 configuration = this.$.product.createEntity(TextConfiguration, this._generateConfigurationId());
@@ -150,28 +151,8 @@ define([
 
                 offset = this._convertOffset(command.$.offset);
 
-                var imageFileReader = this.$.imageFileReader;
-
-                imageFileReader.readFile(file, function (err, image) {
+                this._imageFileToDesign(file, function (err, design) {
                     if (!err) {
-                        var designs = self.$.api.createCollection(Collection.of(Design));
-
-                        var design = designs.createItem();
-
-                        design.set({
-                            id: null,
-                            file: file,
-                            type: "image",
-                            resources: {
-                                SCREEN: imageFileReader.resizeImage(image, 800, 800),
-                                SMALL: imageFileReader.resizeImage(image, 100, 100)
-                            },
-                            size: {
-                                width: image.width,
-                                height: image.height
-                            }
-                        });
-
                         var printAreaWidth = self.get('product.productType.printArea.size.width');
                         var height = design.getAspectRatio() * self.get('product.productType.printArea.size.width');
                         configuration = self.$.product.createEntity(DesignConfiguration, self._generateConfigurationId());
@@ -192,11 +173,43 @@ define([
                         self.trigger('on:configurationAdded', {configuration: configuration});
 
                         self._selectConfiguration(configuration);
-
                     }
-                    self.trigger('on:imageAdded', {});
                 });
+            } else if (command instanceof ReplaceImageFile) {
 
+                configuration = command.$.configuration;
+                if (configuration instanceof DesignConfiguration) {
+                    if (!command.$.file) {
+                        return;
+                    }
+
+                    var newConfig = this.$.product.createEntity(configuration.factory, this._generateConfigurationId());
+                    var clone = configuration.clone();
+                    clone.unset('id');
+                    clone.set({
+                        offset: {
+                            x: configuration.get('offset.x') + 10,
+                            y: configuration.get('offset.y') + 10
+                        }
+                    });
+
+                    newConfig.set(clone.$);
+
+
+                    this._imageFileToDesign(command.$.file, function (err, design) {
+                        if (!err) {
+                            newConfig.set('design', design);
+                            self.$.product.$.configurations.remove(configuration);
+                            self.trigger('on:configurationRemoved', {configuration: configuration});
+
+                            self.$.product.$.configurations.add(newConfig);
+                            self.trigger('on:configurationAdded', {configuration: newConfig});
+
+                            self.trigger('on:imageReplaced', {configuration: newConfig});
+                            self._selectConfiguration(newConfig);
+                        }
+                    });
+                }
 
             } else if (command instanceof AddShape) {
                 var printAreaWidth = self.get('product.productType.printArea.size.width'),
@@ -348,6 +361,36 @@ define([
             } else {
                 callback && callback();
             }
+        },
+
+        _imageFileToDesign: function (file, callback) {
+            var imageFileReader = this.$.imageFileReader,
+                self = this;
+
+            imageFileReader.readFile(file, function (err, image) {
+                if (!err) {
+                    var designs = self.$.api.createCollection(Collection.of(Design));
+
+                    var design = designs.createItem();
+
+                    design.set({
+                        id: null,
+                        file: file,
+                        type: "image",
+                        resources: {
+                            SCREEN: imageFileReader.resizeImage(image, 800, 800),
+                            SMALL: imageFileReader.resizeImage(image, 100, 100)
+                        },
+                        size: {
+                            width: image.width,
+                            height: image.height
+                        }
+                    });
+
+
+                }
+                callback && callback(err, design);
+            });
         },
 
         _generateConfigurationId: function () {

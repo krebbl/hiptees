@@ -1,9 +1,10 @@
 define(["xaml!hip/view/SettingsView",
     "underscore",
     "hip/command/ApplyFilter",
+    "hip/command/ReplaceImageFile",
     "hip/entity/DesignConfiguration",
     "hip/entity/Filter",
-    'json!hip/asset/filters'], function (SettingsView, _, ApplyFilter, DesignConfiguration, Filter, filters) {
+    'json!hip/asset/filters'], function (SettingsView, _, ApplyFilter, ReplaceImageFile, DesignConfiguration, Filter, filters) {
 
 
     return SettingsView.inherit({
@@ -11,7 +12,8 @@ define(["xaml!hip/view/SettingsView",
             componentClass: "settings-view image-settings-view",
             presets: filters.filters,
             selectedPreset: null,
-            presetsInView: true
+            presetsInView: true,
+            fileInput: null
         },
 
         supportedConfiguration: DesignConfiguration,
@@ -29,8 +31,25 @@ define(["xaml!hip/view/SettingsView",
             this.set('presetsInView', top < 100);
         },
 
-        _selectSubContent: function () {
+        //_selectSubContent: function () {
+        //
+        //},
 
+        _replaceImage: function(){
+            // Simulate click on the element.
+            var evt = document.createEvent('Event');
+            evt.initEvent('click', true, true);
+            this.$.fileInput.$el.dispatchEvent(evt);
+        },
+
+        handleUpload: function (e) {
+            var files = e.domEvent.target.files;
+            if (files && files.length) {
+                this.$.executor.storeAndExecute(new ReplaceImageFile({
+                    configuration: this.$.configuration,
+                    file: files[0]
+                }));
+            }
         },
 
         _selectPreset: function (preset) {
