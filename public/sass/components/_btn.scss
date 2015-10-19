@@ -18,6 +18,10 @@
     background-color: transparent;
     border: none;
   }
+
+  &.disabled {
+    opacity: 0.7;
+  }
 }
 
 .btn-secondary {
@@ -48,8 +52,8 @@
 }
 
 .btn-orange {
-  background: orange;
-  border-color: lighten(#FFA500, 10%);
+  background: $color-orange;
+  border-color: lighten($color-orange, 10%);
   color: white;
 
 }

@@ -12,6 +12,9 @@ define(["hip/view/SwipeView", "hip/command/Executor", "hip/handler/ProductHandle
             notificationManager: NotificationManager
         },
 
+        and: function(a, b){
+            return a && b;
+        },
 
         goBack: function () {
             this.$.executor.storeAndExecute(new NavigateBack());

@@ -75,6 +75,8 @@ table {
     padding-left: 0.7em;
     background-color: transparent;
     border: none; }
+  .btn.disabled {
+    opacity: 0.7; }
 
 .btn-secondary {
   background-color: #525252;
@@ -99,7 +101,7 @@ table {
   border-color: #C5C5C5; }
 
 .btn-orange {
-  background: orange;
+  background: #FFA500;
   border-color: #ffb733;
   color: white; }
 
@@ -292,7 +294,7 @@ table {
     position: absolute;
     top: 2px;
     right: 8px;
-    background-color: #151A20;
+    background-color: #FFA500;
     width: 17px;
     height: 17px;
     padding: 4px;
@@ -336,6 +338,8 @@ table {
     color: #525252;
     font-size: 11px;
     margin-top: 3px; }
+    .register__username > span.error {
+      color: red; }
 
 .register__final-step {
   padding: 15px 30px; }
@@ -922,26 +926,12 @@ ul.product-list .draft-tag {
   bottom: 15px;
   overflow: hidden; }
 
-.fill-settings {
-  width: 30px;
+.color-toggle {
   position: absolute;
-  top: 30px;
-  left: 0; }
-  .fill-settings a {
-    color: white;
-    display: block;
-    text-align: center;
-    padding: 8px 0;
-    background-color: rgba(15, 21, 29, 0.81);
-    font-size: 14px; }
-    .fill-settings a .fa-square-o {
-      display: inline; }
-    .fill-settings a .fa-square {
-      display: none; }
-    .fill-settings a.active .fa-square-o {
-      display: none; }
-    .fill-settings a.active .fa-square {
-      display: inline; }
+  left: -20px;
+  color: white !important; }
+  .color-toggle.active {
+    color: #8A8A8A !important; }
 
 .color-picker-palette {
   display: inline-block; }

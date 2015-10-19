@@ -836,37 +836,30 @@ ul.product-list {
   overflow: hidden;
 }
 
-.fill-settings {
-  width: 30px;
+.color-toggle {
   position: absolute;
-  top: 30px;
-  left: 0;
+  left: -20px;
+  color: white !important;
 
-  a {
-    color: white;
-    display: block;
-    text-align: center;
-    padding: 8px 0;
-    background-color: rgba(15, 21, 29, 0.81);
-    font-size: 14px;
-
-    .fa-square-o {
-      display: inline;
-    }
-    .fa-square {
-      display: none;
-    }
-
-    &.active {
-      .fa-square-o {
-        display: none;
-      }
-      .fa-square {
-        display: inline;
-      }
-    }
-
+  &.active {
+    color: #8A8A8A !important;
   }
+
+  //.color-toggle-off {
+  //  display: inline;
+  //}
+  //.color-toggle-on {
+  //  display: none;
+  //}
+  //
+  //&.active {
+  //  .color-toggle-off {
+  //    display: none;
+  //  }
+  //  .color-toggle-on {
+  //    display: inline;
+  //  }
+  //}
 }
 
 //.last-used-colors {

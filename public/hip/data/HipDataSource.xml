@@ -14,7 +14,9 @@
         <conf:ResourceConfiguration modelClassName="hip.model.ProductType" path="productTypes"/>
         <conf:ResourceConfiguration modelClassName="hip.model.CloudinaryFormData" path="cloudinaryFormData"/>
 
+        <conf:ResourceConfiguration modelClassName="hip.model.CheckUsername" path="checkUsername"/>
         <conf:ResourceConfiguration modelClassName="hip.model.RegisterUser" path="register"/>
+        <conf:ResourceConfiguration modelClassName="hip.model.RegisterUserResult" path="registerResult"/>
 
         <conf:ResourceConfiguration modelClassName="hip.model.AddBasketItem" path="addBasketItem"/>
         <conf:ResourceConfiguration modelClassName="hip.model.RemoveBasketItem" path="removeBasketItem"/>

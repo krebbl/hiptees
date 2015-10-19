@@ -6,7 +6,10 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             handles: "",
             loading: true,
             user: "{loginHandler.user}",
-            username: ""
+            username: "",
+            _showSuggestion: true,
+            _usernameAvailable: true,
+            _checkingUsername: false
         },
 
         inject: {
@@ -19,17 +22,41 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         },
 
         prepare: function (fragment, callback) {
-            var self = this;
 
             this.set('username', this.get('user.username'));
 
             callback && callback();
         },
 
+        handleDelete: function (e) {
+            var domEvent = e.domEvent;
+            if (domEvent.which == 8) {
+                this.checkUsername();
+            }
+        },
+
+        checkUsername: function () {
+            this.set({
+                _showSuggestion: false,
+                _usernameAvailable: false,
+                _checkingUsername: true
+            });
+            var self = this;
+            this._debounceFunctionCall(function (username) {
+                this.$.loginHandler.checkUsername(username, function (err, available) {
+                    self.set('_checkingUsername', false);
+                    self.set('_usernameAvailable', !err && available);
+
+                });
+            }, "checkUsername", 300, this, [this.$.username], "WAIT");
+        },
+
         finishRegistration: function () {
-            this.$.executor.storeAndExecute(new RegisterCommand({
-                username: this.$.username
-            }));
+            if (this.$._usernameAvailable) {
+                this.$.executor.storeAndExecute(new RegisterCommand({
+                    username: this.$.username
+                }));
+            }
         }
     })
 });

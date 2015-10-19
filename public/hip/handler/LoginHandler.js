@@ -1,4 +1,4 @@
-define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/Session", "hip/command/LoginCommand", "hip/command/LogoutCommand", "flow", "js/data/Collection", "hip/model/User", "hip/command/RegisterCommand", "hip/model/RegisterUser"], function (CommandHandler, HipDataSource, Session, LoginCommand, LogoutCommand, flow, Collection, User, RegisterCommand, RegisterUser) {
+define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/Session", "hip/command/LoginCommand", "hip/command/LogoutCommand", "flow", "js/data/Collection", "hip/model/User", "hip/command/RegisterCommand", "hip/model/RegisterUser", "hip/model/CheckUsername"], function (CommandHandler, HipDataSource, Session, LoginCommand, LogoutCommand, flow, Collection, User, RegisterCommand, RegisterUser, CheckUsername) {
     return CommandHandler.inherit({
         defaults: {
             session: null,
@@ -137,6 +137,17 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
             });
 
             return user;
+        },
+
+        checkUsername: function(username, callback){
+
+            var checkUsername = this.$.api.createEntity(CheckUsername);
+
+            checkUsername.set('username', username);
+
+            checkUsername.save({}, function(err, checkUsername){
+                callback(err, checkUsername.$.available);
+            });
         },
 
         _handleSessionResponse: function (err, session) {

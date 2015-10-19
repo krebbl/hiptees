@@ -11,15 +11,19 @@
         <div>
             <div class="register__username">
                 <i class="fa fa-user"/>
-                <input type="text" value="{{username}}"/>
-                <span>vorgeschlagen</span>
+                <input type="text" value="{{username}}" onkeyup="checkUsername" onkeydown="handleDelete"/>
+                <span visible="{_showSuggestion}">vorgeschlagen</span>
+                <span class="error" visible="{and(not(_usernameAvailable),not(_checkingUsername))}">vergeben :(</span>
+                <span visible="{_checkingUsername}">
+                    <i class="fa fa-spinner fa-spin"/>
+                </span>
             </div>
         </div>
         <div class="register__final-step">
             <p>
                indem du dich registrierst, stimmst du den AGB's und Datenschutzbestimmungen zu
             </p>
-            <a class="btn btn-success" onclick="finishRegistration">
+            <a class="btn btn-success" onclick="finishRegistration" enabled="{_usernameAvailable}">
                 Account erstellen
             </a>
 

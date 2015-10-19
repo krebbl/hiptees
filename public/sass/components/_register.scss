@@ -50,6 +50,10 @@
       color: $color-gray;
       font-size: 11px;
       margin-top: 3px;
+
+      &.error {
+        color: red;
+      }
     }
 
   }
