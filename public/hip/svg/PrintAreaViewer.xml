@@ -3,10 +3,10 @@
                              translateX="{printArea.offset.x}"
                              translateY="{printArea.offset.y}">
 
-    <pattern id="muster_a" patternUnits="userSpaceOnUse" width="308" x="0"
-             y="0">
-        <image href="http://img.pr0gramm.com/2015/09/29/fa8ecc8cd5549029.jpg" width="100%"/>
-    </pattern>
+    <!--<pattern id="muster_a" patternUnits="userSpaceOnUse" width="308" x="0"-->
+             <!--y="0">-->
+        <!--<image href="http://img.pr0gramm.com/2015/09/29/fa8ecc8cd5549029.jpg" width="100%"/>-->
+    <!--</pattern>-->
 
     <rect width="{printArea.size.width}"
           cid="border"

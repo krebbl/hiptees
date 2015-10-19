@@ -18,7 +18,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
         },
 
         events: ['on:configurationLongTapped'],
-        $classAttributes: ["product", "productType"],
+        $classAttributes: ["product", "productType", "printAreaViewer", "printAreaContainer", "appearance", "printArea"],
 
         ctor: function () {
             this.callBase();
