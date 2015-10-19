@@ -2,6 +2,10 @@
                           xmlns:parent="hip.view.setting" xmlns:js="js.core" xmlns:ui="js.ui">
 
     <js:Content name="headerInfo">
+        <a class="color-toggle" onclick="_toggleFill" visible="{showToggleColor}" selected="{enableColor}">
+            <!--<i class="color-toggle-off fa fa-square-o"/>-->
+            <i class="color-toggle-on fa fa-ban"/>
+        </a>
         <input type="text" value="{_innerColor.toString()}" onchange="_dispatch(value)" onblur="_fixZoom"/>
     </js:Content>
     <div class="color-picker-wrapper">

@@ -49,14 +49,8 @@
         </div>
     </js:Content>
     <setting:ColorSetting cid="colorContent" selectedColor="{fillColor}"
-                          oncolorSelect="_updateColor(event, 'fill')">
-        <div class="fill-settings">
-            <a onclick="_toggleFill()" selected="{configuration.fillOpacity}">
-                <i class="fa fa-square-o"/>
-                <i class="fa fa-square"/>
-            </a>
-        </div>
-    </setting:ColorSetting>
+                          oncolorSelect="_updateColor(event, 'fill')" showToggleColor="true"
+                          oncolorToggle="_toggleFill()" enableColor="{configuration.fillOpacity}"/>
 
     <setting:ColorSetting cid="strokeColorContent" selectedColor="{strokeColor}"
                           oncolorSelect="_updateColor(event, 'stroke')"/>

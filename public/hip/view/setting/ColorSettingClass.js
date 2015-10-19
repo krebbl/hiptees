@@ -2,10 +2,13 @@ define(["js/core/Content", "js/type/Color"], function (Content, Color) {
     return Content.inherit({
         defaults: {
             selectedColor: null,
-            _innerColor: null
+            _innerColor: null,
+            enableColor: true,
+            showToggleColor: false
         },
         events: [
-            "on:colorSelect"
+            'on:colorSelect',
+            'on:colorToggle'
         ],
 
         _commitSelectedColor: function (color) {
@@ -25,6 +28,11 @@ define(["js/core/Content", "js/type/Color"], function (Content, Color) {
 
         minus: function (a, b) {
             return a - b;
+        },
+
+        _toggleFill: function () {
+            this.set('enableColor', !this.$.enableColor);
+            this.trigger('on:colorToggle', {enabled: this.$.enableColor});
         },
 
         _fixZoom: function () {
