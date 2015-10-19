@@ -368,13 +368,13 @@ $settings-height: 210px;
     right: 110px;
     top: 0;
     bottom: 0;
+    text-align: center;
     input {
       background-color: $color-dark2;
       height: 100%;
       border: none;
       border-radius: 0;
-      margin: 0 auto;
-      display: block;
+      display: inline-block;
       color: white;
       text-align: center;
       font-size: 0.9em;
@@ -837,8 +837,7 @@ ul.product-list {
 }
 
 .color-toggle {
-  position: absolute;
-  left: -20px;
+  display: inline-block;
   color: white !important;
 
   &.active {
