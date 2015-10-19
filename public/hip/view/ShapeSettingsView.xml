@@ -32,7 +32,7 @@
                         ${i18n.t('settings.strokeWidth')}
                     </span>
                     <span class="value">
-                        {configuration.strokeWidth}
+                        {formatNumber(configuration.strokeWidth,1)} mm
                     </span>
                 </a>
             </li>
@@ -41,7 +41,7 @@
     <js:Content cid="strokeContent">
         <div class="slider-label">
             ${i18n.t('settings.strokeWidth')}
-            <strong>{configuration.strokeWidth}</strong>
+            <strong>{formatNumber(configuration.strokeWidth,1)} mm</strong>
         </div>
         <div class="slider-wrapper">
             <ui:Slider min="0" max="10" step="0.5" oninput="_updateAttribute('strokeWidth', value)"

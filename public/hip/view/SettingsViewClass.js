@@ -41,6 +41,14 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
             });
         },
 
+        formatNumber: function (value, digits) {
+            if (typeof(value) == "number") {
+                digits = digits || 2;
+                return value.toFixed(digits);
+            }
+            return "";
+        },
+
         toggle: function () {
             this.trigger('on:closeClicked', {}, this);
         },
