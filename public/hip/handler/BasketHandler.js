@@ -27,8 +27,8 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
 
                     // TODO: implement
                     if (!command.$.size) {
-
                         this.trigger('on:addToBasketFailed', {reason: "Keine Größe ausgewählt"});
+                        command.$.callback && command.$.callback();
                         return;
                     }
 
@@ -53,7 +53,7 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
                         } else {
                             self.trigger('on:addToBasketFailed', {reason: err});
                         }
-
+                        command.$.callback && command.$.callback(err);
                     });
 
                 } else if (command instanceof RemoveFromBasket) {
@@ -83,10 +83,10 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
                         basket: basket
                     });
 
-                    if(command.$.size) {
+                    if (command.$.size) {
                         action.set('size', command.$.size);
                     }
-                    if(command.$.quantity != null) {
+                    if (command.$.quantity != null) {
                         action.set('quantity', command.$.quantity);
                     }
 

@@ -11,36 +11,38 @@
 
     <div class="content" cid="content">
 
-        <div class="user-profile">
-            <div class="user-image">
+        <div class="mini-user-profile">
+            <div class="mini-user-profile__image">
                 <img src="{user.profileImage}" alt="userImage"/>
             </div>
 
-            <div class="user-name">
+            <div class="mini-user-profile__username">
                 {user.username}
             </div>
-            <div class="user-stats">
-                <strong>{user.countPublished}</strong>
-                ${i18n.t('profile.published')}
-                <strong>{user.countPrivates}</strong>
-                ${i18n.t('profile.private')}
-                <strong>{user.countDrafts}</strong>
-                ${i18n.t('profile.drafts')}
-            </div>
+            <ul class="mini-user-profile__stats">
+                <li>
+                    <div>0</div>
+                    <div class="description">${i18n.t('profile.followers')}</div>
+                </li>
+                <li>
+                    <div>0</div>
+                    <div class="description">${i18n.t('profile.following')}</div>
+                </li>
+            </ul>
         </div>
         <div>
             <ul class="list-options">
                 <li>
                     <a selected="{listSelected('published')}"
-                       onclick="showList('published')">${i18n.t('profile.published')}</a>
+                       onclick="showList('published')">${i18n.t('profile.published')} ({user.countPublished})</a>
                 </li>
                 <li>
                     <a selected="{listSelected('private')}"
-                       onclick="showList('private')">${i18n.t('profile.private')}</a>
+                       onclick="showList('private')">${i18n.t('profile.private')} ({user.countPrivates})</a>
                 </li>
                 <li>
                     <a selected="{listSelected('drafts')}"
-                       onclick="showList('drafts')">${i18n.t('profile.drafts')}</a>
+                       onclick="showList('drafts')">${i18n.t('profile.drafts')} ({user.countDrafts})</a>
                 </li>
             </ul>
             <div class="list-wrapper {listLoadingClass()}">

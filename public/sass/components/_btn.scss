@@ -6,6 +6,7 @@
   border-radius: 0.5em;
   text-align: center;
   border: 1px solid transparent;
+  font-size: inherit;
 
   > select {
     position: absolute;
@@ -22,6 +23,17 @@
   &.disabled {
     opacity: 0.7;
   }
+
+  &.with-absolute-icon-right {
+    position: relative;
+
+    > i {
+      position: absolute;
+      right: 10px;
+    }
+
+  }
+
 }
 
 .btn-secondary {

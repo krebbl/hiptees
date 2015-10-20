@@ -31,6 +31,11 @@
                     <p>{message}</p>
                 </div>
             </js:Template>
+            <js:Template name="error">
+                <div animationClass="notifications__message" class="notifications__message error">
+                    <p>{message}</p>
+                </div>
+            </js:Template>
         </js:NotificationManager>
     </js:Injection>
 
@@ -42,16 +47,17 @@
         <svg:Loader width="50%"/>
     </div>
 
+    <view:BasketView cid="basketView"/>
+
     <view:SwipeContainer cid="swipeView" class="container" ongoTo="toggleLoading(true)"
                          ongoToFinished="toggleLoading(false)" visible="{started}">
         <module:LoginModule name="login" handles="^login.*"/>
         <module:RegisterModule name="register" handles="^register.*"/>
         <module:ProfileModule name="profile" handles="^profile.*"/>
+        <module:ProductModule name="product" handles="^product/.*"/>
         <module:ProductTypeModule name="product-types" handles="^productTypes.*"/>
         <module:ProductPresetModule name="presets" handles="^preset.*"/>
-        <module:ProductModule name="product" handles="^product.*"/>
         <module:EditorModule name="editor" handles="^editor.*"/>
-        <module:BasketModule name="basket" handles="^basket.*"/>
     </view:SwipeContainer>
 
 </hip:HipteesClass>

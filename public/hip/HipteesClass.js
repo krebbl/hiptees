@@ -100,7 +100,15 @@ define(
                             type: "localStorage"
                         }));
                     }
-                };
+                }
+
+                this.$.basketHandler.bind('on:addToBasketSuccess', function () {
+                    this.$.notificationManager.showNotification('default', {message: "Artikel erfolgreich hinzugefügt"}, {duration: 3});
+                }, this);
+
+                this.$.basketHandler.bind('on:addToBasketFailed', function () {
+                    this.$.notificationManager.showNotification('error', {message: "Artikel konnte nicht hinzugefügt werden"}, {duration: 3});
+                }, this);
 
 
                 this.$.loginHandler.bind("on:userLoggedIn", function (e) {

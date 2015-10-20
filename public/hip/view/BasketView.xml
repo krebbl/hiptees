@@ -1,17 +1,17 @@
-<parent:BasketModuleClass xmlns="http://www.w3.org/1999/xhtml"
-                          xmlns:parent="hip.module" xmlns:js="js.core" xmlns:conf="js.conf" xmlns:ui="js.ui"
-                          xmlns:view="hip.view">
+<view:BasketViewClass xmlns="http://www.w3.org/1999/xhtml"
+                      xmlns:js="js.core" xmlns:ui="js.ui"
+                      xmlns:view="hip.view">
 
-    <div class="header">
-        <a onclick="goBack" class="back-btn">
-            <i class="fa fa-angle-left"/>
+    <div class="basket__header">
+        <a class="back-btn" onclick="closeBasket">
+            <i class="fa fa-times"/>
         </a>
-        <h2>${i18n.t('basket.basket')}</h2>
+        <h2>{i18n.t('basket.basket')}</h2>
     </div>
 
     <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>
 
-    <div class="content" cid="content">
+    <div class="basket__content" cid="content" visible="{basket.totalQuantity}">
         <div class="basket__total">
             {basket.totalQuantity} {i18n.t('general.article')}
         </div>
@@ -54,24 +54,20 @@
             </js:Template>
         </ui:ItemsView>
         <div class="basket__summary">
-            <label>${i18n.t('basket.subTotalWithoutShipping')}</label>
+            <label>{i18n.t('basket.subTotalWithoutShipping')}</label>
             <div class="basket__total-price">
                 <div>{basket.totalPrice} €</div>
             </div>
         </div>
         <div class="basket__btn-wrapper">
-            <button class="btn btn-orange">${i18n.t('basket.toCheckout')}</button>
+            <button class="btn btn-orange">{i18n.t('basket.toCheckout')}</button>
         </div>
-        <!--<ui:ItemsView items="{products}" tagName="ul" class="product-list">-->
-        <!--<js:Template name="item">-->
-        <!--<li>-->
-        <!--<a onclick="selectProductPreset(item, event)">-->
-        <!--<view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>-->
-        <!--</a>-->
-        <!--</li>-->
-        <!--</js:Template>-->
-        <!--</ui:ItemsView>-->
+    </div>
+
+    <div class="basket__empty" visible="{not(basket.totalQuantity)}">
+        <p>Der Warenkorb ist leider leer :(</p>
+        <a class="btn btn-orange" onclick="goCreate">Jetzt was gestalten!</a>
     </div>
 
 
-</parent:BasketModuleClass>
+</view:BasketViewClass>

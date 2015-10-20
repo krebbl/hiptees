@@ -6,7 +6,7 @@
   overflow: hidden;
 
   &__message {
-    background-color: #4dff6f;
+    background-color: rgba(49, 158, 255, 0.97);
     width: 100%;
     display: block;
     color: white;
@@ -15,6 +15,10 @@
       text-align: center;
       padding: 12px 20px;
       margin: 0;
+    }
+
+    &.error {
+      background: #b33752;
     }
 
   }

@@ -12,6 +12,7 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                 "id": "2",
                 "name": "M"
             }],
+            addingToBasket: false,
             sizeTableVisible: false
         },
 
@@ -67,10 +68,19 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             }));
         },
         addToBasket: function () {
+            if(!this.$.selectedSize){
+                this.$.notificationManager.showNotification('error', {message: "Keine Größe ausgewählt"}, {duration: 3});
+                return;
+            }
+            this.set('addingToBasket', true);
+            var self = this;
             this.$.executor.storeAndExecute(new AddToBasket({
                 size: this.$.selectedSize,
                 product: this.$.product,
-                quantity: 1
+                quantity: 1,
+                callback: function () {
+                    self.set('addingToBasket', false);
+                }
             }));
         },
 
@@ -93,6 +103,5 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         sizeString: function (size) {
             return "Größe: " + size;
         }
-
     })
 });

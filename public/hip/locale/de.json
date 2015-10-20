@@ -16,7 +16,9 @@
     "private": "Privat",
     "drafts": "Entwürfe",
     "draft": "Entwurf",
-    "create": "Neues Shirt entwerfen"
+    "create": "Neues Shirt entwerfen",
+    "followers": "folgen dir",
+    "following": "folgst du"
   },
   "product": {
     "buyAndShare": "Kaufen und Teilen",

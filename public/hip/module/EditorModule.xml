@@ -62,7 +62,7 @@
             ${i18n.t('editor.add')}
         </a>
 
-        <a onclick="showView(saveView)">
+        <a onclick="showView(saveView)" enabled="{not(product.configurations.isEmpty())}">
             <i class="fa fa-check"/>
             ${i18n.t('editor.save')}
         </a>
@@ -85,7 +85,7 @@
                 ${i18n.t('editor.addText')}
             </a>
             <a onclick="add('image')" class="needsclick">
-                <i class="fa fa-picture-o"/>
+                <i class="fa fa-picture-o needsclick"/>
                 ${i18n.t('editor.addImage')}
             </a>
             <a onclick="add('rectangle')">

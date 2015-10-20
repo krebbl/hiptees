@@ -1,0 +1,49 @@
+.mini-user-profile {
+  position: relative;
+
+  &__image {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 60px;
+    height: 60px;
+    background-color: #26C281;
+    border-radius: 60px;
+    border: 1px solid grey;
+    overflow: hidden;
+
+    > img {
+      width: 100%;
+    }
+  }
+
+  &__username {
+    position: absolute;
+    left: 85px;
+    top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $color-dark1;
+  }
+
+  &__stats {
+    position: absolute;
+    top: 40px;
+    left: 85px;
+
+    > li {
+      display: inline-block;
+      margin-right: 15px;
+
+      div:first-child {
+        font-weight: bold;
+      }
+      div:last-child {
+        font-size: 10px;
+        color: $color-gray;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+}
