@@ -7,6 +7,12 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         "public": "countPublished"
     };
 
+    var stateListMap = {
+        "draft": "drafts",
+        "private": "private",
+        "public": "published"
+    };
+
     return BaseModule.inherit({
         defaults: {
             handles: "",
@@ -48,7 +54,7 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                         var collection = this.$.user.getCollection(list);
                         collection.invalidatePageCache();
                     }
-                    this.showList(product.$.state == "draft" ? "drafts" : product.$.state);
+                    this.showList(stateListMap[product.$.state]);
                 }
             }, this);
         },
