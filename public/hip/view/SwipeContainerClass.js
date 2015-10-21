@@ -77,6 +77,10 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                     newIndex = i,
                     isNext = currentIndex < newIndex;
 
+                for(var j = newIndex + 1; j < currentIndex; j++){
+                    this.$swipeChildren[j].set('status','next');
+                }
+
                 this.trigger('on:goTo', {}, this);
                 var self = this;
                 if (!this.$.currentView) {
@@ -84,6 +88,7 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                 } else {
                     this.removeClass('no-transition');
                 }
+                var oldCurrentView = this.$.currentView
                 flow()
                     .seq(function (cb) {
                         newView.set({
@@ -92,11 +97,10 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                         });
 
                         self.$viewStack = self.$viewStack || [];
-                        var currentView = self.$.currentView;
 
-                        if (currentView && currentView !== newView) {
-                            currentView.set('status', isNext ? 'prev' : 'next');
-                            self.$viewStack.push(currentView);
+                        if (oldCurrentView && oldCurrentView !== newView) {
+                            oldCurrentView.set('status', isNext ? 'prev' : 'next');
+                            self.$viewStack.push(oldCurrentView);
                         }
 
                         self.set('currentView', newView);
