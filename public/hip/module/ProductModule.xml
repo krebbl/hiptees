@@ -16,6 +16,9 @@
         <div class="subtitle">${i18n.t('product.createdBy')}
             <strong>Krebbl</strong>
         </div>
+        <a class="product-module__product-option" onclick="showOptions(product)">
+            <i class="icon-option"/>
+        </a>
         <div class="options">
             <span class="price">19,99 €</span>
             <div class="share-options">
@@ -27,7 +30,9 @@
         </div>
         <div class="size-options">
             <div class="btn btn-whitesmoke">
-                <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true" items="{product.productType.sizes}"
+                <view:FastSelect class="needsclick"
+                                 emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true"
+                                 items="{product.productType.sizes}"
                                  enableAutoFillCheck="false"
                                  selectedItem="{{selectedSize}}"
                                  valuePath="id"/>
@@ -40,7 +45,9 @@
             ${i18n.t('product.addToBasket')}
             <i class="fa fa-spinner fa-spin" visible="{addingToBasket}"/>
         </a>
-        <a class="btn btn-secondary" onclick="remixProduct" visible="{remixAllowed(product)}">${i18n.t('product.remix')}</a>
+        <a class="btn btn-secondary" onclick="remixProduct" visible="{remixAllowed(product)}">
+            ${i18n.t('product.remix')}
+        </a>
 
     </div>
 

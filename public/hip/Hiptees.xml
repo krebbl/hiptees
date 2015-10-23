@@ -3,11 +3,11 @@
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:js="js.core" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
-        xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module">
+        xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module" xmlns:ui="js.ui" xmlns:dialog="hip.dialog">
 
-    <js:Injection>
+    <js:Injection cid="injection">
         <js:I18n cid="i18n" path="hip/locale" locale="de"/>
-        <data:HipDataSource cid="api" gateway="api/v1"/>
+        <data:HipDataSource cid="api" gateway="/api/v1" endPoint="{endpoint()}"/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
         <util:ImageFileReader/>
         <svg:TextMeasurer/>
@@ -37,6 +37,7 @@
                 </div>
             </js:Template>
         </js:NotificationManager>
+        <dialog:ConfirmDialog />
     </js:Injection>
 
     <js:Router cid="router">
@@ -46,8 +47,10 @@
     <div class="loading-overlay" visible="false">
         <svg:Loader width="50%"/>
     </div>
-
-    <view:BasketView cid="basketView"/>
+    <div class="slide-container">
+        <view:BasketView cid="basketView"/>
+        <view:ProductOptionsView cid="productOptionsView"/>
+    </div>
 
     <view:SwipeContainer cid="swipeView" class="container" ongoTo="toggleLoading(true)"
                          ongoToFinished="toggleLoading(false)" visible="{started}">

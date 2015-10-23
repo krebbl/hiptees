@@ -49,23 +49,29 @@
 
                 <ui:ItemsView visible="{listSelected('published')}" items="{list}" tagName="ul" class="product-list">
                     <li>
-                        <a onclick="selectProduct(item)">
+                        <a class="product-image-wrapper" onclick="selectProduct(item)">
                             <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>
+                        </a>
+                        <a class="product-option" onclick="showOptions(item)">
+                            <i class="icon-option"/>
                         </a>
                     </li>
                 </ui:ItemsView>
 
                 <ui:ItemsView visible="{listSelected('private')}" items="{list}" tagName="ul" class="product-list">
                     <li>
-                        <a onclick="selectProduct(item)">
+                        <a onclick="selectProduct(item)" class="product-image-wrapper">
                             <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>
+                        </a>
+                        <a class="product-option" onclick="showOptions(item)">
+                            <i class="icon-option"/>
                         </a>
                     </li>
                 </ui:ItemsView>
 
                 <ui:ItemsView visible="{listSelected('drafts')}" items="{list}" tagName="ul" class="product-list">
                     <li>
-                        <a onclick="selectDraft(item)">
+                        <a onclick="selectDraft(item)" class="product-image-wrapper">
                             <div class="draft-tag">${i18n.t('profile.draft')}</div>
                             <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>
                         </a>

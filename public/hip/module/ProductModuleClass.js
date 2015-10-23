@@ -84,6 +84,12 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             }));
         },
 
+        showOptions: function (product) {
+            this.$.executor.storeAndExecute(new Navigate({
+                fragment: "productOptions/" + product.$.id
+            }));
+        },
+
         mmToMm: function (value) {
             if (value == null) {
                 return 0;

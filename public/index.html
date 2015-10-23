@@ -9,7 +9,6 @@
     <title>Hiptees</title>
 
 
-
     <!-- VERSION="${VERSION}" -->
     <script type="text/javascript" src="hip/lib/glfx.js" data-usage="lib"></script>
     <script type="text/javascript" src="lib/fastclick.js" data-usage="lib"></script>
@@ -84,12 +83,30 @@
     FastClick.attach(document.body);
     // version is optional. It refers to the version of API you may want to use.
 
+    //    if (cordova && cordova.plugins && cordova.plugins.certificates) {
+    //        cordova.plugins.certificates.trustUnsecureCerts(true);
+    //    }
+
     rAppid.bootStrap("hip/Hiptees.xml", null, null, null, function (err, stage) {
         if (err) {
             console.log(err);
         }
         window.application = stage.$application;
     });
+
+    document.addEventListener("deviceready", function () {
+        try {
+            var Certificates = cordova.require("cordova-plugin-certificates.Certificates");
+            Certificates.trustUnsecureCerts(true);
+        } catch (e) {
+            console.warn(e);
+        }
+    }, false);
+
+    var plugins = cordova.require("cordova/plugin_list");
+    console.log(plugins);
+
+
 </script>
 <div id="fb-root"></div>
 </body>

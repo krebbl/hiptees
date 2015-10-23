@@ -35,7 +35,7 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         ctor: function () {
             this.callBase();
 
-            this.bind('productHandler', 'on:productSaved', function (e) {
+            var productChangeHandler = function (e) {
                 var product = e.$.product,
                     stateBefore = e.$.stateBefore;
 
@@ -54,9 +54,12 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
                         var collection = this.$.user.getCollection(list);
                         collection.invalidatePageCache();
                     }
-                    this.showList(stateListMap[product.$.state]);
+                    this.showList(stateListMap[product.$.state] || stateListMap[stateBefore]);
                 }
-            }, this);
+            };
+
+            this.bind('productHandler', 'on:productSaved', productChangeHandler, this);
+            this.bind('productHandler', 'on:productStateChanged', productChangeHandler, this);
         },
 
         prepare: function (fragment, callback) {
@@ -109,6 +112,12 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         selectProduct: function (product) {
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "product/" + product.$.id
+            }));
+        },
+
+        showOptions: function (product) {
+            this.$.executor.storeAndExecute(new Navigate({
+                fragment: "productOptions/" + product.$.id
             }));
         },
 

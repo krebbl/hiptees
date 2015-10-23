@@ -9,8 +9,12 @@ gulp.task('webserver', function () {
             directoryListing: false,
             host: "0.0.0.0",
             open: false,
+            https: {
+                key: '/Users/krebbl/key.pem',
+                cert: '/Users/krebbl/cert.pem'
+            },
             middleware: [
-                proxy('/api/v1', {target: 'http://localhost:3000', changeOrigin: true, xfwd: true})
+                proxy('/api/v1', {target: 'http://localhost:3000', changeOrigin: false, xfwd: true})
             ]
         }));
 });

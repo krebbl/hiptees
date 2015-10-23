@@ -1,0 +1,41 @@
+<parent:ProductOptionsViewClass xmlns="http://www.w3.org/1999/xhtml"
+                                xmlns:parent="hip.view"
+        onclick="hide">
+    <div class="product-options__content">
+        <div class="product-options__image">
+            <img src="{product.resources.MEDIUM}"/>
+        </div>
+        <ul class="product-options__menu">
+            <li visible="{product.hasState('public')}">
+                <a onclick="changeState('private')">
+                    <i class="fa fa-lock fa-pull-left"/>
+                    {i18n.t('general.makePrivate')}
+                </a>
+            </li>
+            <li visible="{product.hasState('private')}">
+                <a onclick="changeState('public')">
+                    <i class="fa fa-unlock-alt fa-pull-left"/>
+                    {i18n.t('general.makePublic')}
+                </a>
+            </li>
+            <!--<li>-->
+                <!--<a>-->
+                    <!--<i class="fa fa-chain fa-pull-left"/>-->
+                    <!--link kopieren-->
+                <!--</a>-->
+            <!--</li>-->
+            <li>
+                <a onclick="confirmChangeState('deleted', event)" class="product-options__delete">
+                    <i class="fa fa-trash fa-pull-left"/>
+                    {i18n.t('general.delete')}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="product-options__footer">
+        <a onclick="hide">
+            {i18n.t('general.close')}
+            <i class=" fa fa-chevron-down"/>
+        </a>
+    </div>
+</parent:ProductOptionsViewClass>

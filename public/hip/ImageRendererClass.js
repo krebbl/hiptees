@@ -100,11 +100,9 @@ define(
                     lazyLoadConfigurations: false,
                     loadLazy: false,
                     callback: function () {
-                        console.log(self.get('productHandler.product.configurations').size());
-
                         setTimeout(function () {
                             console.log("rendered " + productId);
-                        }, 5 * self.get('productHandler.product.configurations').size());
+                        }, 5 * self.get('productHandler.product.configurations.size()'));
                     }
                 }));
                 routeContext.callback();

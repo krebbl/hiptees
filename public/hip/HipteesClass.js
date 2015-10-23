@@ -25,16 +25,17 @@ define(
                 selectedConfiguration: "{productHandler.selectedConfiguration}",
                 textColor: "{selectedConfiguration.color}",
                 fontSize: "{selectedConfiguration.fontSize}",
+                confirmDialog: null,
                 settingsSelected: false,
                 addViewSelected: false,
                 loaderVisible: false,
-                started: false
+                started: false,
+                selectedProduct: null
             },
             /**
              *  initializes the application variables
              */
             initialize: function () {
-
             },
 
             _commitSelectedConfiguration: function (selected) {
@@ -43,13 +44,17 @@ define(
                 }
             },
 
+            endpoint: function(){
+                var l = document.location;
+                return l.protocol + "//" + l.hostname + ":" + l.port + "/api/v1"
+            },
+
             /***
              * Starts the application
              * @param parameter
              * @param callback
              */
             start: function (parameter, callback) {
-                // setup command handlers
 
                 this.$.navigationHandler.set('router', this.$.router);
 
@@ -111,6 +116,10 @@ define(
                 }, this);
 
 
+                this.$.productHandler.bind('on:productStateChanged', function(){
+                    this.$.notificationManager.showNotification('default', {message: "Änderung erfolgreich!"}, {duration: 3});
+                }, this);
+
                 this.$.loginHandler.bind("on:userLoggedIn", function (e) {
                     if (!appStarted) {
                         appStarted = true;
@@ -170,7 +179,6 @@ define(
                     self.set('started', true);
                     startLogin();
                 });
-
             },
 
             _getEnvironment: function () {

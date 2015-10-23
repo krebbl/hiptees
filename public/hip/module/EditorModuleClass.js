@@ -247,11 +247,13 @@ define([
             return val != null ? val.toFixed(0) : 0;
         },
 
-        confirmGoBack: function(){
-            var yes = window.confirm(this.$.i18n.t('editor.confirmGoBack'));
-            if(yes){
-                this.goBack();
-            }
+        confirmGoBack: function () {
+            var self = this;
+            this.$.confirmDialog.confirm(this.$.i18n.t('dialog.confirmBack'), function (err, dialog, ret) {
+                if (ret) {
+                    self.goBack();
+                }
+            });
         },
         goBack: function () {
             if (this.$.zoomed) {

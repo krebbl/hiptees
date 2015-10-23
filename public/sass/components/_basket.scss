@@ -5,7 +5,12 @@
   left: 0;
   right: 0;
   top: 0;
+  bottom: 0;
   z-index: 1000;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+
   padding-bottom: 10px;
 
   transform: translate3d(0, -100%, 0);

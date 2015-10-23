@@ -1,0 +1,20 @@
+<dialog:ConfirmDialogClass xmlns:js="js.core"
+                           xmlns="http://www.w3.org/1999/xhtml"
+                           class="confirm-dialog" xmlns:dialog="hip.dialog">
+
+    <js:Content name="header">
+        <h3 class="window__title">{i18n.t('dialog.confirm')}</h3>
+    </js:Content>
+
+    <js:Content name="body">
+        {_confirmMessage}
+    </js:Content>
+    <js:Content name="footer">
+        <a class="footer-btn" onclick="close(false)">
+            {i18n.t('dialog.no')}
+        </a>
+        <a class="footer-btn" onclick="close(true)">
+            {i18n.t('dialog.yes')}
+        </a>
+    </js:Content>
+</dialog:ConfirmDialogClass>

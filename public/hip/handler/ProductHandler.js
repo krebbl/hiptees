@@ -13,12 +13,14 @@ define([
     "hip/command/AddShape",
     "hip/command/ChangeProductType",
     "hip/command/ReplaceImageFile",
+    "hip/command/ChangeProductState",
     "hip/entity/TextConfiguration",
     "hip/entity/DesignConfiguration",
     "hip/entity/RectangleConfiguration",
     "hip/entity/CircleConfiguration",
     "hip/model/Design",
     "hip/model/Product",
+    "hip/model/UpdateProductState",
     "hip/util/CloudinaryImageUploader",
     "hip/util/ImageFileReader",
     "xaml!hip/svg/TextMeasurer",
@@ -29,7 +31,7 @@ define([
     "text/entity/TextFlow",
     "flow",
     "underscore"
-], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, PointDownConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, ReplaceImageFile, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+], function (Handler, ProductCommand, RemoveConfiguration, SaveProduct, LoadProduct, SelectConfiguration, PointDownConfiguration, CloneConfiguration, ChangeOrder, AddText, AddImageFile, AddShape, ChangeProductType, ReplaceImageFile, ChangeProductState, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
     var undefined;
 
     return Handler.inherit({
@@ -322,6 +324,26 @@ define([
                         callback && callback(err, p);
                     });
 
+            } else if (command instanceof ChangeProductState) {
+                product = command.$.product;
+
+                var updateProductState = this.$.api.createEntity(UpdateProductState);
+                var stateBefore = product.$.state;
+
+                updateProductState.set({
+                    product: product,
+                    state: command.$.state
+                });
+
+                this.trigger('on:changeProductState', {product: product});
+
+                updateProductState.save({}, function (err, product) {
+                    if (!err) {
+                        self.trigger('on:productStateChanged', {product: product, stateBefore: stateBefore});
+                    } else {
+                        self.trigger('on:productStateChangeFailed', {product: product, stateBefore: stateBefore});
+                    }
+                });
             }
 
         },

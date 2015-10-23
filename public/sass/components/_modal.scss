@@ -1,0 +1,73 @@
+.modal-container {
+  z-index: 1001;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  > .modal-backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  $padding: 15px;
+
+  > .dialog-container {
+    position: absolute;
+    width: 80%;
+    left: 50%;
+    margin-left: -40%;
+    top: 50%;
+
+    > .window {
+
+      background: rgba(255, 255, 255, 0.99);
+      padding: $padding;
+      border-radius: 10px;
+
+      .window__title {
+        margin: 0 0 10px;
+        text-align: center;
+      }
+
+      .modal-footer {
+        margin: 0 (-$padding) (-$padding) (-$padding);
+        border-top: 1px solid #E6E6E6;
+      }
+
+      .modal-body {
+        line-height: 1.5;
+        padding: 10px 0 20px;
+        text-align: center;
+      }
+
+      .footer-btn {
+        display: inline-block;
+        color: black;
+        padding: 1em 1em;
+        text-align: center;
+      }
+
+    }
+
+    .confirm-dialog {
+      .footer-btn {
+        width: 50%;
+        &:first-child {
+          border-right: 1px solid #E6E6E6;
+        }
+
+        &:last-child {
+          font-weight: 500;
+        }
+      }
+    }
+
+  }
+
+}

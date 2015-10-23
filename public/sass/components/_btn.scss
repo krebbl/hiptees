@@ -69,3 +69,20 @@
   color: white;
 
 }
+
+.icon-option {
+  display: inline-block;
+  border: 1px solid #404040;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  padding: 2px 0;
+  font-weight: 600;
+  z-index: 100;
+  color: #404040;
+  text-align: center;
+  &:before {
+    content: "⋯";
+    margin-left: -3px;
+  }
+}

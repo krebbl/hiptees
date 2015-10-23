@@ -1,7 +1,7 @@
 define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataSource, QueryComposer) {
     return RestDataSource.inherit({
         defaults: {
-
+            determinateContextByGateway: false
         },
         extractListMetaData: function (collectionPage, payload, options, xhr) {
             return {
@@ -21,6 +21,10 @@ define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataS
             } else {
                 return this.callBase();
             }
+        },
+
+        _buildUriForResource: function (resource, endPoint) {
+            return this.callBase(resource, this.$.endPoint );
         },
 
 //        _handleXHRError: function (request, cb) {

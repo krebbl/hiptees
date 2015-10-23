@@ -1,4 +1,4 @@
-define(["js/ui/View", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/handler/BasketHandler", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "hip/command/Executor", "js/core/I18n", "hip/handler/NavigationHandler"], function (View, Query, Collection, Product, Navigate, BasketHandler, RemoveFromBasket, ChangeBasketItem, Executor, I18n, NavigationHandler) {
+define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/handler/BasketHandler", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem"], function (View, Query, Collection, Product, Navigate, BasketHandler, RemoveFromBasket, ChangeBasketItem) {
     return View.inherit({
         defaults: {
             selected: false,
@@ -8,10 +8,7 @@ define(["js/ui/View", "js/data/Query", "js/data/Collection", "hip/model/Product"
         },
 
         inject: {
-            i18n: I18n,
-            executor: Executor,
-            basketHandler: BasketHandler,
-            navigationHandler: NavigationHandler
+            basketHandler: BasketHandler
         },
 
         _initializationComplete: function () {

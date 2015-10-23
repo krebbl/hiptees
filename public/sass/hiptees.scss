@@ -3,6 +3,7 @@
 @import "settings/layout";
 @import "generic/resets";
 @import "base/elements";
+@import "components/slide-container";
 @import "components/btn";
 @import "components/notifications";
 @import "components/save-view";
@@ -11,6 +12,9 @@
 @import "components/mini-basket-btn";
 @import "components/register";
 @import "components/mini-user-profile";
+@import "components/product-options";
+@import "components/modal";
+
 
 .back-to-top-wrapper {
   position: absolute;
@@ -775,7 +779,10 @@ ul {
 }
 
 ul.product-list {
-  > li > a {
+  > li {
+    position: relative;
+  }
+  > li > .product-image-wrapper {
     height: 200px;
     display: block;
     overflow: hidden;
@@ -790,6 +797,13 @@ ul.product-list {
     > .lazy-image {
       height: 100%;
     }
+  }
+
+  .product-option {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 10px;
   }
 
   .draft-tag {
@@ -1116,6 +1130,12 @@ input[type=checkbox]:checked, input[type=radio]:checked {
   background-size: auto 120%;
   background-position: center;
   margin: 0 -15px;
+}
+
+.product-module__product-option {
+  position: absolute;
+  right: 15px;
+  margin-top: -35px;
 }
 
 .swipe-view-product {

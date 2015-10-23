@@ -5,7 +5,17 @@
     "back": "Zurück",
     "size": "Größe",
     "quantity": "Anzahl",
-    "article": "Artikel"
+    "article": "Artikel",
+    "delete": "löschen",
+    "makePrivate": "Als privat markieren",
+    "makePublic": "Veröffentlichen"
+  },
+  "dialog": {
+    "confirm": "Bestätigen",
+    "yes": "Ja",
+    "no": "Nein",
+    "confirmDelete": "Willst du das wirklich löschen?",
+    "confirmBack": "Willst du wirklich abbrechen? Alle deine Änderungen gehen verloren."
   },
   "message": {
     "productSaved": "Shirt gespeichert!"
@@ -31,7 +41,7 @@
   "sizeTable": {
     "for": "Größentabelle für ",
     "length": "Länge",
-    "brust" : "Brust"
+    "brust": "Brust"
   },
   "productType": {
     "chooseATee": "Wähle ein Shirt"

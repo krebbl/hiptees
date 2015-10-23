@@ -42,7 +42,7 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
         parse: function () {
             var ret = this.callBase();
 
-            if(ret.productType){
+            if (ret.productType) {
                 ret.appearance = ret.productType.createEntity(Appearance, ret.appearance.$.id);
             }
 
@@ -52,6 +52,7 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
         compose: function () {
             var ret = this.callBase();
 
+            delete ret.href;
             delete ret.id;
 
             return ret;
@@ -65,6 +66,9 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
         },
         numConfigurations: function () {
             return this.$.configurations.size();
-        }
+        },
+        hasState: function (state) {
+            return this.$.state == state;
+        }.onChange('state')
     })
 });

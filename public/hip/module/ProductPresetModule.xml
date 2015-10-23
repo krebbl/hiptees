@@ -15,7 +15,7 @@
         <ui:ItemsView items="{products}" tagName="ul" class="product-list">
             <js:Template name="item">
                 <li>
-                    <a onclick="selectProductPreset(item, event)">
+                    <a class="product-image-wrapper" onclick="selectProductPreset(item, event)">
                         <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{content}"/>
                     </a>
                 </li>
