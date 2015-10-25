@@ -1,0 +1,27 @@
+<parent:ProfileOptionsViewClass xmlns="http://www.w3.org/1999/xhtml"
+                                xmlns:parent="hip.view" onclick="hide" xmlns:js="js.core" xmlns:dialog="hip.dialog">
+    <div class="profile-options__content">
+        <div class="profile-options__header">
+            <h2>Menu</h2>
+        </div>
+        <ul class="profile-options__menu">
+            <li>
+                <a onclick="showFeedbackDialog">
+                    <i class="fa fa-thumbs-up"/>
+                    {i18n.t('general.giveFeedback')}
+                </a>
+            </li>
+            <li>
+                <a onclick="confirmLogout">
+                    <i class="fa fa-sign-out"/>
+                    {i18n.t('general.logout')}
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <js:Content>
+        <dialog:FeedbackDialog cid="feedbackDialog"/>
+    </js:Content>
+
+</parent:ProfileOptionsViewClass>

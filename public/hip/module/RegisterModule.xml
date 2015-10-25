@@ -2,6 +2,9 @@
                             xmlns:parent="hip.module">
 
     <div class="header">
+        <a onclick="goBack" class="header__btn btn-left">
+            <i class="fa fa-angle-left"/>
+        </a>
         <div class="register__profile-image">
             <img src="{user.profileImage}" alt="profile image"/>
         </div>
@@ -11,7 +14,7 @@
         <div>
             <div class="register__username">
                 <i class="fa fa-user"/>
-                <input type="text" value="{{username}}" onkeyup="checkUsername" onkeydown="handleDelete"/>
+                <input type="text" value="{{username}}" onkeyup="checkUsername"/>
                 <span visible="{_showSuggestion}">vorgeschlagen</span>
                 <span class="error" visible="{and(not(_usernameAvailable),not(_checkingUsername))}">vergeben :(</span>
                 <span visible="{_checkingUsername}">

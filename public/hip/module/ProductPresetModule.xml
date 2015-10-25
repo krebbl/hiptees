@@ -3,7 +3,7 @@
                                  xmlns:view="hip.view">
 
     <div class="header">
-        <a onclick="goBack" class="back-btn">
+        <a onclick="goBack" class="header__btn btn-left">
             <i class="fa fa-angle-left"/>
         </a>
         <h2>${i18n.t('presets.chooseAPreset')}</h2>

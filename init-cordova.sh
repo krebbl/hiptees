@@ -27,6 +27,12 @@ echo "Adding android platform"
 echo "Adding statusbar plugin"
 ( cd cordova ; cordova plugin add cordova-plugin-statusbar)
 
+echo "Adding certificate plugin"
+( cd cordova ; cordova plugin add cordova-plugin-certificates)
+
+echo "Adding twitter connect plugin"
+( cd cordova ; cordova plugin add twitter-connect-plugin --variable FABRIC_KEY=8990562)
+
 echo "Adding facebook plugin"
 git clone https://github.com/Wizcorp/phonegap-facebook-plugin.git
 ( cd cordova ; cordova -d plugin add ./../phonegap-facebook-plugin --variable APP_ID="164321440569168" --variable APP_NAME="Hiptees")

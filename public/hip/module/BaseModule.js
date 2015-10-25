@@ -21,7 +21,10 @@ define(["hip/view/SwipeView", "hip/command/Executor", "hip/handler/ProductHandle
             this.$.executor.storeAndExecute(new NavigateBack());
         },
         goToBasket: function () {
-            this.$.executor.storeAndExecute(new Navigate({fragment: "basket"}));
+            this.navigate("basket");
+        },
+        navigate: function(fragment){
+            this.$.executor.storeAndExecute(new Navigate({fragment: fragment}));
         }
     })
 });

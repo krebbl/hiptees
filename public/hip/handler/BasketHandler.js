@@ -1,5 +1,5 @@
-define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/AddToBasket", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "xaml!hip/data/HipDataSource", "hip/model/AddBasketItem", "hip/model/RemoveBasketItem", "hip/model/UpdateBasketItem", "hip/model/Basket", "hip/model/CombinedBasket"],
-    function (Handler, BasketCommand, AddToBasket, RemoveFromBasket, ChangeBasketItem, HipDataSource, AddBasketItem, RemoveBasketItem, UpdateBasketItem, Basket, CombinedBasket) {
+define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/AddToBasket", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "xaml!hip/data/HipDataSource", "hip/model/AddBasketItem", "hip/model/RemoveBasketItem", "hip/model/UpdateBasketItem", "hip/model/Basket", "hip/model/CombinedBasket", "hip/command/CheckoutCommand", "hip/model/CheckoutBasket"],
+    function (Handler, BasketCommand, AddToBasket, RemoveFromBasket, ChangeBasketItem, HipDataSource, AddBasketItem, RemoveBasketItem, UpdateBasketItem, Basket, CombinedBasket, CheckoutCommand, CheckoutBasket) {
         return Handler.inherit({
             defaults: {
                 basket: null
@@ -100,6 +100,20 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
                         }
                     });
 
+                } else if (command instanceof CheckoutCommand) {
+                    action = this.$.api.createEntity(CheckoutBasket);
+
+                    action.set({
+                        basket: basket
+                    });
+
+                    action.save({}, function (err, basket) {
+                        if (!err) {
+                            console.log("checkout!")
+                        } else {
+                            console.warn(err);
+                        }
+                    });
                 }
             },
             _saveBasketId: function (basketId) {

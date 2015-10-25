@@ -3,8 +3,11 @@
                            class="with-footer" xmlns:view="hip.view">
 
     <div class="header">
+        <a class="header__btn btn-left" onclick="navigate('profileOptions')">
+            <i class="fa fa-bars"/>
+        </a>
         <h2>${i18n.t('profile.yourProfile')}</h2>
-        <view:MiniBasketButton onclick="goToBasket()"/>
+        <view:MiniBasketButton class="header__btn btn-right" onclick="goToBasket()"/>
     </div>
 
     <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>

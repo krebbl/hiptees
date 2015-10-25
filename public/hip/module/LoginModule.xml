@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="login-btn twitter">
+                    <a class="login-btn twitter" onclick="loginWithTwitter">
                         <i class="fa fa-twitter"></i>
                         Login in Twitter
                     </a>

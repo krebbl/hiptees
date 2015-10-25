@@ -3,18 +3,18 @@
                            xmlns:view="hip.view">
 
     <div class="header">
-        <a onclick="goBack" class="back-btn">
+        <a onclick="goBack" class="header__btn btn-left">
             <i class="fa fa-angle-left"/>
         </a>
         <h2>${i18n.t('product.buyAndShare')}</h2>
-        <view:MiniBasketButton onclick="goToBasket()"/>
+        <view:MiniBasketButton onclick="goToBasket()" class="header__btn btn-right"/>
     </div>
 
     <div class="content">
         <div class="full-product-image" style="background-image: url({product.resources.MEDIUM});"/>
         <h2>{productName()}</h2>
         <div class="subtitle">${i18n.t('product.createdBy')}
-            <strong>Krebbl</strong>
+            <strong>{product.creator.username}</strong>
         </div>
         <a class="product-module__product-option" onclick="showOptions(product)">
             <i class="icon-option"/>

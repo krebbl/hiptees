@@ -23,6 +23,8 @@
         <handler:ConfigurationHandler cid="configurationHandler"/>
         <handler:TextFlowHandler cid="textFlowHandler"/>
         <handler:BasketHandler cid="basketHandler"/>
+        <handler:FeedbackHandler cid="feedbackHandler"/>
+
         <svg:TextEditor class="needsclick"/>
         <view:ImageFilterRenderer/>
         <js:NotificationManager cid="notificationManager">
@@ -50,17 +52,20 @@
     <div class="slide-container">
         <view:BasketView cid="basketView"/>
         <view:ProductOptionsView cid="productOptionsView"/>
+        <view:ProfileOptionsView cid="profileOptionsView"/>
     </div>
 
     <view:SwipeContainer cid="swipeView" class="container" ongoTo="toggleLoading(true)"
                          ongoToFinished="toggleLoading(false)" visible="{started}">
-        <module:LoginModule name="login" handles="^login.*"/>
-        <module:RegisterModule name="register" handles="^register.*"/>
-        <module:ProfileModule name="profile" handles="^profile.*"/>
+        <module:LoginModule name="login" handles="^login$"/>
+        <module:RegisterModule name="register" handles="^register$"/>
+        <module:ProfileModule name="profile" handles="^profile$"/>
         <module:ProductModule name="product" handles="^product/.*"/>
         <module:ProductTypeModule name="product-types" handles="^productTypes.*"/>
         <module:ProductPresetModule name="presets" handles="^preset.*"/>
         <module:EditorModule name="editor" handles="^editor.*"/>
     </view:SwipeContainer>
+
+
 
 </hip:HipteesClass>

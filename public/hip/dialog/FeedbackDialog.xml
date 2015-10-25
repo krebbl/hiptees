@@ -1,0 +1,23 @@
+<dialog:FeedbackDialogClass xmlns:js="js.core"
+                           xmlns="http://www.w3.org/1999/xhtml"
+                           class="feedback-dialog" xmlns:dialog="hip.dialog">
+
+    <js:Content name="header">
+        <h3 class="window__title">{i18n.t('dialog.feedback')}</h3>
+    </js:Content>
+
+    <js:Content name="body">
+        <form>
+            <textarea placeholder="{i18n.t('dialog.feedbackPlaceholder')}" tabindex="1">{{_feedbackText}}
+            </textarea>
+        </form>
+    </js:Content>
+    <js:Content name="footer">
+        <a class="footer-btn" onclick="close(false)">
+            {i18n.t('dialog.cancel')}
+        </a>
+        <a class="footer-btn" onclick="close(_feedbackText)">
+            {i18n.t('dialog.send')}
+        </a>
+    </js:Content>
+</dialog:FeedbackDialogClass>

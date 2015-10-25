@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="basket__btn-wrapper">
-            <button class="btn btn-orange">{i18n.t('basket.toCheckout')}</button>
+            <button class="btn btn-orange" onclick="checkout">{i18n.t('basket.toCheckout')}</button>
         </div>
     </div>
 

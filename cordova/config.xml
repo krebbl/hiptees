@@ -17,6 +17,7 @@
     <preference name="BackgroundColor" value="0xff0000ff"/>
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="keyboardDisplayRequiresUserAction" value="false"/>
+    <preference name="deployment-target" value="7.0"/>
 
     <platform name="ios">
         <!-- iOS 8.0+ -->

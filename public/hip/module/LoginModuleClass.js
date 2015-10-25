@@ -9,6 +9,11 @@ define(["hip/module/BaseModule", "hip/command/LoginCommand"], function (BaseModu
                 type: "fb"
             }))
         },
+        loginWithTwitter: function(){
+            this.$.executor.storeAndExecute(new LoginCommand({
+                type: "twitter"
+            }))
+        },
         loginAsTest: function(){
             this.$.executor.storeAndExecute(new LoginCommand({
                 type: "test",

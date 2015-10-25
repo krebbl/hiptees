@@ -1,4 +1,4 @@
-define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/handler/BasketHandler", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem"], function (View, Query, Collection, Product, Navigate, BasketHandler, RemoveFromBasket, ChangeBasketItem) {
+define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/handler/BasketHandler", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "hip/command/CheckoutCommand"], function (View, Query, Collection, Product, Navigate, BasketHandler, RemoveFromBasket, ChangeBasketItem, CheckoutCommand) {
     return View.inherit({
         defaults: {
             selected: false,
@@ -59,6 +59,9 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
             } else {
                 event.target.set('value', item.$.quantity);
             }
+        },
+        checkout: function(){
+            this.$.executor.storeAndExecute(new CheckoutCommand({}));
         }
     })
 });

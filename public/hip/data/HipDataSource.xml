@@ -9,6 +9,8 @@
         <conf:ResourceConfiguration modelClassName="hip.model.Session" path="sessions"/>
         <conf:ResourceConfiguration modelClassName="hip.model.Product" path="products"/>
         <conf:ResourceConfiguration modelClassName="hip.model.Design" path="designs"/>
+        <conf:ResourceConfiguration modelClassName="hip.model.Feedback" path="feedbacks"/>
+
         <conf:ResourceConfiguration modelClassName="hip.model.Basket" path="baskets"/>
         <conf:ResourceConfiguration modelClassName="hip.model.CombinedBasket" path="combinedBaskets"/>
         <conf:ResourceConfiguration modelClassName="hip.model.ProductType" path="productTypes"/>
@@ -20,6 +22,7 @@
 
         <conf:ResourceConfiguration modelClassName="hip.model.UpdateProductState" path="updateProductState"/>
 
+        <conf:ResourceConfiguration modelClassName="hip.model.CheckoutBasket" path="checkoutBasket"/>
         <conf:ResourceConfiguration modelClassName="hip.model.AddBasketItem" path="addBasketItem"/>
         <conf:ResourceConfiguration modelClassName="hip.model.RemoveBasketItem" path="removeBasketItem"/>
         <conf:ResourceConfiguration modelClassName="hip.model.UpdateBasketItem" path="updateBasketItem"/>

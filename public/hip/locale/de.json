@@ -7,15 +7,22 @@
     "quantity": "Anzahl",
     "article": "Artikel",
     "delete": "löschen",
+    "logout": "Abmelden",
     "makePrivate": "Als privat markieren",
-    "makePublic": "Veröffentlichen"
+    "makePublic": "Veröffentlichen",
+    "giveFeedback": "Feedback geben"
   },
   "dialog": {
+    "feedback": "Feedback",
     "confirm": "Bestätigen",
     "yes": "Ja",
     "no": "Nein",
+    "send": "Absenden",
+    "cancel": "Abbrechen",
+    "feedbackPlaceholder": "Was findest du gut? Was könnten wir noch verbessern?",
     "confirmDelete": "Willst du das wirklich löschen?",
-    "confirmBack": "Willst du wirklich abbrechen? Alle deine Änderungen gehen verloren."
+    "confirmBack": "Willst du wirklich abbrechen? Alle deine Änderungen gehen verloren.",
+    "confirmLogout": "Willst du dich wirklich abmelden?"
   },
   "message": {
     "productSaved": "Shirt gespeichert!"

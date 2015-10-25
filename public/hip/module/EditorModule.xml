@@ -3,7 +3,7 @@
                           class="with-footer">
 
     <div class="header">
-        <a onclick="confirmGoBack" class="back-btn">
+        <a onclick="confirmGoBack" class="header__btn btn-left">
             <i class="fa fa-angle-left"/>
         </a>
         <h2>${i18n.t('editor.edit')}</h2>

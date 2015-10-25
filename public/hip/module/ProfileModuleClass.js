@@ -20,7 +20,7 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             productTypes: null,
             published: null,
             drafts: null,
-            user: null,
+            user: "{loginHandler.user}",
             publishedSelected: false,
             list: null,
             backToTop: false,
@@ -63,12 +63,9 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         },
 
         prepare: function (fragment, callback) {
-            var self = this;
-            var user = this.$.loginHandler.loadCurrentUser(function (err, user) {
+            this.$.loginHandler.loadCurrentUser(function (err, user) {
                 callback && callback(err);
             });
-
-            this.set('user', user);
 
             if (!this.$.activeList) {
                 this.showList("published");
@@ -104,27 +101,19 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         }.onChange('activeList'),
 
         selectDraft: function (product) {
-            this.$.executor.storeAndExecute(new Navigate({
-                fragment: "editor/edit/" + product.$.id
-            }));
+            this.navigate("editor/edit/" + product.$.id);
         },
 
         selectProduct: function (product) {
-            this.$.executor.storeAndExecute(new Navigate({
-                fragment: "product/" + product.$.id
-            }));
+            this.navigate("product/" + product.$.id);
         },
 
         showOptions: function (product) {
-            this.$.executor.storeAndExecute(new Navigate({
-                fragment: "productOptions/" + product.$.id
-            }));
+            this.navigate("productOptions/" + product.$.id);
         },
 
         goCreate: function () {
-            this.$.executor.storeAndExecute(new Navigate({
-                fragment: "productTypes"
-            }));
+            this.navigate("productTypes");
         },
 
         logout: function () {

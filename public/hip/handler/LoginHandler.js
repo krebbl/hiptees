@@ -72,7 +72,22 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
                     });
 
                 } else if (command.$.type == "twitter") {
-                    // TODO: implement
+
+                    if (TwitterConnect) {
+                        TwitterConnect.login(function (result) {
+                            session.set('auth', {
+                                type: "twitter",
+                                tokenKey: result.token,
+                                tokenSecret: result.secret
+                            });
+
+                            session.save(null, function (err, session) {
+                                self._handleSessionResponse(err, session);
+                            });
+                        }, function (err) {
+                            console.log(err);
+                        });
+                    }
                 } else if (command.$.type == "accessToken") {
                     session.set('auth', {
                         type: "fb",
@@ -139,13 +154,13 @@ define(["hip/handler/CommandHandler", "xaml!hip/data/HipDataSource", "hip/model/
             return user;
         },
 
-        checkUsername: function(username, callback){
+        checkUsername: function (username, callback) {
 
             var checkUsername = this.$.api.createEntity(CheckUsername);
 
             checkUsername.set('username', username);
 
-            checkUsername.save({}, function(err, checkUsername){
+            checkUsername.save({}, function (err, checkUsername) {
                 callback(err, checkUsername.$.available);
             });
         },

@@ -44,7 +44,10 @@ define(
                 }
             },
 
-            endpoint: function(){
+            endpoint: function () {
+                if (cordova.platformId != "browser") {
+                    return "https://127.0.0.1:8000/api/v1";
+                }
                 var l = document.location;
                 return l.protocol + "//" + l.hostname + ":" + l.port + "/api/v1"
             },
@@ -60,7 +63,7 @@ define(
 
                 var handlers = ["navigationHandler", "loginHandler", "textConfigurationHandler",
                     "shapeConfigurationHandler", "imageConfigurationHandler", "applyFilterHandler",
-                    "productHandler", "configurationHandler", "textFlowHandler", "basketHandler"];
+                    "productHandler", "configurationHandler", "textFlowHandler", "basketHandler", "feedbackHandler"];
 
                 for (var i = 0; i < handlers.length; i++) {
                     var handler = handlers[i];
@@ -115,8 +118,11 @@ define(
                     this.$.notificationManager.showNotification('error', {message: "Artikel konnte nicht hinzugefügt werden"}, {duration: 3});
                 }, this);
 
+                this.$.feedbackHandler.bind('on:feedbackSent', function () {
+                    this.$.notificationManager.showNotification('default', {message: "Danke fürs Feedback!"}, {duration: 3});
+                }, this);
 
-                this.$.productHandler.bind('on:productStateChanged', function(){
+                this.$.productHandler.bind('on:productStateChanged', function () {
                     this.$.notificationManager.showNotification('default', {message: "Änderung erfolgreich!"}, {duration: 3});
                 }, this);
 

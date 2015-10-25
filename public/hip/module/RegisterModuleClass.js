@@ -29,13 +29,10 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
         },
 
         handleDelete: function (e) {
-            var domEvent = e.domEvent;
-            if (domEvent.which == 8) {
-                this.checkUsername();
-            }
+
         },
 
-        checkUsername: function () {
+        checkUsername: function (e) {
             this.set({
                 _showSuggestion: false,
                 _usernameAvailable: false,

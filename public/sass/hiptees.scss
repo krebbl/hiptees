@@ -13,6 +13,7 @@
 @import "components/register";
 @import "components/mini-user-profile";
 @import "components/product-options";
+@import "components/profile-options";
 @import "components/modal";
 
 
@@ -286,15 +287,39 @@ $settings-height: 210px;
   top: 0;
   width: 100%;
 
-  .back-btn {
+  &__btn {
     position: absolute;
     display: block;
-    left: 0;
-    font-size: 30px;
-    padding: 6px 15px;
+    padding: 0 15px;
     color: white;
-    top: 20px;
+    bottom: 0;
     z-index: 2;
+    height: 46px;
+    line-height: 43px;
+
+    > i {
+      vertical-align: middle;
+    }
+
+    > .fa-angle-left {
+      font-size: 30px;
+    }
+
+    > .fa-bars {
+      font-size: 19px;
+    }
+
+    > .fa-shopping-cart {
+      font-size: 22px;
+    }
+  }
+
+  .btn-left {
+    left: 0;
+  }
+
+  .btn-right {
+    right: 0;
   }
 
   > h2 {
@@ -383,6 +408,7 @@ $settings-height: 210px;
       color: white;
       text-align: center;
       font-size: 0.9em;
+      width: 120px;
     }
 
   }
@@ -854,6 +880,7 @@ ul.product-list {
 .color-toggle {
   display: inline-block;
   color: white !important;
+  margin-left: -10px;
 
   &.active {
     color: #8A8A8A !important;

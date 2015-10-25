@@ -1,4 +1,4 @@
-define(["js/data/Model"], function (Model) {
+define(["js/data/Model", "hip/model/User"], function (Model, User) {
     return Model.inherit("hip.model.Session", {
         defaults: {
             auth: null
@@ -8,6 +8,10 @@ define(["js/data/Model"], function (Model) {
             email: {
                 type: String,
                 required: false
+            },
+            user: {
+                type: User,
+                generated: true
             }
         }
     })

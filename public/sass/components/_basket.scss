@@ -32,6 +32,11 @@
   &__header {
     color: $color-dark1;
     text-align: center;
+
+    > h2 {
+      font-weight: 300;
+    }
+
     > .back-btn {
       position: absolute;
       right: 0;
