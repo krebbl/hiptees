@@ -19,6 +19,11 @@
     <preference name="keyboardDisplayRequiresUserAction" value="false"/>
     <preference name="deployment-target" value="7.0"/>
 
+    <feature name="SocialSharing">
+        <param name="ios-package" value="SocialSharing"/>
+        <param name="android-package" value="nl.xservices.plugins.SocialSharing"/>
+    </feature>
+
     <platform name="ios">
         <!-- iOS 8.0+ -->
         <!-- iPhone 6 Plus  -->
