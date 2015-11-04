@@ -33,10 +33,19 @@ echo "Adding certificate plugin"
 echo "Adding twitter connect plugin"
 ( cd cordova ; cordova plugin add twitter-connect-plugin --variable FABRIC_KEY=8990562)
 
+echo "Adding open browser link plugin"
+(cd cordova ; cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git)
+
+echo "Adding native dialogs plugin"
+(cd cordova ; cordova plugin add cordova-plugin-dialogs)
+
 echo "Adding facebook plugin"
 git clone https://github.com/Wizcorp/phonegap-facebook-plugin.git
 ( cd cordova ; cordova -d plugin add ./../phonegap-facebook-plugin --variable APP_ID="164321440569168" --variable APP_NAME="Hiptees")
 rm -Rf phonegap-facebook-plugin
+
+echo "Adding social share plugin"
+(cd cordova ; cordova plugin add cordova-plugin-x-socialsharing)
 
 echo "Installing ios-sim"
 npm install ios-sim -g
