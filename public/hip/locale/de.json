@@ -1,16 +1,18 @@
 {
   "general": {
+    "by": "von",
     "backToTop": "Nach oben",
     "close": "Schließen",
     "back": "Zurück",
     "size": "Größe",
     "quantity": "Anzahl",
     "article": "Artikel",
-    "delete": "löschen",
+    "delete": "Löschen",
     "logout": "Abmelden",
     "makePrivate": "Als privat markieren",
     "makePublic": "Veröffentlichen",
-    "giveFeedback": "Feedback geben"
+    "giveFeedback": "Feedback geben",
+    "visitPage": "Seite besuchen"
   },
   "dialog": {
     "feedback": "Feedback",
@@ -70,7 +72,9 @@
     "saveFinal": "Final speichern",
     "saveAsDraft": "Als Entwurf speichern",
     "giveItAName": "Geb dem Shirt einen Namen",
-    "confirmGoBack": "Willst du wirklich zurück? Alle deine Änderungen gehen verloren!"
+    "confirmGoBack": "Willst du wirklich zurück? Alle deine Änderungen gehen verloren!",
+    "savingProduct": "Speichere Shirt",
+    "uploadingImages": "Lade Bilder hoch (%0 / %1)"
   },
   "settings": {
     "color": "Farbe",

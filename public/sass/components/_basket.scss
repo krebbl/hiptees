@@ -57,15 +57,15 @@
     position: relative;
     padding: 15px;
     border-bottom: 1px solid lightgrey;
-
+    display: flex;
+    flex-direction: row;
   }
 
   &__item-image {
-    width: 100px;
-    background-color: #B1B1B1;
-    height: 100px;
-    display: inline-block;
+    min-width: 72px;
+    max-width: 150px;
     vertical-align: top;
+    margin-right: 10px;
 
     > img {
       width: 100%;
@@ -73,15 +73,16 @@
   }
 
   &__item-options {
-    display: inline-block;
-    margin-left: 10px;
+    flex-grow: 1;
   }
 
   &__item-size {
+    display: flex;
+    flex-direction: row;
 
     > .btn {
       position: relative;
-      width: 135px;
+      flex-grow: 1;
     }
   }
 
@@ -90,6 +91,7 @@
     width: 55px;
     display: inline-block;
     padding-top: 6px;
+    margin-right: 10px;
   }
 
   &__item-price {
@@ -101,12 +103,14 @@
 
   &__item-quantity {
     margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+
     > input {
       -webkit-appearance: none;
       border: 1px solid lightgray;
       padding: 7px 8px;
       border-radius: 5px;
-      width: 135px;
     }
   }
 

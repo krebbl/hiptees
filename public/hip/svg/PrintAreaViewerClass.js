@@ -223,10 +223,10 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         half: function (a) {
-            return a * 0.5;
+            return a * 0.5 || 0;
         },
         quarter: function (value) {
-            return value * 0.5;
+            return value * 0.5 || 0;
         },
         handleClick: function () {
             console.log("wasdasd");

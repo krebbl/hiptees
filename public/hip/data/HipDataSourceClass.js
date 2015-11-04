@@ -14,13 +14,17 @@ define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataS
         },
 
         getHeaderParameters: function (method, resource) {
-            if (this.$.sessionToken) {
-                return {
-                    "session-token": this.$.sessionToken
-                }
-            } else {
-                return this.callBase();
+            var ret = this.callBase() || {};
+
+            if(this.$.sessionToken){
+                ret["session-token"] = this.$.sessionToken;
             }
+
+            if(this.$.imageRenderSecret){
+                ret["image-render-secret"] = this.$.imageRenderSecret;
+            }
+
+            return ret;
         },
 
         _buildUriForResource: function (resource, endPoint) {

@@ -61,9 +61,12 @@ define(
 
                 this.$.navigationHandler.set('router', this.$.router);
 
-                var handlers = ["navigationHandler", "loginHandler", "textConfigurationHandler",
+                var handlers = [
+                    "navigationHandler", "loginHandler", "textConfigurationHandler",
                     "shapeConfigurationHandler", "imageConfigurationHandler", "applyFilterHandler",
-                    "productHandler", "configurationHandler", "textFlowHandler", "basketHandler", "feedbackHandler"];
+                    "productHandler", "configurationHandler", "textFlowHandler", "basketHandler", "feedbackHandler",
+                    "shareHandler"
+                ];
 
                 for (var i = 0; i < handlers.length; i++) {
                     var handler = handlers[i];

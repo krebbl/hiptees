@@ -32,6 +32,9 @@
                     <div class="description">${i18n.t('profile.following')}</div>
                 </li>
             </ul>
+            <a class="mini-user-profile__page-link" onclick="openUserPage()" target="external">
+                <i class="fa fa-external-link"/>
+            </a>
         </div>
         <div>
             <ul class="list-options">

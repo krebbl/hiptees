@@ -44,14 +44,31 @@ define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/Confir
         showFeedbackDialog: function (event) {
             event && event.stopPropagation();
             var self = this;
-            this.$.feedbackDialog.showModal(function (err, window, state) {
-                if (typeof(state) == "string" && state) {
-                    self.$.executor.storeAndExecute(new FeedbackCommand({
-                        text: state
-                    }));
-                    self.hide();
-                }
-            });
+            if (navigator.notification) {
+                navigator.notification.prompt(
+                    this.$.i18n.t('dialog.feedbackPlaceholder'),  // message
+                    function (results) {
+                        if (results.buttonIndex == 2 && results.input1) {
+                            self.$.executor.storeAndExecute(new FeedbackCommand({
+                                text: results.input1
+                            }));
+                            self.hide();
+                        }
+                    },                  // callback to invoke
+                    this.$.i18n.t('dialog.feedback'),            // title
+                    [this.$.i18n.t('dialog.cancel'), this.$.i18n.t('dialog.send')],             // buttonLabels
+                    ''                 // defaultText
+                );
+            } else {
+                this.$.feedbackDialog.showModal(function (err, window, state) {
+                    if (typeof(state) == "string" && state) {
+                        self.$.executor.storeAndExecute(new FeedbackCommand({
+                            text: state
+                        }));
+                        self.hide();
+                    }
+                });
+            }
         }
 
 

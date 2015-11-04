@@ -3,6 +3,7 @@ define(
         "js/core/List",
         "js/core/Bindable",
         "js/data/Collection",
+        "hip/model/User",
         "hip/model/Design",
         "hip/model/Product",
         "hip/entity/DesignConfiguration",
@@ -18,7 +19,7 @@ define(
         "text/operation/ApplyStyleToElementOperation",
         "text/type/Style"
     ],
-    function (Application, List, Bindable, Collection, Design, Product, DesignConfiguration, TextConfiguration, RectangleConfiguration, Filter, LoadProduct, DeleteText, InsertLine, InsertText, AddText, AddImageFile, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
+    function (Application, List, Bindable, Collection, User, Design, Product, DesignConfiguration, TextConfiguration, RectangleConfiguration, Filter, LoadProduct, DeleteText, InsertLine, InsertText, AddText, AddImageFile, TextFlow, TextRange, ApplyStyleToElementOperation, Style) {
 
         return Application.inherit({
             supportEnvironments: true,
@@ -99,6 +100,7 @@ define(
                     noCache: true,
                     lazyLoadConfigurations: false,
                     loadLazy: false,
+                    originalImages: isPrintout,
                     callback: function () {
                         setTimeout(function () {
                             console.log("rendered " + productId);

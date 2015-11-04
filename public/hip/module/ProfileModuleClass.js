@@ -92,6 +92,10 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
 
         },
 
+        openUserPage: function(){
+            window.open("https://www.hiptees.de/" + this.get('user.username'), "_system");
+        },
+
         listLoadingClass: function () {
             return this.$.listLoading ? "loading" : ""
         }.onChange('listLoading'),

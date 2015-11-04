@@ -26,6 +26,15 @@
     color: $color-dark1;
   }
 
+  &__page-link {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 1em;
+    text-transform: uppercase;
+    color: $color-brand;
+  }
+
   &__stats {
     position: absolute;
     top: 40px;

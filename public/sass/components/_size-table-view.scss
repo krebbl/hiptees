@@ -45,7 +45,7 @@ $size-table-view-height: 400px;
       padding: 0.8em 0;
     }
 
-    tr.even td {
+    tr:nth-child(2n) td {
       background: whitesmoke;
     }
   }

@@ -137,7 +137,7 @@ define([
                     textFlow.set('selection', TextRange.createTextRange(0, textFlow.textLength() - 1));
                 }
 
-                this._loadConfiguration(configuration, false, function () {
+                this._loadConfiguration(configuration, false, false, function () {
                     self.$.product.$.configurations.add(configuration);
 
                     self.trigger('on:configurationAdded', {configuration: configuration, cloned: false});
@@ -304,7 +304,7 @@ define([
                     }, function (cb) {
                         flow()
                             .parEach(this.vars.product.$.configurations.toArray(), function (configuration, cb) {
-                                self._loadConfiguration(configuration, command.$.lazyLoadConfigurations, cb);
+                                self._loadConfiguration(configuration, command.$.lazyLoadConfigurations, command.$.originalImages, cb);
                             })
                             .exec(cb);
                     })
@@ -348,7 +348,7 @@ define([
 
         },
 
-        _loadConfiguration: function (configuration, loadLazy, callback) {
+        _loadConfiguration: function (configuration, loadLazy, loadOriginalImage, callback) {
             if (configuration instanceof DesignConfiguration) {
                 flow()
                     .seq("design", function (cb) {
@@ -362,7 +362,15 @@ define([
                                 cb();
                             };
 
-                            image.src = this.vars.design.$.resources.SCREEN;
+                            image.onerror = function () {
+                                console.log("error while loading image");
+                            };
+
+                            var src = this.vars.design.$.resources.SCREEN;
+                            if (loadOriginalImage) {
+                                src = this.vars.design.$.resources.ORIGINAL || src;
+                            }
+                            image.src = src;
                         } else {
                             cb();
                         }
@@ -465,6 +473,9 @@ define([
             });
 
             var self = this;
+            if (newDesigns.length > 0) {
+                self.trigger('on:uploadingDesigns', {designs: newDesigns}, self);
+            }
 
             flow()
                 .seqEach(newDesigns, function (design, cb) {
@@ -475,8 +486,14 @@ define([
                         })
                         .seq(function (cb) {
                             var options = {};
-
-                            self.$.imageUploader.uploadFile(design.$.id, design.$.file, options, cb);
+                            self.$.imageUploader.uploadFile(design.$.id, design.$.file, options, function (err) {
+                                if (!err) {
+                                    self.trigger('on:designImageUploaded', {design: design}, self);
+                                } else {
+                                    self.trigger('on:designImageUploadFailed', {design: design}, self);
+                                }
+                                cb(err);
+                            });
                         })
                         .exec(cb);
                 })

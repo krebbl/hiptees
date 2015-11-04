@@ -7,6 +7,7 @@
   text-align: center;
   border: 1px solid transparent;
   font-size: inherit;
+  cursor: pointer;
 
   > select {
     position: absolute;
@@ -68,6 +69,12 @@
   border-color: lighten($color-orange, 10%);
   color: white;
 
+}
+
+.btn-whitegreen {
+  background: white;
+  border-color: $color-brand;
+  color: $color-brand;
 }
 
 .icon-option {

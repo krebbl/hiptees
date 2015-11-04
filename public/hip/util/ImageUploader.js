@@ -78,7 +78,9 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1'], function (Compo
                 if (xhr.status === 201) {
                     design = JSON.parse(xhr.responses.text);
                 }
-                callback && callback(err, design);
+                setTimeout(function () {
+                    callback && callback(err, design);
+                }, 300);
             });
 
         },

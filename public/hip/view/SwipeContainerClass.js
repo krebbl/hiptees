@@ -88,7 +88,7 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                 } else {
                     this.removeClass('no-transition');
                 }
-                var oldCurrentView = this.$.currentView
+                var oldCurrentView = this.$.currentView;
                 flow()
                     .seq(function (cb) {
                         newView.set({

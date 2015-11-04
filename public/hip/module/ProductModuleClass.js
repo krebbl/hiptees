@@ -1,4 +1,4 @@
-define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/command/AddToBasket", "hip/handler/LoginHandler"], function (BaseModule, Collection, Product, Navigate, AddToBasket, LoginHandler) {
+define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/command/AddToBasket", "hip/handler/LoginHandler", "hip/command/ShareCommand"], function (BaseModule, Collection, Product, Navigate, AddToBasket, LoginHandler, ShareCommand) {
     return BaseModule.inherit({
         defaults: {
             handles: "",
@@ -62,13 +62,20 @@ define(["hip/module/BaseModule", "js/data/Collection", "hip/model/Product", "hip
             this.$.notificationManager.showNotification('default', {message: "Yeah"}, {duration: 3});
         },
 
+        share: function (type) {
+            this.$.executor.storeAndExecute(new ShareCommand({
+                product: this.$.product,
+                type: type
+            }));
+        },
+
         remixProduct: function () {
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "editor/preset/" + this.$.product.$.id
             }));
         },
         addToBasket: function () {
-            if(!this.$.selectedSize){
+            if (!this.$.selectedSize) {
                 this.$.notificationManager.showNotification('error', {message: "Keine Größe ausgewählt"}, {duration: 3});
                 return;
             }

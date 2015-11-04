@@ -25,7 +25,9 @@ define([
             zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}",
             showTextHint: false,
             makePublic: false,
-            showConfigurationInfo: "{selectedConfiguration}"
+            showConfigurationInfo: "{selectedConfiguration}",
+            savingProduct: false,
+            _loadingMessage: ""
         },
 
         inject: {},
@@ -58,6 +60,49 @@ define([
                 }
 
             });
+
+            this.bind('productHandler', 'on:productSave', function () {
+
+                this.set({
+                    '_loadingMessage': this.$.i18n.t('editor.savingProduct'),
+                    'savingProduct': true
+                });
+
+            }, this);
+
+            this.bind('productHandler', 'on:productSaved', function (e) {
+                if (this.$.savingProduct) {
+                    this.$.executor.storeAndExecute(new Navigate({
+                        fragment: "profile"
+                    }));
+                    this.set('savingProduct', false);
+                }
+            }, this);
+
+            this.bind('productHandler', 'on:productSaveFailed', function (e) {
+                if (this.$.savingProduct) {
+                    this.set('savingProduct', false);
+                }
+            }, this);
+
+
+            var uploads = 0,
+                uploaded = 0;
+            this.bind('productHandler', 'on:uploadingDesigns', function (e) {
+                var designs = e.$.designs;
+                uploads = designs.length;
+                uploaded = 0;
+                this.set({
+                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded+"", uploads+"")
+                });
+            }, this);
+
+            this.bind('productHandler', 'on:designImageUploaded', function (e) {
+                uploads++;
+                this.set({
+                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded+"", uploads+"")
+                });
+            }, this);
         },
 
         _commitSelectedConfiguration: function (configuration) {
@@ -240,6 +285,7 @@ define([
 
         saveProductFinal: function () {
             this.showView(null);
+            this.$waitingForSave = true;
             this.$.executor.storeAndExecute(new SaveProduct({state: this.$.makePublic ? "public" : "private"}));
         },
 
@@ -249,6 +295,7 @@ define([
 
         confirmGoBack: function () {
             var self = this;
+
             this.$.confirmDialog.confirm(this.$.i18n.t('dialog.confirmBack'), function (err, dialog, ret) {
                 if (ret) {
                     self.goBack();
@@ -266,9 +313,9 @@ define([
         },
 
         saveProduct: function () {
-            this.$.executor.storeAndExecute(new SaveProduct({state: "draft"}));
             this.showView(null);
-            this.$.executor.storeAndExecute(new Navigate({fragment: "profile"}));
+            this.set('savingProduct', true);
+            this.$.executor.storeAndExecute(new SaveProduct({state: "draft"}));
         }
     })
 });

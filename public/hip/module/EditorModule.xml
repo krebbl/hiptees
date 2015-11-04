@@ -1,6 +1,6 @@
 <parent:EditorModuleClass xmlns="http://www.w3.org/1999/xhtml"
                           xmlns:parent="hip.module" xmlns:svg="hip.svg" xmlns:view="hip.view"
-                          class="with-footer">
+                          class="with-footer" xmlns:ui="js.ui">
 
     <div class="header">
         <a onclick="confirmGoBack" class="header__btn btn-left">
@@ -102,6 +102,14 @@
             ${i18n.t('general.close')}
             <i class="fa fa-chevron-down"/>
         </a>
+    </div>
+
+    <div class="loading-overlay" visible="{savingProduct}">
+        <div class="loading-overlay__box">
+            <div class="loading-overlay__message">
+                {_loadingMessage}
+            </div>
+        </div>
     </div>
 
     <div class="save-view" cid="saveView">

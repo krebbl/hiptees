@@ -13,7 +13,7 @@
     <div class="content">
         <div class="full-product-image" style="background-image: url({product.resources.MEDIUM});"/>
         <h2>{productName()}</h2>
-        <div class="subtitle">${i18n.t('product.createdBy')}
+        <div class="subtitle">${i18n.t('general.by')}
             <strong>{product.creator.username}</strong>
         </div>
         <a class="product-module__product-option" onclick="showOptions(product)">
@@ -21,11 +21,11 @@
         </a>
         <div class="options">
             <span class="price">19,99 €</span>
-            <div class="share-options">
-                <a class="fa fa-instagram"/>
-                <a class="fa fa-twitter"/>
-                <a class="fa fa-facebook"/>
-                <a class="fa fa-chain"/>
+            <div class="share-options" visible="{product.hasState('public')}">
+                <a class="fa fa-instagram" onclick="share('instagram')"/>
+                <a class="fa fa-twitter" onclick="share('twitter')"/>
+                <a class="fa fa-facebook" onclick="share('fb')"/>
+                <a class="fa fa-chain" onclick="share('link')"/>
             </div>
         </div>
         <div class="size-options">

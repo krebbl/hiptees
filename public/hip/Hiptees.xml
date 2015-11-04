@@ -24,6 +24,7 @@
         <handler:TextFlowHandler cid="textFlowHandler"/>
         <handler:BasketHandler cid="basketHandler"/>
         <handler:FeedbackHandler cid="feedbackHandler"/>
+        <handler:ShareHandler cid="shareHandler"/>
 
         <svg:TextEditor class="needsclick"/>
         <view:ImageFilterRenderer/>
@@ -46,9 +47,6 @@
         <conf:RouteConfiguration route="^$" onexec="defaultRoute"/>
     </js:Router>
 
-    <div class="loading-overlay" visible="false">
-        <svg:Loader width="50%"/>
-    </div>
     <div class="slide-container">
         <view:BasketView cid="basketView"/>
         <view:ProductOptionsView cid="productOptionsView"/>
