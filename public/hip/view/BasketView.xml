@@ -60,7 +60,11 @@
             </div>
         </div>
         <div class="basket__btn-wrapper">
-            <button class="btn btn-orange" onclick="checkout">{i18n.t('basket.toCheckout')}</button>
+            <a class="btn btn-orange" onclick="checkout">
+                <i class="fa fa-external-link fa-pull-left" style="margin-right: -100%"/>
+                {i18n.t('basket.toCheckout')}
+                <i class="fa fa-spinner fa-spin fa-pull-right" style="margin-left: -100%" visible="{checkingOut}"/>
+            </a>
         </div>
     </div>
 

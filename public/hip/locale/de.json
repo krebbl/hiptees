@@ -27,7 +27,11 @@
     "confirmLogout": "Willst du dich wirklich abmelden?"
   },
   "message": {
-    "productSaved": "Shirt gespeichert!"
+    "productSaved": "Shirt gespeichert!",
+    "itemAdded": "Artikel erfolgreich hinzugefügt",
+    "addingItemFailed": "Artikel konnte nicht hinzugefügt werden",
+    "thxForFeedback": "Danke fürs Feedback!",
+    "changesSuccessful": "Änderungen erfolgreich."
   },
   "profile": {
     "yourProfile": "Dein Profil",
@@ -36,8 +40,8 @@
     "drafts": "Entwürfe",
     "draft": "Entwurf",
     "create": "Neues Shirt entwerfen",
-    "followers": "folgen dir",
-    "following": "folgst du"
+    "followers": "Abonnenten",
+    "following": "abonniert"
   },
   "product": {
     "buyAndShare": "Kaufen und Teilen",
@@ -99,7 +103,9 @@
     "contrast": "Kontrast",
     "tint": "Farbton",
     "vignette": "Vignette",
-    "blur": "Weichzeichner"
+    "blur": "Weichzeichner",
+    "replaceImage": "Bild ersetzen",
+    "filter": "Filter"
   },
   "basket": {
     "basket": "Warenkorb",

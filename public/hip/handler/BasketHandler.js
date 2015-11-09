@@ -49,7 +49,7 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
                         if (!err) {
                             self.set('basket', combinedBasket.$.basket);
                             self._saveBasketId(self.get('basket.id'));
-                            self.trigger('on:addToBasketSuccess')
+                            self.trigger('on:addToBasketSuccess', {product: command.$.product})
                         } else {
                             self.trigger('on:addToBasketFailed', {reason: err});
                         }
@@ -68,7 +68,7 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
                         if (!err) {
                             self.set('basket', combinedBasket.$.basket);
                             self._saveBasketId(self.get('basket.id'));
-                            self.trigger('on:removeFromBasketSuccess')
+                            self.trigger('on:removeFromBasketSuccess', {product: command.$.item.$.product});
                         } else {
                             self.trigger('on:removeFromBasketFailed', {reason: err});
                         }
@@ -107,10 +107,12 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
                         basket: basket
                     });
 
-                    action.save({}, function (err, basket) {
+                    action.save({}, function (err, checkout) {
                         if (!err) {
+                            self.trigger('on:checkoutSuccess',{checkout: checkout, checkoutUrl: "https://checkout.spreadshirt.de/?basketId=" + checkout.$.id});
                             console.log("checkout!")
                         } else {
+                            self.trigger('on:checkoutFailed', {error: err});
                             console.warn(err);
                         }
                     });

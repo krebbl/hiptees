@@ -1,4 +1,4 @@
-define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", "hip/command/ChangeProductState", "xaml!hip/dialog/ConfirmDialog"], function (ViewBase, ProductHandler, Product, ChangeProductState, ConfirmDialog) {
+define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", "hip/command/ChangeProductState", "xaml!hip/dialog/ConfirmDialog", "hip/command/NavigateBack"], function (ViewBase, ProductHandler, Product, ChangeProductState, ConfirmDialog, NavigateBack) {
 
     return ViewBase.inherit({
         defaults: {
@@ -28,6 +28,8 @@ define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", 
                     setTimeout(function(){
                         self.set('selected', true);
                     },20);
+                } else {
+                    this.set('selected', false);
                 }
             }, this);
         },
@@ -51,7 +53,7 @@ define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", 
         },
 
         hide: function () {
-            this.set('selected', false);
+            this.$.executor.storeAndExecute(new NavigateBack());
         }
 
 

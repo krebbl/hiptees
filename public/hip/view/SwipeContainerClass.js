@@ -24,10 +24,6 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
             this.bind('navigationHandler', 'on:navigate', function (e) {
                 this.goTo(e.$.fragment);
             }, this);
-
-            this.bind('navigationHandler', 'on:navigateBack', function () {
-                this.goBack();
-            }, this);
         },
 
         addChild: function (child) {
@@ -77,8 +73,8 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                     newIndex = i,
                     isNext = currentIndex < newIndex;
 
-                for(var j = newIndex + 1; j < currentIndex; j++){
-                    this.$swipeChildren[j].set('status','next');
+                for (var j = newIndex + 1; j < currentIndex; j++) {
+                    this.$swipeChildren[j].set('status', 'next');
                 }
 
                 this.trigger('on:goTo', {}, this);
@@ -96,24 +92,24 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                             'status': 'current'
                         });
 
-                        self.$viewStack = self.$viewStack || [];
-
                         if (oldCurrentView && oldCurrentView !== newView) {
                             oldCurrentView.set('status', isNext ? 'prev' : 'next');
-                            self.$viewStack.push(oldCurrentView);
                         }
 
                         self.set('currentView', newView);
-                        setTimeout(function () {
-                            newView.prepare(fragment, cb)
-                        }, 300);
+                        if (isNext) {
+                            setTimeout(function () {
+                                newView.prepare(fragment, cb)
+                            }, 300);
+                        } else {
+                            cb();
+                        }
                     })
                     .exec(function (err) {
                         if (!err) {
 
                         }
                         newView.set('loading', false);
-                        //self.removeClass('loading');
 
                         self.trigger('on:goToFinished', {}, self);
                     });
@@ -121,12 +117,7 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
 
         },
         goBack: function () {
-            if (this.$viewStack && this.$viewStack.length > 0) {
-                var m = this.$viewStack.pop();
-                this.$.currentView && this.$.currentView.set('status', 'next');
-                this.set('currentView', m);
-                m.set('status', 'current');
-            }
+
         },
 
         swipe: function (e) {
@@ -139,12 +130,12 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                     e.preventDefault();
                     this.$downLeft = pointerEvent.pageX;
                     this.$swipeMove = this.$swipeMove || function (e) {
-                        self.swipeMove(e);
-                        //                        self.$currentView.$el.style.
-                    };
+                            self.swipeMove(e);
+                            //                        self.$currentView.$el.style.
+                        };
                     this.$swipeUp = this.$swipeUp || function (e) {
-                        self.swipeUp(e);
-                    };
+                            self.swipeUp(e);
+                        };
                     this.dom(this.$stage.$document).bindDomEvent('pointermove', this.$swipeMove);
                     this.dom(this.$stage.$document).bindDomEvent('pointerup', this.$swipeUp, true)
                 }

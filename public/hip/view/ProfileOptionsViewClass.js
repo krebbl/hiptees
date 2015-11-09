@@ -1,4 +1,4 @@
-define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/ConfirmDialog", "hip/command/LogoutCommand", "hip/command/FeedbackCommand"], function (ViewBase, LoginHandler, ConfirmDialog, LogoutCommand, FeedbackCommand) {
+define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/ConfirmDialog", "hip/command/LogoutCommand", "hip/command/FeedbackCommand", "hip/command/NavigateBack"], function (ViewBase, LoginHandler, ConfirmDialog, LogoutCommand, FeedbackCommand, NavigateBack) {
 
     return ViewBase.inherit({
         defaults: {
@@ -16,9 +16,7 @@ define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/Confir
             this.$.navigationHandler.bind('on:navigate', function (e) {
                 var fragment = e.$.fragment;
                 var match = fragment.match(/profileOptions/);
-                if (match) {
-                    this.set('selected', true);
-                }
+                this.set('selected', !!match);
             }, this);
         },
 
@@ -38,7 +36,7 @@ define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/Confir
         },
 
         hide: function () {
-            this.set('selected', false);
+            this.$.executor.storeAndExecute(new NavigateBack({}));
         },
 
         showFeedbackDialog: function (event) {

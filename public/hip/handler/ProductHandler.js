@@ -443,6 +443,45 @@ define([
             return ret;
         },
 
+        getProductText: function (product) {
+            var configurations = product.$.configurations;
+            var textConfigurations = [];
+
+            configurations.each(function (config) {
+                if (config.$.type == "text") {
+                    textConfigurations.push(config);
+                }
+            });
+
+            textConfigurations.sort(function (c1, c2) {
+                return c1.$.offset.y > c2.$.offset.y ? 1 : -1;
+            });
+
+            var text = "";
+            _.each(textConfigurations, function (config) {
+                text += config.$.textFlow.text() + " ";
+            });
+
+            text = text.replace(/\s+$/, "");
+
+            return text;
+        },
+
+        getProductName: function (product) {
+            var productName = this.get("product.productType.name");
+            var text = this.getProductText(this.$.product);
+
+            productName += " (" + this.get('product.appearance.name') + ")";
+
+            if (text) {
+                productName += " '" + text + "'";
+            }
+
+            // TODO: add with pictures
+
+            return productName;
+        },
+
         _selectConfiguration: function (configuration) {
             if (this.$.selectedConfiguration instanceof TextConfiguration) {
                 if (this.$.selectedConfiguration.$.textFlow.textLength() <= 1) {
@@ -507,7 +546,7 @@ define([
                     if (!err) {
                         self.trigger('on:productSaved', {product: product, stateBefore: stateBefore}, self);
                     } else {
-                        self.trigger('on:productSavedFailed', {err: err});
+                        self.trigger('on:productSaveFailed', {err: err});
                         product.set('state', stateBefore);
                     }
 

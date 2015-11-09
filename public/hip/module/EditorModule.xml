@@ -116,7 +116,7 @@
         <div>
             <!--<a class="close-btn" onclick="showView(null)">Close</a>-->
             <div class="save-view__product-name">
-                <input type="text" placeholder="${i18n.t('editor.giveItAName')}" value="{{product.name}}"/>
+                <input type="text" placeholder="${i18n.t('editor.giveItAName')}" value="{{_productName}}"/>
             </div>
 
             <div class="save-view__publish">

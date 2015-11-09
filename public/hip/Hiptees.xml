@@ -3,7 +3,8 @@
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:js="js.core" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
-        xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module" xmlns:ui="js.ui" xmlns:dialog="hip.dialog">
+        xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module" xmlns:ui="js.ui" xmlns:dialog="hip.dialog"
+        xmlns:tracking="hip.tracking">
 
     <js:Injection cid="injection">
         <js:I18n cid="i18n" path="hip/locale" locale="de"/>
@@ -25,6 +26,7 @@
         <handler:BasketHandler cid="basketHandler"/>
         <handler:FeedbackHandler cid="feedbackHandler"/>
         <handler:ShareHandler cid="shareHandler"/>
+        <tracking:TrackingManager cid="trackingManager"/>
 
         <svg:TextEditor class="needsclick"/>
         <view:ImageFilterRenderer/>

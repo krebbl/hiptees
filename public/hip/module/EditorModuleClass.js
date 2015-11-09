@@ -27,7 +27,8 @@ define([
             makePublic: false,
             showConfigurationInfo: "{selectedConfiguration}",
             savingProduct: false,
-            _loadingMessage: ""
+            _loadingMessage: "",
+            _productName: ""
         },
 
         inject: {},
@@ -93,14 +94,14 @@ define([
                 uploads = designs.length;
                 uploaded = 0;
                 this.set({
-                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded+"", uploads+"")
+                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + "")
                 });
             }, this);
 
             this.bind('productHandler', 'on:designImageUploaded', function (e) {
                 uploads++;
                 this.set({
-                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded+"", uploads+"")
+                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + "")
                 });
             }, this);
         },
@@ -228,6 +229,9 @@ define([
         },
 
         showView: function (view) {
+            if (view === this.$.saveView) {
+                this.set('_productName', this.$.productHandler.getProductName(this.$.product));
+            }
             this.set('currentView', view);
         },
 
@@ -310,6 +314,10 @@ define([
             this.showView(null);
 
             this.callBase();
+        },
+
+        getProductText: function (p) {
+            return this.$.productHandler.getProductText(p);
         },
 
         saveProduct: function () {

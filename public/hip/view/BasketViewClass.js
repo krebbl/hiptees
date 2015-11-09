@@ -1,10 +1,11 @@
-define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/handler/BasketHandler", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "hip/command/CheckoutCommand"], function (View, Query, Collection, Product, Navigate, BasketHandler, RemoveFromBasket, ChangeBasketItem, CheckoutCommand) {
+define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/handler/BasketHandler", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "hip/command/CheckoutCommand", "hip/command/NavigateBack"], function (View, Query, Collection, Product, Navigate, BasketHandler, RemoveFromBasket, ChangeBasketItem, CheckoutCommand, NavigateBack) {
     return View.inherit({
         defaults: {
             selected: false,
             componentClass: "basket",
             loading: false,
-            basket: "{basketHandler.basket}"
+            basket: "{basketHandler.basket}",
+            checkingOut: false
         },
 
         inject: {
@@ -18,11 +19,28 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
                 this.set('selected', e.$.fragment == "basket");
             }, this);
 
+
+            this.$.navigationHandler.bind('on:navigate', function (e) {
+                if(e.$.fragment == "profile"){
+                    this.$.basketHandler.loadCombinedBasket();
+                }
+            }, this);
+
+            var handleCheckout = function () {
+                this.set({
+                    'checkingOut': false,
+                    'selected': false
+                });
+            };
+
+            this.$.basketHandler.bind('on:checkoutSuccess', handleCheckout, this);
+            this.$.basketHandler.bind('on:checkoutFailed', handleCheckout, this);
+
             this.$.basketHandler.loadCombinedBasket();
         },
 
-        closeBasket: function(){
-            this.set('selected', false);
+        closeBasket: function () {
+            this.$.executor.storeAndExecute(new NavigateBack({}));
         },
 
         goCreate: function () {
@@ -60,7 +78,8 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
                 event.target.set('value', item.$.quantity);
             }
         },
-        checkout: function(){
+        checkout: function () {
+            this.set('checkingOut', true);
             this.$.executor.storeAndExecute(new CheckoutCommand({}));
         }
     })

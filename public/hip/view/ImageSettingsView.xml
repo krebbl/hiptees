@@ -1,26 +1,23 @@
 <view:ImageSettingsViewClass xmlns="http://www.w3.org/1999/xhtml"
                              xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
-    <input cid="fileInput" type="file" onchange="handleUpload"/>
+    <input cid="fileInput" type="file" onchange="handleUpload" class="needsclick"/>
 
     <js:Content name="settings">
         <ul class="settings">
             <li>
                 <a onclick="_selectSubContent(filterContent)">
                     <span class="label">
-                        Filter
+                        ${i18n.t('imageSettings.filter')}
                     </span>
                     <span class="value fa fa-chevron-right">
                     </span>
                 </a>
             </li>
             <li>
-                <a onclick="_replaceImage">
-                    <span class="label">
-                        Bild austauschen
-                    </span>
+                <a onclick="_replaceImage" class="needsclick">
+                    ${i18n.t('imageSettings.replaceImage')}
                 </a>
             </li>
-
         </ul>
     </js:Content>
 

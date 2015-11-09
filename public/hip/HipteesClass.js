@@ -1,14 +1,13 @@
 define(
     ["js/core/Application",
         "js/core/List",
-        "js/core/Bindable",
         "js/data/Collection",
         "hip/model/Design",
         "hip/model/Product",
         "hip/command/LoginCommand",
         "hip/command/Navigate"
     ],
-    function (Application, List, Bindable, Collection, Design, Product, LoginCommand, Navigate) {
+    function (Application, List, Collection, Design, Product, LoginCommand, Navigate) {
 
         return Application.inherit({
             supportEnvironments: true,
@@ -91,6 +90,12 @@ define(
                 }
 
 
+                var tracking = this.$.trackingManager;
+
+                window.onerror = function (message, file, line) {
+                    tracking.trackException(message + "\n AT " + file + ":" + line, false);
+                };
+
                 // false - disables autostart
                 this.callBase(parameter, false);
 
@@ -113,20 +118,103 @@ define(
                     }
                 }
 
-                this.$.basketHandler.bind('on:addToBasketSuccess', function () {
-                    this.$.notificationManager.showNotification('default', {message: "Artikel erfolgreich hinzugefügt"}, {duration: 3});
+                this.$.navigationHandler.bind('on:navigate', function (e) {
+                    tracking.trackView(e.$.fragment);
                 }, this);
 
-                this.$.basketHandler.bind('on:addToBasketFailed', function () {
-                    this.$.notificationManager.showNotification('error', {message: "Artikel konnte nicht hinzugefügt werden"}, {duration: 3});
+                /**
+                 * Events
+                 * * Category Editor
+                 * * Actions: Added Configuration, Removed Configuration
+                 * * Label: ??
+                 * * Value: ??
+                 *
+                 *
+                 *
+                 * * Category Product
+                 * * Actions: Publish, Unpublish, Delete, Share
+                 *
+                 *
+                 * * Sessions
+                 * * Actions: Logged In, Logged Out, Registered
+                 *
+                 *
+                 *
+                 */
+
+                this.$.productHandler.bind('on:productSave', function (e) {
+                    var product = e.$.product;
+                    tracking.trackEvent("PRODUCT", "savingProduct", "state", product.$.state);
+                }, this);
+
+                this.$.productHandler.bind('on:productSaved', function (e) {
+                    var product = e.$.product;
+                    tracking.trackEvent("PRODUCT", "productSaved", "state", product.$.state);
+                }, this);
+
+                this.$.productHandler.bind('on:productSaveFailed', function (e) {
+                    var product = e.$.product;
+                    tracking.trackEvent("PRODUCT", "productSaveFailed", "state", product.$.state);
+                }, this);
+
+                this.$.productHandler.bind('on:productSaveFailed', function (e) {
+                    var product = e.$.product;
+                    tracking.trackEvent("PRODUCT", "productSaveFailed", "state", product.$.state);
+                }, this);
+
+                this.$.productHandler.bind('on:configurationAdded', function (e) {
+                    var config = e.$.configuration;
+                    tracking.trackEvent("PRODUCT", "configurationAdded", "type", config.$.type);
+                });
+
+                this.$.productHandler.bind('on:configurationRemoved', function (e) {
+                    var config = e.$.configuration;
+                    tracking.trackEvent("PRODUCT", "configurationRemoved", "type", config.$.type);
+                });
+
+                this.$.productHandler.bind('on:imageReplaced', function () {
+                    tracking.trackEvent("PRODUCT", "imageReplaced");
+                });
+
+                this.$.productHandler.bind('on:productStateChanged', function (e) {
+                    tracking.trackEvent("PRODUCT", "productStateChanged", "newState", e.$.product.$.state);
+                });
+
+
+                this.$.basketHandler.bind('on:addToBasketSuccess', function (e) {
+                    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.itemAdded')}, {duration: 3});
+                    tracking.trackEvent("BASKET", "addToBasketSuccess", "product", e.$.product.$.id);
+                }, this);
+
+                this.$.basketHandler.bind('on:addToBasketFailed', function (e) {
+                    this.$.notificationManager.showNotification('error', {message: this.$.i18.t('message.addingItemFailed')}, {duration: 3});
+                    tracking.trackEvent("BASKET", "addToBasketFailed", "reason", e.$.reason);
+                }, this);
+
+                this.$.basketHandler.bind('on:removeFromBasketSuccess', function (e) {
+                    tracking.trackEvent("BASKET", "removeFromBasketSuccess", "product", e.$.product);
+                }, this);
+
+                this.$.basketHandler.bind('on:removeFromBasketFailed', function (e) {
+                    tracking.trackEvent("BASKET", "removeFromBasketFailed", "reason", e.$.reason);
+                }, this);
+
+                this.$.basketHandler.bind('on:checkoutSuccess', function (e) {
+                    tracking.trackEvent("BASKET", "checkoutSuccess", "checkoutUrl", e.$.checkoutUrl);
+                    var url = e.$.checkoutUrl;
+                    window.open(url, "_system");
+                }, this);
+
+                this.$.basketHandler.bind('on:checkoutFailed', function (e) {
+                    tracking.trackEvent("BASKET", "checkoutFailed", "reason", e.$.error);
                 }, this);
 
                 this.$.feedbackHandler.bind('on:feedbackSent', function () {
-                    this.$.notificationManager.showNotification('default', {message: "Danke fürs Feedback!"}, {duration: 3});
+                    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.thxForFeedback')}, {duration: 3});
                 }, this);
 
                 this.$.productHandler.bind('on:productStateChanged', function () {
-                    this.$.notificationManager.showNotification('default', {message: "Änderung erfolgreich!"}, {duration: 3});
+                    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.changesSuccessful')}, {duration: 3});
                 }, this);
 
                 this.$.loginHandler.bind("on:userLoggedIn", function (e) {
@@ -136,6 +224,10 @@ define(
                     }
                     var data = e.$;
                     var userRegistered = data.session.get('user.state') == "registered";
+                    var userId = data.session.get('user.id');
+                    tracking.setUserId(userId);
+                    tracking.trackEvent("SESSION", "loggedIn");
+
                     if (userRegistered) {
                         executor.storeAndExecute(new Navigate({
                             fragment: "profile"
@@ -148,6 +240,7 @@ define(
                 });
 
                 this.$.loginHandler.bind('on:registrationCompleted', function () {
+                    tracking.trackEvent("SESSION", "registrationCompleted");
                     executor.storeAndExecute(new Navigate({
                         fragment: "profile"
                     }));
@@ -165,12 +258,15 @@ define(
                         appStarted = true;
                         callback();
                     }
+                    tracking.trackEvent("SESSION", "loggedInFailed");
                     executor.storeAndExecute(new Navigate({
                         fragment: "login"
                     }));
                 });
 
                 this.$.loginHandler.bind('on:loggedOut', function () {
+                    tracking.trackEvent("SESSION", "loggedOut");
+                    tracking.setUserId(null);
                     executor.storeAndExecute(new Navigate({
                         fragment: "login"
                     }));
