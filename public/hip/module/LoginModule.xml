@@ -10,20 +10,20 @@
             <ul class="login-options">
                 <li>
                     <a class="login-btn facebook" onclick="loginWithFB">
-                        <i class="fa fa-facebook"></i>
-                        Login with Facebook
+                        <i class="fa fa-facebook"/>
+                        {i18n.t('login.withFacebook')}
                     </a>
                 </li>
                 <li>
                     <a class="login-btn twitter" onclick="loginWithTwitter">
-                        <i class="fa fa-twitter"></i>
-                        Login in Twitter
+                        <i class="fa fa-twitter"/>
+                        {i18n.t('login.withTwitter')}
                     </a>
                 </li>
                 <li>
                     <a class="login-btn" onclick="loginAsTest">
-                        <i class="fa fa-user"></i>
-                        Login for testing
+                        <i class="fa fa-user"/>
+                        {i18n.t('login.forTesting')}
                     </a>
                 </li>
             </ul>

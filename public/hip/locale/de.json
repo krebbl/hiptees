@@ -33,6 +33,11 @@
     "thxForFeedback": "Danke fürs Feedback!",
     "changesSuccessful": "Änderungen erfolgreich."
   },
+  "login": {
+      "withTwitter": "Mit Twitter anmelden",
+      "withFacebook": "Mit Facebook anmelden",
+     "forTesting": "Zum Testen anmelden"
+  },
   "profile": {
     "yourProfile": "Dein Profil",
     "published": "Öffentl.",
