@@ -94,9 +94,9 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
                         if (!err) {
                             self.set('basket', combinedBasket.$.basket);
                             self._saveBasketId(self.get('basket.id'));
-                            self.trigger('on:removeFromBasketSuccess')
+                            self.trigger('on:changeBasketItemSuccess', {product: command.get('item.product')})
                         } else {
-                            self.trigger('on:removeFromBasketFailed', {reason: err});
+                            self.trigger('on:changeBasketItemFailed', {reason: err});
                         }
                     });
 
