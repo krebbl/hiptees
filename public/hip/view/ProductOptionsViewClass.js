@@ -19,15 +19,19 @@ define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", 
 
             this.$.navigationHandler.bind('on:navigate', function (e) {
                 var fragment = e.$.fragment;
+                if (!fragment) {
+                    this.set('selected', false);
+                    return;
+                }
                 var match = fragment.match(/productOptions\/(.+)/);
                 if (match) {
                     var productId = match[1];
                     var product = this.$.api.createEntity(Product, productId);
                     this.set('product', product);
                     var self = this;
-                    setTimeout(function(){
+                    setTimeout(function () {
                         self.set('selected', true);
-                    },20);
+                    }, 20);
                 } else {
                     this.set('selected', false);
                 }

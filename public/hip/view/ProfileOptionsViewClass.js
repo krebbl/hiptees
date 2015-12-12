@@ -14,7 +14,7 @@ define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/Confir
             this.callBase();
 
             this.$.navigationHandler.bind('on:navigate', function (e) {
-                var fragment = e.$.fragment;
+                var fragment = e.$.fragment || "";
                 var match = fragment.match(/profileOptions/);
                 this.set('selected', !!match);
             }, this);
