@@ -1,6 +1,7 @@
 <view:BasketViewClass xmlns="http://www.w3.org/1999/xhtml"
                       xmlns:js="js.core" xmlns:ui="js.ui"
-                      xmlns:view="hip.view">
+                      xmlns:view="hip.view"
+                      onclick="closeBasket">
 
     <div class="basket__header">
         <a class="back-btn" onclick="closeBasket">
@@ -11,14 +12,14 @@
 
     <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>
 
-    <div class="basket__content" cid="content" visible="{basket.totalQuantity}">
+    <div class="basket__content" cid="content" visible="{basket.totalQuantity}" onclick="stopPropagation">
         <div class="basket__total">
             {basket.totalQuantity} {i18n.t('general.article')}
         </div>
         <ui:ItemsView items="{basket.items}">
             <js:Template name="item">
                 <div class="basket__item">
-                    <a class="basket__item-image" onclick="_gotoProduct(item.product)">
+                    <a class="basket__item-image" onclick="_gotoProduct(item.product, event)">
                         <img src="{item.product.resources.SMALL}"/>
                     </a>
                     <div class="basket__item-options">

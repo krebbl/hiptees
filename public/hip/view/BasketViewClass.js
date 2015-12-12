@@ -21,7 +21,7 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
 
 
             this.$.navigationHandler.bind('on:navigate', function (e) {
-                if(e.$.fragment == "profile"){
+                if (e.$.fragment == "profile") {
                     this.$.basketHandler.loadCombinedBasket();
                 }
             }, this);
@@ -39,17 +39,24 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
             this.$.basketHandler.loadCombinedBasket();
         },
 
-        closeBasket: function () {
+        closeBasket: function (e) {
+            e.stopPropagation();
             this.$.executor.storeAndExecute(new NavigateBack({}));
         },
 
-        goCreate: function () {
+        goCreate: function (e) {
+            this.closeBasket(e);
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "productTypes"
             }));
         },
 
-        _gotoProduct: function (product) {
+        stopPropagation: function (e) {
+            e.stopPropagation();
+        },
+
+        _gotoProduct: function (product, e) {
+            e.stopPropagation();
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "product/" + product.$.id
             }));
