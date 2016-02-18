@@ -417,6 +417,7 @@ table {
   top: 20px;
   z-index: 2; }
   .mini-basket-btn__quantity {
+    color: white;
     font-size: 9px;
     position: absolute;
     top: 7px;
@@ -816,14 +817,12 @@ table {
       margin-top: 130px; }
       .swipe-container .swipe-view-login .login-options > li {
         display: block;
-        margin: 2em 30px; }
+        margin: 1em 30px; }
     .swipe-container .swipe-view-login .login-btn {
       text-decoration: none;
       display: block;
-      height: 55px;
       border-radius: 10px;
-      line-height: 55px;
-      padding: 0px 30px;
+      padding: 1em;
       font-size: 15px;
       font-weight: 400;
       color: #FFF;
@@ -831,10 +830,10 @@ table {
       text-align: center;
       position: relative; }
       .swipe-container .swipe-view-login .login-btn i {
-        font-size: 26px;
+        font-size: 16px;
         position: absolute;
-        left: 25px;
-        top: 14px; }
+        left: 1em;
+        top: 1em; }
       .swipe-container .swipe-view-login .login-btn.facebook {
         background-color: #3B5998; }
       .swipe-container .swipe-view-login .login-btn.twitter {
@@ -1173,6 +1172,9 @@ ul {
 .editing .configuration-boundary {
   stroke-opacity: 0.8; }
 
+image.masking-bg-image {
+  opacity: 0.5; }
+
 .text-configuration-viewer .text-renderer {
   cursor: pointer; }
 
@@ -1354,7 +1356,7 @@ ul.product-list .draft-tag {
     background-color: #141431;
     padding: 1em 0; }
 
-.zoom-btn {
+.zoom-btn, .crop-btn {
   text-shadow: 0 0 15px white;
   color: black;
   display: block;
@@ -1368,8 +1370,13 @@ ul.product-list .draft-tag {
   left: 20px;
   opacity: 0;
   transition: opacity 0.5s; }
-  .zoom-btn.active {
+  .zoom-btn.active, .crop-btn.active {
     opacity: 1; }
+
+.crop-btn {
+  left: auto;
+  right: 20px;
+  opacity: 1; }
 
 .configuration-info {
   position: absolute;

@@ -56,7 +56,8 @@ define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", 
             }));
         },
 
-        hide: function () {
+        hide: function (e) {
+            e.stopPropagation();
             this.$.executor.storeAndExecute(new NavigateBack());
         }
 

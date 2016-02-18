@@ -56,7 +56,7 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
         },
 
         _gotoProduct: function (product, e) {
-            e.stopPropagation();
+            this.closeBasket(e);
             this.$.executor.storeAndExecute(new Navigate({
                 fragment: "product/" + product.$.id
             }));

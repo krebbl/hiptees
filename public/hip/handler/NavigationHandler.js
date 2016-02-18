@@ -8,15 +8,19 @@ define(["hip/handler/CommandHandler", "hip/command/Navigate", "hip/command/Navig
             return command instanceof Navigate;
         },
         handleCommand: function (command) {
+            var fragmentStack = this.$.fragmentStack;
             if (command instanceof NavigateBack) {
                 var fragment;
-                this.$.fragmentStack.pop();
-                if (this.$.fragmentStack.length > 0) {
-                    fragment = this.$.fragmentStack[this.$.fragmentStack.length - 1];
+                fragmentStack.pop();
+                if (fragmentStack.length > 0) {
+                    fragment = fragmentStack[fragmentStack.length - 1];
                 }
                 this.trigger('on:navigate', {fragment: fragment});
             } else if (command.$.fragment) {
-                this.$.fragmentStack.push(command.$.fragment);
+                if(fragmentStack.length > 0 && fragmentStack[fragmentStack.length - 1] == command.$.fragment){
+                    return;
+                }
+                fragmentStack.push(command.$.fragment);
                 this.trigger('on:navigate', {fragment: command.$.fragment});
             }
         }

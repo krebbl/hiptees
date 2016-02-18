@@ -1,5 +1,6 @@
 define(
     ["js/core/Application",
+        "js/data/Query",
         "js/core/List",
         "js/data/Collection",
         "hip/model/Design",
@@ -7,7 +8,7 @@ define(
         "hip/command/LoginCommand",
         "hip/command/Navigate"
     ],
-    function (Application, List, Collection, Design, Product, LoginCommand, Navigate) {
+    function (Application, Query, List, Collection, Design, Product, LoginCommand, Navigate) {
 
         return Application.inherit({
             supportEnvironments: true,
@@ -44,11 +45,14 @@ define(
             },
 
             endpoint: function () {
-                if (cordova && cordova.platformId != "browser") {
+                if (typeof(cordova) !== "undefined" && cordova.platformId != "browser") {
                     return "https://127.0.0.1:8000/api/v1";
                 }
                 var l = document.location;
-                return l.protocol + "//" + l.hostname + ":" + l.port + "/api/v1"
+                if(l.hostname.indexOf("hiptees") > -1) {
+                    return l.protocol + "//" + l.hostname + ":" + (l.port || 80) + "/api/v1"
+                }
+                return l.origin + l.pathname.replace(/\/[^/]*$/, "/api/v1");;
             },
 
             /***
@@ -106,16 +110,17 @@ define(
                 var self = this;
 
                 function startLogin() {
-                    if (params.access_token) {
-                        self.$.executor.storeAndExecute(new LoginCommand({
-                            type: "accessToken",
-                            accessToken: params.access_token
-                        }));
-                    } else {
-                        self.$.executor.storeAndExecute(new LoginCommand({
-                            type: "localStorage"
-                        }));
-                    }
+
+                    //if (params.access_token) {
+                    //    self.$.executor.storeAndExecute(new LoginCommand({
+                    //        type: "accessToken",
+                    //        accessToken: params.access_token
+                    //    }));
+                    //} else {
+                    //    self.$.executor.storeAndExecute(new LoginCommand({
+                    //        type: "localStorage"
+                    //    }));
+                    //}
                 }
 
                 this.$.navigationHandler.bind('on:navigate', function (e) {
@@ -282,7 +287,23 @@ define(
 
                 this.$.i18n.loadLocale(this.$.i18n.$.locale, function () {
                     self.set('started', true);
-                    startLogin();
+
+                    var api = self.$.api;
+
+                    var products = api.createCollection(Collection.of(Product));
+
+                    var query = new Query().eql("tags", "preset");
+
+                    var queryCollection = products.query(query);
+
+                    queryCollection.fetch({
+                        limit: 10
+                    }, function (err, productPresets) {
+                        callback(err);
+                        if (!err) {
+                            executor.storeAndExecute(new Navigate({fragment: "editor/preset/" + productPresets.at(0).$.id}));
+                        }
+                    });
                 });
             },
 
@@ -326,7 +347,6 @@ define(
             },
 
             defaultRoute: function (routeContext) {
-                routeContext.navigate(this.$lastFragment || "login");
             },
 
             statusClass: function () {

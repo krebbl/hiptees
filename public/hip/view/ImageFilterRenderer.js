@@ -42,7 +42,7 @@ define(["js/core/Component", "js/core/Base"], function (Component, Base) {
             if (canvas) {
                 canvas.draw(this.$texture, this.$image.width, this.$image.height);
 
-                if (cordova.platformId !== "browser" && this.$stage.$browser.isIOS) {
+                if (typeof(cordova) != "undefined" && cordova.platformId !== "browser" && this.$stage.$browser.isIOS) {
                     canvas.matrix(flipMatrix);
                 }
 

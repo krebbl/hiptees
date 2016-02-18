@@ -3,6 +3,7 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
         defaults: {
             defaultFragment: null,
             currentView: null,
+            currentFragment: null,
             componentClass: "swipe-container {currentView.name}",
             startModule: null
         },
@@ -79,11 +80,13 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
 
                 this.trigger('on:goTo', {}, this);
                 var self = this;
-                if (!this.$.currentView) {
-                    this.addClass('no-transition');
-                } else {
-                    this.removeClass('no-transition');
-                }
+                //if(this.isRendered()){
+                    if (!this.$.currentView) {
+                        this.addClass('no-transition');
+                    } else {
+                        this.removeClass('no-transition');
+                    }
+                //}
                 var oldCurrentView = this.$.currentView;
                 flow()
                     .seq(function (cb) {
@@ -97,9 +100,9 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                         }
 
                         self.set('currentView', newView);
-                        if (isNext) {
+                        if (isNext || fragment !== self.$.currentFragment) {
                             setTimeout(function () {
-                                newView.prepare(fragment, cb)
+                                newView.prepare(fragment, cb);
                             }, 300);
                         } else {
                             cb();
@@ -107,7 +110,7 @@ define(["js/ui/View", "hip/view/SwipeView", "hip/handler/NavigationHandler"], fu
                     })
                     .exec(function (err) {
                         if (!err) {
-
+                            self.set('currentFragment', fragment);
                         }
                         newView.set('loading', false);
 

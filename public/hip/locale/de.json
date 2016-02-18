@@ -69,8 +69,10 @@
   },
   "editor": {
     "edit": "Bearbeiten",
+    "buy": "Kaufen",
     "tapTwiceToEdit": "Zum Text bearbeiten, noch mal anklicken",
     "add": "Hinzufügen",
+    "addToBasket": "In den Warenkorb",
     "save": "Speichern",
     "addText": "Text",
     "addImage": "Bild",

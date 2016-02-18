@@ -1,10 +1,10 @@
 <parent:ConfigurationViewerClass xmlns:parent="hip.svg" xmlns="js.svg" class="needsclick"
                                  onclick="_handleClick">
 
-    <mask id="{_maskId}">
+    <mask id="{_maskId}" _offset="{offset()}">
         <rect x="0" y="0" width="{printArea.size.width}" height="{printArea.size.height}"
               style="stroke:none; fill: #FFFFFF"
-              translateX="{negate(offset().x)}" translateY="{negate(offset().y)}"/>
+              translateX="{negate(_offset.x)}" translateY="{negate(_offset.y)}"/>
 
         <!--<image href="./mask/5050.png" x="0" y="0" width="{printArea.width}" height="{printArea.height}"-->
         <!--style="stroke:none; fill: #FFFFFF"-->

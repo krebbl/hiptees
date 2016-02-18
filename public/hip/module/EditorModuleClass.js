@@ -1,5 +1,6 @@
 define([
     "hip/module/BaseModule",
+    "js/data/Query",
     "hip/command/AddText",
     "hip/command/AddImageFile",
     "hip/command/AddShape",
@@ -8,9 +9,10 @@ define([
     "hip/command/LoadProduct",
     "hip/command/Navigate",
     "hip/model/ProductType",
+    "hip/model/Product",
     "js/data/Collection",
     "js/type/Color"
-], function (BaseModule, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, Navigate, ProductType, Collection, Color) {
+], function (BaseModule, Query, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, Navigate, ProductType, Product, Collection, Color) {
     return BaseModule.inherit({
         defaults: {
             productHandler: null,
@@ -27,6 +29,8 @@ define([
             makePublic: false,
             showConfigurationInfo: "{selectedConfiguration}",
             savingProduct: false,
+            presets: null,
+            sizeTableSelected: false,
             _loadingMessage: "",
             _productName: ""
         },
@@ -219,6 +223,10 @@ define([
             this.set('settingsSelected', false);
         },
 
+        toggleSettings: function () {
+            this.set('settingsSelected', !this.$.settingsSelected);
+        },
+
         _commitCurrentView: function (currentView, oldView) {
             if (oldView) {
                 oldView.set('selected', false);
@@ -228,9 +236,42 @@ define([
             }
         },
 
+        mmToMm: function (value) {
+            if (value == null) {
+                return 0;
+            }
+
+            return (value / 10).toFixed(2);
+        },
+
+        toggleSizeTable: function(){
+            this.set('sizeTableSelected', !this.$.sizeTableSelected);
+        },
+
         showView: function (view) {
             if (view === this.$.saveView) {
                 this.set('_productName', this.$.productHandler.getProductName(this.$.product));
+            } else if (view === this.$.presetView) {
+
+                var api = this.$.api;
+
+                var products = api.createCollection(Collection.of(Product));
+
+                var query = new Query().eql("tags", "preset");
+
+                var queryCollection = products.query(query),
+                    self = this;
+
+                queryCollection.fetch({
+                    limit: 10
+                }, function (err, productPresets) {
+                    self.set('loading', false);
+                    if (!err) {
+                        self.set('presets', productPresets);
+                    }
+                    //callback && callback(err);
+                });
+
             }
             this.set('currentView', view);
         },
@@ -263,8 +304,9 @@ define([
                     self.$.wrapper.set({
                         'left': "50%"
                     });
+                    self.set('zoomed', false);
                 }, 10);
-                this.set('zoomed', false);
+
             } else {
                 var viewer = this.$.productViewer.getSelectedConfigurationViewer();
                 if (viewer) {
@@ -286,6 +328,25 @@ define([
 
             }
         },
+
+        viewerPosition: function (viewer) {
+            if (viewer) {
+                var rect = viewer.$el.getBoundingClientRect();
+                return {
+                    x: rect.left + Math.round(rect.width * 0.5),
+                    y: rect.top + rect.height + 10
+                }
+            }
+            return {
+                x: 0,
+                y: 0
+            }
+
+        }.onChange("zoomed", "configurationViewer._realOffset","configurationViewer._moving", "configurationViewer._resizing"),
+
+        isEditButtonVisible: function () {
+            return this.$.showConfigurationInfo && !(this.get("configurationViewer._moving") || this.get("configurationViewer._resizing"));
+        }.onChange("showConfigurationInfo", "configurationViewer._moving", "configurationViewer._resizing"),
 
         saveProductFinal: function () {
             this.showView(null);
@@ -318,6 +379,10 @@ define([
 
         getProductText: function (p) {
             return this.$.productHandler.getProductText(p);
+        },
+
+        and: function (a, b) {
+            return a && b;
         },
 
         saveProduct: function () {

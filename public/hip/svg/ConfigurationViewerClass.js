@@ -55,6 +55,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
                 offset = this.$._offset || {x: 0, y: 0},
                 anchor = this.$._anchor;
 
+
             return {
                 x: (offset.x - size.width * anchor.x) || 0,
                 y: (offset.y - size.height * anchor.y) || 0
