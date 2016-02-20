@@ -1,4 +1,4 @@
-define(["hip/view/SwipeView", "hip/command/Executor", "hip/handler/ProductHandler", "xaml!hip/data/HipDataSource", "hip/command/NavigateBack", "hip/command/Navigate", "js/core/I18n", "js/core/NotificationManager", "xaml!hip/dialog/ConfirmDialog"], function (View, Executor, ProductHandler, HipDataSource, NavigateBack, Navigate, I18n, NotificationManager, ConfirmDialog) {
+define(["js/ui/View", "hip/command/Executor", "hip/handler/ProductHandler", "xaml!hip/data/HipDataSource", "hip/command/NavigateBack", "hip/command/Navigate", "js/core/I18n", "js/core/NotificationManager", "xaml!hip/dialog/ConfirmDialog"], function (View, Executor, ProductHandler, HipDataSource, NavigateBack, Navigate, I18n, NotificationManager, ConfirmDialog) {
     return View.inherit({
         defaults: {
             productHandler: null,

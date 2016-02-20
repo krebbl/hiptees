@@ -51,17 +51,12 @@
 
     <div class="slide-container">
         <view:BasketView cid="basketView"/>
-        <view:ProductOptionsView cid="productOptionsView"/>
-        <view:ProfileOptionsView cid="profileOptionsView"/>
+        <!--<view:ProductOptionsView cid="productOptionsView"/>-->
+        <!--<view:ProfileOptionsView cid="profileOptionsView"/>-->
     </div>
 
-    <view:SwipeContainer cid="swipeView" class="container" ongoTo="toggleLoading(true)"
-                         ongoToFinished="toggleLoading(false)" visible="{started}">
-        <module:SprdEditorModule name="editor" handles="^editor.*"/>
-        <module:ProductTypeModule name="product-types" handles="^productTypes.*"/>
-        <module:ProductPresetModule name="presets" handles="^preset.*"/>
-    </view:SwipeContainer>
-
-
+    <div class="module-container" visible="{started}">
+        <module:SprdEditorModule />
+    </div>
 
 </hip:SprdClass>

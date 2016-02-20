@@ -31,6 +31,30 @@ define([
             savingProduct: false,
             presets: null,
             sizeTableSelected: false,
+            departments: [
+                {
+                    name: "Men",
+                    id: "1"
+                },
+                {
+                    name: "Women",
+                    id: "2"
+                }
+            ],
+            appearances: [
+                {
+                    name: "white",
+                    color: "#ffffff"
+                },
+                {
+                    name: "black",
+                    color: "#000000"
+                },
+                {
+                    name: "red",
+                    color: "#ff0000"
+                }
+            ],
             _loadingMessage: "",
             _productName: ""
         },
@@ -158,16 +182,33 @@ define([
                     callback: callback
                 }));
             } else {
-                var productTypes = this.$.api.createCollection(Collection.of(ProductType));
+                var api = this.$.api;
 
-                productTypes.fetch({}, function (err, productTypes) {
-                    if (!err) {
-                        self.$.executor.execute(new ChangeProductType({
-                            productType: productTypes.at(0)
-                        }));
-                    }
+                var products = api.createCollection(Collection.of(Product));
+
+                var query = new Query().eql("tags", "preset");
+
+                var queryCollection = products.query(query);
+
+                queryCollection.fetch({
+                    limit: 10
+                }, function (err, productPresets) {
+                    self.set('presets', productPresets);
                     callback(err);
+                    if (!err) {
+                    }
                 });
+
+                //var productTypes = this.$.api.createCollection(Collection.of(ProductType));
+                //
+                //productTypes.fetch({}, function (err, productTypes) {
+                //    if (!err) {
+                //        self.$.executor.execute(new ChangeProductType({
+                //            productType: productTypes.at(0)
+                //        }));
+                //    }
+                //    callback(err);
+                //});
             }
 
         },
@@ -244,7 +285,7 @@ define([
             return (value / 10).toFixed(2);
         },
 
-        toggleSizeTable: function(){
+        toggleSizeTable: function () {
             this.set('sizeTableSelected', !this.$.sizeTableSelected);
         },
 
@@ -342,7 +383,7 @@ define([
                 y: 0
             }
 
-        }.onChange("zoomed", "configurationViewer._realOffset","configurationViewer._moving", "configurationViewer._resizing"),
+        }.onChange("zoomed", "configurationViewer._realOffset", "configurationViewer._moving", "configurationViewer._resizing"),
 
         isEditButtonVisible: function () {
             return this.$.showConfigurationInfo && !(this.get("configurationViewer._moving") || this.get("configurationViewer._resizing"));
@@ -383,6 +424,12 @@ define([
 
         and: function (a, b) {
             return a && b;
+        },
+
+        selectProductPreset: function (product, event) {
+            this.$.executor.storeAndExecute(new Navigate({
+                fragment: "editor/preset/" + product.$.id
+            }));
         },
 
         saveProduct: function () {

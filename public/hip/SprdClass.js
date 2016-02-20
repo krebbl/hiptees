@@ -49,10 +49,11 @@ define(
                     return "https://127.0.0.1:8000/api/v1";
                 }
                 var l = document.location;
-                if(l.hostname.indexOf("hiptees") > -1) {
+                if (l.hostname.indexOf("hiptees") > -1) {
                     return l.protocol + "//" + l.hostname + ":" + (l.port || 80) + "/api/v1"
                 }
-                return l.origin + l.pathname.replace(/\/[^/]*$/, "/api/v1");;
+                return l.origin + l.pathname.replace(/\/[^/]*$/, "/api/v1");
+                ;
             },
 
             /***
@@ -288,22 +289,8 @@ define(
                 this.$.i18n.loadLocale(this.$.i18n.$.locale, function () {
                     self.set('started', true);
 
-                    var api = self.$.api;
-
-                    var products = api.createCollection(Collection.of(Product));
-
-                    var query = new Query().eql("tags", "preset");
-
-                    var queryCollection = products.query(query);
-
-                    queryCollection.fetch({
-                        limit: 10
-                    }, function (err, productPresets) {
-                        callback(err);
-                        if (!err) {
-                            executor.storeAndExecute(new Navigate({fragment: "editor/preset/" + productPresets.at(0).$.id}));
-                        }
-                    });
+                    callback();
+                    executor.storeAndExecute(new Navigate({fragment: "editor"}));
                 });
             },
 
@@ -336,14 +323,6 @@ define(
 
             hideLoading: function () {
                 this.toggleLoading(false);
-            },
-
-            goTo: function (moduleName) {
-                this.$.swipeView.goTo(moduleName);
-            },
-
-            goBack: function () {
-                this.$.swipeView.goBack();
             },
 
             defaultRoute: function (routeContext) {

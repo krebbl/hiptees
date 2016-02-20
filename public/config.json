@@ -14,6 +14,7 @@
         "hip/module/ProfileModule",
         "hip/module/RegisterModule",
         "hip/module/SprdEditorModule",
+        "hip/module/SprdProductPresetModule",
         "hip/svg/CircleConfigurationViewer",
         "hip/svg/ConfigurationViewer",
         "hip/svg/DesignConfigurationViewer",
