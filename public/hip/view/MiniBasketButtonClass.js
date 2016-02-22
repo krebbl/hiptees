@@ -1,14 +1,14 @@
-define(["js/ui/View", "hip/handler/BasketHandler"], function (View, BasketHandler) {
+define(["js/ui/View", "hip/store/BasketStore"], function (View, BasketStore) {
     return View.inherit({
         defaults: {
             tagName: "a",
             loading: true,
             componentClass: "mini-basket-btn {loadingClass()}",
-            basket: "{basketHandler.basket}"
+            basket: "{basketStore.basket}"
         },
 
         inject: {
-            basketHandler: BasketHandler
+            basketStore: BasketStore
         },
 
         _initializationComplete: function(){
@@ -16,7 +16,7 @@ define(["js/ui/View", "hip/handler/BasketHandler"], function (View, BasketHandle
 
             var self = this;
             this.set('loading', true);
-            this.$.basketHandler.loadCombinedBasket(function(){
+            this.$.basketStore.loadCombinedBasket(function(){
                 self.set('loading', false);
             });
         },

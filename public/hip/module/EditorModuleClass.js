@@ -15,46 +15,22 @@ define([
 ], function (BaseModule, Query, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, Navigate, ProductType, Product, Collection, Color) {
     return BaseModule.inherit({
         defaults: {
-            productHandler: null,
-            product: "{productHandler.product}",
+            productStore: null,
+            product: "{productStore.product}",
             appearance: "{product.appearance}",
-            selectedConfiguration: "{productHandler.selectedConfiguration}",
+            selectedConfiguration: "{productStore.selectedConfiguration}",
             configurationViewer: null,
             settingsSelected: false,
             saveView: null,
             addView: null,
             zoomed: false,
-            zoomVisible: "{or(productHandler.selectedConfiguration,zoomed)}",
+            zoomVisible: "{or(productStore.selectedConfiguration,zoomed)}",
             showTextHint: false,
             makePublic: false,
             showConfigurationInfo: "{selectedConfiguration}",
             savingProduct: false,
             presets: null,
             sizeTableSelected: false,
-            departments: [
-                {
-                    name: "Men",
-                    id: "1"
-                },
-                {
-                    name: "Women",
-                    id: "2"
-                }
-            ],
-            appearances: [
-                {
-                    name: "white",
-                    color: "#ffffff"
-                },
-                {
-                    name: "black",
-                    color: "#000000"
-                },
-                {
-                    name: "red",
-                    color: "#ff0000"
-                }
-            ],
             _loadingMessage: "",
             _productName: ""
         },
@@ -65,7 +41,7 @@ define([
             this.callBase();
 
             var self = this;
-            this.bind('productHandler', 'on:configurationAdded', function (e) {
+            this.bind('productStore', 'on:configurationAdded', function (e) {
                 var configuration = e.$.configuration;
                 if (configuration.$.type == "text" && e.$.cloned == false) {
                     setTimeout(function () {
@@ -75,14 +51,14 @@ define([
                 }
             });
 
-            this.bind('productHandler', 'on:configurationPointDown', function (e) {
+            this.bind('productStore', 'on:configurationPointDown', function (e) {
                 if (self.$.productViewer) {
                     var viewer = self.$.productViewer.getViewerForConfiguration(e.$.configuration);
                     self.set('configurationViewer', viewer);
                 }
             });
 
-            this.bind('productHandler', 'on:configurationSelected', function (e) {
+            this.bind('productStore', 'on:configurationSelected', function (e) {
                 if (e.$.configuration && self.$.productViewer) {
                     var viewer = self.$.productViewer.getViewerForConfiguration(e.$.configuration);
                     self.set('configurationViewer', viewer);
@@ -90,7 +66,7 @@ define([
 
             });
 
-            this.bind('productHandler', 'on:productSave', function () {
+            this.bind('productStore', 'on:productSave', function () {
 
                 this.set({
                     '_loadingMessage': this.$.i18n.t('editor.savingProduct'),
@@ -99,7 +75,7 @@ define([
 
             }, this);
 
-            this.bind('productHandler', 'on:productSaved', function (e) {
+            this.bind('productStore', 'on:productSaved', function (e) {
                 if (this.$.savingProduct) {
                     this.$.executor.storeAndExecute(new Navigate({
                         fragment: "profile"
@@ -108,7 +84,7 @@ define([
                 }
             }, this);
 
-            this.bind('productHandler', 'on:productSaveFailed', function (e) {
+            this.bind('productStore', 'on:productSaveFailed', function (e) {
                 if (this.$.savingProduct) {
                     this.set('savingProduct', false);
                 }
@@ -117,7 +93,7 @@ define([
 
             var uploads = 0,
                 uploaded = 0;
-            this.bind('productHandler', 'on:uploadingDesigns', function (e) {
+            this.bind('productStore', 'on:uploadingDesigns', function (e) {
                 var designs = e.$.designs;
                 uploads = designs.length;
                 uploaded = 0;
@@ -126,7 +102,7 @@ define([
                 });
             }, this);
 
-            this.bind('productHandler', 'on:designImageUploaded', function (e) {
+            this.bind('productStore', 'on:designImageUploaded', function (e) {
                 uploads++;
                 this.set({
                     '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + "")
@@ -289,33 +265,37 @@ define([
             this.set('sizeTableSelected', !this.$.sizeTableSelected);
         },
 
-        showView: function (view) {
-            if (view === this.$.saveView) {
-                this.set('_productName', this.$.productHandler.getProductName(this.$.product));
-            } else if (view === this.$.presetView) {
+        showView: function (viewName) {
+            //if (view === this.$.saveView) {
+            //    this.set('_productName', this.$.productStore.getProductName(this.$.product));
+            //} else if (view === this.$.presetView) {
+            //
+            //    var api = this.$.api;
+            //
+            //    var products = api.createCollection(Collection.of(Product));
+            //
+            //    var query = new Query().eql("tags", "preset");
+            //
+            //    var queryCollection = products.query(query),
+            //        self = this;
+            //
+            //    queryCollection.fetch({
+            //        limit: 10
+            //    }, function (err, productPresets) {
+            //        self.set('loading', false);
+            //        if (!err) {
+            //            self.set('presets', productPresets);
+            //        }
+            //        //callback && callback(err);
+            //    });
+            //
+            //}
+            //this.set('currentView', view);
 
-                var api = this.$.api;
-
-                var products = api.createCollection(Collection.of(Product));
-
-                var query = new Query().eql("tags", "preset");
-
-                var queryCollection = products.query(query),
-                    self = this;
-
-                queryCollection.fetch({
-                    limit: 10
-                }, function (err, productPresets) {
-                    self.set('loading', false);
-                    if (!err) {
-                        self.set('presets', productPresets);
-                    }
-                    //callback && callback(err);
-                });
-
-            }
-            this.set('currentView', view);
+            this.navigate(viewName);
         },
+
+
 
         minusHalf: function (n) {
             return -0.5 * n;
@@ -419,7 +399,7 @@ define([
         },
 
         getProductText: function (p) {
-            return this.$.productHandler.getProductText(p);
+            return this.$.productStore.getProductText(p);
         },
 
         and: function (a, b) {

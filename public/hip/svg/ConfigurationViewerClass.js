@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor", "hip/command/SelectConfiguration", "hip/handler/ProductHandler", "hip/command/MoveConfiguration", "hip/command/PointDownConfiguration"], function (SvgElement, List, _, Executor, SelectConfiguration, ProductHandler, MoveConfiguration, PointDownConfiguration) {
+define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductActions", "hip/store/ProductStore"], function (SvgElement, List, _, ProductActions, ProductStore) {
 
     var maskId = 1;
 
@@ -33,8 +33,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
         },
 
         inject: {
-            executor: Executor,
-            productHandler: ProductHandler
+            productActions: ProductActions,
+            productStore: ProductStore
         },
 
         $classAttributes: ["handleWidth", "product", "printArea", "configuration", "keepAspectRatio", "selected", "verticalStretchable", "horizontalStretchable", "rotatable", "printAreaViewer"],
@@ -45,7 +45,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.callBase();
 
             var self = this;
-            this.bind('productHandler', 'on:configurationSelected', function (e) {
+            this.bind('productStore', 'on:configurationSelected', function (e) {
                 self.set('selected', e.$.configuration === self.$.configuration);
             });
         },
@@ -139,9 +139,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$moved = false;
             this.$resized = false;
 
-            this.$.executor.storeAndExecute(new PointDownConfiguration({
+            this.$.productActions.pointDownConfiguration({
                 configuration: this.$.configuration
-            }));
+            });
 
             this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).bindDomEvent("click", this.$clickDelegate, true);
@@ -318,16 +318,16 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/command/Executor
             this.$preventClick = !this.$.selected;
 
             if (this.$moved || this.$resized) {
-                this.$.executor.storeAndExecute(new MoveConfiguration({
+                this.$.productActions.moveConfiguration({
                     configuration: this.$.configuration,
                     offset: this.$._offset,
                     size: this.$resized ? this.$._size : null
-                }));
+                });
             }
 
-            this.$.executor.storeAndExecute(new SelectConfiguration({
+            this.$.productActions.selectConfiguration({
                 configuration: this.$.configuration
-            }));
+            });
 
             this.$originalSize = null;
             this.$originalOffset = null;

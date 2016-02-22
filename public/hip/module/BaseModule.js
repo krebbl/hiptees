@@ -1,30 +1,29 @@
-define(["js/ui/View", "hip/command/Executor", "hip/handler/ProductHandler", "xaml!hip/data/HipDataSource", "hip/command/NavigateBack", "hip/command/Navigate", "js/core/I18n", "js/core/NotificationManager", "xaml!hip/dialog/ConfirmDialog"], function (View, Executor, ProductHandler, HipDataSource, NavigateBack, Navigate, I18n, NotificationManager, ConfirmDialog) {
+define(["js/ui/View", "hip/store/ProductStore", "xaml!hip/data/HipDataSource", "hip/action/NavigationActions", "js/core/I18n", "js/core/NotificationManager", "xaml!hip/dialog/ConfirmDialog"], function (View, ProductStore, HipDataSource, NavigationActions, I18n, NotificationManager, ConfirmDialog) {
     return View.inherit({
         defaults: {
-            productHandler: null,
-            executor: null
+            productStore: null
         },
         inject: {
             confirmDialog: ConfirmDialog,
-            executor: Executor,
-            productHandler: ProductHandler,
+            productStore: ProductStore,
+            navActions: NavigationActions,
             api: HipDataSource,
             i18n: I18n,
             notificationManager: NotificationManager
         },
 
-        and: function(a, b){
+        and: function (a, b) {
             return a && b;
         },
 
         goBack: function () {
-            this.$.executor.storeAndExecute(new NavigateBack());
+            this.$.navActions.navigateBack();
         },
         goToBasket: function () {
             this.navigate("basket");
         },
-        navigate: function(fragment){
-            this.$.executor.storeAndExecute(new Navigate({fragment: fragment}));
+        navigate: function (fragment) {
+            this.$.navActions.navigate({fragment: fragment});
         }
     })
 });

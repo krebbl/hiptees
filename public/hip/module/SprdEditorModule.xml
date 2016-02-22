@@ -89,32 +89,7 @@
 
     <view:BackToTop element="{presetView}" text="${i18n.t('general.backToTop')}"/>
 
-    <div class="presets-view" cid="presetView">
-        <h2>Pick a template</h2>
-        <ui:SelectionView class="department-selection" items="{departments}">
-            <js:Template name="item">
-                <div class="department-selection__item">
-                    <span>{item.name}</span>
-                </div>
-            </js:Template>
-        </ui:SelectionView>
-        <ui:SelectionView class="appearance-selection" items="{appearances}">
-            <js:Template name="item">
-                <div class="appearance-selection__item">
-                    <span title="{item.name}" backgroundColor="{item.color}"/>
-                </div>
-            </js:Template>
-        </ui:SelectionView>
-        <ui:ItemsView items="{presets}" tagName="ul" class="product-list">
-            <js:Template name="item">
-                <li>
-                    <a class="product-image-wrapper" onclick="selectProductPreset(item, event)">
-                        <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{presetView}"/>
-                    </a>
-                </li>
-            </js:Template>
-        </ui:ItemsView>
-    </div>
+    <view:ProductPresetsView cid="presetView"/>
 
     <div class="add-view" cid="addView">
         <div>

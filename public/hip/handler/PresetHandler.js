@@ -1,14 +1,16 @@
-define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/AddToBasket", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "xaml!hip/data/HipDataSource", "hip/model/AddBasketItem", "hip/model/RemoveBasketItem", "hip/model/UpdateBasketItem", "hip/model/Basket", "hip/model/CombinedBasket", "hip/command/CheckoutCommand", "hip/model/CheckoutBasket"],
-    function (Handler, BasketCommand, AddToBasket, RemoveFromBasket, ChangeBasketItem, HipDataSource, AddBasketItem, RemoveBasketItem, UpdateBasketItem, Basket, CombinedBasket, CheckoutCommand, CheckoutBasket) {
+define(["hip/handler/CommandHandler", "hip/command/PresetCommand", "hip/command/SelectDepartment"],
+    function (Handler, PresetCommand, SelectDepartment) {
         return Handler.inherit({
             defaults: {
-                basket: null
+                departments: [],
+                selectedDepartment: null,
+                presets: null
             },
             inject: {
                 api: HipDataSource
             },
             isResponsibleForCommand: function (command) {
-                return command instanceof BasketCommand;
+                return command instanceof PresetCommand;
             },
             handleCommand: function (command) {
                 var basket = this.$.basket,
@@ -23,7 +25,38 @@ define(["hip/handler/CommandHandler", "hip/command/BasketCommand", "hip/command/
 
                 if (command instanceof AddToBasket) {
 
+                    this.trigger('on:addingToBasket', command.$);
 
+                    // TODO: implement
+                    if (!command.$.size) {
+                        this.trigger('on:addToBasketFailed', {reason: "Keine Größe ausgewählt"});
+                        command.$.callback && command.$.callback();
+                        return;
+                    }
+
+                    action = this.$.api.createEntity(AddBasketItem);
+
+
+                    if (basket) {
+                        action.set('basket', basket);
+                    }
+
+                    action.set({
+                        product: command.$.product,
+                        size: command.$.size,
+                        quantity: command.$.quantity
+                    });
+                    action.save({}, function (err, combinedBasket) {
+
+                        if (!err) {
+                            self.set('basket', combinedBasket.$.basket);
+                            self._saveBasketId(self.get('basket.id'));
+                            self.trigger('on:addToBasketSuccess', {product: command.$.product})
+                        } else {
+                            self.trigger('on:addToBasketFailed', {reason: err});
+                        }
+                        command.$.callback && command.$.callback(err);
+                    });
 
                 } else if (command instanceof RemoveFromBasket) {
                     action = this.$.api.createEntity(RemoveBasketItem);

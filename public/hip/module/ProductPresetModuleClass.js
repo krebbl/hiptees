@@ -2,7 +2,7 @@ define(["hip/module/BaseModule", "js/data/Query", "js/data/Collection", "hip/mod
     return BaseModule.inherit({
         defaults: {
             loading: false,
-            products: null
+            presets: null
         },
 
         prepare: function (fragment, callback) {

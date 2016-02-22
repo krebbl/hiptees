@@ -1,11 +1,11 @@
-define(["js/ui/View", "hip/command/Executor", "js/core/I18n", "hip/handler/NavigationHandler", "xaml!hip/data/HipDataSource"], function (View, Executor, I18n, NavigationHandler, HipDataSource) {
+define(["js/ui/View", "js/core/I18n", "hip/store/NavigationStore", "xaml!hip/data/HipDataSource", "hip/action/NavigationActions"], function (View, I18n, NavigationStore, HipDataSource, NavigationActions) {
 
     return View.inherit({
         inject: {
             api: HipDataSource,
             i18n: I18n,
-            executor: Executor,
-            navigationHandler: NavigationHandler
+            navigationStore: NavigationStore,
+            navActions: NavigationActions
         }
     });
 });

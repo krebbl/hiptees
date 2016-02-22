@@ -2,11 +2,11 @@ define(["xaml!hip/view/SettingsView",
     "json!font/index",
     "underscore",
     "hip/entity/TextConfiguration",
-    "hip/command/text/ChangeStyle",
+    "hip/action/TextFlowActions",
     "text/entity/TextRange",
-    "hip/handler/TextFlowHandler",
+    "hip/store/TextFlowStore",
     "js/type/Color"
-], function (SettingsView, fonts, _, TextConfiguration, ChangeStyle, TextRange, TextFlowHandler, Color) {
+], function (SettingsView, fonts, _, TextConfiguration, TextFlowActions, TextRange, TextFlowStore, Color) {
 
 
     return SettingsView.inherit({
@@ -24,15 +24,16 @@ define(["xaml!hip/view/SettingsView",
         },
 
         inject: {
-            textFlowHandler: TextFlowHandler
+            textFlowStore: TextFlowStore,
+            textFlowActions: TextFlowActions
         },
 
         ctor: function () {
             this.callBase();
 
-            this.bind('textFlowHandler', 'on:selectionChanged', this._updateLeafStyle, this);
-            this.bind('textFlowHandler', 'on:paragraphStyleChanged', this._updateParagraphStyle, this);
-//            this.bind('textFlowHandler', 'on:leafStyleChanged', this._updateLeafStyle, this);
+            this.bind('textFlowStore', 'on:selectionChanged', this._updateLeafStyle, this);
+            this.bind('textFlowStore', 'on:paragraphStyleChanged', this._updateParagraphStyle, this);
+//            this.bind('textFlowStore', 'on:leafStyleChanged', this._updateLeafStyle, this);
 
         },
 
@@ -53,7 +54,10 @@ define(["xaml!hip/view/SettingsView",
         _updateLeafStyle: function () {
             var configuration = this.$.configuration;
             if (configuration) {
-                var range = configuration.$.textFlow.$.selection || new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
+                var range = configuration.$.textFlow.$.selection || new TextRange({
+                        anchorIndex: 0,
+                        activeIndex: configuration.$.textFlow.textLength()
+                    });
                 var leafStyle = range.getCommonLeafStyle(configuration.$.textFlow);
                 if (!leafStyle.$.color) {
                     var l = configuration.$.textFlow.getFirstLeaf();
@@ -103,21 +107,21 @@ define(["xaml!hip/view/SettingsView",
                 newFont = fontFamily[style] || fontFamily.regular;
             }
 
-            this.$.executor.storeAndExecute(new ChangeStyle({
+            this.$.textFlowActions.changeStyle({
                 textFlow: this.$.configuration.$.textFlow,
                 paragraphStyle: {
                     'fontFamily': newFont
                 }
-            }));
+            });
         },
 
         _selectAlignment: function (alignment) {
-            this.$.executor.storeAndExecute(new ChangeStyle({
+            this.$.textFlowActions.changeStyle({
                 textFlow: this.$.configuration.$.textFlow,
                 paragraphStyle: {
                     "textAlign": alignment
                 }
-            }));
+            });
         },
 
         isBold: function (fontFamilyName) {
@@ -132,27 +136,16 @@ define(["xaml!hip/view/SettingsView",
             this._increaseFontSize(-1 * by);
         },
 
-        _previewStyle: function (key, value) {
-            this.$previewCommand = this.$previewCommand || new ChangeStyle();
-            var paragraphStyle = {};
-            paragraphStyle[key] = value;
-            this.$previewCommand.set({
-                textFlow: this.$.configuration.$.textFlow,
-                paragraphStyle: paragraphStyle
-            });
-            this.$.executor.execute(this.$previewCommand);
-        },
-
         _updateColor: function (e) {
             var color = e.$.color;
             if (color) {
                 this.set('leafColor', color);
-                this.$.executor.execute(new ChangeStyle({
+                this.$.textFlowActions.changeStyle({
                     textFlow: this.$.configuration.$.textFlow,
                     leafStyle: {
                         'color': color
                     }
-                }));
+                });
             }
         },
 

@@ -1,8 +1,6 @@
-define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
-    "hip/command/RemoveConfiguration",
-    "hip/command/CloneConfiguration",
-    "hip/command/ChangeOrder",
-    "hip/handler/ProductHandler"], function (View, Executor, I18n, RemoveConfiguration, CloneConfiguration, ChangeOrder, ProductHandler) {
+define(["js/ui/View", "js/core/I18n",
+    "hip/action/ProductActions",
+    "hip/store/ProductStore"], function (View, I18n, ProductActions, ProductStore) {
 
 
     return View.inherit({
@@ -14,10 +12,10 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
             visible: false,
             subContentSelected: false
         },
-        $classAttributes: ['configuration', 'executor'],
+        $classAttributes: ['configuration', 'productActions'],
         inject: {
-            executor: Executor,
-            productHandler: ProductHandler,
+            productActions: ProductActions,
+            productStore: ProductStore,
             i18n: I18n
         },
 
@@ -26,7 +24,7 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         ctor: function () {
             this.callBase();
             var self = this;
-            this.bind('productHandler', 'on:configurationSelected', function (event) {
+            this.bind('productStore', 'on:configurationSelected', function (event) {
                 if (self.supportsConfiguration(event.$.configuration)) {
 //                    var hadConfiguration = !!self.$.configuration;
                     self.set('configuration', event.$.configuration);
@@ -54,31 +52,31 @@ define(["js/ui/View", "hip/command/Executor", "js/core/I18n",
         },
 
         cloneConfiguration: function () {
-            this.$.executor.storeAndExecute(new CloneConfiguration({
+            this.$.productActions.cloneConfiguration({
                 configuration: this.$.configuration
-            }));
+            });
         },
 
         removeConfiguration: function () {
-            this.$.executor.storeAndExecute(new RemoveConfiguration({
+            this.$.productActions.removeConfiguration({
                 configuration: this.$.configuration
-            }));
+            });
         },
 
         layerUp: function () {
-            var product = this.$.productHandler.$.product;
-            this.$.executor.storeAndExecute(new ChangeOrder({
+            var product = this.$.productStore.$.product;
+            this.$.productActions.changeOrder({
                 configuration: this.$.configuration,
                 index: Math.min(product.numConfigurations() - 1, product.getIndexOfConfiguration(this.$.configuration) + 1)
-            }));
+            });
         },
 
         layerDown: function () {
-            var product = this.$.productHandler.$.product;
-            this.$.executor.storeAndExecute(new ChangeOrder({
+            var product = this.$.productStore.$.product;
+            this.$.productActions.changeOrder({
                 configuration: this.$.configuration,
                 index: Math.max(0, product.getIndexOfConfiguration(this.$.configuration) - 1)
-            }));
+            });
         },
 
         _renderMinimized: function (minimized) {

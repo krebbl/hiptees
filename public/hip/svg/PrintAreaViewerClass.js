@@ -8,7 +8,7 @@ define(['js/svg/SvgElement', 'js/core/List',
     'hip/entity/DesignConfiguration',
     'hip/entity/RectangleConfiguration',
     'hip/entity/CircleConfiguration',
-    'hip/handler/ProductHandler'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ProductHandler) {
+    'hip/store/ProductStore'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ProductStore) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -24,7 +24,7 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         inject: {
-            productHandler: ProductHandler
+            productStore: ProductStore
         },
 
         $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer", "handleWidth", "border", "configurations", "snapLines"],
@@ -34,14 +34,14 @@ define(['js/svg/SvgElement', 'js/core/List',
             this.$configurationViewers = [];
 
             var self = this;
-            this.bind('productHandler', 'on:configurationRemoved', function (e) {
+            this.bind('productStore', 'on:configurationRemoved', function (e) {
                 self._removeConfiguration(e.$.configuration);
             });
-            this.bind('productHandler', 'on:configurationAdded', function (e) {
+            this.bind('productStore', 'on:configurationAdded', function (e) {
                 self._addConfiguration(e.$.configuration);
             });
 
-            this.bind('productHandler', 'on:configurationSelected', function (e) {
+            this.bind('productStore', 'on:configurationSelected', function (e) {
                 var viewer = self.getViewerForConfiguration(e.$.configuration);
                 if (viewer) {
                     self.set('activeViewer', viewer);
@@ -50,11 +50,11 @@ define(['js/svg/SvgElement', 'js/core/List',
                 self.set('showActiveViewer', !!viewer);
             });
 
-            this.bind('productHandler', 'on:productLoaded', function (e) {
+            this.bind('productStore', 'on:productLoaded', function (e) {
                 self._renderProduct(e.$.product);
             });
 
-            this.bind('productHandler', 'on:configurationOrderChanged', function (e) {
+            this.bind('productStore', 'on:configurationOrderChanged', function (e) {
                 var viewer = self.getViewerForConfiguration(e.$.configuration);
                 self.$.configurations.setChildIndex(viewer, e.$.index);
             });

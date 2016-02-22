@@ -4,7 +4,7 @@
         xmlns:js="js.core" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
         xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module" xmlns:ui="js.ui" xmlns:dialog="hip.dialog"
-        xmlns:tracking="hip.tracking">
+        xmlns:tracking="hip.tracking" xmlns:store="hip.store" xmlns:action="hip.action">
 
     <js:Injection cid="injection">
         <js:I18n cid="i18n" path="hip/locale" locale="de"/>
@@ -13,19 +13,20 @@
         <util:ImageFileReader/>
         <svg:TextMeasurer/>
         <command:EventBus cid="eventBus"/>
-        <command:Executor cid="executor" eventBus="{eventBus}"/>
-        <handler:NavigationHandler cid="navigationHandler"/>
-        <handler:LoginHandler cid="loginHandler"/>
-        <handler:ImageConfigurationHandler cid="imageConfigurationHandler"/>
-        <handler:TextConfigurationHandler cid="textConfigurationHandler"/>
-        <handler:ShapeConfigurationHandler cid="shapeConfigurationHandler"/>
-        <handler:ApplyFilterHandler cid="applyFilterHandler"/>
-        <handler:ProductHandler cid="productHandler" product="{product}"/>
-        <handler:ConfigurationHandler cid="configurationHandler"/>
-        <handler:TextFlowHandler cid="textFlowHandler"/>
-        <handler:BasketHandler cid="basketHandler"/>
-        <handler:FeedbackHandler cid="feedbackHandler"/>
-        <handler:ShareHandler cid="shareHandler"/>
+        <action:Executor cid="executor" />
+
+        <action:NavigationActions cid="navigationActions" />
+        <action:BasketActions />
+        <action:ProductActions />
+        <action:PresetActions />
+        <action:TextFlowActions />
+
+        <store:NavigationStore cid="navigationStore"/>
+        <store:ProductStore cid="productStore"/>
+        <store:BasketStore cid="basketStore"/>
+        <store:TextFlowStore cid="textFlowStore"/>
+        <store:PresetStore cid="presetStore" />
+
         <tracking:TrackingManager cid="trackingManager"/>
 
         <svg:TextEditor class="needsclick"/>

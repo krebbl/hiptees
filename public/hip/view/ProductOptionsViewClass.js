@@ -1,4 +1,4 @@
-define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", "hip/command/ChangeProductState", "xaml!hip/dialog/ConfirmDialog", "hip/command/NavigateBack"], function (ViewBase, ProductHandler, Product, ChangeProductState, ConfirmDialog, NavigateBack) {
+define(["hip/view/ViewBase", "hip/store/ProductStore", "hip/model/Product", "hip/action/ProductActions", "xaml!hip/dialog/ConfirmDialog"], function (ViewBase, ProductStore, Product, ProductActions, ConfirmDialog) {
 
     return ViewBase.inherit({
         defaults: {
@@ -9,7 +9,7 @@ define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", 
 
         inject: {
             confirmDialog: ConfirmDialog,
-            productHandler: ProductHandler
+            productStore: ProductStore
         },
 
         $classAttributes: ["product"],
@@ -17,7 +17,7 @@ define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", 
         _initializationComplete: function () {
             this.callBase();
 
-            this.$.navigationHandler.bind('on:navigate', function (e) {
+            this.$.navigationStore.bind('on:navigate', function (e) {
                 var fragment = e.$.fragment;
                 if (!fragment) {
                     this.set('selected', false);
@@ -50,15 +50,15 @@ define(["hip/view/ViewBase", "hip/handler/ProductHandler", "hip/model/Product", 
         },
 
         changeState: function (state, event) {
-            this.$.executor.storeAndExecute(new ChangeProductState({
+            this.$.productActions.changeProductState({
                 product: this.$.product,
                 state: state
-            }));
+            });
         },
 
         hide: function (e) {
             e.stopPropagation();
-            this.$.executor.storeAndExecute(new NavigateBack());
+            this.$.navActions.navigateBack();
         }
 
 

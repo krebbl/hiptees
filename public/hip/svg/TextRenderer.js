@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMeasurer', 'js/svg/Svg', "hip/handler/TextConfigurationHandler"], function (SvgElement, TextFlowHandler, SvgMeasurer, Svg, TextConfigurationHandler) {
+define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasurer', 'js/svg/Svg', "hip/handler/TextConfigurationHandler"], function (SvgElement, TextFlowStore, SvgMeasurer, Svg, TextConfigurationHandler) {
 
     var EMPTY_LINE_TEXT = "\n" + String.fromCharCode(173);
     var XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
@@ -17,7 +17,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
         events: ["on:sizeChanged", "on:textflowRendered"],
 
         inject: {
-            textFlowHandler: TextFlowHandler,
+            textFlowStore: TextFlowStore,
             svgMeasurer: SvgMeasurer
         },
 
@@ -25,13 +25,13 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
             this.callBase();
 
             var self = this;
-            this.bind('textFlowHandler', 'on:changeTextFlow', function (e) {
+            this.bind('textFlowStore', 'on:changeTextFlow', function (e) {
                 if (e.$.textFlow === this.$.textFlow) {
                     this._renderTextFlow(e.$.textFlow);
                 }
             }, this);
 
-            this.bind('textFlowHandler', 'on:paragraphStyleChanged', function (e) {
+            this.bind('textFlowStore', 'on:paragraphStyleChanged', function (e) {
                 if (e.$.textFlow === this.$.textFlow) {
                     if (this._hasSome(e.$.paragraphStyle, ["fontFamily", "fontSize", "letterSpacing"])) {
                         this._updateTextFlow();
@@ -45,7 +45,7 @@ define(['js/svg/SvgElement', 'hip/handler/TextFlowHandler', 'xaml!hip/svg/TextMe
                 }
             }, this);
 
-            this.bind('textFlowHandler', 'on:leafStyleChanged', function (e) {
+            this.bind('textFlowStore', 'on:leafStyleChanged', function (e) {
                 if (e.$.textFlow === this.$.textFlow) {
                     this._updateTextFlow();
                 }

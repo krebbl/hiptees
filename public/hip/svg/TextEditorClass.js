@@ -1,4 +1,4 @@
-define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText", "hip/command/Executor", 'hip/handler/TextFlowHandler', 'hip/command/text/SelectText'], function (View, DeleteText, InsertLine, InsertText, Executor, TextFlowHandler, SelectText) {
+define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], function (View, TextFlowActions, TextFlowStore) {
     var EMPTY_LINE_TEXT = "\n" + String.fromCharCode(173);
 
     return View.inherit({
@@ -16,8 +16,8 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
         },
 
         inject: {
-            executor: Executor,
-            textFlowHandler: TextFlowHandler
+            textActions: TextFlowActions,
+            textFlowStore: TextFlowStore
         },
 
         $domAttributes: ["contenteditable"],
@@ -38,14 +38,14 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             // do nothing
         },
 
-        focus: function(){
+        focus: function () {
             this.callBase();
 
             var self = this;
             //setTimeout(function(){
-                if (self.$.textFlow.$.selection) {
-                    self.setCursor(self.$.textFlow.$.selection.$.anchorIndex, self.$.textFlow.$.selection.$.activeIndex);
-                }
+            if (self.$.textFlow.$.selection) {
+                self.setCursor(self.$.textFlow.$.selection.$.anchorIndex, self.$.textFlow.$.selection.$.activeIndex);
+            }
             //},1)
         },
 
@@ -55,11 +55,11 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 this.$selectTimeout && clearTimeout(this.$selectTimeout);
                 this.$selectTimeout = setTimeout(function () {
                     var selection = self.getAbsoluteSelection();
-                    self.$.executor.execute(new SelectText({
+                    self.$.textActions.selectText({
                         textFlow: self.$.textFlow,
                         anchorOffset: selection.anchorOffset,
                         focusOffset: selection.focusOffset
-                    }));
+                    });
                 }, 500);
             }
         },
@@ -136,7 +136,7 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
         },
 
         setCursor: function (absoluteOffset, absoluteEnd) {
-            if(!this.$addedToDom || !this.$.visible){
+            if (!this.$addedToDom || !this.$.visible) {
                 return;
             }
             if (this.$absoluteOffset == absoluteOffset && this.$absoluteEnd == absoluteEnd) {
@@ -209,35 +209,35 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
                 var sel = this.getAbsoluteSelection();
                 e.preventDefault();
 
+                var textActions = this.$.textActions;
                 if (domEvent.which == 46) {
                     if (sel.anchorOffset == sel.focusOffset) {
                         sel.focusOffset = Math.max(0, sel.focusOffset + 1);
                     }
-                    this.$.executor.storeAndExecute(new DeleteText({
+                    textActions.deleteText({
                         textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
                         focusOffset: sel.focusOffset
-                    }));
+                    });
 
                 } else if (domEvent.which == 8) {
                     if (sel.anchorOffset == sel.focusOffset) {
                         sel.anchorOffset = Math.max(0, sel.focusOffset - 1);
                     }
 
-                    this.$.executor.storeAndExecute(new DeleteText({
+                    textActions.deleteText({
                         textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
                         focusOffset: sel.focusOffset
-                    }));
+                    });
 
                 } else if (domEvent.which == 13) {
 
-                    this.$.executor.storeAndExecute(new InsertLine({
+                    textActions.insertText({
                         textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
                         focusOffset: sel.focusOffset
-                    }));
-
+                    });
                 }
 
             } else {
@@ -281,12 +281,12 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
 
                 var insertedText = textAfter.substring(0, selection.focusOffset);
 
-                self.$.executor.storeAndExecute(new InsertText({
+                self.$.textActions.insertText({
                     textFlow: self.$.textFlow,
                     text: insertedText,
                     anchorOffset: absoluteSelection.focusOffset - selection.focusOffset,
                     focusOffset: absoluteSelection.focusOffset - diff
-                }));
+                });
 
             }, 20);
 //
@@ -340,16 +340,18 @@ define(["js/ui/View", "hip/command/text/DeleteText", "hip/command/text/InsertLin
             if (e.domEvent.charCode > 0) {
                 e.preventDefault();
                 var sel = this.getAbsoluteSelection();
-                this.$.executor.storeAndExecute(new InsertText({
+
+
+                this.$.textActions.insertText({
                     textFlow: this.$.textFlow,
                     text: String.fromCharCode(e.domEvent.which),
                     anchorOffset: sel.anchorOffset,
                     focusOffset: sel.focusOffset
-                }));
+                });
             }
 
         },
-        _handleTextFlowRendered: function(){
+        _handleTextFlowRendered: function () {
             console.log("textflow rendered");
         }
     })

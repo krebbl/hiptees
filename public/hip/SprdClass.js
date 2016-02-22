@@ -22,7 +22,7 @@ define(
                 fonts: null,
                 executor: null,
                 selectionHandler: null,
-                selectedConfiguration: "{productHandler.selectedConfiguration}",
+                selectedConfiguration: "{productStore.selectedConfiguration}",
                 textColor: "{selectedConfiguration.color}",
                 fontSize: "{selectedConfiguration.fontSize}",
                 confirmDialog: null,
@@ -63,18 +63,14 @@ define(
              */
             start: function (parameter, callback) {
 
-                this.$.navigationHandler.set('router', this.$.router);
-
-                var handlers = [
-                    "navigationHandler", "loginHandler", "textConfigurationHandler",
-                    "shapeConfigurationHandler", "imageConfigurationHandler", "applyFilterHandler",
-                    "productHandler", "configurationHandler", "textFlowHandler", "basketHandler", "feedbackHandler",
-                    "shareHandler"
+                var stores = [
+                    "navigationStore", "productStore", "basketStore",
+                    "textFlowStore", "presetStore"
                 ];
 
-                for (var i = 0; i < handlers.length; i++) {
-                    var handler = handlers[i];
-                    this.$.executor.addCommandHandler(this.get(handler));
+                for (var i = 0; i < stores.length; i++) {
+                    var store = stores[i];
+                    this.$.executor.addStore(this.get(store));
                 }
 
                 var api = this.$.api;
@@ -83,7 +79,7 @@ define(
 
                 var product = products.createItem();
 
-                this.$.productHandler.set('product', product);
+                this.$.productStore.set('product', product);
 
                 try {
                     var canvas = this.$stage.$document.createElement('canvas');
@@ -124,7 +120,7 @@ define(
                     //}
                 }
 
-                this.$.navigationHandler.bind('on:navigate', function (e) {
+                this.$.navigationStore.bind('on:navigate', function (e) {
                     tracking.trackView(e.$.fragment);
                 }, this);
 
@@ -148,135 +144,87 @@ define(
                  *
                  */
 
-                this.$.productHandler.bind('on:productSave', function (e) {
+                this.$.productStore.bind('on:productSave', function (e) {
                     var product = e.$.product;
                     tracking.trackEvent("PRODUCT", "savingProduct", "state", product.$.state);
                 }, this);
 
-                this.$.productHandler.bind('on:productSaved', function (e) {
+                this.$.productStore.bind('on:productSaved', function (e) {
                     var product = e.$.product;
                     tracking.trackEvent("PRODUCT", "productSaved", "state", product.$.state);
                 }, this);
 
-                this.$.productHandler.bind('on:productSaveFailed', function (e) {
+                this.$.productStore.bind('on:productSaveFailed', function (e) {
                     var product = e.$.product;
                     tracking.trackEvent("PRODUCT", "productSaveFailed", "state", product.$.state);
                 }, this);
 
-                this.$.productHandler.bind('on:productSaveFailed', function (e) {
+                this.$.productStore.bind('on:productSaveFailed', function (e) {
                     var product = e.$.product;
                     tracking.trackEvent("PRODUCT", "productSaveFailed", "state", product.$.state);
                 }, this);
 
-                this.$.productHandler.bind('on:configurationAdded', function (e) {
+                this.$.productStore.bind('on:configurationAdded', function (e) {
                     var config = e.$.configuration;
                     tracking.trackEvent("PRODUCT", "configurationAdded", "type", config.$.type);
                 });
 
-                this.$.productHandler.bind('on:configurationRemoved', function (e) {
+                this.$.productStore.bind('on:configurationRemoved', function (e) {
                     var config = e.$.configuration;
                     tracking.trackEvent("PRODUCT", "configurationRemoved", "type", config.$.type);
                 });
 
-                this.$.productHandler.bind('on:imageReplaced', function () {
+                this.$.productStore.bind('on:imageReplaced', function () {
                     tracking.trackEvent("PRODUCT", "imageReplaced");
                 });
 
-                this.$.productHandler.bind('on:productStateChanged', function (e) {
+                this.$.productStore.bind('on:productStateChanged', function (e) {
                     tracking.trackEvent("PRODUCT", "productStateChanged", "newState", e.$.product.$.state);
                 });
 
 
-                this.$.basketHandler.bind('on:addToBasketSuccess', function (e) {
+                this.$.basketStore.bind('on:addToBasketSuccess', function (e) {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.itemAdded')}, {duration: 3});
                     tracking.trackEvent("BASKET", "addToBasketSuccess", "product", e.$.product.$.id);
                 }, this);
 
-                this.$.basketHandler.bind('on:addToBasketFailed', function (e) {
+                this.$.basketStore.bind('on:addToBasketFailed', function (e) {
                     this.$.notificationManager.showNotification('error', {message: this.$.i18.t('message.addingItemFailed')}, {duration: 3});
                     tracking.trackEvent("BASKET", "addToBasketFailed", "reason", e.$.reason);
                 }, this);
 
-                this.$.basketHandler.bind('on:removeFromBasketSuccess', function (e) {
+                this.$.basketStore.bind('on:removeFromBasketSuccess', function (e) {
                     tracking.trackEvent("BASKET", "removeFromBasketSuccess", "product", e.$.product);
                 }, this);
 
-                this.$.basketHandler.bind('on:removeFromBasketFailed', function (e) {
+                this.$.basketStore.bind('on:removeFromBasketFailed', function (e) {
                     tracking.trackEvent("BASKET", "removeFromBasketFailed", "reason", e.$.reason);
                 }, this);
 
-                this.$.basketHandler.bind('on:checkoutSuccess', function (e) {
+                this.$.basketStore.bind('on:checkoutSuccess', function (e) {
                     tracking.trackEvent("BASKET", "checkoutSuccess", "checkoutUrl", e.$.checkoutUrl);
                     var url = e.$.checkoutUrl;
                     window.open(url, "_system");
                 }, this);
 
-                this.$.basketHandler.bind('on:checkoutFailed', function (e) {
+                this.$.basketStore.bind('on:checkoutFailed', function (e) {
                     tracking.trackEvent("BASKET", "checkoutFailed", "reason", e.$.error);
                 }, this);
 
-                this.$.feedbackHandler.bind('on:feedbackSent', function () {
-                    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.thxForFeedback')}, {duration: 3});
-                }, this);
+                //this.$.feedbackHandler.bind('on:feedbackSent', function () {
+                //    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.thxForFeedback')}, {duration: 3});
+                //}, this);
 
-                this.$.productHandler.bind('on:productStateChanged', function () {
+                this.$.productStore.bind('on:productStateChanged', function () {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.changesSuccessful')}, {duration: 3});
                 }, this);
 
-                this.$.loginHandler.bind("on:userLoggedIn", function (e) {
-                    if (!appStarted) {
-                        appStarted = true;
-                        callback();
-                    }
-                    var data = e.$;
-                    var userRegistered = data.session.get('user.state') == "registered";
-                    var userId = data.session.get('user.id');
-                    tracking.setUserId(userId);
-                    tracking.trackEvent("SESSION", "loggedIn");
+                this.$.productStore.bind('on:productSave', this.showLoading, this);
+                this.$.productStore.bind('on:productSaved', this.hideLoading, this);
 
-                    if (userRegistered) {
-                        executor.storeAndExecute(new Navigate({
-                            fragment: "profile"
-                        }));
-                    } else {
-                        executor.storeAndExecute(new Navigate({
-                            fragment: "register"
-                        }));
-                    }
-                });
+                this.$.productStore.bind('on:addingImage', this.showLoading, this);
 
-                this.$.loginHandler.bind('on:registrationCompleted', function () {
-                    tracking.trackEvent("SESSION", "registrationCompleted");
-                    executor.storeAndExecute(new Navigate({
-                        fragment: "profile"
-                    }));
-                });
-
-                this.$.productHandler.bind('on:productSave', this.showLoading, this);
-                this.$.productHandler.bind('on:productSaved', this.hideLoading, this);
-
-                this.$.productHandler.bind('on:addingImage', this.showLoading, this);
-
-                this.$.productHandler.bind('on:productSaved', this.goToProfileModule, this);
-
-                this.$.loginHandler.bind('on:loginFailed', function () {
-                    if (!appStarted) {
-                        appStarted = true;
-                        callback();
-                    }
-                    tracking.trackEvent("SESSION", "loggedInFailed");
-                    executor.storeAndExecute(new Navigate({
-                        fragment: "login"
-                    }));
-                });
-
-                this.$.loginHandler.bind('on:loggedOut', function () {
-                    tracking.trackEvent("SESSION", "loggedOut");
-                    tracking.setUserId(null);
-                    executor.storeAndExecute(new Navigate({
-                        fragment: "login"
-                    }));
-                });
+                this.$.productStore.bind('on:productSaved', this.goToProfileModule, this);
 
                 var hasParams = location.hash.replace(/^\#\//, "").split("&"),
                     params = {};
@@ -290,7 +238,7 @@ define(
                     self.set('started', true);
 
                     callback();
-                    executor.storeAndExecute(new Navigate({fragment: "editor"}));
+                    self.$.navigationActions.navigate({fragment: "editor"});
                 });
             },
 

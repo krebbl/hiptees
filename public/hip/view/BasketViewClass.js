@@ -1,28 +1,29 @@
-define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/command/Navigate", "hip/handler/BasketHandler", "hip/command/RemoveFromBasket", "hip/command/ChangeBasketItem", "hip/command/CheckoutCommand", "hip/command/NavigateBack"], function (View, Query, Collection, Product, Navigate, BasketHandler, RemoveFromBasket, ChangeBasketItem, CheckoutCommand, NavigateBack) {
+define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/store/BasketStore", "hip/action/BasketActions"], function (View, Query, Collection, Product, BasketStore, BasketActions) {
     return View.inherit({
         defaults: {
             selected: false,
             componentClass: "basket",
             loading: false,
-            basket: "{basketHandler.basket}",
+            basket: "{basketStore.basket}",
             checkingOut: false
         },
 
         inject: {
-            basketHandler: BasketHandler
+            basketStore: BasketStore,
+            basketActions: BasketActions
         },
 
         _initializationComplete: function () {
             this.callBase();
 
-            this.$.navigationHandler.bind('on:navigate', function (e) {
+            this.$.navigationStore.bind('on:navigate', function (e) {
                 this.set('selected', e.$.fragment == "basket");
             }, this);
 
 
-            this.$.navigationHandler.bind('on:navigate', function (e) {
+            this.$.navigationStore.bind('on:navigate', function (e) {
                 if (e.$.fragment == "profile") {
-                    this.$.basketHandler.loadCombinedBasket();
+                    this.$.basketStore.loadCombinedBasket();
                 }
             }, this);
 
@@ -33,22 +34,20 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
                 });
             };
 
-            this.$.basketHandler.bind('on:checkoutSuccess', handleCheckout, this);
-            this.$.basketHandler.bind('on:checkoutFailed', handleCheckout, this);
+            this.$.basketStore.bind('on:checkoutSuccess', handleCheckout, this);
+            this.$.basketStore.bind('on:checkoutFailed', handleCheckout, this);
 
-            this.$.basketHandler.loadCombinedBasket();
+            this.$.basketStore.loadCombinedBasket();
         },
 
         closeBasket: function (e) {
             e.stopPropagation();
-            this.$.executor.storeAndExecute(new NavigateBack({}));
+
+            this.$.navActions.navigateBack();
         },
 
         goCreate: function (e) {
             this.closeBasket(e);
-            this.$.executor.storeAndExecute(new Navigate({
-                fragment: "productTypes"
-            }));
         },
 
         stopPropagation: function (e) {
@@ -57,37 +56,37 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
 
         _gotoProduct: function (product, e) {
             this.closeBasket(e);
-            this.$.executor.storeAndExecute(new Navigate({
+            this.$.navActions.navigate({
                 fragment: "product/" + product.$.id
-            }));
+            });
         },
 
         _updateSize: function (item, event) {
-            this.$.executor.storeAndExecute(new ChangeBasketItem({
+            this.$.basketActions.changeBasketItem({
                 item: item,
                 size: event.target.$.selectedItem
-            }));
+            });
         },
         _removeItem: function (item) {
-            this.$.executor.storeAndExecute(new RemoveFromBasket({
+            this.$.basketActions.removeFromBasket({
                 item: item
-            }));
+            });
         },
         _handleQuantityChange: function (item, event) {
             var value = parseInt(event.target.$.value);
 
             if (!isNaN(value) && value > 0 && item.$.quantity !== value) {
-                this.$.executor.storeAndExecute(new ChangeBasketItem({
+                this.$.basketActions.changeBasketItem({
                     item: item,
                     quantity: value
-                }));
+                });
             } else {
                 event.target.set('value', item.$.quantity);
             }
         },
         checkout: function () {
             this.set('checkingOut', true);
-            this.$.executor.storeAndExecute(new CheckoutCommand({}));
+            this.$.basketActions.checkout();
         }
     })
 });

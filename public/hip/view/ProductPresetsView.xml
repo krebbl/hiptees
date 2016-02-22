@@ -1,0 +1,29 @@
+<view:ProductPresetsViewClass xmlns="http://www.w3.org/1999/xhtml"
+                                xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+
+    <h2>Pick a template</h2>
+    <ui:SelectionView class="department-selection" items="{departments}">
+        <js:Template name="item">
+            <div class="department-selection__item">
+                <span>{item.name}</span>
+            </div>
+        </js:Template>
+    </ui:SelectionView>
+    <ui:SelectionView class="appearance-selection" items="{appearances}">
+        <js:Template name="item">
+            <div class="appearance-selection__item">
+                <span title="{item.name}" backgroundColor="{item.color}"/>
+            </div>
+        </js:Template>
+    </ui:SelectionView>
+    <ui:ItemsView items="{presets}" tagName="ul" class="product-list">
+        <js:Template name="item">
+            <li>
+                <a class="product-image-wrapper" onclick="selectProductPreset(item, event)">
+                    <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" />
+                </a>
+            </li>
+        </js:Template>
+    </ui:ItemsView>
+
+</view:ProductPresetsViewClass>
