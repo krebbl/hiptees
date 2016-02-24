@@ -1,7 +1,7 @@
 define(["hip/action/ActionDomain"], function (ActionDomain) {
 
     return ActionDomain.inherit({
-        ns: "preset",
+        ns: "presets",
         actions: {
             selectDepartment: {
                 department: null

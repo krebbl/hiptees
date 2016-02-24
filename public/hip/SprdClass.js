@@ -64,6 +64,7 @@ define(
             start: function (parameter, callback) {
 
                 var stores = [
+                    "loggerStore",
                     "navigationStore", "productStore", "basketStore",
                     "textFlowStore", "presetStore"
                 ];
@@ -238,7 +239,7 @@ define(
                     self.set('started', true);
 
                     callback();
-                    self.$.navigationActions.navigate({fragment: "editor"});
+                    self.$.navigationActions.navigate({fragment: "presetsView"});
                 });
             },
 

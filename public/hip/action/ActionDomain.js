@@ -20,6 +20,7 @@ define(["js/core/Component", "hip/action/Executor", "underscore"], function (Com
             function createActionFnc(ns, action, defaultPayload) {
 
                 return function (payload) {
+                    payload = payload || {};
                     _.defaults(payload, defaultPayload);
                     self.$.executor.execute(ns, action, payload);
                 }

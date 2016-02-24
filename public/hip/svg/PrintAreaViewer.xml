@@ -100,6 +100,15 @@
                     style="pointer-events: none;"/>
         </g>
 
+        <g translateX="{plus(_v._size.width,30)}" translateY="{half(_v._size.height)}"
+           onpointerdown="handlePointerDown('move','b',event)"
+                class="configuration-mover">
+            <circle r="{multiply(_v.handleWidth, 1.6)}"
+                    class="fa fa-arrows"/>
+            <text x="{multiply(-0.7,_v.handleWidth)}" y="{multiply(_v.handleWidth,0.5)}">
+                &#xf047;
+            </text>
+        </g>
 
     </g>
 

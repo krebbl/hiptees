@@ -24,6 +24,8 @@ define(["hip/store/Store",
 
             (new DeleteOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow)).doOperation();
 
+            focusOffset = anchorOffset;
+
             this._setSelection(payload.textFlow, anchorOffset, focusOffset);
         },
 
@@ -38,7 +40,7 @@ define(["hip/store/Store",
                 anchorOffset = t;
             }
 
-            (new InsertTextOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow, command.$.text)).doOperation();
+            (new InsertTextOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow, payload.text)).doOperation();
 
             anchorOffset += payload.text.length;
             focusOffset = anchorOffset;

@@ -2,6 +2,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "hip/entity/DesignConfiguration",
     "hip/entity/RectangleConfiguration",
     "hip/entity/CircleConfiguration",
+    "hip/entity/ShapeConfiguration",
+    "hip/entity/Filter",
     "hip/model/Design",
     "hip/model/Product",
     "hip/model/UpdateProductState",
@@ -14,7 +16,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "text/operation/ApplyStyleToElementOperation",
     "text/entity/TextFlow",
     "flow",
-    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, Filter, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
 
 
     return Store.inherit({
@@ -22,7 +24,10 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
         defaults: {
             product: null,
-            selectedConfiguration: null
+            selectedConfiguration: null,
+            loadingProduct: false,
+            editing: false,
+            activeTextConfiguration: null
         },
         inject: {
             api: HipDataSource,
@@ -81,21 +86,15 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
 
         applyFilter: function (payload) {
-            if (payload.configuration instanceof DesignConfiguration) {
-                var filter = payload.filter;
-
-                var filters = payload.configuration.$.filters;
-                var newFilters = [];
-                for (var i = 0; i < filters.length; i++) {
-                    var currentFilter = filters[i];
-                    if (!(currentFilter instanceof filter.factory)) {
-                        newFilters.push(currentFilter);
-                    }
+            var configuration = payload.configuration;
+            if (configuration instanceof DesignConfiguration) {
+                var filterChange = payload.filterChange;
+                if (!configuration.$.filter) {
+                    configuration.set('filter', new Filter(filterChange));
+                } else {
+                    configuration.$.filter.set(filterChange);
                 }
-
-                newFilters.push(filter);
-                payload.configuration.set('filters', newFilters);
-                this.trigger('filtersChanged', payload.configuration);
+                this.trigger('on:filterChanged', configuration);
             }
         },
 
@@ -103,8 +102,19 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             this._selectConfiguration(payload.configuration);
         },
 
-        editTextConfiguration: function () {
-            // TODO: implement
+        toggleEditConfiguration: function (payload) {
+            this.set('editing', payload.edit);
+        },
+
+        changeShapeConfiguration: function (payload) {
+            var configuration = payload.configuration;
+            if (configuration instanceof ShapeConfiguration) {
+                configuration.set(payload.change || {});
+            }
+        },
+
+        editTextConfiguration: function (payload) {
+            this.set('activeTextConfiguration', payload.configuration);
         },
 
         changeOrder: function (payload) {
@@ -238,14 +248,105 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         saveProduct: function (payload) {
             this._saveProduct(this.$.product, payload.state);
         },
-        replaceImageFile: function () {
-            // TODO: implement
+        replaceImageFile: function (payload) {
+            var configuration = paylod.configuration;
+            if (configuration instanceof DesignConfiguration) {
+                if (!payload.file) {
+                    return;
+                }
+
+                var newConfig = this.$.product.createEntity(configuration.factory, this._generateConfigurationId());
+                var clone = configuration.clone();
+                clone.unset('id');
+                clone.set({
+                    offset: {
+                        x: configuration.get('offset.x') + 10,
+                        y: configuration.get('offset.y') + 10
+                    }
+                });
+
+                newConfig.set(clone.$);
+
+                var self = this;
+
+                this._imageFileToDesign(payload.file, function (err, design) {
+                    if (!err) {
+                        newConfig.set('design', design);
+                        self.$.product.$.configurations.remove(configuration);
+                        self.trigger('on:configurationRemoved', {configuration: configuration});
+
+                        self.$.product.$.configurations.add(newConfig);
+                        self.trigger('on:configurationAdded', {configuration: newConfig});
+
+                        self.trigger('on:imageReplaced', {configuration: newConfig});
+                        self._selectConfiguration(newConfig);
+                    }
+                });
+            }
         },
         changeProductType: function () {
             // TODO: copy
         },
-        loadProduct: function () {
-            // TODO: implement
+        loadProduct: function (payload) {
+            this.set('loadingProduct', true);
+            var products = this.$.api.createCollection(Collection.of(Product));
+            var product = products.createItem(payload.productId),
+                loadLazy = payload.lazy,
+                callback = payload.callback || function () {
+                    },
+                self = this;
+
+            self._selectConfiguration(null);
+
+            flow()
+                .seq("product", function (cb) {
+                    product.fetch({
+                        noCache: payload.noCache || false
+                    }, cb);
+                })
+                .seq("productType", function (cb) {
+                    this.vars.product.$.productType.fetch({}, cb);
+                })
+                .par(function (cb) {
+                    var appearanceId = this.vars.product.get('appearance.id');
+                    var appearance = this.vars.productType.$.appearances.find(function (a) {
+                        return a.$.id == appearanceId;
+                    });
+                    product.set('appearance', appearance);
+                    if (!loadLazy) {
+                        var img = new Image();
+
+                        img.onload = function () {
+                            cb();
+                        };
+
+                        img.src = appearance.$.resources.MEDIUM;
+                    } else {
+                        cb();
+                    }
+                }, function (cb) {
+                    flow()
+                        .parEach(this.vars.product.$.configurations.toArray(), function (configuration, cb) {
+                            self._loadConfiguration(configuration, payload.lazyLoadConfigurations, payload.originalImages, cb);
+                        })
+                        .exec(cb);
+                })
+                .exec(function (err, results) {
+                    var p = results.product;
+                    if (!err) {
+                        if (payload.asPreset) {
+                            p = p.clone();
+                            p.set('id', undefined);
+                            p.set('state', null);
+                        }
+                        self.set('product', p, {force: true});
+                        self.trigger('on:productLoaded', {product: p});
+                    } else {
+                        console.warn(err);
+                    }
+                    callback && callback(err, p);
+                    self.set('loadingProduct', false);
+                });
         },
         changeProductState: function () {
             // TODO: implement
@@ -257,6 +358,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     this.$.product.$.configurations.remove(this.$.selectedConfiguration);
                     this.trigger('on:configurationRemoved', {configuration: this.$.selectedConfiguration});
                 }
+            }
+            if (!configuration) {
+                this.set('editing', false);
             }
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});
@@ -354,6 +458,50 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }
                 callback && callback(err, design);
             });
+        },
+        _loadConfiguration: function (configuration, loadLazy, loadOriginalImage, callback) {
+            if (configuration instanceof DesignConfiguration) {
+                flow()
+                    .seq("design", function (cb) {
+                        configuration.$.design.fetch(cb);
+                    })
+                    .seq(function (cb) {
+                        if (!loadLazy) {
+                            var image = new Image();
+
+                            image.onload = function () {
+                                cb();
+                            };
+
+                            image.onerror = function () {
+                                console.log("error while loading image");
+                            };
+
+                            var src = this.vars.design.$.resources.SCREEN;
+                            if (loadOriginalImage) {
+                                src = this.vars.design.$.resources.ORIGINAL || src;
+                            }
+                            image.src = src;
+                        } else {
+                            cb();
+                        }
+                    })
+                    .exec(callback);
+            } else if (configuration instanceof TextConfiguration) {
+                if (!loadLazy) {
+                    var textFlow = configuration.$.textFlow;
+                    var style = TextRange.createTextRange(0, 1).getCommonParagraphStyle(textFlow);
+
+                    this.$.textMeasurer.loadFont(style.$.fontFamily, function (err) {
+                        callback && callback(err);
+                    });
+                } else {
+                    callback();
+                }
+
+            } else {
+                callback && callback();
+            }
         }
     });
 

@@ -79,7 +79,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             this.callBase();
 
             var self = this;
-            this.bind('textFlowHandler', 'on:changeTextFlow', function (e) {
+            this.bind('textFlowStore', 'on:changeTextFlow', function (e) {
                 if (e.$.textFlow === self.$.textFlow) {
                     self.setCursor(e.$.anchorOffset);
                 }

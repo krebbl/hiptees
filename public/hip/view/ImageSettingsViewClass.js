@@ -35,7 +35,7 @@ define(["xaml!hip/view/SettingsView",
         //
         //},
 
-        _replaceImage: function(){
+        _replaceImage: function () {
             // Simulate click on the element.
             var evt = document.createEvent('Event');
             evt.initEvent('click', true, true);
@@ -45,18 +45,18 @@ define(["xaml!hip/view/SettingsView",
         handleUpload: function (e) {
             var files = e.domEvent.target.files;
             if (files && files.length) {
-                this.$.executor.storeAndExecute(new ReplaceImageFile({
+                this.$.productStore.replaceImageFile({
                     configuration: this.$.configuration,
                     file: files[0]
-                }));
+                });
             }
         },
 
         _selectPreset: function (preset) {
-            this.$.executor.storeAndExecute(new ApplyFilter({
+            this.$.productActions.applyFilter({
                 configuration: this.$.configuration,
                 filterChange: _.clone(preset)
-            }));
+            });
         },
 
         createFilter: function (preset) {
@@ -66,10 +66,10 @@ define(["xaml!hip/view/SettingsView",
         _updateFilter: function (filter, value) {
             var change = {};
             change[filter] = value;
-            this.$.executor.storeAndExecute(new ApplyFilter({
+            this.$.productActions.applyFilter({
                 configuration: this.$.configuration,
                 filterChange: change
-            }));
+            });
         },
 
         _showInput: function (val) {

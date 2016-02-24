@@ -10,10 +10,6 @@ define(
         "hip/entity/TextConfiguration",
         'hip/entity/RectangleConfiguration',
         "hip/entity/Filter",
-        "hip/command/LoadProduct",
-        "hip/command/text/DeleteText", "hip/command/text/InsertLine", "hip/command/text/InsertText",
-        "hip/command/AddText",
-        "hip/command/AddImageFile",
         "text/entity/TextFlow",
         "text/entity/TextRange",
         "text/operation/ApplyStyleToElementOperation",
@@ -57,7 +53,7 @@ define(
             start: function (parameter, callback) {
                 // setup command handlers
 
-                this.$.executor.addCommandHandler(this.$.productHandler);
+                this.$.executor.addStore(this.$.productStore);
 
                 this.$.injection.addInstance(this.$.svgLoader);
 
@@ -95,7 +91,7 @@ define(
                 $document.title = "";
                 var self = this;
 
-                this.$.executor.execute(new LoadProduct({
+                this.$.productActions.loadProduct({
                     productId: productId,
                     noCache: true,
                     lazyLoadConfigurations: false,
@@ -106,7 +102,7 @@ define(
                             console.log("rendered " + productId);
                         }, 5 * self.get('productHandler.product.configurations.size()'));
                     }
-                }));
+                });
                 routeContext.callback();
             },
 

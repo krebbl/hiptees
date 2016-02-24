@@ -3,22 +3,26 @@
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:js="js.core" xmlns:ui="js.ui" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
-        xmlns:data="hip.data" xmlns:conf="js.conf">
+        xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:store="hip.store" xmlns:action="hip.action">
 
     <js:Injection cid="injection">
         <data:HipDataSource cid="api" gateway="/api/v1" imageRenderSecret="blublablub"/>
         <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
         <util:ImageFileReader/>
         <svg:TextMeasurer/>
-        <command:EventBus cid="eventBus"/>
-        <command:Executor cid="executor" eventBus="{eventBus}"/>
-        <handler:NavigationHandler cid="navigationHandler"/>
-        <handler:ImageConfigurationHandler cid="imageConfigurationHandler"/>
-        <handler:TextConfigurationHandler cid="textConfigurationHandler"/>
-        <handler:ApplyFilterHandler cid="applyFilterHandler"/>
-        <handler:ProductHandler cid="productHandler" product="{product}"/>
-        <handler:ConfigurationHandler cid="configurationHandler"/>
-        <handler:TextFlowHandler cid="textFlowHandler"/>
+
+        <action:Executor cid="executor"/>
+
+        <action:NavigationActions cid="navigationActions"/>
+        <action:ProductActions/>
+        <action:TextFlowActions/>
+
+        <store:NavigationStore cid="navigationStore"/>
+        <store:ProductStore cid="productStore"/>
+        <store:BasketStore cid="basketStore"/>
+        <store:TextFlowStore cid="textFlowStore"/>
+        <store:PresetStore cid="presetStore"/>
+
         <view:ImageFilterRenderer/>
         <svg:TextEditor/>
     </js:Injection>

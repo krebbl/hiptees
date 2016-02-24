@@ -14,7 +14,18 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             selectConfiguration: {
                 configuration: null
             },
-            editTextConfiguration: {},
+            toggleEditConfiguration: {
+                edit: false
+            },
+            editTextConfiguration: {
+                configuration: null
+            },
+            toggleTextEditing: {
+                edit: false
+            },
+            changeShapeConfiguration: {
+                configuration: null
+            },
             applyFilter: {},
             pointDownConfiguration: {},
             changeOrder: {},

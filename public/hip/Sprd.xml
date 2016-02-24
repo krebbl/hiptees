@@ -21,6 +21,7 @@
         <action:PresetActions />
         <action:TextFlowActions />
 
+        <store:LoggerStore cid="loggerStore"/>
         <store:NavigationStore cid="navigationStore"/>
         <store:ProductStore cid="productStore"/>
         <store:BasketStore cid="basketStore"/>
@@ -57,7 +58,7 @@
     </div>
 
     <div class="module-container" visible="{started}">
-        <module:SprdEditorModule />
+        <module:EditorModule />
     </div>
 
 </hip:SprdClass>

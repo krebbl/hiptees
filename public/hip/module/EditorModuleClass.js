@@ -1,18 +1,12 @@
 define([
     "hip/module/BaseModule",
     "js/data/Query",
-    "hip/command/AddText",
-    "hip/command/AddImageFile",
-    "hip/command/AddShape",
-    "hip/command/ChangeProductType",
-    "hip/command/SaveProduct",
-    "hip/command/LoadProduct",
-    "hip/command/Navigate",
     "hip/model/ProductType",
     "hip/model/Product",
+    "hip/action/ProductActions",
     "js/data/Collection",
     "js/type/Color"
-], function (BaseModule, Query, AddText, AddImageFile, AddShape, ChangeProductType, SaveProduct, LoadProduct, Navigate, ProductType, Product, Collection, Color) {
+], function (BaseModule, Query, ProductType, Product, ProductActions, Collection, Color) {
     return BaseModule.inherit({
         defaults: {
             productStore: null,
@@ -20,7 +14,6 @@ define([
             appearance: "{product.appearance}",
             selectedConfiguration: "{productStore.selectedConfiguration}",
             configurationViewer: null,
-            settingsSelected: false,
             saveView: null,
             addView: null,
             zoomed: false,
@@ -31,11 +24,15 @@ define([
             savingProduct: false,
             presets: null,
             sizeTableSelected: false,
+            navigationStore: null,
+            productSelected: false,
             _loadingMessage: "",
             _productName: ""
         },
 
-        inject: {},
+        inject: {
+            productActions: ProductActions
+        },
 
         ctor: function () {
             this.callBase();
@@ -50,6 +47,8 @@ define([
                     }, 10);
                 }
             });
+
+            this.bind('navigationStore', 'on:navigate', this.onNavigate, this);
 
             this.bind('productStore', 'on:configurationPointDown', function (e) {
                 if (self.$.productViewer) {
@@ -73,15 +72,6 @@ define([
                     'savingProduct': true
                 });
 
-            }, this);
-
-            this.bind('productStore', 'on:productSaved', function (e) {
-                if (this.$.savingProduct) {
-                    this.$.executor.storeAndExecute(new Navigate({
-                        fragment: "profile"
-                    }));
-                    this.set('savingProduct', false);
-                }
             }, this);
 
             this.bind('productStore', 'on:productSaveFailed', function (e) {
@@ -114,7 +104,6 @@ define([
             var showTextHint = false;
             if (!configuration) {
                 this.set({
-                    'settingsSelected': false,
                     'showConfigurationInfo': false
                 });
             } else {
@@ -138,10 +127,12 @@ define([
             return a || b;
         },
 
-        prepare: function (fragment, callback) {
-            var self = this;
+        onNavigate: function (event) {
+            var fragment = event.$.fragment;
+            if (!fragment) {
+                return;
+            }
             var match = fragment.match(/^editor\/(\w+)\/(\w+)/);
-
             if (match) {
                 var action = match[1];
                 var productId = match[2],
@@ -151,54 +142,20 @@ define([
                     asPreset = true;
                 }
 
-                this.$.executor.execute(new LoadProduct({
+                this.set('productSelected', true);
+
+                this.$.productActions.loadProduct({
                     productId: productId,
                     lazy: true,
-                    asPreset: asPreset,
-                    callback: callback
-                }));
-            } else {
-                var api = this.$.api;
-
-                var products = api.createCollection(Collection.of(Product));
-
-                var query = new Query().eql("tags", "preset");
-
-                var queryCollection = products.query(query);
-
-                queryCollection.fetch({
-                    limit: 10
-                }, function (err, productPresets) {
-                    self.set('presets', productPresets);
-                    callback(err);
-                    if (!err) {
-                    }
+                    asPreset: asPreset
                 });
-
-                //var productTypes = this.$.api.createCollection(Collection.of(ProductType));
-                //
-                //productTypes.fetch({}, function (err, productTypes) {
-                //    if (!err) {
-                //        self.$.executor.execute(new ChangeProductType({
-                //            productType: productTypes.at(0)
-                //        }));
-                //    }
-                //    callback(err);
-                //});
             }
 
         },
 
-        loadProduct: function (routeContext, productId) {
-
-
-            routeContext.callback();
-
-        }.async(),
-
         add: function (what, e) {
             if (what == "text") {
-                this.$.executor.storeAndExecute(new AddText({
+                this.$.productActions.addText({
                     text: "New Text",
                     paragraphStyle: {
                         textAlign: "center",
@@ -208,16 +165,16 @@ define([
                         fontFamily: "HammersmithOne"
                     },
                     leafStyle: {}
-                }));
+                });
             } else if (what == "image") {
                 // Simulate click on the element.
                 var evt = document.createEvent('Event');
                 evt.initEvent('click', true, true);
                 this.$.fileInput.$el.dispatchEvent(evt);
             } else if (what == "rectangle" || what == "circle") {
-                this.$.executor.storeAndExecute(new AddShape({
+                this.$.productActions.addShape({
                     type: what
-                }));
+                });
             }
 
             this.showView(null);
@@ -226,22 +183,22 @@ define([
         handleUpload: function (e) {
             var files = e.domEvent.target.files;
             if (files && files.length) {
-                this.$.executor.storeAndExecute(new AddImageFile({
+                this.$.productActions.addImageFile({
                     file: files[0]
-                }));
+                });
             }
         },
 
         showSettings: function () {
-            this.set('settingsSelected', true);
+            this.$.productActions.toggleEditConfiguration({edit: true});
         },
 
         hideSettings: function () {
-            this.set('settingsSelected', false);
+            this.$.productActions.toggleEditConfiguration({edit: false});
         },
 
         toggleSettings: function () {
-            this.set('settingsSelected', !this.$.settingsSelected);
+            this.$.productActions.toggleEditConfiguration({edit: !this.get('productStore.editing')});
         },
 
         _commitCurrentView: function (currentView, oldView) {
@@ -266,35 +223,8 @@ define([
         },
 
         showView: function (viewName) {
-            //if (view === this.$.saveView) {
-            //    this.set('_productName', this.$.productStore.getProductName(this.$.product));
-            //} else if (view === this.$.presetView) {
-            //
-            //    var api = this.$.api;
-            //
-            //    var products = api.createCollection(Collection.of(Product));
-            //
-            //    var query = new Query().eql("tags", "preset");
-            //
-            //    var queryCollection = products.query(query),
-            //        self = this;
-            //
-            //    queryCollection.fetch({
-            //        limit: 10
-            //    }, function (err, productPresets) {
-            //        self.set('loading', false);
-            //        if (!err) {
-            //            self.set('presets', productPresets);
-            //        }
-            //        //callback && callback(err);
-            //    });
-            //
-            //}
-            //this.set('currentView', view);
-
             this.navigate(viewName);
         },
-
 
 
         minusHalf: function (n) {
@@ -372,7 +302,7 @@ define([
         saveProductFinal: function () {
             this.showView(null);
             this.$waitingForSave = true;
-            this.$.executor.storeAndExecute(new SaveProduct({state: this.$.makePublic ? "public" : "private"}));
+            this.$.productActions.saveProduct({state: this.$.makePublic ? "public" : "private"});
         },
 
         format: function (val) {
@@ -406,16 +336,18 @@ define([
             return a && b;
         },
 
-        selectProductPreset: function (product, event) {
-            this.$.executor.storeAndExecute(new Navigate({
-                fragment: "editor/preset/" + product.$.id
-            }));
-        },
-
         saveProduct: function () {
             this.showView(null);
             this.set('savingProduct', true);
-            this.$.executor.storeAndExecute(new SaveProduct({state: "draft"}));
+            this.$.productActions.saveProduct({state: "draft"});
+        },
+
+        loadingClass: function () {
+            return this.get('productStore.loadingProduct') ? "loading" : "";
+        }.onChange('productStore.loadingProduct'),
+
+        zoomClass: function () {
+            return this.$.zoomed ? "zoomed" : "";
         }
     })
 });

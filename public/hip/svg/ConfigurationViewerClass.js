@@ -324,10 +324,11 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                     size: this.$resized ? this.$._size : null
                 });
             }
-
-            this.$.productActions.selectConfiguration({
-                configuration: this.$.configuration
-            });
+            if(!this.$.selected || !(this.$moved || this.$resized)) {
+                this.$.productActions.selectConfiguration({
+                    configuration: this.$.configuration
+                });
+            }
 
             this.$originalSize = null;
             this.$originalOffset = null;

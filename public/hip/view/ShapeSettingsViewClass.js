@@ -36,10 +36,10 @@ define(["xaml!hip/view/SettingsView",
         _updateAttribute: function (attribute, value) {
             var change = {};
             change[attribute] = value;
-            this.$.executor.storeAndExecute(new ChangeShapeConfiguration({
+            this.$.productActions.changeShapeConfiguration({
                 configuration: this.$.configuration,
                 change: change
-            }));
+            });
         },
 
         _selectColorContent: function (color) {

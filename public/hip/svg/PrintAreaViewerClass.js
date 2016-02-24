@@ -222,6 +222,15 @@ define(['js/svg/SvgElement', 'js/core/List',
             return a && b && c;
         },
 
+        multiply: function (a, b) {
+            console.log(a);
+            return a * b;
+        },
+
+        plus: function (a, b) {
+            return a + b;
+        },
+
         half: function (a) {
             return a * 0.5 || 0;
         },

@@ -149,6 +149,17 @@ define(["xaml!hip/view/SettingsView",
             }
         },
 
+        _previewStyle: function (key, value) {
+            this.$previewCommand = this.$previewCommand || {};
+            var paragraphStyle = {};
+            paragraphStyle[key] = value;
+            this.$previewCommand = {
+                textFlow: this.$.configuration.$.textFlow,
+                paragraphStyle: paragraphStyle
+            };
+            this.$.textFlowActions.changeStyle(this.$previewCommand);
+        },
+
 
         format: function (n) {
             if (n != null) {

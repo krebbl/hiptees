@@ -5,7 +5,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             textRenderer: null,
             verticalStretchable: false,
             componentClass: "text-configuration-viewer needsclick",
-            maxWidth: "{configuration.size.width}"
+            maxWidth: "{configuration.size.width}",
+            activeTextConfiguration: "{productStore.activeTextConfiguration}"
         },
 
         $classAttributes: ["textRenderer"],
@@ -18,15 +19,19 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             this.callBase();
 
             if (this.$stage.$browser.isIOS) {
-                this.bind('svgTextEditor', 'on:blur', function(){
-                    this._disableEditing();
+                this.bind('svgTextEditor', 'on:blur', function () {
+                    this.$.productActions.editTextConfiguration({
+                        configuration: null
+                    });
                 }, this);
             }
         },
 
         _commitSelected: function (selected) {
-            if (!selected) {
-                this._disableEditing();
+            if (!selected && this.$.activeTextConfiguration === this.$.configuration) {
+                this.$.productActions.editTextConfiguration({
+                    configuration: null
+                });
             }
         },
 
@@ -48,8 +53,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         },
 
-        handleDocumentClick: function(e){
-            if(this.$editing == true){
+        handleDocumentClick: function (e) {
+            if (this.$editing == true) {
                 e.stopPropagation();
                 e.preventDefault();
             }
@@ -97,6 +102,13 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 x: 0.5,
                 y: 0
             };
+        },
+        _commitActiveTextConfiguration: function (configuration) {
+            if (configuration === this.$.configuration) {
+                this._enableEditing();
+            } else {
+                this._disableEditing();
+            }
         },
 
         _disableEditing: function () {
@@ -167,8 +179,10 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         handlePointerUp: function () {
             if (this.$.selected && !this.$moved && !this.$resized) {
-
-                this._enableEditing();
+                this.$.productActions.editTextConfiguration({
+                    configuration: this.$.configuration
+                });
+                //this._enableEditing();
             }
 
             this.callBase();

@@ -1,42 +1,45 @@
-define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/ConfirmDialog", "hip/command/LogoutCommand", "hip/command/FeedbackCommand", "hip/command/NavigateBack"], function (ViewBase, LoginHandler, ConfirmDialog, LogoutCommand, FeedbackCommand, NavigateBack) {
+define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetStore", "hip/action/PresetActions"], function (ViewBase, LoginHandler, ConfirmDialog, PresetStore, PresetActions) {
 
     return ViewBase.inherit({
         defaults: {
             presets: null,
-            componentClass: "product-presets",
+            componentClass: "presets-view",
             selected: false,
-            departments: [
-                {
-                    name: "Men",
-                    id: "1"
-                },
-                {
-                    name: "Women",
-                    id: "2"
-                }
-            ],
-            appearances: [
-                {
-                    name: "white",
-                    color: "#ffffff"
-                },
-                {
-                    name: "black",
-                    color: "#000000"
-                },
-                {
-                    name: "red",
-                    color: "#ff0000"
-                }
-            ]
+            closable: false
         },
 
         inject: {
+            presetStore: PresetStore,
+            presetActions: PresetActions,
             confirmDialog: ConfirmDialog
         },
 
         hide: function () {
             this.$.navActions.navigateBack();
+        },
+
+        _commitSelected: function(selected){
+            if(selected) {
+                var self = this;
+                setTimeout(function(){
+                    self.$.scrollContainer.$el.scrollTop = 1;
+                },500);
+            }
+        },
+        selectProductPreset: function (product) {
+            this.$.navActions.navigate({
+                fragment: "editor/preset/" + product.$.id
+            });
+        },
+        selectDepartment: function (department) {
+            this.$.presetActions.selectDepartment({
+                department: department
+            });
+        },
+        selectAppearance: function (appearance) {
+            this.$.presetActions.selectAppearance({
+                appearance: appearance
+            });
         }
 
     });

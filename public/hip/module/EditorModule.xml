@@ -1,16 +1,15 @@
 <parent:EditorModuleClass xmlns="http://www.w3.org/1999/xhtml"
-                          xmlns:parent="hip.module" xmlns:svg="hip.svg" xmlns:view="hip.view"
-                          class="with-footer" xmlns:ui="js.ui">
+                          xmlns:parent="hip.module" xmlns:svg="hip.svg" xmlns:view="hip.view" xmlns:ui="js.ui"
+                          xmlns:js="js.core" class="module {loadingClass()}">
 
     <div class="header">
-        <a onclick="confirmGoBack" class="header__btn btn-left">
-            <i class="fa fa-angle-left"/>
-        </a>
-        <h2>${i18n.t('editor.edit')}</h2>
+        <h1 class="header__logo"/>
+        <h2>Create your own</h2>
+        <view:MiniBasketButton class="header__btn btn-right" onclick="goToBasket()"/>
     </div>
 
 
-    <div class="content {appearanceClass()}">
+    <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content">
         <!--<a>-->
         <!--Undo-->
         <!--</a>-->
@@ -33,13 +32,21 @@
             </div>
         </div>
 
-        <div cid="innerContent" class="inner-content" heightUpdatePolicy="in" height="100%">
+        <div class="configuration-edit-btn-wrapper" selected="{isEditButtonVisible()}"
+             _viewerPosition="{viewerPosition(configurationViewer)}">
+            <a onclick="toggleSettings" selected="{productStore.editing}" class="configuration-edit-btn"
+               left="{_viewerPosition.x}" top="{_viewerPosition.y}" position="absolute">
+                <i class="fa fa-pencil"/>
+            </a>
+        </div>
+
+        <div cid="innerContent" class="inner-content" heightUpdatePolicy="in" height="100%" visible="{productSelected}">
             <div class="product-viewer-wrapper" cid="wrapper"
                  height="{height}"
                  width="{height}"
                  marginLeft="{minusHalf(width)}px"
                  left="50%"
-                 onclick="showView(null)">
+                 onclick="navigate(null)">
                 <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" product="{product}"/>
             </div>
         </div>
@@ -53,23 +60,26 @@
     </div>
 
     <div class="footer">
-        <a onclick="showSettings" enabled="{selectedConfiguration}">
-            <i class="fa fa-pencil"/>
-            ${i18n.t('editor.edit')}
+        <a class="footer__btn footer__template-btn" onclick="navigate('presetsView')">
+            Vorlage verwenden
         </a>
-        <a onclick="showView(addView)">
+        <!--<a class="footer__btn" onclick="showSettings" enabled="{selectedConfiguration}">-->
+        <!--<i class="fa fa-pencil"/>-->
+        <!--${i18n.t('editor.edit')}-->
+        <!--</a>-->
+        <a class="footer__btn footer__add-btn" onclick="navigate('addView')">
             <i class="fa fa-plus"/>
-            ${i18n.t('editor.add')}
         </a>
 
-        <a onclick="showView(saveView)" enabled="{not(product.configurations.isEmpty())}">
-            <i class="fa fa-check"/>
-            ${i18n.t('editor.save')}
+        <a class="footer__btn footer__buy-btn" onclick="navigate('buyView')"
+           enabled="{not(product.configurations.isEmpty())}">
+            <i class="fa fa-shopping-cart"/>
+            ${i18n.t('editor.buy')}
         </a>
 
     </div>
 
-    <div class="setting-views" selected="{settingsSelected}">
+    <div class="setting-views" selected="{productStore.editing}">
         <view:TextSettingsView oncloseClicked="hideSettings"/>
         <view:ImageSettingsView oncloseClicked="hideSettings"/>
         <view:ShapeSettingsView oncloseClicked="hideSettings"/>
@@ -77,8 +87,12 @@
 
     <input cid="fileInput" type="file" onchange="handleUpload"/>
 
+    <!--<view:BackToTop element="{presetView}" text="${i18n.t('general.backToTop')}"/>-->
 
-    <div class="add-view" cid="addView">
+    <view:ProductPresetsView selected="{navigationStore.fragmentIsActive('presetsView')}"
+                             closable="{productSelected}"/>
+
+    <div class="add-view" selected="{navigationStore.fragmentIsActive('addView')}">
         <div>
             <a onclick="add('text',event)">
                 <i class="fa fa-font"/>
@@ -98,7 +112,7 @@
             </a>
         </div>
 
-        <a class="close-btn" onclick="showView(null)">
+        <a class="close-btn" onclick="navigate(null)">
             ${i18n.t('general.close')}
             <i class="fa fa-chevron-down"/>
         </a>
@@ -112,32 +126,61 @@
         </div>
     </div>
 
-    <div class="save-view" cid="saveView">
+    <div class="buy-view" cid="buyView">
+        <table selected="{sizeTableSelected}" class="size-table-view__table" border="1" cellpadding="4">
+            <thead>
+                <tr>
+                    <th>
+                        <b>${i18n.t('general.size')}</b>
+                    </th>
+                    <th>
+                        <b>${i18n.t('sizeTable.length')}</b>
+                    </th>
+                    <th>
+                        <b>${i18n.t('sizeTable.brust')}</b>
+                    </th>
+                </tr>
+                <tr>
+                    <th/>
+                    <th>CM</th>
+                    <th>CM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <js:Repeat items="{product.productType.sizes}" itemKey="size">
+                    <js:Template name="item">
+                        <tr>
+                            <td>
+                                <b>{size.name}</b>
+                            </td>
+                            <td>{mmToMm(size.measures.[0].value.value)}</td>
+                            <td>{mmToMm(size.measures.[1].value.value)}</td>
+                        </tr>
+                    </js:Template>
+                </js:Repeat>
+            </tbody>
+        </table>
         <div>
             <!--<a class="close-btn" onclick="showView(null)">Close</a>-->
-            <div class="save-view__product-name">
-                <input type="text" placeholder="${i18n.t('editor.giveItAName')}" value="{{_productName}}"/>
-            </div>
+            <!--<div class="save-view__product-name">-->
+            <!--<input type="text" placeholder="${i18n.t('editor.giveItAName')}" value="{{_productName}}"/>-->
+            <!--</div>-->
+            <label class="buy-view__label">
+                Choose A Size
+                <a onclick="toggleSizeTable()">Maßtabelle</a>
+            </label>
+            <ui:SelectionView class="buy-view__size-list" items="{product.productType.sizes}"
+                              itemKey="size" tagName="ul">
+                <js:Template name="item">
+                    <li class="buy-view__size-list-item">
+                        <div>{size.name}</div>
+                    </li>
+                </js:Template>
+            </ui:SelectionView>
 
-            <div class="save-view__publish">
-                <div class="checkbox-control">
-                    <label>
-                        <strong>${i18n.t('editor.publishShirt')}</strong>
-                        <input type="checkbox" checked="{{makePublic}}" class="fa fa-check"/>
-                        <span class="hint">
-                            ${i18n.t('editor.publishShirtHint')}
-                        </span>
-                    </label>
-                </div>
-                <a class="btn btn-success" onclick="saveProductFinal()">
-                    ${i18n.t('editor.saveFinal')}
-                </a>
-            </div>
-            <div class="save-view__draft">
-                <a class="btn btn-secondary" onclick="saveProduct()">
-                    ${i18n.t('editor.saveAsDraft')}
-                </a>
-            </div>
+            <a class="btn btn-orange">
+                ${i18n.t('editor.addToBasket')}
+            </a>
         </div>
     </div>
 

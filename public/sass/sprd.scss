@@ -133,7 +133,19 @@
       overflow-y: scroll;
 
       -webkit-overflow-scrolling: touch;
+
+      &__editor {
+        overflow: hidden;
+        -webkit-overflow-scrolling: none;
+      }
+
+      & .zoomed {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+      }
     }
+
+
 
     &.with-footer > .content {
       bottom: 40px;
@@ -179,6 +191,18 @@
   stroke: $color-brand;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
+}
+
+.configuration-mover {
+  circle {
+    fill: $color-green;
+  }
+
+  text {
+    fill: white;
+    font: normal normal normal 16px/1 FontAwesome;
+
+  }
 }
 
 //$settings-height: 224px;
@@ -511,24 +535,6 @@ $add-view-height: 140px;
 
 }
 
-$presets-view-height: 500px;
-
-.presets-view {
-  z-index: 2;
-  background: rgba(white, 0.93);
-  position: absolute;
-  bottom: -$presets-view-height;
-  width: 100%;
-  height: $presets-view-height;
-  transition: bottom 0.5s;
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
-
-  &.active {
-    bottom: 0;
-  }
-}
-
 ul.settings {
   font-weight: 300;
   > li {
@@ -663,8 +669,8 @@ ul {
 
 .inner-content {
   position: absolute;
-  top: -20px;
-  bottom: 0;
+  top: -50px;
+  bottom: -80px;
   left: 0;
   right: 0;
   overflow: hidden;
@@ -1136,109 +1142,6 @@ input[type=checkbox]:checked, input[type=radio]:checked {
   margin-top: -35px;
 }
 
-.swipe-view-product {
-
-  .content {
-    padding: 0 15px;
-  }
-
-  .content h2 {
-    font-size: 15px;
-    margin-top: 10px;
-    color: #2b2b2b;
-    margin-bottom: 10px;
-  }
-
-  .subtitle {
-    color: #323232;
-    margin-top: -7px;
-    font-size: 12px;
-  }
-
-  .btn-success, .btn-secondary {
-    display: block;
-    margin-bottom: 10px;
-  }
-
-  .btn-remix {
-    background: orange;
-    border-color: lighten(#FFA500, 10%);
-    margin-bottom: 20px;
-  }
-
-  .share-options {
-    position: absolute;
-    bottom: 8px;
-    right: 15px;
-    > a {
-      vertical-align: bottom;
-      color: white;
-      width: 26px;
-      height: 26px;
-      margin-left: 10px;
-      border-radius: 30px;
-      text-align: center;
-      overflow: hidden;
-      padding: 7px;
-
-      &.fa-facebook {
-        background-color: $color-fb;
-        font-size: 20px;
-      }
-
-      &.fa-twitter {
-        background-color: $color-twitter;
-        font-size: 14px;
-      }
-
-      &.fa-instagram {
-        background-color: #AD6848;
-      }
-
-      &.fa-chain {
-        background-color: #000000;
-
-      }
-
-    }
-  }
-
-  .options {
-    position: relative;
-    height: 42px;
-    border-bottom: 1px solid lightgray;
-    margin: 0 -15px;
-    margin-bottom: 10px;
-  }
-
-  .size-options {
-    margin-bottom: 10px;
-    > * {
-      display: inline-block;
-      width: 48%;
-      position: relative;
-      vertical-align: top;
-    }
-
-    > *:first-child {
-      margin-right: 2%;
-    }
-
-    > *:last-child {
-      margin-left: 2%;
-    }
-  }
-
-  .price {
-    color: #424242;
-    padding: 10px 14px;
-    font-weight: bold;
-    display: inline-block;
-    font-size: 17px;
-  }
-
-}
-
 .empty-list-message {
   margin: 48px 70px;
   text-align: center;
@@ -1287,66 +1190,114 @@ input[type=checkbox]:checked, input[type=radio]:checked {
   }
 }
 
-.department-selection {
-  padding: 10px;
-  border-bottom: 1px solid lightgray;
-  overflow: hidden;
-  //text-align: center;
+$presets-view-height: 500px;
 
-  &__item {
-    display: inline-block;
-    border-radius: 2px;
-    padding: 3px;
-    width: 120px;
+.presets-view{
+
+  z-index: 2;
+  background: rgba(#fff, 0.93);
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  transition: top 0.5s;
+  bottom: 0;
+
+  &.active {
+    top: ($header-height + 10);
+  }
+
+  &__close {
+    position: absolute;
+    right: 10px;
+    padding: 10px 15px;
+    color: $color-dark1;
+    top: 0;
+    font-size: 16px;
+
+  }
+
+  &__header {
     text-align: center;
-    border: 1px solid lightgray;
-    margin-right: 10px;
+    font-size: 18px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid lightgray;
+  }
 
-    > * {
-      display: block;
-      padding: 0.3em;
-      text-transform: uppercase;
-    }
+  &__scroll-view {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    width: 100%;
 
-    &.active {
-      border-color: $color-green;
-    }
+    overflow: hidden;
 
-    &.active > * {
-      background: $color-green;
-      color: white;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .department-selection {
+    padding: 10px;
+    border-bottom: 1px solid lightgray;
+    overflow: hidden;
+    //text-align: center;
+
+    &__item {
+      display: inline-block;
+      border-radius: 2px;
+      padding: 3px;
+      width: 120px;
+      text-align: center;
+      border: 1px solid lightgray;
+      margin-right: 10px;
+
+      > * {
+        display: block;
+        padding: 0.3em;
+        text-transform: uppercase;
+      }
+
+      &.active {
+        border-color: $color-green;
+      }
+
+      &.active > * {
+        background: $color-green;
+        color: white;
+      }
     }
   }
-}
 
-.appearance-selection {
-  padding: 10px;
-  border-bottom: 1px solid lightgray;
-  overflow: hidden;
+  .appearance-selection {
+    padding: 10px;
+    border-bottom: 1px solid lightgray;
+    overflow: hidden;
 
-  &__item {
+    &__item {
 
-    display: inline-block;
-    margin-right: 1em;
-    border-radius: 26px;
-    padding: 3px;
-    width: 26px;
-    height: 26px;
-    border: 1px solid lightgray;
+      display: inline-block;
+      margin-right: 1em;
+      border-radius: 26px;
+      padding: 3px;
+      width: 26px;
+      height: 26px;
+      border: 1px solid lightgray;
 
+      &.active {
+        border-color: $color-green;
 
-    &.active {
-      border-color: $color-green;
+      }
+
+      > * {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+      }
 
     }
-
-    > * {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border-radius: 10px;
-    }
-
-
   }
+
 }
