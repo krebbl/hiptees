@@ -72,17 +72,22 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                     scaleVector = this._createDiffVector(event);
 
 
+                // calculate the length of the projected vector
                 var rootLength = this.vectorLength(rootVector);
+                var s = this.multiplyVectors(scaleVector, rootVector) / rootLength,
+                    lf = s / rootLength;
 
-                var s = this.multiplyVectors(scaleVector, rootVector) / rootLength;
 
+                // multiply with the root vector
+                var diffY = Math.abs(rootVector[0]) * lf * this.$originalSize.height / this.$originalSize.width;
 
-                var newFontSize = this.$originalFontSize * (rootLength + s * 2.5) / rootLength;
+                var newHeight = this.$originalSize.height + diffY * 2;
+                var nFontSize = this.$originalFontSize * (newHeight / this.$originalSize.height);
 
                 this.$.textFlowActions.changeStyle({
                     textFlow: this.$.configuration.$.textFlow,
                     paragraphStyle: {
-                        fontSize: Math.round(newFontSize)
+                        fontSize: Math.round(nFontSize)
                     }
                 });
             } else {
@@ -100,48 +105,24 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         },
 
         _handleSizeChange: function (e) {
-            if (this.$originalSize) {
-                this.$originalSize = {
-                    width: this.$originalSize.width,
-                    height: e.$.height
-                };
-            }
+            var size = {};
 
-            var size = {},
-                anchor = this.$._anchor;
-
-            // TODO: fix new offset position
-
-            var width = this.get('_size.width');
             size.height = e.$.height;
             if (this.$.maxWidth == null) {
                 size.width = e.$.width;
-
-                if (e.$.textAlign == "center") {
-                    anchor.x = 0.5;
-                } else if (e.$.textAlign == "right") {
-                    anchor.x = 1;
-                }
             } else {
                 size.width = this.$._size.width;
             }
 
             this.set({
-                _anchor: anchor,
                 _size: size
             });
 
-            if (this.$.svgTextEditor.$.textFlow == this.$.configuration.$.textFlow) {
-                var rect = this.getBoundRectInPx();
-                this.$.svgTextEditor.set({left: rect.left + window.scrollX, width: rect.width, height: rect.height});
+            var svgTextEditor = this.$.svgTextEditor;
+            var configuration = this.$.configuration;
+            if (svgTextEditor.$.textFlow === configuration.$.textFlow) {
+                svgTextEditor.set(this.getEditorPosition());
             }
-        },
-
-        anchor: function () {
-            return {
-                x: 0.5,
-                y: 0.5
-            };
         },
         _commitActiveTextConfiguration: function (configuration) {
             if (configuration === this.$.configuration) {
@@ -173,6 +154,16 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             }
         },
 
+        getEditorPosition: function () {
+            var rect = this.getBoundRectInPx();
+            return {
+                left: Math.ceil(rect.left + window.scrollX),
+                top: Math.floor(rect.top + window.scrollY),
+                width: Math.ceil(rect.width) + "px",
+                height: Math.ceil(rect.height)
+            }
+        },
+
         _enableEditing: function () {
             var rect = this.getBoundRectInPx();
             var root = this.getSvgRoot();
@@ -189,10 +180,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 //                    visible: true,
                 zIndex: 1000,
                 position: "absolute",
-                left: Math.ceil(rect.left + window.scrollX),
-                top: Math.floor(rect.top + window.scrollY),
-                width: Math.ceil(rect.width) + "px",
-                height: Math.ceil(rect.height),
                 overflow: "hidden",
                 svgWidth: root.$.width,
                 svgHeight: root.$.height,
@@ -200,7 +187,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 viewBox: this.getSvgRoot().$.viewBox,
                 textFlow: textFlow
             }, {force: true});
-            // TODO: bind on blur event to remove editing class
+
+            svgTextEditor.set(this.getEditorPosition());
+
             if (!svgTextEditor.isRendered()) {
                 this.$stage._renderChild(svgTextEditor, 0);
             } else {
@@ -222,8 +211,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 this.$.productActions.editTextConfiguration({
                     configuration: this.$.configuration
                 });
-                //this._enableEditing();
             }
+
+            this.$fontSizeChanged = false;
 
             this.callBase();
         }

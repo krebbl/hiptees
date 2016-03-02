@@ -12,9 +12,6 @@ module.exports = {
             fill = options.fill || "white";
 
         exec('convert -background transparent -fill ' + fill + ' -font ' + src + ' -pointsize ' + size + ' -resize x60 label:"' + label + '" ' + dest + '.png', function (err, stdout, stderr) {
-            if (err) {
-
-            }
             callback && callback(err, null);
         });
 

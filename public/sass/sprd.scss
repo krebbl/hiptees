@@ -181,9 +181,9 @@
 
 .active > .configuration-boundary {
   stroke: $color-brand;
-  stroke-width: 1;
+  stroke-width: 2;
   vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1 2;
+  stroke-dasharray: 9 6;
 }
 
 .configuration-handle {
@@ -583,6 +583,7 @@ ul.font-list {
     display: block;
     float: left;
     border: none;
+    overflow: hidden;
 
     &.active {
       border: none;

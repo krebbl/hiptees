@@ -30,6 +30,13 @@ define(['xaml!hip/svg/ConfigurationViewer', 'hip/view/ImageFilterRenderer'], fun
             return v * -1;
         },
 
+        anchor: function(){
+            return {
+                x: 0.5,
+                y: 0.5
+            }
+        },
+
         _renderConfiguration: function (configuration) {
             if (configuration) {
                 this.updateFilter();

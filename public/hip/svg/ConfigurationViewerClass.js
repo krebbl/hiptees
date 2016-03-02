@@ -91,7 +91,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 //        },
 
         getBoundRectInPx: function () {
-            return this.$._boundingBox ? this.$._boundingBox.$el.getBoundingClientRect() : null;
+            return this.$._boundingBox && this.$._boundingBox.isRendered() ? this.$._boundingBox.$el.getBoundingClientRect() : null;
         },
 
 
@@ -218,26 +218,27 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 
                 this.$resized = true;
 
-                var rootVector = [0, 0];
+                if(this.$.keepAspectRatio) {
+                    var rootVector = [this.$originalSize.width, this.$originalSize.height];
 
-                if (this.$resizeType.indexOf("l") > -1) {
-                    rootVector[0] = -this.$originalSize.width;
-                }
-                if (this.$resizeType.indexOf("r") > -1) {
-                    rootVector[0] = this.$originalSize.width;
-                }
-                if (this.$resizeType.indexOf("t") > -1) {
-                    rootVector[1] = -this.$originalSize.height;
-                }
-                if (this.$resizeType.indexOf("b") > -1) {
-                    rootVector[1] = this.$originalSize.height;
-                }
 
-                // calculate the length of the projected vector
-                //var rootLength = this.vectorLength(rootVector);
-                //var s = this.multiplyVectors(scaleVector, rootVector) / rootLength,
-                //    lf = s / rootLength;
+                    // calculate the length of the projected vector
+                    var rootLength = this.vectorLength(rootVector);
+                    var s = this.multiplyVectors(diffVector, rootVector) / rootLength,
+                        lf = s / rootLength;
 
+                    // multiply with the root vector
+                    diffX = Math.abs(rootVector[0]) * lf;
+                    diffY = Math.abs(rootVector[1]) * lf;
+
+                    if (this.$.keepAspectRatio) {
+                        if (diffY !== 0) {
+                            diffX = diffY * this.$originalSize.width / this.$originalSize.height;
+                        } else {
+                            diffY = diffX * this.$originalSize.height / this.$originalSize.width;
+                        }
+                    }
+                }
 
                 var minHeight = this.$._minHeight,
                     minWidth = this.$._minWidth;
@@ -249,20 +250,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                     diffY = (minHeight - this.$originalSize.height) / 2;
                 }
 
-                if (this.$.keepAspectRatio) {
-                    if (diffY !== 0) {
-                        diffX = diffY * this.$originalSize.width / this.$originalSize.height;
-                    } else {
-                        diffY = diffX * this.$originalSize.height / this.$originalSize.width;
-                    }
-                }
-
-                if(this.$._keepHeight) {
+                if (this.$._keepHeight) {
                     diffY = 0;
                 }
 
-                size.width = this.$originalSize.width + diffX * 2;
-                size.height = this.$originalSize.height + diffY * 2;
+                size.width = this.$originalSize.width + diffX * 1 / Math.abs(1 - this.$._anchor.x);
+                size.height = this.$originalSize.height + diffY * 1 / Math.abs(1 - this.$._anchor.y);
 
                 change._size = size;
             } else if (this.$action == "move") {
@@ -334,7 +327,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                     size: this.$resized ? this.$._size : null
                 });
             }
-            if(!this.$.selected || !(this.$moved || this.$resized)) {
+            if (!this.$.selected || !(this.$moved || this.$resized)) {
                 this.$.productActions.selectConfiguration({
                     configuration: this.$.configuration
                 });

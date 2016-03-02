@@ -4,11 +4,22 @@ var converter = require('./converter'),
 
 
 var fontFamilyMap = {},
+    curruptFontFamilies = [],
     fontFamilies = [],
     dir = './fonts';
 
-function addFontToFamily(fontFamily, font, image) {
+function removeFontFamily(fontFamily) {
+    var index = fontFamilies.indexOf(fontFamily);
+    if (index > -1) {
+        fontFamilies.splice(index, 1);
+    }
+    curruptFontFamilies.push(fontFamily);
+}
 
+function addFontToFamily(fontFamily, font, image) {
+    if (curruptFontFamilies.indexOf(fontFamily) > -1) {
+        return;
+    }
     var familyObject;
     for (var i = 0; i < fontFamilies.length; i++) {
         var ff = fontFamilies[i];
@@ -45,9 +56,9 @@ function addFontToFamily(fontFamily, font, image) {
 }
 
 fs.readdir('./fonts', function (err, files) {
-    files.forEach(function (file) {
+    flow().seqEach(files, function (file, cb) {
         flow()
-            .seq("ttf", function (cb) {
+            .seq("file", function (cb) {
                 if (file.indexOf(".otf") > -1) {
                     converter.otf2ttf({
                         src: __dirname + "/" + dir + "/" + file,
@@ -55,23 +66,33 @@ fs.readdir('./fonts', function (err, files) {
                     }, function (err) {
                         cb(err, file.replace(".otf", ".ttf"))
                     })
-                } else if (file.indexOf(".ttf") > -1) {
+                } else if (/\.woff$/.test(file)) {
+                    cb(null, file);
+                } else if (/\.ttf$/.test(file)) {
                     cb(null, file);
                 } else {
-                    cb(file + "not supported");
+                    cb(file + " not supported");
                 }
 
             })
-            .seq(function () {
-                var file = this.vars.ttf;
-                var fontFamilyName = file.split(/_|-|\./).shift();
-
-                fontFamilyName = fontFamilyName// insert a space before all caps
-                    .replace(/([^A-Z])([A-Z])/g, '$1 $2')
-                    // uppercase the first character
-                    .replace(/^./, function (str) {
-                        return str.toUpperCase();
-                    });
+            // return descr
+            .seq("desc", function () {
+                var file = this.vars.file;
+                return {
+                    file: file,
+                    fileWOExtension: file.replace(/\.\w+$/, ""),
+                    fontFamilyName: file.split(/_|-|\./).shift().replace(/([^A-Z])([A-Z])/g, '$1 $2')
+                        // uppercase the first character
+                        .replace(/^./, function (str) {
+                            return str.toUpperCase();
+                        })
+                };
+            })
+            // create image
+            .seq(function (cb) {
+                var file = this.vars.desc.file;
+                var fileWOExtension = this.vars.desc.fileWOExtension;
+                var fontFamilyName = this.vars.desc.fontFamilyName;
 
                 if (!/bold/i.test(file) && !/italic/i.test(file)) {
 
@@ -79,7 +100,6 @@ fs.readdir('./fonts', function (err, files) {
 
                     var imagePath = "images/" + fontFamilyName.split(" ").join("");
 
-                    addFontToFamily(fontFamilyName, file.replace('.ttf', ''), imagePath + ".png");
 
                     converter.convertToImage({
                         src: __dirname + "/" + dir + "/" + file,
@@ -87,32 +107,49 @@ fs.readdir('./fonts', function (err, files) {
                         size: 150,
                         label: fontFamilyName
                     }, function (err) {
-
                         console.log(err);
-
+                        if (!err) {
+                            addFontToFamily(fontFamilyName, fileWOExtension, imagePath + ".png");
+                        } else {
+                            removeFontFamily(fontFamilyName);
+                        }
+                        cb(err);
                     });
+                } else {
+                    cb();
                 }
+            })
+            .seq(function () {
+                var file = this.vars.desc.file;
+                var fileWOExtension = this.vars.desc.fileWOExtension;
+                var fontFamilyName = this.vars.desc.fontFamilyName;
 
                 fs.createReadStream(__dirname + "/" + dir + "/" + file).pipe(fs.createWriteStream(__dirname + "/" + "public/font" + "/" + file));
 
-                converter.ttf2Woff({
-                    src: __dirname + "/" + dir + "/" + file,
-                    dest: __dirname + "/" + "public/font" + "/" + file.replace('.ttf', '.woff')
-                }, function (err) {
-                    console.log(err);
-                });
+                if (file.indexOf("woff") === -1) {
+                    converter.ttf2Woff({
+                        src: __dirname + "/" + dir + "/" + file,
+                        dest: __dirname + "/" + "public/font" + "/" + file.replace('.ttf', '.woff')
+                    }, function (err) {
+                        console.log(err);
+                    });
+                }
 
-                addFontToFamily(fontFamilyName, file.replace('.ttf', ''));
-            }).exec();
+                addFontToFamily(fontFamilyName, fileWOExtension);
+            }).exec(function (err) {
+                console.log(err);
+                cb();
+            });
+    }).exec(function () {
+        fontFamilies.sort(function (f1, f2) {
+            return f1.name > f2.name ? 1 : -1;
+        });
 
+        var families = JSON.stringify({fontFamilies: fontFamilies}, null, 2);
+
+
+        fs.writeFileSync(process.cwd() + "/public/font/index.json", families);
     });
 
-    fontFamilies.sort(function (f1, f2) {
-        return f1.name > f2.name ? 1 : -1;
-    });
 
-    var families = JSON.stringify({fontFamilies: fontFamilies}, null, 2);
-
-
-    fs.writeFileSync(process.cwd() + "/public/font/index.json", families);
 });

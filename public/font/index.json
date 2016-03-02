@@ -30,6 +30,11 @@
       "regular": "AmaticSC-Regular"
     },
     {
+      "name": "American Typewriter",
+      "image": "images/AmericanTypewriter.png",
+      "regular": "AmericanTypewriter_normal_normal"
+    },
+    {
       "name": "Anonymous Pro",
       "image": "images/AnonymousPro.png",
       "regular": "AnonymousPro",
@@ -38,9 +43,46 @@
       "italic": "AnonymousPro_Italic"
     },
     {
+      "name": "Anzeigen",
+      "image": "images/Anzeigen.png",
+      "regular": "Anzeigen_normal_normal"
+    },
+    {
+      "name": "Arial",
+      "boldItalic": "Arial_bold_italic",
+      "bold": "Arial_bold_normal",
+      "italic": "Arial_normal_italic",
+      "image": "images/Arial.png",
+      "regular": "Arial_normal_normal"
+    },
+    {
+      "name": "Aspirin",
+      "boldItalic": "Aspirin_bold_italic",
+      "bold": "Aspirin_bold_normal",
+      "italic": "Aspirin_normal_italic",
+      "image": "images/Aspirin.png",
+      "regular": "Aspirin_normal_normal"
+    },
+    {
+      "name": "Atomatic",
+      "image": "images/Atomatic.png",
+      "regular": "Atomatic_normal_normal"
+    },
+    {
       "name": "BELLABOO",
       "image": "images/BELLABOO.png",
       "regular": "BELLABOO-Regular"
+    },
+    {
+      "name": "Bello",
+      "image": "images/Bello.png",
+      "regular": "Bello_normal_normal"
+    },
+    {
+      "name": "Beluga",
+      "italic": "Beluga_normal_italic",
+      "image": "images/Beluga.png",
+      "regular": "Beluga_normal_normal"
     },
     {
       "name": "Biko",
@@ -49,10 +91,23 @@
       "regular": "Biko"
     },
     {
+      "name": "Braille",
+      "image": "images/Braille.png",
+      "regular": "Braille_normal_normal"
+    },
+    {
       "name": "Cabin Sketch",
       "bold": "CabinSketch-Bold",
       "image": "images/CabinSketch.png",
       "regular": "CabinSketch-Regular"
+    },
+    {
+      "name": "Caecilia",
+      "boldItalic": "Caecilia_bold_italic",
+      "bold": "Caecilia_bold_normal",
+      "italic": "Caecilia_normal_italic",
+      "image": "images/Caecilia.png",
+      "regular": "Caecilia_normal_normal"
     },
     {
       "name": "Codystar",
@@ -60,9 +115,39 @@
       "regular": "Codystar-Regular"
     },
     {
+      "name": "Comic Sans",
+      "bold": "ComicSans_bold_normal",
+      "image": "images/ComicSans.png",
+      "regular": "ComicSans_normal_normal"
+    },
+    {
+      "name": "Cooper Black",
+      "italic": "CooperBlack_normal_italic",
+      "image": "images/CooperBlack.png",
+      "regular": "CooperBlack_normal_normal"
+    },
+    {
+      "name": "Cutter",
+      "image": "images/Cutter.png",
+      "regular": "Cutter_normal_normal"
+    },
+    {
+      "name": "Data Seventy",
+      "image": "images/DataSeventy.png",
+      "regular": "DataSeventy_normal_normal"
+    },
+    {
       "name": "Dense",
       "image": "images/Dense.png",
       "regular": "dense-regular"
+    },
+    {
+      "name": "Eurostile",
+      "boldItalic": "Eurostile_bold_italic",
+      "bold": "Eurostile_bold_normal",
+      "italic": "Eurostile_normal_italic",
+      "image": "images/Eurostile.png",
+      "regular": "Eurostile_normal_normal"
     },
     {
       "name": "Fabfelt Script",
@@ -70,14 +155,39 @@
       "regular": "FabfeltScript"
     },
     {
+      "name": "Freestyle",
+      "image": "images/Freestyle.png",
+      "regular": "Freestyle_normal_normal"
+    },
+    {
+      "name": "Futura",
+      "boldItalic": "Futura_bold_italic",
+      "bold": "Futura_bold_normal"
+    },
+    {
       "name": "Graduate",
       "image": "images/Graduate.png",
       "regular": "Graduate-Regular"
     },
     {
+      "name": "Halloween",
+      "image": "images/Halloween.png",
+      "regular": "Halloween_normal_normal"
+    },
+    {
       "name": "Hammersmith One",
       "image": "images/HammersmithOne.png",
       "regular": "HammersmithOne"
+    },
+    {
+      "name": "Hole Hearted Regular",
+      "image": "images/HoleHeartedRegular.png",
+      "regular": "HoleHeartedRegular_normal_normal"
+    },
+    {
+      "name": "Jellybaby",
+      "image": "images/Jellybaby.png",
+      "regular": "Jellybaby_normal_normal"
     },
     {
       "name": "Josefin Sans",
@@ -86,6 +196,11 @@
       "italic": "JosefinSans-Italic",
       "image": "images/JosefinSans.png",
       "regular": "JosefinSans-Regular"
+    },
+    {
+      "name": "Kids",
+      "image": "images/Kids.png",
+      "regular": "Kids_normal_normal"
     },
     {
       "name": "Knewave",
@@ -118,14 +233,35 @@
       "regular": "LobsterTwo-Regular"
     },
     {
+      "name": "Lomo Web Pixel",
+      "image": "images/LomoWebPixel.png",
+      "regular": "LomoWebPixel_normal_normal"
+    },
+    {
       "name": "Lynchburg Script",
       "image": "images/LynchburgScript.png",
       "regular": "LynchburgScript"
     },
     {
+      "name": "Machine",
+      "bold": "Machine_bold_normal",
+      "image": "images/Machine.png",
+      "regular": "Machine_normal_normal"
+    },
+    {
+      "name": "Monotype Script",
+      "image": "images/MonotypeScript.png",
+      "regular": "MonotypeScript_normal_normal"
+    },
+    {
       "name": "Norwester",
       "image": "images/Norwester.png",
       "regular": "Norwester-Regular"
+    },
+    {
+      "name": "Old Town",
+      "image": "images/OldTown.png",
+      "regular": "OldTown_normal_normal"
     },
     {
       "name": "Oswald",
@@ -137,6 +273,11 @@
       "name": "Overthe Rainbow",
       "image": "images/OvertheRainbow.png",
       "regular": "OvertheRainbow"
+    },
+    {
+      "name": "Princetown",
+      "image": "images/Princetown.png",
+      "regular": "Princetown_normal_normal"
     },
     {
       "name": "Raleway Heavy",
@@ -167,9 +308,36 @@
       "regular": "Saniretro"
     },
     {
+      "name": "Simran",
+      "image": "images/Simran.png",
+      "regular": "Simran_normal_normal"
+    },
+    {
       "name": "Sofia",
       "image": "images/Sofia.png",
       "regular": "Sofia-Regular"
+    },
+    {
+      "name": "Stencil",
+      "image": "images/Stencil.png",
+      "regular": "Stencil_normal_normal"
+    },
+    {
+      "name": "Stop",
+      "image": "images/Stop.png",
+      "regular": "Stop_normal_normal"
+    },
+    {
+      "name": "Teknia Greek",
+      "image": "images/TekniaGreek.png",
+      "regular": "TekniaGreek_normal_normal"
+    },
+    {
+      "name": "Zapf Chancery",
+      "bold": "ZapfChancery_bold_normal",
+      "italic": "ZapfChancery_normal_italic",
+      "image": "images/ZapfChancery.png",
+      "regular": "ZapfChancery_normal_normal"
     }
   ]
 }
