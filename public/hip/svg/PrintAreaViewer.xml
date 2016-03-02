@@ -20,88 +20,20 @@
             _cornerHandleVisible="{and(_v.verticalStretchable,_v.horizontalStretchable, _v.cornerHandleVisible())}"
             class="needsClick">
 
-        <g translateX="{half(_v._size.width)}" translateY="{_v._size.height}" visible="{_v.verticalStretchable}">
-            <circle r="{_v.handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','b',event)"/>
 
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
+        <g translateX="{plus(_v._size.width,25)}" translateY="{plus(_v._size.height,_v.handleWidth)}"
+           rotation="90"
+           onpointerdown="handlePointerDown('resize','rb',event,true)"
+           class="configuration-mover">
+            <circle r="{multiply(_v.handleWidth, 1.6)}"
+                    class="fa fa-arrows"/>
+            <text x="{multiply(-0.7,_v.handleWidth)}" y="{multiply(_v.handleWidth,0.5)}">
+                &#xf065;
+            </text>
         </g>
 
-        <g visible="{_cornerHandleVisible}">
-            <circle r="{handleWidth}"
-                    fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','lt',event)"/>
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateY="{half(_v._size.height)}">
-            <circle r="{handleWidth}"
-                    fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','l',event)"/>
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateX="{_v._size.width}" translateY="{half(_v._size.height)}">
-            <circle r="{handleWidth}"
-                    fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','r',event)"/>
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateY="{_v._size.height}"
-           visible="{_cornerHandleVisible}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','lb',event)"/>
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateX="{_v._size.width}" translateY="{_v._size.height}"
-           visible="{_cornerHandleVisible}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','rb',event)"/>
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateX="{_v._size.width}"
-           visible="{_cornerHandleVisible}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','rt',event)"/>
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-
-        </g>
-
-        <g translateX="{half(_v._size.width)}" visible="{_v.verticalStretchable}">
-            <circle r="{handleWidth}" fill-opacity="0"
-                    onpointerdown="handlePointerDown('resize','t',event)"/>
-
-            <circle r="{half(handleWidth)}"
-                    class="configuration-handle"
-                    style="pointer-events: none;"/>
-        </g>
-
-        <g translateX="{plus(_v._size.width,30)}" translateY="{half(_v._size.height)}"
-           onpointerdown="handlePointerDown('move','b',event)"
+        <g translateX="{plus(_v._size.width,25)}" translateY="{minus(0,_v.handleWidth)}"
+           onpointerdown="handlePointerDown('move','b',event,true)"
                 class="configuration-mover">
             <circle r="{multiply(_v.handleWidth, 1.6)}"
                     class="fa fa-arrows"/>

@@ -1,7 +1,8 @@
-define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/entity/TextRange'], function (ConfigurationViewerSvg, SvgTextEditor, TextRange) {
+define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/entity/TextRange', 'hip/action/TextFlowActions'], function (ConfigurationViewerSvg, SvgTextEditor, TextRange, TextFlowActions) {
     return ConfigurationViewerSvg.inherit('sprd.svg.ConfigurationViewerClass', {
 
         defaults: {
+            _keepHeight: true,
             textRenderer: null,
             verticalStretchable: false,
             componentClass: "text-configuration-viewer needsclick",
@@ -12,7 +13,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         $classAttributes: ["textRenderer"],
 
         inject: {
-            svgTextEditor: SvgTextEditor
+            svgTextEditor: SvgTextEditor,
+            textFlowActions: TextFlowActions
         },
 
         ctor: function () {
@@ -44,11 +46,47 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             // do nothing
         },
 
-        handlePointerMove: function (e) {
+        handlePointerDown: function () {
             this.callBase();
 
-            if (this.$resized) {
-                this.set('maxWidth', this.get('_size.width'));
+            this._disableEditing();
+
+            if (this.$action === "resize" || (event.touches && event.touches.length > 1)) {
+                var configuration = this.$.configuration;
+                var range = new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
+                var paragraphStyle = range.getCommonParagraphStyle(configuration.$.textFlow);
+
+                this.$originalFontSize = paragraphStyle.$.fontSize;
+            }
+        },
+
+        handlePointerMove: function (event) {
+
+            if (this.$action === "resize" || (event.touches && event.touches.length > 1)) {
+                event.preventDefault();
+                this.set('_resizing', true);
+                this.$resized = false;
+                this.$fontSizeChanged = true;
+
+                var rootVector = [this.$originalSize.width, this.$originalSize.height],
+                    scaleVector = this._createDiffVector(event);
+
+
+                var rootLength = this.vectorLength(rootVector);
+
+                var s = this.multiplyVectors(scaleVector, rootVector) / rootLength;
+
+
+                var newFontSize = this.$originalFontSize * (rootLength + s * 2.5) / rootLength;
+
+                this.$.textFlowActions.changeStyle({
+                    textFlow: this.$.configuration.$.textFlow,
+                    paragraphStyle: {
+                        fontSize: Math.round(newFontSize)
+                    }
+                });
+            } else {
+                this.callBase();
             }
 
         },
@@ -71,6 +109,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
             var size = {},
                 anchor = this.$._anchor;
+
+            // TODO: fix new offset position
 
             var width = this.get('_size.width');
             size.height = e.$.height;
@@ -100,7 +140,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         anchor: function () {
             return {
                 x: 0.5,
-                y: 0
+                y: 0.5
             };
         },
         _commitActiveTextConfiguration: function (configuration) {
@@ -178,7 +218,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
 
         handlePointerUp: function () {
-            if (this.$.selected && !this.$moved && !this.$resized) {
+            if (this.$.selected && !this.$moved && !this.$resized && !this.$handleUsed && !this.$fontSizeChanged) {
                 this.$.productActions.editTextConfiguration({
                     configuration: this.$.configuration
                 });

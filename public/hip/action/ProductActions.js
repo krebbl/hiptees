@@ -30,7 +30,16 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             pointDownConfiguration: {},
             changeOrder: {},
 
-            addText: {},
+            addText: {
+                text: "Text",
+                paragraphStyle: null,
+                leafStyle: null,
+                offset: {
+                    x: 0.5,
+                    y: 0.2
+                },
+                size: null
+            },
             addImageFile: {},
 
             saveProduct: {},

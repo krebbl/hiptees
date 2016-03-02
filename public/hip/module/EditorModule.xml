@@ -36,7 +36,7 @@
              _viewerPosition="{viewerPosition(configurationViewer)}">
             <a onclick="toggleSettings" selected="{productStore.editing}" class="configuration-edit-btn"
                left="{_viewerPosition.x}" top="{_viewerPosition.y}" position="absolute">
-                <i class="fa fa-pencil"/>
+                <i class="fa fa-wrench"/>
             </a>
         </div>
 

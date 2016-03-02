@@ -29,7 +29,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             _resizing: false,
             _moving: false,
             translateX: "{_realOffset.x}",
-            translateY: "{_realOffset.y}"
+            translateY: "{_realOffset.y}",
+            _keepHeight: false
         },
 
         inject: {
@@ -94,12 +95,11 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
         },
 
 
-        handlePointerDown: function (action, type, event) {
-            console.log("down: " + this.get('configuration.type'));
-
+        handlePointerDown: function (action, type, event, handleUsed) {
             if (!this.$stage.$browser.isIOS) {
                 event.preventDefault();
             }
+
 //            event.stopPropagation();
             this.$currentTarget = event.target;
             this.$action = action;
@@ -136,6 +136,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 
             this.$.printAreaViewer._prepareSnappingPointsForViewer(this);
 
+            this.$handleUsed = handleUsed;
             this.$moved = false;
             this.$resized = false;
 
@@ -159,11 +160,45 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
         },
 
         handleDocumentClick: function (e) {
-            console.log("document click");
             if (this.$moved || this.$resized) {
                 e.stopPropagation();
             }
             this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
+        },
+
+        _createDiffVector: function (event) {
+
+            var changedEvent = event.touches ? event.touches[0] : event,
+                f = this.globalToLocalFactor(),
+                diffX = (changedEvent.pageX - this.$downPoint.x) * f.x,
+                diffY = (changedEvent.pageY - this.$downPoint.y) * f.y;
+
+            if (event.touches && event.touches.length == 2) {
+                if (this.$.keepAspectRatio || this.$._keepHeight) {
+                    var length = this.vectorLength([
+                        event.touches[0].pageX - event.touches[1].pageX,
+                        event.touches[0].pageY - event.touches[1].pageY]);
+                    if (!this.$startLength) {
+                        this.$startLength = length;
+                    } else {
+                        diffX = (length - this.$startLength) * f.x;
+                        diffY = 0;
+                    }
+                } else {
+                    var vector = [
+                        Math.abs(event.touches[0].pageX - event.touches[1].pageX),
+                        Math.abs(event.touches[0].pageY - event.touches[1].pageY)];
+                    if (!this.$startVector) {
+                        this.$startVector = vector;
+                    } else {
+
+                        diffX = (vector[0] - this.$startVector[0]) * f.x;
+                        diffY = (vector[1] - this.$startVector[1]) * f.y;
+                    }
+                }
+            }
+
+            return [diffX, diffY];
         },
 
         handlePointerMove: function (event) {
@@ -173,38 +208,17 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 self = this,
                 size = _.clone(this.$originalSize),
                 offset = _.clone(this.$originalOffset),
-                changedEvent = event.changedTouches ? event.changedTouches[0] : event,
-                f = this.globalToLocalFactor(),
-                diffX = (changedEvent.pageX - this.$downPoint.x) * f.x,
-                diffY = (changedEvent.pageY - this.$downPoint.y) * f.y;
-
-            if (event.touches && event.touches.length == 2) {
-                var length = this.vectorLength([
-                        event.touches[0].pageX - event.touches[1].pageX,
-                        event.touches[0].pageY - event.touches[1].pageY]
-                );
-                if (!this.$startLength) {
-                    this.$startLength = length;
-                } else {
-
-                    diffX = (length - this.$startLength) * f.x;
-                    diffY = 0;
-
-                    this.$resizeType = "r";
-                    this.$action = "resize";
-                }
-
-            }
+                diffVector = this._createDiffVector(event),
+                diffX = diffVector[0],
+                diffY = diffVector[1];
 
 
-            if (this.$action == "resize") {
+            if (this.$action == "resize" || (event.touches && event.touches.length > 1)) {
                 this.set('_resizing', true);
 
                 this.$resized = true;
-                var snapped;
 
-                var rootVector = [0, 0],
-                    scaleVector = [diffX, diffY];
+                var rootVector = [0, 0];
 
                 if (this.$resizeType.indexOf("l") > -1) {
                     rootVector[0] = -this.$originalSize.width;
@@ -220,14 +234,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 }
 
                 // calculate the length of the projected vector
-                var rootLength = this.vectorLength(rootVector);
-                var s = this.multiplyVectors(scaleVector, rootVector) / rootLength,
-                    lf = s / rootLength;
-
-
-                // multiply with the root vector
-                diffX = Math.abs(rootVector[0]) * lf;
-                diffY = Math.abs(rootVector[1]) * lf;
+                //var rootLength = this.vectorLength(rootVector);
+                //var s = this.multiplyVectors(scaleVector, rootVector) / rootLength,
+                //    lf = s / rootLength;
 
 
                 var minHeight = this.$._minHeight,
@@ -248,10 +257,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                     }
                 }
 
+                if(this.$._keepHeight) {
+                    diffY = 0;
+                }
+
                 size.width = this.$originalSize.width + diffX * 2;
                 size.height = this.$originalSize.height + diffY * 2;
-//                offset.x = this.$originalOffset.x - diffX;
-//                offset.y = this.$originalOffset.y - diffY;
 
                 change._size = size;
             } else if (this.$action == "move") {
@@ -309,7 +320,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
         },
 
         handlePointerUp: function (event) {
-            console.log("up:" + this.get('configuration.type'));
             this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
 
@@ -333,6 +343,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             this.$originalSize = null;
             this.$originalOffset = null;
             this.$startLength = null;
+            this.$startVector = null;
+            this.$downPoint = null;
+            this.$handleUsed = false;
             this.trigger('on:configurationPointerUp', {configuration: this.$.configuration}, this);
 
             var self = this;

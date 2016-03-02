@@ -23,9 +23,9 @@ define(
 
             defaults: {
                 executor: null,
-                selectionHandler: null,
-                selectedConfiguration: "{productHandler.selectedConfiguration}",
-                product: "{productHandler.product}",
+                selectionStore: null,
+                selectedConfiguration: "{productStore.selectedConfiguration}",
+                product: "{productStore.product}",
                 isPrintout: false
             },
             /**
@@ -100,7 +100,7 @@ define(
                     callback: function () {
                         setTimeout(function () {
                             console.log("rendered " + productId);
-                        }, 5 * self.get('productHandler.product.configurations.size()'));
+                        }, 5 * self.get('productStore.product.configurations.size()'));
                     }
                 });
                 routeContext.callback();

@@ -285,7 +285,7 @@ define([
                 var rect = viewer.$el.getBoundingClientRect();
                 return {
                     x: rect.left + Math.round(rect.width * 0.5),
-                    y: rect.top + rect.height + 10
+                    y: rect.top + rect.height + 20
                 }
             }
             return {

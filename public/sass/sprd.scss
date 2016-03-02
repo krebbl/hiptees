@@ -201,6 +201,7 @@
   text {
     fill: white;
     font: normal normal normal 16px/1 FontAwesome;
+    pointer-events: none;
 
   }
 }
@@ -336,6 +337,8 @@ $settings-height: 210px;
   .default-options {
     padding-left: 0.5em;
     display: none;
+    position: absolute;
+    z-index: 4;
   }
 
   &.active {

@@ -168,6 +168,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
                 self.trigger('on:configurationAdded', {configuration: configuration, cloned: false});
                 self._selectConfiguration(configuration);
+                self.editTextConfiguration(configuration);
             });
         },
 
@@ -208,8 +209,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             });
         },
         addShape: function (payload) {
-            var printAreaWidth = self.get('product.productType.printArea.size.width'),
-                printAreaHeight = self.get('product.productType.printArea.size.height');
+            var printAreaWidth = this.get('product.productType.printArea.size.width'),
+                printAreaHeight = this.get('product.productType.printArea.size.height');
 
             var Factory = null,
                 configuration;
@@ -502,6 +503,22 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             } else {
                 callback && callback();
             }
+        },
+
+        _convertOffset: function (offset) {
+            var ret = {x: 0, y: 0};
+
+            if (offset) {
+                if (offset.x <= 1) {
+                    ret.x = this.get('product.productType.printArea.size.width') * offset.x;
+                    ret.y = this.get('product.productType.printArea.size.height') * offset.y;
+                } else {
+                    ret.x = offset.x;
+                    ret.y = offset.y;
+                }
+            }
+
+            return ret;
         }
     });
 

@@ -14,14 +14,12 @@
         <action:Executor cid="executor"/>
 
         <action:NavigationActions cid="navigationActions"/>
-        <action:ProductActions/>
+        <action:ProductActions cid="productActions"/>
         <action:TextFlowActions/>
 
         <store:NavigationStore cid="navigationStore"/>
         <store:ProductStore cid="productStore"/>
-        <store:BasketStore cid="basketStore"/>
         <store:TextFlowStore cid="textFlowStore"/>
-        <store:PresetStore cid="presetStore"/>
 
         <view:ImageFilterRenderer/>
         <svg:TextEditor/>

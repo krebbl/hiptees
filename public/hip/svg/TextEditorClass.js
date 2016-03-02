@@ -233,7 +233,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
 
                 } else if (domEvent.which == 13) {
 
-                    textActions.insertText({
+                    textActions.insertLine({
                         textFlow: this.$.textFlow,
                         anchorOffset: sel.anchorOffset,
                         focusOffset: sel.focusOffset

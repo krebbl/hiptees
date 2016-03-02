@@ -239,7 +239,7 @@ define(
                     self.set('started', true);
 
                     callback();
-                    self.$.navigationActions.navigate({fragment: "presetsView"});
+                    //self.$.navigationActions.navigate({fragment: "presetsView"});
                 });
             },
 

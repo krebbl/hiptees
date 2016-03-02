@@ -19,7 +19,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             componentClass: "print-area",
             showActiveViewer: false,
             activeViewer: null,
-            handleWidth: 10,
+            handleWidth: 20,
             snapLines: null
         },
 
@@ -74,7 +74,7 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         _updateHandleSize: function () {
-            this.set('handleWidth', 8 * this.globalToLocalFactor().x);
+            this.set('handleWidth', 12 * this.globalToLocalFactor().x);
 
         },
 
@@ -211,8 +211,8 @@ define(['js/svg/SvgElement', 'js/core/List',
             return null;
         },
 
-        handlePointerDown: function (t, p, e) {
-            this.$.activeViewer && this.$.activeViewer.handlePointerDown(t, p, e);
+        handlePointerDown: function (t, p, e, h) {
+            this.$.activeViewer && this.$.activeViewer.handlePointerDown(t, p, e, h);
         },
 
         or: function (a, b) {
@@ -223,7 +223,6 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         multiply: function (a, b) {
-            console.log(a);
             return a * b;
         },
 
@@ -231,8 +230,12 @@ define(['js/svg/SvgElement', 'js/core/List',
             return a + b;
         },
 
+        minus: function (a, b) {
+            return a - b;
+        },
+
         half: function (a) {
-            return a * 0.5 || 0;
+            return Math.round(a * 0.5 || 0);
         },
         quarter: function (value) {
             return value * 0.5 || 0;

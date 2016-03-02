@@ -1,4 +1,4 @@
-define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "hip/command/SelectConfiguration", "js/svg/SvgElement"], function (Svg, PrintAreaViewerSvg, Executor, SelectConfiguration, SvgElement) {
+define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions", "js/svg/SvgElement"], function (Svg, PrintAreaViewerSvg, ProductActions, SvgElement) {
 
     return Svg.inherit('', {
 
@@ -11,7 +11,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
         },
 
         inject: {
-            executor: Executor
+            productActions: ProductActions
         },
 
         $classAttributes: ["product", "productType", "printArea"],
@@ -28,7 +28,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/command/Executor", "h
             var self = this;
 
             this.bindDomEvent('click', function (e) {
-                self.$.executor.storeAndExecute(new SelectConfiguration());
+                self.$.productActions.selectConfiguration({});
             }, false);
         },
 
