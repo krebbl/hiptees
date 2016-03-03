@@ -92,7 +92,7 @@ define(["xaml!hip/view/SettingsView",
                 if ((this.isBold(currentFont) && style == "italic" || this.isItalic(currentFont) && style == "bold")) {
                     newFont = fontFamily.boldItalic || fontFamily[style];
                 } else {
-                    newFont = fontFamily[style] || fontFamily.regular;
+                    newFont = fontFamily[style] || fontFamily.regular || fontFamily.bold || fontFamily.italic;
                 }
             } else {
                 var isBold = this.isBold(currentFont),
@@ -104,7 +104,7 @@ define(["xaml!hip/view/SettingsView",
                     style = "regular"
                 }
 
-                newFont = fontFamily[style] || fontFamily.regular;
+                newFont = fontFamily[style] || fontFamily.regular || fontFamily.bold || fontFamily.italic;
             }
 
             this.$.textFlowActions.changeStyle({
@@ -113,6 +113,17 @@ define(["xaml!hip/view/SettingsView",
                     'fontFamily': newFont
                 }
             });
+        },
+
+        _supportsStyle: function (fontFamily, style) {
+            for (var key in fontFamily) {
+                if (fontFamily.hasOwnProperty(key)) {
+                    if (key.toLowerCase().indexOf(style) > -1) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         },
 
         _selectAlignment: function (alignment) {

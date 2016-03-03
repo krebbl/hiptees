@@ -62,19 +62,12 @@ define(['js/svg/SvgElement', 'js/core/List',
         _onDomAdded: function () {
             this.callBase();
 
-//            if (!this.$configurationInfo) {
-//                this.$configurationInfo = this.$templates.configurationInfo.createInstance();
-//                var root = this.getSvgRoot(),
-//                    renderParent = root.$renderParent;
-//                renderParent.$el.appendChild(this.$configurationInfo.render());
-//            }
-
             this._updateHandleSize();
 
         },
 
         _updateHandleSize: function () {
-            this.set('handleWidth', 12 * this.globalToLocalFactor().x);
+            this.set('handleWidth', 9 * this.globalToLocalFactor().x);
 
         },
 

@@ -2,342 +2,343 @@
   "fontFamilies": [
     {
       "name": "Abril Fatface",
-      "image": "images/AbrilFatface.png",
-      "regular": "AbrilFatface-Regular"
+      "regular": "AbrilFatface-Regular",
+      "image": "images/AbrilFatface.png"
     },
     {
       "name": "Aileron",
       "bold": "Aileron-Bold",
       "boldItalic": "Aileron-BoldItalic",
       "italic": "Aileron-Italic",
-      "image": "images/Aileron.png",
-      "regular": "Aileron-Regular"
+      "regular": "Aileron-Regular",
+      "image": "images/Aileron.png"
     },
     {
       "name": "Alfa Slab One",
-      "image": "images/AlfaSlabOne.png",
-      "regular": "AlfaSlabOne-Regular"
+      "regular": "AlfaSlabOne-Regular",
+      "image": "images/AlfaSlabOne.png"
     },
     {
       "name": "Alike",
-      "image": "images/Alike.png",
-      "regular": "Alike-Regular"
+      "regular": "Alike-Regular",
+      "image": "images/Alike.png"
     },
     {
       "name": "Amatic SC",
       "bold": "AmaticSC-Bold",
-      "image": "images/AmaticSC.png",
-      "regular": "AmaticSC-Regular"
+      "regular": "AmaticSC-Regular",
+      "image": "images/AmaticSC.png"
     },
     {
       "name": "American Typewriter",
-      "image": "images/AmericanTypewriter.png",
-      "regular": "AmericanTypewriter_normal_normal"
+      "regular": "AmericanTypewriter_normal_normal",
+      "image": "images/AmericanTypewriter.png"
     },
     {
       "name": "Anonymous Pro",
-      "image": "images/AnonymousPro.png",
       "regular": "AnonymousPro",
       "bold": "AnonymousPro_Bold",
       "boldItalic": "AnonymousPro_BoldItalic",
-      "italic": "AnonymousPro_Italic"
+      "italic": "AnonymousPro_Italic",
+      "image": "images/AnonymousPro.png"
     },
     {
       "name": "Anzeigen",
-      "image": "images/Anzeigen.png",
-      "regular": "Anzeigen_normal_normal"
+      "regular": "Anzeigen_normal_normal",
+      "image": "images/Anzeigen.png"
     },
     {
       "name": "Arial",
       "boldItalic": "Arial_bold_italic",
       "bold": "Arial_bold_normal",
       "italic": "Arial_normal_italic",
-      "image": "images/Arial.png",
-      "regular": "Arial_normal_normal"
+      "regular": "Arial_normal_normal",
+      "image": "images/Arial.png"
     },
     {
       "name": "Aspirin",
       "boldItalic": "Aspirin_bold_italic",
       "bold": "Aspirin_bold_normal",
       "italic": "Aspirin_normal_italic",
-      "image": "images/Aspirin.png",
-      "regular": "Aspirin_normal_normal"
+      "regular": "Aspirin_normal_normal",
+      "image": "images/Aspirin.png"
     },
     {
       "name": "Atomatic",
-      "image": "images/Atomatic.png",
-      "regular": "Atomatic_normal_normal"
+      "regular": "Atomatic_normal_normal",
+      "image": "images/Atomatic.png"
     },
     {
       "name": "BELLABOO",
-      "image": "images/BELLABOO.png",
-      "regular": "BELLABOO-Regular"
+      "regular": "BELLABOO-Regular",
+      "image": "images/BELLABOO.png"
     },
     {
       "name": "Bello",
-      "image": "images/Bello.png",
-      "regular": "Bello_normal_normal"
+      "regular": "Bello_normal_normal",
+      "image": "images/Bello.png"
     },
     {
       "name": "Beluga",
       "italic": "Beluga_normal_italic",
-      "image": "images/Beluga.png",
-      "regular": "Beluga_normal_normal"
+      "regular": "Beluga_normal_normal",
+      "image": "images/Beluga.png"
     },
     {
       "name": "Biko",
       "bold": "Biko-Bold",
-      "image": "images/Biko.png",
-      "regular": "Biko"
+      "regular": "Biko",
+      "image": "images/Biko.png"
     },
     {
       "name": "Braille",
-      "image": "images/Braille.png",
-      "regular": "Braille_normal_normal"
+      "regular": "Braille_normal_normal",
+      "image": "images/Braille.png"
     },
     {
       "name": "Cabin Sketch",
       "bold": "CabinSketch-Bold",
-      "image": "images/CabinSketch.png",
-      "regular": "CabinSketch-Regular"
+      "regular": "CabinSketch-Regular",
+      "image": "images/CabinSketch.png"
     },
     {
       "name": "Caecilia",
       "boldItalic": "Caecilia_bold_italic",
       "bold": "Caecilia_bold_normal",
       "italic": "Caecilia_normal_italic",
-      "image": "images/Caecilia.png",
-      "regular": "Caecilia_normal_normal"
+      "regular": "Caecilia_normal_normal",
+      "image": "images/Caecilia.png"
     },
     {
       "name": "Codystar",
-      "image": "images/Codystar.png",
-      "regular": "Codystar-Regular"
+      "regular": "Codystar-Regular",
+      "image": "images/Codystar.png"
     },
     {
       "name": "Comic Sans",
       "bold": "ComicSans_bold_normal",
-      "image": "images/ComicSans.png",
-      "regular": "ComicSans_normal_normal"
+      "regular": "ComicSans_normal_normal",
+      "image": "images/ComicSans.png"
     },
     {
       "name": "Cooper Black",
       "italic": "CooperBlack_normal_italic",
-      "image": "images/CooperBlack.png",
-      "regular": "CooperBlack_normal_normal"
+      "regular": "CooperBlack_normal_normal",
+      "image": "images/CooperBlack.png"
     },
     {
       "name": "Cutter",
-      "image": "images/Cutter.png",
-      "regular": "Cutter_normal_normal"
+      "regular": "Cutter_normal_normal",
+      "image": "images/Cutter.png"
     },
     {
       "name": "Data Seventy",
-      "image": "images/DataSeventy.png",
-      "regular": "DataSeventy_normal_normal"
+      "regular": "DataSeventy_normal_normal",
+      "image": "images/DataSeventy.png"
     },
     {
       "name": "Dense",
-      "image": "images/Dense.png",
-      "regular": "dense-regular"
+      "regular": "dense-regular",
+      "image": "images/Dense.png"
     },
     {
       "name": "Eurostile",
       "boldItalic": "Eurostile_bold_italic",
       "bold": "Eurostile_bold_normal",
       "italic": "Eurostile_normal_italic",
-      "image": "images/Eurostile.png",
-      "regular": "Eurostile_normal_normal"
+      "regular": "Eurostile_normal_normal",
+      "image": "images/Eurostile.png"
     },
     {
       "name": "Fabfelt Script",
-      "image": "images/FabfeltScript.png",
-      "regular": "FabfeltScript"
+      "regular": "FabfeltScript",
+      "image": "images/FabfeltScript.png"
     },
     {
       "name": "Freestyle",
-      "image": "images/Freestyle.png",
-      "regular": "Freestyle_normal_normal"
+      "regular": "Freestyle_normal_normal",
+      "image": "images/Freestyle.png"
     },
     {
       "name": "Futura",
       "boldItalic": "Futura_bold_italic",
-      "bold": "Futura_bold_normal"
+      "bold": "Futura_bold_normal",
+      "image": "images/Futura.png"
     },
     {
       "name": "Graduate",
-      "image": "images/Graduate.png",
-      "regular": "Graduate-Regular"
+      "regular": "Graduate-Regular",
+      "image": "images/Graduate.png"
     },
     {
       "name": "Halloween",
-      "image": "images/Halloween.png",
-      "regular": "Halloween_normal_normal"
+      "regular": "Halloween_normal_normal",
+      "image": "images/Halloween.png"
     },
     {
       "name": "Hammersmith One",
-      "image": "images/HammersmithOne.png",
-      "regular": "HammersmithOne"
+      "regular": "HammersmithOne",
+      "image": "images/HammersmithOne.png"
     },
     {
       "name": "Hole Hearted Regular",
-      "image": "images/HoleHeartedRegular.png",
-      "regular": "HoleHeartedRegular_normal_normal"
+      "regular": "HoleHeartedRegular_normal_normal",
+      "image": "images/HoleHeartedRegular.png"
     },
     {
       "name": "Jellybaby",
-      "image": "images/Jellybaby.png",
-      "regular": "Jellybaby_normal_normal"
+      "regular": "Jellybaby_normal_normal",
+      "image": "images/Jellybaby.png"
     },
     {
       "name": "Josefin Sans",
       "bold": "JosefinSans-Bold",
       "boldItalic": "JosefinSans-BoldItalic",
       "italic": "JosefinSans-Italic",
-      "image": "images/JosefinSans.png",
-      "regular": "JosefinSans-Regular"
+      "regular": "JosefinSans-Regular",
+      "image": "images/JosefinSans.png"
     },
     {
       "name": "Kids",
-      "image": "images/Kids.png",
-      "regular": "Kids_normal_normal"
+      "regular": "Kids_normal_normal",
+      "image": "images/Kids.png"
     },
     {
       "name": "Knewave",
-      "image": "images/Knewave.png",
-      "regular": "knewave"
+      "regular": "knewave",
+      "image": "images/Knewave.png"
     },
     {
       "name": "LOT",
-      "image": "images/LOT.png",
-      "regular": "LOT"
+      "regular": "LOT",
+      "image": "images/LOT.png"
     },
     {
       "name": "Lato",
       "bold": "Lato-Bold",
       "boldItalic": "Lato-BoldItalic",
-      "image": "images/Lato.png",
-      "regular": "Lato-Regular"
+      "regular": "Lato-Regular",
+      "image": "images/Lato.png"
     },
     {
       "name": "Leckerli One",
-      "image": "images/LeckerliOne.png",
-      "regular": "LeckerliOne-Regular"
+      "regular": "LeckerliOne-Regular",
+      "image": "images/LeckerliOne.png"
     },
     {
       "name": "Lobster Two",
       "bold": "LobsterTwo-Bold",
       "boldItalic": "LobsterTwo-BoldItalic",
       "italic": "LobsterTwo-Italic",
-      "image": "images/LobsterTwo.png",
-      "regular": "LobsterTwo-Regular"
+      "regular": "LobsterTwo-Regular",
+      "image": "images/LobsterTwo.png"
     },
     {
       "name": "Lomo Web Pixel",
-      "image": "images/LomoWebPixel.png",
-      "regular": "LomoWebPixel_normal_normal"
+      "regular": "LomoWebPixel_normal_normal",
+      "image": "images/LomoWebPixel.png"
     },
     {
       "name": "Lynchburg Script",
-      "image": "images/LynchburgScript.png",
-      "regular": "LynchburgScript"
+      "regular": "LynchburgScript",
+      "image": "images/LynchburgScript.png"
     },
     {
       "name": "Machine",
       "bold": "Machine_bold_normal",
-      "image": "images/Machine.png",
-      "regular": "Machine_normal_normal"
+      "regular": "Machine_normal_normal",
+      "image": "images/Machine.png"
     },
     {
       "name": "Monotype Script",
-      "image": "images/MonotypeScript.png",
-      "regular": "MonotypeScript_normal_normal"
+      "regular": "MonotypeScript_normal_normal",
+      "image": "images/MonotypeScript.png"
     },
     {
       "name": "Norwester",
-      "image": "images/Norwester.png",
-      "regular": "Norwester-Regular"
+      "regular": "Norwester-Regular",
+      "image": "images/Norwester.png"
     },
     {
       "name": "Old Town",
-      "image": "images/OldTown.png",
-      "regular": "OldTown_normal_normal"
+      "regular": "OldTown_normal_normal",
+      "image": "images/OldTown.png"
     },
     {
       "name": "Oswald",
       "bold": "Oswald-Bold",
-      "image": "images/Oswald.png",
-      "regular": "Oswald-Regular"
+      "regular": "Oswald-Regular",
+      "image": "images/Oswald.png"
     },
     {
       "name": "Overthe Rainbow",
-      "image": "images/OvertheRainbow.png",
-      "regular": "OvertheRainbow"
+      "regular": "OvertheRainbow",
+      "image": "images/OvertheRainbow.png"
     },
     {
       "name": "Princetown",
-      "image": "images/Princetown.png",
-      "regular": "Princetown_normal_normal"
+      "regular": "Princetown_normal_normal",
+      "image": "images/Princetown.png"
     },
     {
       "name": "Raleway Heavy",
-      "image": "images/RalewayHeavy.png",
-      "regular": "ralewayHeavy"
+      "regular": "ralewayHeavy",
+      "image": "images/RalewayHeavy.png"
     },
     {
       "name": "Raleway Regular",
-      "image": "images/RalewayRegular.png",
-      "regular": "ralewayRegular"
+      "regular": "ralewayRegular",
+      "image": "images/RalewayRegular.png"
     },
     {
       "name": "Raleway Thin",
-      "image": "images/RalewayThin.png",
-      "regular": "ralewayThin"
+      "regular": "ralewayThin",
+      "image": "images/RalewayThin.png"
     },
     {
       "name": "Roboto",
       "bold": "Roboto-Bold",
       "boldItalic": "Roboto-BoldItalic",
       "italic": "Roboto-Italic",
-      "image": "images/Roboto.png",
-      "regular": "Roboto-Regular"
+      "regular": "Roboto-Regular",
+      "image": "images/Roboto.png"
     },
     {
       "name": "Saniretro",
-      "image": "images/Saniretro.png",
-      "regular": "Saniretro"
+      "regular": "Saniretro",
+      "image": "images/Saniretro.png"
     },
     {
       "name": "Simran",
-      "image": "images/Simran.png",
-      "regular": "Simran_normal_normal"
+      "regular": "Simran_normal_normal",
+      "image": "images/Simran.png"
     },
     {
       "name": "Sofia",
-      "image": "images/Sofia.png",
-      "regular": "Sofia-Regular"
+      "regular": "Sofia-Regular",
+      "image": "images/Sofia.png"
     },
     {
       "name": "Stencil",
-      "image": "images/Stencil.png",
-      "regular": "Stencil_normal_normal"
+      "regular": "Stencil_normal_normal",
+      "image": "images/Stencil.png"
     },
     {
       "name": "Stop",
-      "image": "images/Stop.png",
-      "regular": "Stop_normal_normal"
+      "regular": "Stop_normal_normal",
+      "image": "images/Stop.png"
     },
     {
       "name": "Teknia Greek",
-      "image": "images/TekniaGreek.png",
-      "regular": "TekniaGreek_normal_normal"
+      "regular": "TekniaGreek_normal_normal",
+      "image": "images/TekniaGreek.png"
     },
     {
       "name": "Zapf Chancery",
       "bold": "ZapfChancery_bold_normal",
       "italic": "ZapfChancery_normal_italic",
-      "image": "images/ZapfChancery.png",
-      "regular": "ZapfChancery_normal_normal"
+      "regular": "ZapfChancery_normal_normal",
+      "image": "images/ZapfChancery.png"
     }
   ]
 }

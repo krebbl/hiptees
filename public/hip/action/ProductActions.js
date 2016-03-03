@@ -47,7 +47,10 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             addShape: {},
             changeProductType: {},
             loadProduct: {},
-            changeProductState: {}
+            changeProductState: {},
+            selectSize: {
+                size: null
+            }
 
         }
     })

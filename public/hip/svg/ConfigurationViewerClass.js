@@ -347,14 +347,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             }, 10);
         },
 
-        cornerHandleVisible: function () {
-            var size = this.$._size;
-            if (size) {
-                return Math.min(size.width, size.height) > this.$.handleWidth;
-            }
-            return true;
-        }.onChange('_size', 'handleWidth'),
-
         half: function (value) {
             return value * 0.5;
         },

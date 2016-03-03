@@ -7,6 +7,9 @@ define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/Confir
             selected: false,
             closable: false
         },
+        events: [
+            'on:closeClicked'
+        ],
 
         inject: {
             presetStore: PresetStore,
@@ -15,7 +18,7 @@ define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/Confir
         },
 
         hide: function () {
-            this.$.navActions.navigateBack();
+            this.trigger('on:closeClicked');
         },
 
         _commitSelected: function(selected){

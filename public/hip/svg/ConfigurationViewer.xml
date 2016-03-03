@@ -1,7 +1,7 @@
 <parent:ConfigurationViewerClass xmlns:parent="hip.svg" xmlns="js.svg" class="needsclick"
                                  onclick="_handleClick">
 
-    <mask id="{_maskId}" _offset="{offset()}">
+    <clipPath id="{_maskId}" _offset="{offset()}">
         <rect x="0" y="0" width="{printArea.size.width}" height="{printArea.size.height}"
               style="stroke:none; fill: #FFFFFF"
               translateX="{negate(_offset.x)}" translateY="{negate(_offset.y)}"/>
@@ -10,9 +10,9 @@
         <!--style="stroke:none; fill: #FFFFFF"-->
         <!--preserveAspectRatio="none"-->
         <!--translateX="{negate(_offset.x)}" translateY="{negate(_offset.y)}"/>-->
-    </mask>
+    </clipPath>
 
-    <g class="asset-container" cid="_assetContainerWrapper" mask="url(#{_maskId})">
+    <g class="asset-container" cid="_assetContainerWrapper" clip-path="url(#{_maskId})">
         <parent:ContentPlaceholder name="renderer"/>
     </g>
 

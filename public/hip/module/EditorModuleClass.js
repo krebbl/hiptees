@@ -263,7 +263,7 @@ define([
                 if (viewer) {
                     var offsetWidth = this.$.innerContent.$el.offsetWidth;
                     var rect = viewer.$el.getBoundingClientRect();
-                    var zoomHeight = Math.min(2000, (0.95 * offsetWidth) / rect.width * this.$.innerContent.$.height);
+                    var zoomHeight = Math.min(2000, (0.8 * offsetWidth) / rect.width * this.$.innerContent.$.height);
                     this.$.innerContent.set('overflow', 'scroll');
                     this.$.wrapper.set({
                         'height': zoomHeight
@@ -283,9 +283,10 @@ define([
         viewerPosition: function (viewer) {
             if (viewer) {
                 var rect = viewer.$el.getBoundingClientRect();
+                var moduleRect = this.$el.getBoundingClientRect();
                 return {
                     x: rect.left + Math.round(rect.width * 0.5),
-                    y: rect.top + rect.height + 20
+                    y: Math.min(rect.top + rect.height + 20, moduleRect.bottom - 90)
                 }
             }
             return {
@@ -293,7 +294,7 @@ define([
                 y: 0
             }
 
-        }.onChange("zoomed", "configurationViewer._realOffset", "configurationViewer._moving", "configurationViewer._resizing"),
+        }.onChange("zoomed", "configurationViewer._offset", "configurationViewer._size"),
 
         isEditButtonVisible: function () {
             return this.$.showConfigurationInfo && !(this.get("configurationViewer._moving") || this.get("configurationViewer._resizing"));
@@ -303,6 +304,10 @@ define([
             this.showView(null);
             this.$waitingForSave = true;
             this.$.productActions.saveProduct({state: this.$.makePublic ? "public" : "private"});
+        },
+
+        selectSize: function (item) {
+            this.$.productActions.selectSize({size: item});
         },
 
         format: function (val) {

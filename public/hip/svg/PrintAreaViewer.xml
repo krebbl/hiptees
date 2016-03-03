@@ -18,26 +18,27 @@
 
     <g _v="{activeViewer}" visible="{showActiveViewer}" translateX="{_v._realOffset.x}" translateY="{_v._realOffset.y}"
             _cornerHandleVisible="{and(_v.verticalStretchable,_v.horizontalStretchable, _v.cornerHandleVisible())}"
-            class="needsClick">
+       _handleDistance="{multiply(handleWidth,1.5)}"
+       class="needsClick">
 
 
-        <g translateX="{plus(_v._size.width,25)}" translateY="{plus(_v._size.height,_v.handleWidth)}"
+        <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{plus(_v._size.height,handleWidth)}"
            rotation="90"
            onpointerdown="handlePointerDown('resize','rb',event,true)"
            class="configuration-mover">
-            <circle r="{multiply(_v.handleWidth, 1.6)}"
+            <circle r="{multiply(handleWidth, 1.6)}"
                     class="fa fa-arrows"/>
-            <text x="{multiply(-0.7,_v.handleWidth)}" y="{multiply(_v.handleWidth,0.5)}">
+            <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}" font-size="{multiply(handleWidth, 1.6)}">
                 &#xf065;
             </text>
         </g>
 
-        <g translateX="{plus(_v._size.width,25)}" translateY="{minus(0,_v.handleWidth)}"
+        <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{minus(0,handleWidth)}"
            onpointerdown="handlePointerDown('move','b',event,true)"
                 class="configuration-mover">
-            <circle r="{multiply(_v.handleWidth, 1.6)}"
+            <circle r="{multiply(handleWidth, 1.6)}"
                     class="fa fa-arrows"/>
-            <text x="{multiply(-0.7,_v.handleWidth)}" y="{multiply(_v.handleWidth,0.5)}">
+            <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}" font-size="{multiply(handleWidth, 1.6)}">
                 &#xf047;
             </text>
         </g>

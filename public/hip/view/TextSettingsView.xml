@@ -52,12 +52,12 @@
     <js:Content cid="fontFamilyContent">
         <js:Content name="headerInfo">
             <div class="font-family-options">
-                <a class="btn-bold" enabled="{selectedFontFamily.bold}"
+                <a class="btn-bold" enabled="{_supportsStyle(selectedFontFamily,'bold')}"
                    onclick="_selectFont(selectedFontFamily, 'bold', selected)"
                    selected="{isBold(paragraphStyle.fontFamily)}">
                     ${i18n.t('textSettings.bold')}
                 </a>
-                <a class="btn-italic" enabled="{selectedFontFamily.italic}"
+                <a class="btn-italic" enabled="{_supportsStyle(selectedFontFamily,'italic')}"
                    onclick="_selectFont(selectedFontFamily, 'italic', selected)"
                    selected="{isItalic(paragraphStyle.fontFamily)}">
                     ${i18n.t('textSettings.italic')}
@@ -70,7 +70,7 @@
             <js:Template name="item">
                 <li>
                     <a onclick="_selectFont(item, 'regular')">
-                        <img src="./font/${item.image}"/>
+                        <view:LazyImage src="./font/${item.image}" scrollView="{placeholder}"/>
                     </a>
                 </li>
             </js:Template>

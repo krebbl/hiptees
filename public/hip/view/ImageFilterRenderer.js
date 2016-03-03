@@ -57,7 +57,6 @@ define(["js/core/Component", "js/core/Base"], function (Component, Base) {
 
                     var a = filter.getTintRGB();
                     if (a) {
-                        console.log(a);
                         canvas.colorize(a.color.r, a.color.g, a.color.b, a.$l / 100);
                     }
                 }

@@ -16,6 +16,17 @@ module.exports = {
         });
 
     },
+
+    append: function (options, callback) {
+
+        var src = options.src,
+            dest = options.dest;
+
+        exec("convert -background transparent -gravity center -append " + src + " " + dest, function (err, stdout, stderr) {
+            callback && callback(err, null);
+        });
+    },
+
     ttf2Woff: function (options, callback) {
         var src = options.src,
             dest = options.dest;

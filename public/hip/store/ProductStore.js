@@ -26,8 +26,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             product: null,
             selectedConfiguration: null,
             loadingProduct: false,
-            editing: false,
-            activeTextConfiguration: null
+            activeTextConfiguration: null,
+            selectedSize: null
         },
         inject: {
             api: HipDataSource,
@@ -35,6 +35,11 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             imageFileReader: ImageFileReader,
             textMeasurer: TextMeasurer
         },
+
+        selectSize: function (payload) {
+            this.set('selectedSize', payload.size);
+        },
+
         removeConfiguration: function (payload) {
             if (this.$.product && payload.configuration) {
                 // only remove it if it was found
@@ -100,10 +105,6 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
         selectConfiguration: function (payload) {
             this._selectConfiguration(payload.configuration);
-        },
-
-        toggleEditConfiguration: function (payload) {
-            this.set('editing', payload.edit);
         },
 
         changeShapeConfiguration: function (payload) {
@@ -298,7 +299,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 self = this;
 
             self._selectConfiguration(null);
-
+            this.set('selectedSize', null);
             flow()
                 .seq("product", function (cb) {
                     product.fetch({
@@ -359,9 +360,6 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     this.$.product.$.configurations.remove(this.$.selectedConfiguration);
                     this.trigger('on:configurationRemoved', {configuration: this.$.selectedConfiguration});
                 }
-            }
-            if (!configuration) {
-                this.set('editing', false);
             }
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});
