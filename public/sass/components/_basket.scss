@@ -46,6 +46,27 @@
     }
   }
 
+  &__loading {
+    display: block;
+    height: 100px;
+
+    background: white url(../img/loader.gif) no-repeat center center;
+    background-size: 50px;
+
+  }
+
+  &__updating {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: rgba(white, 0.2) url(../img/loader.gif) no-repeat center center;
+    background-size: 50px;
+
+  }
+
   &__total {
     padding: 8px 15px;
     border-bottom: 1px solid lightgrey;
@@ -114,12 +135,16 @@
     }
   }
 
-  &__item-delete-btn {
+  &__item-actions {
     position: absolute;
     right: 15px;
     top: 15px;
     font-size: 16px;
     color: $color-dark2;
+
+    a {
+      margin-left: 0.5em;
+    }
   }
 
   &__summary {

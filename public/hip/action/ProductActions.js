@@ -23,6 +23,9 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             toggleTextEditing: {
                 edit: false
             },
+            zoomConfiguration: {
+                configuration: null
+            },
             changeShapeConfiguration: {
                 configuration: null
             },

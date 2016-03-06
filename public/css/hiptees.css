@@ -321,6 +321,20 @@ table {
       top: 3px;
       color: black;
       padding: 15px; }
+  .basket__loading {
+    display: block;
+    height: 100px;
+    background: white url(../img/loader.gif) no-repeat center center;
+    background-size: 50px; }
+  .basket__updating {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.2) url(../img/loader.gif) no-repeat center center;
+    background-size: 50px; }
   .basket__total {
     padding: 8px 15px;
     border-bottom: 1px solid lightgrey;
@@ -383,12 +397,14 @@ table {
       border: 1px solid lightgray;
       padding: 7px 8px;
       border-radius: 5px; }
-  .basket__item-delete-btn {
+  .basket__item-actions {
     position: absolute;
     right: 15px;
     top: 15px;
     font-size: 16px;
     color: #323232; }
+    .basket__item-actions a {
+      margin-left: 0.5em; }
   .basket__summary {
     padding: 15px 15px; }
   .basket__total-price {
@@ -422,7 +438,7 @@ table {
     position: absolute;
     top: 7px;
     right: 8px;
-    background-color: #323232;
+    background-color: #26C281;
     width: 17px;
     height: 17px;
     padding: 4px;

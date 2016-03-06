@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasurer', 'js/svg/Svg', "hip/handler/TextConfigurationHandler"], function (SvgElement, TextFlowStore, SvgMeasurer, Svg, TextConfigurationHandler) {
+define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasurer', 'js/svg/Svg'], function (SvgElement, TextFlowStore, SvgMeasurer, Svg) {
 
     var EMPTY_LINE_TEXT = "\n" + String.fromCharCode(173);
     var XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";

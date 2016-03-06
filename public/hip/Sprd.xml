@@ -2,17 +2,17 @@
 <hip:SprdClass
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:js="js.core" xmlns:hip="hip" xmlns:view="hip.view"
-        xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
-        xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module" xmlns:ui="js.ui" xmlns:dialog="hip.dialog"
+        xmlns:svg="hip.svg" xmlns:util="hip.util"
+        xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module" xmlns:dialog="hip.dialog"
         xmlns:tracking="hip.tracking" xmlns:store="hip.store" xmlns:action="hip.action">
 
     <js:Injection cid="injection">
         <js:I18n cid="i18n" path="hip/locale" locale="de"/>
+        <data:SprdDataSource cid="sprdApi" gateway="/sprdApi/v1" apiKey="{ENV().apiKey}" secret="{ENV().secret}" endPoint="{ENV().endPoint}"/>
         <data:HipDataSource cid="api" gateway="/api/v1" endPoint="{endpoint()}"/>
-        <util:CloudinaryImageUploader apiKey="{ENV().apiKey}" secret="{ENV().secret}"/>
+        <util:CloudinaryImageUploader />
         <util:ImageFileReader/>
         <svg:TextMeasurer/>
-        <command:EventBus cid="eventBus"/>
         <action:Executor cid="executor" />
 
         <action:NavigationActions cid="navigationActions" />

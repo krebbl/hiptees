@@ -27,7 +27,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             selectedConfiguration: null,
             loadingProduct: false,
             activeTextConfiguration: null,
-            selectedSize: null
+            selectedSize: null,
+            loading: false,
+            zoomedConfiguration: null
         },
         inject: {
             api: HipDataSource,
@@ -51,6 +53,11 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 this.trigger('on:configurationRemoved', {configuration: payload.configuration});
             }
         },
+
+        zoomConfiguration: function (payload) {
+            this.set('zoomedConfiguration', payload.configuration);
+        },
+
         moveConfiguration: function (payload) {
             var configuration = payload.configuration;
             var change = {};
@@ -163,10 +170,11 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             if (!textFlow.$.selection) {
                 textFlow.set('selection', TextRange.createTextRange(0, textFlow.textLength() - 1));
             }
-
+            this.set('loading', true);
             this._loadConfiguration(configuration, false, false, function () {
                 self.$.product.$.configurations.add(configuration);
 
+                self.set('loading', false);
                 self.trigger('on:configurationAdded', {configuration: configuration, cloned: false});
                 self._selectConfiguration(configuration);
                 self.editTextConfiguration(configuration);
@@ -174,6 +182,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
 
         addImageFile: function (payload) {
+
+            this.set('loading', true);
             var file = payload.file;
 
             if (!file) {
@@ -206,6 +216,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     self.trigger('on:configurationAdded', {configuration: configuration});
 
                     self._selectConfiguration(configuration);
+                    self.set('loading', false);
                 }
             });
         },
@@ -248,7 +259,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
 
         saveProduct: function (payload) {
-            this._saveProduct(this.$.product, payload.state);
+            this._saveProduct(this.$.product, payload.state, payload.callback);
         },
         replaceImageFile: function (payload) {
             var configuration = paylod.configuration;
@@ -270,6 +281,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 newConfig.set(clone.$);
 
                 var self = this;
+                this.set('loading', true);
 
                 this._imageFileToDesign(payload.file, function (err, design) {
                     if (!err) {
@@ -283,12 +295,14 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         self.trigger('on:imageReplaced', {configuration: newConfig});
                         self._selectConfiguration(newConfig);
                     }
+                    self.set('loading', false);
                 });
             }
         },
         changeProductType: function () {
             // TODO: copy
         },
+
         loadProduct: function (payload) {
             this.set('loadingProduct', true);
             var products = this.$.api.createCollection(Collection.of(Product));
@@ -367,6 +381,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
         _saveProduct: function (product, state, cb) {
             this.trigger('on:productSave', {product: product});
+            this.set('savingProduct', true);
             var newDesigns = [];
             var stateBefore = product.get('state');
 
@@ -408,11 +423,13 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         })
                         .exec(cb);
                 })
-                .seq(function (cb) {
+                .seq("savedProduct",function (cb) {
                     if (state) {
                         product.set('state', state);
                     }
-                    product.save(null, cb);
+                    var clonedProduct = product.clone();
+
+                    clonedProduct.save(null, cb);
                 })
                 .exec(function (err, results) {
                     if (!err) {
@@ -421,8 +438,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         self.trigger('on:productSaveFailed', {err: err});
                         product.set('state', stateBefore);
                     }
-
-                    cb && cb(err, product);
+                    self.set('savingProduct', false);
+                    cb && cb(err, results.savedProduct);
                 });
 
         },

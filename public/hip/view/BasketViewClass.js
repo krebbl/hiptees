@@ -21,12 +21,6 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
             }, this);
 
 
-            this.$.navigationStore.bind('on:navigate', function (e) {
-                if (e.$.fragment == "profile") {
-                    this.$.basketStore.loadCombinedBasket();
-                }
-            }, this);
-
             var handleCheckout = function () {
                 this.set({
                     'checkingOut': false,
@@ -36,8 +30,6 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
 
             this.$.basketStore.bind('on:checkoutSuccess', handleCheckout, this);
             this.$.basketStore.bind('on:checkoutFailed', handleCheckout, this);
-
-            this.$.basketStore.loadCombinedBasket();
         },
 
         closeBasket: function (e) {
@@ -54,10 +46,11 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
             e.stopPropagation();
         },
 
-        _gotoProduct: function (product, e) {
+        _editBasketItem: function (item, e) {
             this.closeBasket(e);
+            var prop = this.$.basketStore.getPropertyOfBasketItem("product", item);
             this.$.navActions.navigate({
-                fragment: "product/" + product.$.id
+                fragment: "editor/preset/" + prop.value
             });
         },
 
@@ -68,22 +61,38 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
             });
         },
         _removeItem: function (item) {
-            this.$.basketActions.removeFromBasket({
+            this.$.basketActions.removeBasketItem({
                 item: item
             });
         },
         _handleQuantityChange: function (item, event) {
             var value = parseInt(event.target.$.value);
 
-            if (!isNaN(value) && value > 0 && item.$.quantity !== value) {
+            if (!isNaN(value) && value > 0 && item.quantity !== value) {
                 this.$.basketActions.changeBasketItem({
                     item: item,
                     quantity: value
                 });
             } else {
-                event.target.set('value', item.$.quantity);
+                event.target.set('value', item.quantity);
             }
         },
+
+        _handleQuantityKeyUp: function (event) {
+            if (event.domEvent.which === 13) {
+                event.target.blur();
+            }
+
+        },
+
+        _cloneItem: function (item) {
+            this.$.basketActions.cloneBasketItem({item: item});
+        },
+
+        and: function (a, b) {
+            return a && b;
+        },
+
         checkout: function () {
             this.set('checkingOut', true);
             this.$.basketActions.checkout();

@@ -159,6 +159,16 @@
   }
 }
 
+.loading-layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(white, 0.2) url(../img/loader.gif) no-repeat center 250px;
+  background-size: 50px;
+}
+
 .move-handle {
   position: absolute;
   color: white;
@@ -187,13 +197,6 @@
 }
 
 .configuration-handle {
-  fill: white;
-  stroke: $color-brand;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-
-.configuration-mover {
   circle {
     fill: $color-green;
   }
@@ -203,6 +206,12 @@
     font-family: FontAwesome;
     pointer-events: none;
 
+  }
+
+  &__delete {
+    circle {
+      fill: #B33752;
+    }
   }
 }
 

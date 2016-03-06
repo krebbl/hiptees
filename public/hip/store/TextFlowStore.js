@@ -3,12 +3,17 @@ define(["hip/store/Store",
     "text/operation/SplitParagraphOperation",
     "text/operation/DeleteOperation",
     "text/operation/ApplyStyleToElementOperation",
-    "text/entity/TextRange"
-], function (Store, InsertTextOperation, SplitParagraphOperation, DeleteOperation, ApplyStyleToElementOperation, TextRange) {
+    "text/entity/TextRange",
+    "xaml!hip/svg/TextMeasurer"
+], function (Store, InsertTextOperation, SplitParagraphOperation, DeleteOperation, ApplyStyleToElementOperation, TextRange, TextMeasurer) {
 
     return Store.inherit({
 
         ns: "textFlow",
+
+        inject: {
+            textMeasurer: TextMeasurer
+        },
 
         deleteText: function (payload) {
 
@@ -105,8 +110,24 @@ define(["hip/store/Store",
             }
             var paragraphStyle = payload.paragraphStyle;
             if (paragraphStyle) {
-                (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength()), textFlow, null, paragraphStyle)).doOperation();
-                this.trigger('on:paragraphStyleChanged', {textFlow: textFlow, paragraphStyle: paragraphStyle});
+                var self = this;
+                var applyStyle = function () {
+                    (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength()), textFlow, null, paragraphStyle)).doOperation();
+                    self.trigger('on:paragraphStyleChanged', {textFlow: textFlow, paragraphStyle: paragraphStyle});
+                };
+
+                if (paragraphStyle.fontFamily) {
+                    this.set('loadingFont', true);
+                    this.$.textMeasurer.loadFont(paragraphStyle.fontFamily, function (err) {
+                        self.set('loadingFont', false);
+                        if (!err) {
+                            applyStyle();
+                        }
+                    });
+                } else {
+                    applyStyle();
+                }
+
             }
         },
 

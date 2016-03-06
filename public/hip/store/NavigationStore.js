@@ -4,7 +4,7 @@ define(["hip/store/Store"], function (Store) {
     return Store.inherit({
         defaults: {
             currentFragment: "presetsView",
-            fragmentStack: []
+            fragmentStack: ["presetsView"]
         },
         ns: "navigation",
 

@@ -4,11 +4,9 @@ define(
         "js/core/List",
         "js/data/Collection",
         "hip/model/Design",
-        "hip/model/Product",
-        "hip/command/LoginCommand",
-        "hip/command/Navigate"
+        "hip/model/Product"
     ],
-    function (Application, Query, List, Collection, Design, Product, LoginCommand, Navigate) {
+    function (Application, Query, List, Collection, Design, Product) {
 
         return Application.inherit({
             supportEnvironments: true,
@@ -190,7 +188,7 @@ define(
                 }, this);
 
                 this.$.basketStore.bind('on:addToBasketFailed', function (e) {
-                    this.$.notificationManager.showNotification('error', {message: this.$.i18.t('message.addingItemFailed')}, {duration: 3});
+                    this.$.notificationManager.showNotification('error', {message: this.$.i18n.t('message.addingItemFailed')}, {duration: 3});
                     tracking.trackEvent("BASKET", "addToBasketFailed", "reason", e.$.reason);
                 }, this);
 
@@ -225,8 +223,6 @@ define(
 
                 this.$.productStore.bind('on:addingImage', this.showLoading, this);
 
-                this.$.productStore.bind('on:productSaved', this.goToProfileModule, this);
-
                 var hasParams = location.hash.replace(/^\#\//, "").split("&"),
                     params = {};
 
@@ -255,15 +251,6 @@ define(
                 }
 
                 return "dev";
-            },
-
-            goToProfileModule: function () {
-                this.$.swipeView.goTo("profile");
-                var self = this;
-                setTimeout(function () {
-                    self.$.notificationManager.showNotification('default', {message: self.$.i18n.t('message.productSaved')}, {duration: 3});
-                }, 300);
-
             },
 
             showLoading: function () {

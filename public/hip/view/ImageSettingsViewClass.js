@@ -1,10 +1,8 @@
 define(["xaml!hip/view/SettingsView",
     "underscore",
-    "hip/command/ApplyFilter",
-    "hip/command/ReplaceImageFile",
     "hip/entity/DesignConfiguration",
     "hip/entity/Filter",
-    'json!hip/asset/filters'], function (SettingsView, _, ApplyFilter, ReplaceImageFile, DesignConfiguration, Filter, filters) {
+    'json!hip/asset/filters'], function (SettingsView, _,DesignConfiguration, Filter, filters) {
 
 
     return SettingsView.inherit({

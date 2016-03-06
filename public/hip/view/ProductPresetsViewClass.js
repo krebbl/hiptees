@@ -1,4 +1,4 @@
-define(["hip/view/ViewBase", "hip/handler/LoginHandler", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetStore", "hip/action/PresetActions"], function (ViewBase, LoginHandler, ConfirmDialog, PresetStore, PresetActions) {
+define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetStore", "hip/action/PresetActions"], function (ViewBase, ConfirmDialog, PresetStore, PresetActions) {
 
     return ViewBase.inherit({
         defaults: {

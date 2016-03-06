@@ -1,9 +1,8 @@
 define(["xaml!hip/view/SettingsView",
     "underscore",
     "hip/entity/ShapeConfiguration",
-    "hip/command/ChangeShapeConfiguration",
     "js/type/Color"
-], function (SettingsView, _, ShapeConfiguration, ChangeShapeConfiguration, Color) {
+], function (SettingsView, _, ShapeConfiguration, Color) {
 
 
     return SettingsView.inherit({

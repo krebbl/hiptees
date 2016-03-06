@@ -8,7 +8,8 @@ define(['js/svg/SvgElement', 'js/core/List',
     'hip/entity/DesignConfiguration',
     'hip/entity/RectangleConfiguration',
     'hip/entity/CircleConfiguration',
-    'hip/store/ProductStore'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ProductStore) {
+    'hip/store/ProductStore',
+'hip/action/ProductActions'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ProductStore, ProductActions) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -24,7 +25,8 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         inject: {
-            productStore: ProductStore
+            productStore: ProductStore,
+            productActions: ProductActions
         },
 
         $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer", "handleWidth", "border", "configurations", "snapLines"],
@@ -128,6 +130,11 @@ define(['js/svg/SvgElement', 'js/core/List',
                 this.$.configurations.removeChild(viewer);
                 viewer.destroy();
             }
+        },
+
+        removeConfiguration: function(event){
+            event.stopPropagation();
+            this.$.productActions.removeConfiguration({configuration: this.get('activeViewer.configuration')});
         },
 
         _prepareSnappingPointsForViewer: function (viewer) {

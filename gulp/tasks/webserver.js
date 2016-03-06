@@ -14,7 +14,11 @@ gulp.task('webserver', function () {
             //    cert: '/Users/krebbl/cert.pem'
             //},
             middleware: [
-                proxy('/api/v1', {target: 'http://localhost:3000', changeOrigin: false, xfwd: true})
+                proxy('/api/v1', {target: 'http://localhost:3000', changeOrigin: false, xfwd: true}),
+                proxy('/sprdApi/v1', {
+                    target: 'http://api.spreadshirt.de', changeOrigin: true,
+                    xfwd: true, pathRewrite: {"sprdApi": "api"}
+                })
             ]
         }));
 });

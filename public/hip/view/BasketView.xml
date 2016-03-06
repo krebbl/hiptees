@@ -12,30 +12,33 @@
 
     <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>
 
-    <div class="basket__content" cid="content" visible="{basket.totalQuantity}" onclick="stopPropagation">
+    <div class="basket__loading" visible="{and(basketStore.loadingBasket, not(basketStore.updatingBasket))}"/>
+
+    <div class="basket__content" cid="content" visible="{basket.basketItems.length}" onclick="stopPropagation">
+        <div class="basket__updating" visible="{basketStore.updatingBasket}"/>
         <div class="basket__total">
-            {basket.totalQuantity} {i18n.t('general.article')}
+            {basketStore.totalQuantity()} {i18n.t('general.article')}
         </div>
-        <ui:ItemsView items="{basket.items}">
+        <ui:ItemsView items="{basket.basketItems}">
             <js:Template name="item">
                 <div class="basket__item">
-                    <a class="basket__item-image" onclick="_gotoProduct(item.product, event)">
-                        <img src="{item.product.resources.SMALL}"/>
+                    <a class="basket__item-image" onclick="_editBasketItem(item, event)">
+                        <img src="{basketStore.getProductImage(item)}"/>
                     </a>
                     <div class="basket__item-options">
                         <div class="basket__item-price">
-                            {item.price} €
+                            {basketStore.formatPrice(item.priceItem)}
                         </div>
-                        <div class="basket__item-description">
-                            {item.product.description}
-                        </div>
+                        <!--<div class="basket__item-description">-->
+                        <!--{item.product.description}-->
+                        <!--</div>-->
                         <div class="basket__item-size">
                             <label>${i18n.t('general.size')}:</label>
                             <div class="btn btn-whitesmoke">
                                 <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true"
-                                                 items="{item.product.productType.sizes}"
+                                                 items="{basketStore.getSizes(item)}"
                                                  enableAutoFillCheck="false"
-                                                 selectedItem="{item.size}"
+                                                 selectedItem="{basketStore.getSize(item)}"
                                                  onchange="_updateSize(item, event)"
                                                  valuePath="id"/>
                                 <i class=" fa fa-angle-down pull-right"/>
@@ -44,12 +47,17 @@
                         <div class="basket__item-quantity">
                             <label>${i18n.t('general.quantity')}:</label>
                             <input type="text" value="{item.quantity}"
-                                   onchange="_handleQuantityChange(item,event)"
+                                   onkeyup="_handleQuantityKeyUp"
                                    onblur="_handleQuantityChange(item,event)"/>
                         </div>
-                        <a class="basket__item-delete-btn" onclick="_removeItem(item)">
-                            <i class=" fa fa-trash"/>
-                        </a>
+                        <div class="basket__item-actions">
+                            <a onclick="_cloneItem(item)">
+                                <i class=" fa fa-files-o"/>
+                            </a>
+                            <a onclick="_removeItem(item)">
+                                <i class=" fa fa-trash"/>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </js:Template>
@@ -57,7 +65,7 @@
         <div class="basket__summary">
             <label>{i18n.t('basket.subTotalWithoutShipping')}</label>
             <div class="basket__total-price">
-                <div>{basket.totalPrice} €</div>
+                <div>{basketStore.formatPrice(basket.priceItems)}</div>
             </div>
         </div>
         <div class="basket__btn-wrapper">
@@ -69,7 +77,7 @@
         </div>
     </div>
 
-    <div class="basket__empty" visible="{not(basket.totalQuantity)}">
+    <div class="basket__empty" visible="{and(not(basketStore.loadingBasket),not(basket))}">
         <p>Der Warenkorb ist leider leer :(</p>
         <a class="btn btn-orange" onclick="goCreate">Jetzt was gestalten!</a>
     </div>

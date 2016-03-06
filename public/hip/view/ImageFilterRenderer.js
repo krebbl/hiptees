@@ -51,8 +51,6 @@ define(["js/core/Component", "js/core/Base"], function (Component, Base) {
                     canvas.brightnessContrast(filter.$.brightness / 100 * 0.5, filter.$.contrast / 100 * 0.6);
                     if (filter.$.blur > 0) {
                         canvas.triangleBlur(filter.$.blur / 2);
-                    } else {
-
                     }
 
                     var a = filter.getTintRGB();

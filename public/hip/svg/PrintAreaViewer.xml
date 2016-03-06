@@ -25,8 +25,8 @@
         <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{plus(_v._size.height,handleWidth)}"
            rotation="90"
            onpointerdown="handlePointerDown('resize','rb',event,true)"
-           class="configuration-mover">
-            <circle r="{multiply(handleWidth, 1.6)}"
+           class="configuration-handle">
+            <circle r="{multiply(handleWidth, 1.4)}"
                     class="fa fa-arrows"/>
             <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}" font-size="{multiply(handleWidth, 1.6)}">
                 &#xf065;
@@ -35,11 +35,22 @@
 
         <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{minus(0,handleWidth)}"
            onpointerdown="handlePointerDown('move','b',event,true)"
-                class="configuration-mover">
-            <circle r="{multiply(handleWidth, 1.6)}"
+                class="configuration-handle">
+            <circle r="{multiply(handleWidth, 1.4)}"
                     class="fa fa-arrows"/>
             <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}" font-size="{multiply(handleWidth, 1.6)}">
                 &#xf047;
+            </text>
+        </g>
+
+        <g translateX="{minus(0,_handleDistance)}" translateY="{minus(0,handleWidth)}"
+           onclick="removeConfiguration"
+           class="configuration-handle configuration-handle__delete">
+            <circle r="{multiply(handleWidth, 1.4)}"
+                    class="fa fa-arrows"/>
+            <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}"
+                  font-size="{multiply(handleWidth, 1.6)}">
+                &#xf014;
             </text>
         </g>
 

@@ -3,12 +3,17 @@ define([
     "js/data/Query",
     "hip/model/ProductType",
     "hip/model/Product",
+    "hip/store/BasketStore",
     "hip/action/ProductActions",
+    "hip/action/BasketActions",
     "js/data/Collection",
-    "js/type/Color"
-], function (BaseModule, Query, ProductType, Product, ProductActions, Collection, Color) {
+    "js/type/Color",
+    "hip/store/TextFlowStore",
+    "flow"
+], function (BaseModule, Query, ProductType, Product, BasketStore, ProductActions, BasketActions, Collection, Color, TextFlowStore, flow) {
     return BaseModule.inherit({
         defaults: {
+            basketStore: null,
             productStore: null,
             product: "{productStore.product}",
             appearance: "{product.appearance}",
@@ -17,7 +22,8 @@ define([
             saveView: null,
             addView: null,
             zoomed: false,
-            zoomVisible: "{or(productStore.selectedConfiguration,zoomed)}",
+            zoomedConfiguration: "{productStore.zoomedConfiguration}",
+            zoomVisible: "{or(productStore.selectedConfiguration,productStore.zoomedConfiguration)}",
             showTextHint: false,
             makePublic: false,
             showConfigurationInfo: "{selectedConfiguration}",
@@ -31,7 +37,10 @@ define([
         },
 
         inject: {
-            productActions: ProductActions
+            productActions: ProductActions,
+            basketActions: BasketActions,
+            textFlowStore: TextFlowStore,
+            basketStore: BasketStore
         },
 
         ctor: function () {
@@ -231,53 +240,65 @@ define([
             return -0.5 * n;
         },
 
+        _commitZoomedConfiguration: function (configuration) {
+            if (this.isRendered()) {
+                var self = this;
+                if (configuration) {
+                    var viewer = this.$.productViewer.getViewerForConfiguration(configuration);
+                    if (viewer) {
+                        var offsetWidth = this.$.innerContent.$el.offsetWidth;
+                        var rect = viewer.$el.getBoundingClientRect();
+                        var zoomHeight = Math.min(2000, (0.8 * offsetWidth) / rect.width * this.$.innerContent.$.height);
+                        this.$.innerContent.set('overflow', 'scroll');
+                        this.$.wrapper.set({
+                            'height': zoomHeight
+                        });
+                        this.$.wrapper.set('marginLeft', (this.minusHalf(this.$heightBefore)) + "px");
+
+                        var rectAfter = viewer.$el.getBoundingClientRect();
+                        this.$.innerContent.$el.scrollLeft = rectAfter.left - (offsetWidth - rectAfter.width) * 0.5;
+                        this.$.innerContent.$el.scrollTop = rectAfter.top - (this.$.innerContent.$el.offsetHeight - rectAfter.height) * 0.5;
+
+                        this.set('zoomed', true);
+                    }
+                } else {
+                    var innerContent = this.$.innerContent;
+                    setTimeout(function () {
+                        innerContent.set('overflow', 'hidden');
+                        innerContent.$el.scrollLeft = 0;
+                        innerContent.$el.scrollTop = 0;
+                    }, 1);
+                    setTimeout(function () {
+                        self.$.wrapper.set({
+                            'left': "0",
+                            'height': self.$heightBefore
+                        });
+                    }, 2);
+                    setTimeout(function () {
+                        self.$.wrapper.set({
+                            'left': "50%"
+                        });
+                        self.set('zoomed', false);
+                    }, 10);
+                }
+            }
+        },
+
         toggleZoom: function () {
             if (!this.$heightBefore) {
                 this.$heightBefore = this.$.wrapper.$.height;
             }
 
-            var self = this;
-
-            if (this.$.zoomed) {
-                var innerContent = this.$.innerContent;
-                setTimeout(function () {
-                    innerContent.set('overflow', 'hidden');
-                    innerContent.$el.scrollLeft = 0;
-                    innerContent.$el.scrollTop = 0;
-                }, 1);
-                setTimeout(function () {
-                    self.$.wrapper.set({
-                        'left': "0",
-                        'height': self.$heightBefore
-                    });
-                }, 2);
-                setTimeout(function () {
-                    self.$.wrapper.set({
-                        'left': "50%"
-                    });
-                    self.set('zoomed', false);
-                }, 10);
-
+            var configuration;
+            if (this.$.productStore.$.zoomedConfiguration) {
+                configuration = null
             } else {
-                var viewer = this.$.productViewer.getSelectedConfigurationViewer();
-                if (viewer) {
-                    var offsetWidth = this.$.innerContent.$el.offsetWidth;
-                    var rect = viewer.$el.getBoundingClientRect();
-                    var zoomHeight = Math.min(2000, (0.8 * offsetWidth) / rect.width * this.$.innerContent.$.height);
-                    this.$.innerContent.set('overflow', 'scroll');
-                    this.$.wrapper.set({
-                        'height': zoomHeight
-                    });
-                    this.$.wrapper.set('marginLeft', (this.minusHalf(this.$heightBefore)) + "px");
-
-                    var rectAfter = viewer.$el.getBoundingClientRect();
-                    this.$.innerContent.$el.scrollLeft = rectAfter.left - (offsetWidth - rectAfter.width) * 0.5;
-                    this.$.innerContent.$el.scrollTop = rectAfter.top - (this.$.innerContent.$el.offsetHeight - rectAfter.height) * 0.5;
-
-                    this.set('zoomed', true);
-                }
-
+                configuration = this.$.selectedConfiguration;
             }
+
+            this.$.productActions.zoomConfiguration({configuration: configuration});
+
+
         },
 
         viewerPosition: function (viewer) {
@@ -294,16 +315,30 @@ define([
                 y: 0
             }
 
-        }.onChange("zoomed", "configurationViewer._offset", "configurationViewer._size"),
+        }.onChange("zoomed", "configurationViewer._realOffset", "configurationViewer._size"),
 
         isEditButtonVisible: function () {
             return this.$.showConfigurationInfo && !(this.get("configurationViewer._moving") || this.get("configurationViewer._resizing"));
         }.onChange("showConfigurationInfo", "configurationViewer._moving", "configurationViewer._resizing"),
 
-        saveProductFinal: function () {
-            this.showView(null);
-            this.$waitingForSave = true;
-            this.$.productActions.saveProduct({state: this.$.makePublic ? "public" : "private"});
+        addToBasket: function () {
+            var self = this;
+            flow()
+                .seq("product", function (cb) {
+                    self.$.productActions.saveProduct({state: "final", callback: cb});
+
+                })
+                .seq(function (cb) {
+                    self.$.basketActions.addToBasket({
+                        size: self.$.productStore.$.selectedSize,
+                        quantity: 1,
+                        product: this.vars.product,
+                        callback: cb
+                    });
+                })
+                .exec(function (err) {
+                    console.log(err);
+                })
         },
 
         selectSize: function (item) {

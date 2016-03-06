@@ -29,10 +29,6 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
                 type: String,
                 required: true
             },
-            creator: {
-                type: "hip/model/User",
-                generated: true
-            },
             configurations: [typeResolver],
             tags: {
                 type: Array,
