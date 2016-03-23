@@ -78,8 +78,8 @@
     </div>
 
     <div class="basket__empty" visible="{and(not(basketStore.loadingBasket),not(basket))}">
-        <p>Der Warenkorb ist leider leer :(</p>
-        <a class="btn btn-orange" onclick="goCreate">Jetzt was gestalten!</a>
+        <p>{i18n.t('basket.isEmpty')}</p>
+        <a class="btn btn-orange" onclick="goCreate">{i18n.t('basket.startCreate')}</a>
     </div>
 
 

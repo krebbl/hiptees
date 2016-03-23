@@ -77,7 +77,7 @@ define([
             this.bind('productStore', 'on:productSave', function () {
 
                 this.set({
-                    '_loadingMessage': this.$.i18n.t('editor.savingProduct'),
+                    '_loadingMessage': this.$.i18n.t('editor.addingProduct'),
                     'savingProduct': true
                 });
 
@@ -103,9 +103,9 @@ define([
 
             this.bind('productStore', 'on:designImageUploaded', function (e) {
                 uploaded++;
-                if(uploaded === uploads){
+                if (uploaded === uploads) {
                     this.set({
-                        '_loadingMessage': this.$.i18n.t('editor.savingProduct'),
+                        '_loadingMessage': this.$.i18n.t('editor.addingProduct'),
                         'savingProduct': true
                     });
                 } else {
@@ -159,15 +159,23 @@ define([
                     asPreset = true;
                 }
 
-                this.set('productSelected', true);
-
+                this.set({
+                    'productSelected': true
+                });
                 this.$.productActions.loadProduct({
                     productId: productId,
                     lazy: true,
                     asPreset: asPreset
                 });
             }
+        },
 
+        title: function (fragment) {
+            if (/presetsView/.test(fragment)) {
+                return this.$.i18n.t('editor.chooseTemplate');
+            } else {
+                return this.$.i18n.t('editor.createYourOwn');
+            }
         },
 
         add: function (what, e) {

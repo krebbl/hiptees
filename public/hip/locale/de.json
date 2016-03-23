@@ -28,8 +28,8 @@
   },
   "message": {
     "productSaved": "Shirt gespeichert!",
-    "itemAdded": "Artikel erfolgreich hinzugefügt",
-    "addingItemFailed": "Artikel konnte nicht hinzugefügt werden",
+    "itemAdded": "Produkt erfolgreich hinzugefügt",
+    "addingItemFailed": "Produkt konnte nicht hinzugefügt werden",
     "thxForFeedback": "Danke fürs Feedback!",
     "changesSuccessful": "Änderungen erfolgreich."
   },
@@ -67,6 +67,10 @@
   "presets": {
     "chooseAPreset": "Wähle eine Vorlage"
   },
+  "departments": {
+    "men": "Männer",
+    "women": "Frauen"
+  },
   "editor": {
     "edit": "Bearbeiten",
     "buy": "Kaufen",
@@ -83,8 +87,12 @@
     "saveFinal": "Final speichern",
     "saveAsDraft": "Als Entwurf speichern",
     "giveItAName": "Geb dem Shirt einen Namen",
+    "title": "editor",
+    "chooseTemplate": "Wähle eine Vorlage",
+    "createYourOwn": "Gestalte selbst",
     "confirmGoBack": "Willst du wirklich zurück? Alle deine Änderungen gehen verloren!",
     "savingProduct": "Speichere Shirt",
+    "addingProduct": "Füge Produkt zum Warenkorb hinzu",
     "uploadingImages": "Lade Bilder hoch (%0 / %1)"
   },
   "settings": {
@@ -116,6 +124,8 @@
   },
   "basket": {
     "basket": "Warenkorb",
+    "isEmpty": "Der Warenkorb ist leider leer :(",
+    "startCreate": "Jetzt was gestalten!",
     "subTotalWithoutShipping": "Zwischensumme ohne Lieferkosten",
     "toCheckout": "Jetzt zur Kasse"
   }

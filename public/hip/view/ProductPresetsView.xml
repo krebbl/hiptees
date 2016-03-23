@@ -1,7 +1,16 @@
 <view:ProductPresetsViewClass xmlns="http://www.w3.org/1999/xhtml"
                                 xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
 
-    <div class="presets-view__header">${i18n.t('presets.chooseAPreset')}</div>
+    <div class="presets-view__header">
+        <ui:SelectionView class="department-selection" items="{presetStore.departments}"
+                          selectedItem="{presetStore.selectedDepartment}">
+            <js:Template name="item">
+                <div class="department-selection__item" onclick="selectDepartment(item)">
+                    <span>${i18n.ts('departments', item.name)}</span>
+                </div>
+            </js:Template>
+        </ui:SelectionView>
+    </div>
     <a class="presets-view__close" onclick="hide" visible="{closable}">
         <i class="fa fa-chevron-down"/>
     </a>
@@ -9,13 +18,6 @@
     <view:BackToTop element="{scrollContainer}" text="${i18n.t('general.backToTop')}"/>
 
     <div class="presets-view__scroll-view" cid="scrollContainer">
-        <ui:SelectionView class="department-selection" items="{presetStore.departments}" selectedItem="{presetStore.selectedDepartment}">
-            <js:Template name="item">
-                <div class="department-selection__item" onclick="selectDepartment(item)">
-                    <span>{item.name}</span>
-                </div>
-            </js:Template>
-        </ui:SelectionView>
         <ui:SelectionView class="appearance-selection" items="{presetStore.appearances}" selectedItem="{presetStore.selectedAppearance}">
             <js:Template name="item">
                 <div class="appearance-selection__item" onclick="selectAppearance(item)">

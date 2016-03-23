@@ -8,11 +8,11 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
             selectedAppearance: null,
             departments: [
                 {
-                    name: "Men",
+                    name: "men",
                     id: "1"
                 },
                 {
-                    name: "Women",
+                    name: "women",
                     id: "2"
                 }
             ],

@@ -4,7 +4,7 @@
 
     <div class="header">
         <h1 class="header__logo"/>
-        <h2>Create your own</h2>
+        <h2>{title(navigationStore.currentFragment)}</h2>
         <view:MiniBasketButton class="header__btn btn-right" onclick="goToBasket()"/>
     </div>
 
