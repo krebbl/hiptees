@@ -137,6 +137,11 @@ define(['js/svg/SvgElement', 'js/core/List',
             this.$.productActions.removeConfiguration({configuration: this.get('activeViewer.configuration')});
         },
 
+        cloneConfiguration: function(event){
+            event.stopPropagation();
+            this.$.productActions.cloneConfiguration({configuration: this.get('activeViewer.configuration')})
+        },
+
         _prepareSnappingPointsForViewer: function (viewer) {
             var x = 0,
                 y = 0,
