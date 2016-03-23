@@ -218,7 +218,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 
                 this.$resized = true;
 
-                if(this.$.keepAspectRatio) {
+                if (this.$.keepAspectRatio) {
                     var rootVector = [this.$originalSize.width, this.$originalSize.height];
 
 
@@ -370,6 +370,10 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
         },
         negate: function (number) {
             return -1 * number;
+        },
+
+        plus: function (a, b) {
+            return (a + b) || 0;
         },
 
         _commitChangedAttributes: function ($) {
