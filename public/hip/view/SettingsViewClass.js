@@ -51,18 +51,6 @@ define(["js/ui/View", "js/core/I18n",
             this.trigger('on:closeClicked', {}, this);
         },
 
-        cloneConfiguration: function () {
-            this.$.productActions.cloneConfiguration({
-                configuration: this.$.configuration
-            });
-        },
-
-        removeConfiguration: function () {
-            this.$.productActions.removeConfiguration({
-                configuration: this.$.configuration
-            });
-        },
-
         layerUp: function () {
             var product = this.$.productStore.$.product;
             this.$.productActions.changeOrder({

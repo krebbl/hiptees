@@ -7,14 +7,6 @@
             ${i18n.t('general.back')}
         </a>
         <div class="default-options">
-
-            <a class="remove-btn" onclick="removeConfiguration()">
-                <i class="fa fa-trash-o"/>
-            </a>
-            <a class="clone-btn" onclick="cloneConfiguration()">
-                <i class="fa fa-files-o"/>
-            </a>
-
             <a class="layer-btn" onclick="layerDown">
                 <i class="fa fa-level-down"/>
             </a>
