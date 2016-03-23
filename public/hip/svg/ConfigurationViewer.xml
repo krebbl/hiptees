@@ -24,11 +24,11 @@
           width="{_size.width}" height="{_size.height}"/>
 
     <rect class="needsclick"
-          x="-10"
-          y="-10"
+          x="-5"
+          y="-5"
           fill-opacity="0"
           onpointerdown="handlePointerDown('move','', event)"
-          width="{plus(_size.width,20)}" height="{plus(_size.height,20)}"
+          width="{plus(_size.width,10)}" height="{plus(_size.height,10)}"
           fill="black"
             />
 
