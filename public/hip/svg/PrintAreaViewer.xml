@@ -17,7 +17,6 @@
     <g cid="configurations"/>
 
     <g _v="{activeViewer}" visible="{showActiveViewer}" translateX="{_v._realOffset.x}" translateY="{_v._realOffset.y}"
-            _cornerHandleVisible="{and(_v.verticalStretchable,_v.horizontalStretchable, _v.cornerHandleVisible())}"
        _handleDistance="{multiply(handleWidth,1.5)}"
        class="needsClick">
 
