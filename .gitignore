@@ -2,7 +2,7 @@
 *.iml
 *-plugin.xml
 
-fonts
+./fonts
 public/js
 public/font/index.json
 public/font/*.ttf
