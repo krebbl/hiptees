@@ -1,7 +1,8 @@
 define(["xaml!hip/svg/ConfigurationViewer"], function (ConfigurationViewer) {
     return ConfigurationViewer.inherit({
         defaults: {
-
+            _minHeight: 3,
+            _minWidth: 3
         },
 
         half: function(a){
