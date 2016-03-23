@@ -262,7 +262,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             this._saveProduct(this.$.product, payload.state, payload.callback);
         },
         replaceImageFile: function (payload) {
-            var configuration = paylod.configuration;
+            var configuration = payload.configuration;
             if (configuration instanceof DesignConfiguration) {
                 if (!payload.file) {
                     return;
@@ -357,6 +357,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         }
                         self.set('product', p, {force: true});
                         self.trigger('on:productLoaded', {product: p});
+                        if (p.$.configurations.size()) {
+                            self._selectConfiguration(p.$.configurations.at(0));
+                        }
                     } else {
                         console.warn(err);
                     }
