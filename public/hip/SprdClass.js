@@ -144,23 +144,19 @@ define(
                  */
 
                 this.$.productStore.bind('on:productSave', function (e) {
-                    var product = e.$.product;
-                    tracking.trackEvent("PRODUCT", "savingProduct", "state", product.$.state);
+                    tracking.trackEvent("PRODUCT", "savingProduct");
                 }, this);
 
                 this.$.productStore.bind('on:productSaved', function (e) {
-                    var product = e.$.product;
-                    tracking.trackEvent("PRODUCT", "productSaved", "state", product.$.state);
+                    tracking.trackEvent("PRODUCT", "productSaved");
                 }, this);
 
                 this.$.productStore.bind('on:productSaveFailed', function (e) {
-                    var product = e.$.product;
-                    tracking.trackEvent("PRODUCT", "productSaveFailed", "state", product.$.state);
+                    tracking.trackEvent("PRODUCT", "productSaveFailed");
                 }, this);
 
                 this.$.productStore.bind('on:productSaveFailed', function (e) {
-                    var product = e.$.product;
-                    tracking.trackEvent("PRODUCT", "productSaveFailed", "state", product.$.state);
+                    tracking.trackEvent("PRODUCT", "productSaveFailed", "state");
                 }, this);
 
                 this.$.productStore.bind('on:configurationAdded', function (e) {
