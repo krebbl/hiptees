@@ -102,10 +102,18 @@ define([
             }, this);
 
             this.bind('productStore', 'on:designImageUploaded', function (e) {
-                uploads++;
-                this.set({
-                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + "")
-                });
+                uploaded++;
+                if(uploaded === uploads){
+                    this.set({
+                        '_loadingMessage': this.$.i18n.t('editor.savingProduct'),
+                        'savingProduct': true
+                    });
+                } else {
+                    this.set({
+                        '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + "")
+                    });
+                }
+
             }, this);
         },
 
