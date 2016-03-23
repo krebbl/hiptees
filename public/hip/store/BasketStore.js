@@ -66,7 +66,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
 
         },
 
-        totalQuantity: function(){
+        totalQuantity: function () {
             var basket = this.$.basket;
             if (!basket) {
                 return 0;
@@ -82,12 +82,12 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
 
         removeBasketItem: function (payload) {
 
-            if(payload.item){
+            if (payload.item) {
                 var self = this;
                 this.set('updatingBasket', true);
-                this.$.sprdApi.removeBasketItem(this.$.basket.id, payload.item.id, function(err){
-                    if(!err){
-                        self.loadCombinedBasket(function(){
+                this.$.sprdApi.removeBasketItem(this.$.basket.id, payload.item.id, function (err) {
+                    if (!err) {
+                        self.loadCombinedBasket(function () {
                             self.set('updatingBasket', false);
                         });
                     } else {
@@ -156,29 +156,6 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                 } else {
                     self.set('updatingBasket', false);
 
-                }
-            });
-        },
-
-        checkout: function (payload) {
-            var action = this.$.api.createEntity(CheckoutBasket);
-            var self = this;
-
-            action.set({
-                basket: payload.basket
-            });
-
-
-            action.save({}, function (err, checkout) {
-                if (!err) {
-                    self.trigger('on:checkoutSuccess', {
-                        checkout: checkout,
-                        checkoutUrl: "https://checkout.spreadshirt.de/?basketId=" + checkout.$.id
-                    });
-                    console.log("checkout!")
-                } else {
-                    self.trigger('on:checkoutFailed', {error: err});
-                    console.warn(err);
                 }
             });
         },
@@ -295,6 +272,16 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                 });
             }
 
+        },
+        checkout: function () {
+            if (this.$.basket) {
+                var link = _.find(this.$.basket.links || [], function (l) {
+                    return l.type === "defaultCheckout";
+                });
+                if (link) {
+                    window.location.href = link.href;
+                }
+            }
         }
 
     });
