@@ -18,6 +18,15 @@
 @import "components/profile-options";
 @import "components/modal";
 
+.stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .back-to-top-wrapper {
   position: absolute;
   top: 87px;
@@ -297,7 +306,8 @@ $settings-height: 210px;
   color: white;
   background: rgba(255, 255, 255, 0.86);
   text-align: center;
-  font-size: 0.8em;
+  font-size: 1em;
+  height: 40px;
 
   &__btn {
     font-weight: bold;
@@ -317,6 +327,7 @@ $settings-height: 210px;
   }
 
   &__add-btn {
+    height: 45px;
     font-size: 12px;
     margin-top: -5px;
     background: $color-green;
@@ -754,11 +765,6 @@ ul {
   -webkit-transform: translateZ(0);
 }
 
-.svg-text-editor {
-  //  transform: rotateZ(-4.39844571389983deg);
-  //  -webkit-transform: rotateZ(-4.39844571389983deg);
-}
-
 .editing {
   .configuration-handle {
     display: none;
@@ -780,7 +786,7 @@ image.masking-bg-image {
 
 .slider-label {
   text-align: left;
-  padding: 1em 20px 0 20px;
+  padding: 0.8em 20px 0 20px;
   color: white;
   font-size: 0.9em;
 }
@@ -790,7 +796,7 @@ image.masking-bg-image {
   position: relative;
   margin-top: 15px;
   padding: 0 20px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .slider {
@@ -1228,16 +1234,16 @@ input[type=checkbox]:checked, input[type=radio]:checked {
 
 .configuration-edit-btn {
   margin-top: -$header-height;
-  margin-left: -13px;
-  width: 26px;
-  height: 26px;
+  margin-left: -15px;
+  width: 30px;
+  height: 30px;
   background: $color-green;
   display: block;
   z-index: 2;
-  border-radius: 20px;
+  border-radius: 15px;
   color: white;
   font-size: 12px;
-  line-height: 26px;
+  line-height: 30px;
   text-align: center;
 
   &.active {

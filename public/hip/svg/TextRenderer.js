@@ -175,7 +175,7 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
 //                        text.style.textRendering = "geometricPrecision";
 //                        text.setAttribute("text-rendering", );
 //                        text.setAttributeNodeNS(s) = "needsclick";
-
+                        text.setAttribute("class", "needsclick");
                         group.appendChild(text);
                     }
                     text.setAttribute("y", ascent);
@@ -190,15 +190,17 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                         text.removeAttribute("data-char-break");
                     }
 
-                    for (var j = 0; j < line.paragraph.$.children.length; j++) {
+                    for (var j = line.paragraph.$.children.length - 1; j >= 0; j--) {
                         leaf = line.paragraph.$.children.at(j);
-                        if (j < text.childNodes.length) {
-                            tspan = text.childNodes[j];
-                        } else {
+                        tspan = j < text.childNodes.length ? text.childNodes[j] : null;
+                        if(tspan && tspan.tagName !== "tspan") {
+                            text.removeChild(tspan);
+                            tspan = null;
+                        }
+                        if(!tspan){
                             tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
                             tspan.setAttributeNS(XML_NAMESPACE, "space", "preserve");
-
-
+                            tspan.setAttribute("class", "needsclick");
                             text.appendChild(tspan);
                         }
                         lineText = leaf.text();

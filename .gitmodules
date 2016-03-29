@@ -1,0 +1,7 @@
+[submodule "rAppid.js"]
+	path = rAppid.js
+	url = https://github.com/rappid/rAppid.js
+	branch = sprd
+[submodule "rappidjs-text"]
+	path = rappidjs-text
+	url = git@github.com:rappid/rappidjs-text.git

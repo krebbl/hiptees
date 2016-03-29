@@ -46,7 +46,7 @@ html {
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Arial, Helvetica, Corbel, Calibri, "Trebuchet MS", sans-serif;
   font-weight: normal;
   min-height: 100%;
   line-height: 1.2;

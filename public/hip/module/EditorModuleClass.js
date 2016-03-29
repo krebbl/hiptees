@@ -323,7 +323,7 @@ define([
                 var moduleRect = this.$el.getBoundingClientRect();
                 return {
                     x: rect.left + Math.round(rect.width * 0.5),
-                    y: Math.min(rect.top + rect.height + 20, moduleRect.bottom - 90)
+                    y: Math.min(rect.top + rect.height + 20, moduleRect.bottom - 90) + window.scrollY
                 }
             }
             return {

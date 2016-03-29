@@ -122,7 +122,24 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
 
         editTextConfiguration: function (payload) {
-            this.set('activeTextConfiguration', payload.configuration);
+            var configuration = payload.configuration;
+            if (configuration) {
+                var textFlow = configuration.$.textFlow;
+                if (textFlow) {
+                    var totalLength = textFlow.textLength() - 1;
+                    if (!textFlow.$.selection) {
+                        textFlow.set('selection', TextRange.createTextRange(totalLength, totalLength));
+                    } else {
+                        textFlow.$.selection.set({
+                            anchorIndex: totalLength,
+                            activeIndex: totalLength
+                        })
+                    }
+                }
+            }
+
+            this.set('activeTextConfiguration', configuration);
+
         },
 
         changeOrder: function (payload) {
@@ -357,8 +374,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         }
                         self.set('product', p, {force: true});
                         self.trigger('on:productLoaded', {product: p});
-                        if (p.$.configurations.size()) {
-                            self._selectConfiguration(p.$.configurations.at(0));
+                        var size = p.$.configurations.size();
+                        if (size) {
+                            self._selectConfiguration(p.$.configurations.at(size - 1));
                         }
                     } else {
                         console.warn(err);
@@ -426,7 +444,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         })
                         .exec(cb);
                 })
-                .seq("savedProduct",function (cb) {
+                .seq("savedProduct", function (cb) {
                     if (state) {
                         product.set('state', state);
                     }

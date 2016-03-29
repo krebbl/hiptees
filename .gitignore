@@ -2,8 +2,6 @@
 *.iml
 *-plugin.xml
 
-./fonts
-public/js
 public/font/index.json
 public/font/*.ttf
 public/font/*.woff

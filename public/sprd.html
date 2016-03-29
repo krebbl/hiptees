@@ -72,6 +72,8 @@
     rAppid.bootStrap("hip/Sprd.xml", null, null, null, function (err, stage) {
         if (err) {
             console.log(err);
+        } else {
+            stage.set('height', window.innerHeight);
         }
         window.application = stage.$application;
     });

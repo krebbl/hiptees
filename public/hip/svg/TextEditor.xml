@@ -1,15 +1,21 @@
 <parent:TextEditorClass xmlns="http://www.w3.org/1999/xhtml"
-                           xmlns:parent="hip.svg"
-                           onkeydown="_onkeyDown"
-                           onkeypress="_onkeyPress"
-                           onkeyup="_onkeyUp"
-                           onscroll="_onscroll"
-                           onpointerup="_onPointerUp"
-        oninput="_oninput">
+                        xmlns:parent="hip.svg"
+                        onkeydown="_onkeyDown"
+                        oninput="_oninput"
+                        onkeypress="_onkeyPress"
+                        onkeyup="_onkeyUp"
+                        onscroll="_onscroll"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        autocomplete="off"
+                        spellcheck="false"
+
+        >
 
     <svg xmlns="http://www.w3.org/2000/svg" width="{svgWidth}" height="{svgHeight}" cid="svg" xml:space="preserve" viewBox="{viewBox}">
         <g>
-            <parent:TextRenderer cid="$textContainer" maxWidth="{maxWidth}" textFlow="{textFlow}" class="text-renderer" onsizeChanged="_handleSizeChange"/>
+            <parent:TextRenderer cid="$textContainer" maxWidth="{maxWidth}" textFlow="{textFlow}" class="text-renderer needsclick" onsizeChanged="_handleSizeChange"
+                                 />
         </g>
     </svg>
 </parent:TextEditorClass>

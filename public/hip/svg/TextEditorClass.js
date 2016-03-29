@@ -10,7 +10,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             width: 100,
             height: 100,
             viewBox: "0 0 100 100",
-            contenteditable: true,
+            contenteditable: "plaintext-only",
             textFlow: null,
             selection: null
         },
@@ -20,7 +20,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             textFlowStore: TextFlowStore
         },
 
-        $domAttributes: ["contenteditable"],
+        $domAttributes: ["contenteditable", "autocorrect", "autocomplete", "spellcheck", "autocapitalize"],
 
         _handleSizeChange: function (e) {
             var rect = e.target.$el.getBoundingClientRect();
@@ -33,6 +33,10 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             }
         },
 
+        _commitTextFlow: function () {
+            this.$textBefore = null;
+        },
+
         _renderMaxWidth: function () {
             // IMPORTANT: DON'T REMOVE THIS METHOD
             // do nothing
@@ -42,14 +46,16 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             this.callBase();
 
             var self = this;
-            //setTimeout(function(){
-            if (self.$.textFlow.$.selection) {
-                self.setCursor(self.$.textFlow.$.selection.$.anchorIndex, self.$.textFlow.$.selection.$.activeIndex);
-            }
-            //},1)
+            this.$absoluteEnd = null;
+            this.$absoluteOffset = null;
+            //setTimeout(function () {
+                if (self.$.textFlow.$.selection) {
+                    self.setCursor(self.$.textFlow.$.selection.$.anchorIndex, self.$.textFlow.$.selection.$.activeIndex);
+                }
+            //}, 1)
         },
 
-        _onPointerUp: function () {
+        _onSelectionChange: function () {
             if (this.$.textFlow) {
                 var self = this;
                 this.$selectTimeout && clearTimeout(this.$selectTimeout);
@@ -60,8 +66,17 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
                         anchorOffset: selection.anchorOffset,
                         focusOffset: selection.focusOffset
                     });
-                }, 500);
+                    //console.log("set new selection", selection.anchorOffset, selection.focusOffset);
+                }, 300);
             }
+        },
+
+        _bindDomEvents: function () {
+            this.callBase();
+            var self = this;
+            this.dom(this.$stage.$document).bindDomEvent("selectionchange", function (e) {
+                self._onSelectionChange();
+            });
         },
 
         _onscroll: function (e) {
@@ -124,9 +139,6 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
 
             var absoluteOffset = getAbsoluteOffset(selection.anchorNode, selection.anchorOffset),
                 absoluteEnd = getAbsoluteOffset(selection.focusNode, selection.focusOffset);
-
-            this.$absoluteOffset = absoluteOffset;
-            this.$absoluteEnd = absoluteEnd;
 
             return {
                 anchorOffset: absoluteOffset,
@@ -197,18 +209,12 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             }
         },
 
-        _onpointerdown: function (e) {
-//            e.preventDefault();
-
-        },
-
         _onkeyDown: function (e) {
             var domEvent = e.domEvent;
-
             if ([8, 46, 13].indexOf(domEvent.which) > -1) {
                 var sel = this.getAbsoluteSelection();
                 e.preventDefault();
-
+                e.stopPropagation();
                 var textActions = this.$.textActions;
                 if (domEvent.which == 46) {
                     if (sel.anchorOffset == sel.focusOffset) {
@@ -239,57 +245,48 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
                         focusOffset: sel.focusOffset
                     });
                 }
-
+                this.$textBefore = null;
             } else {
-                var seletion = window.getSelection();
-                this.$textBefore = seletion.focusNode.textContent;
+                this.$textBefore = window.getSelection().focusNode.textContent;
+                //console.log(String.fromCharCode(domEvent.which));
+                //e.preventDefault();
+                //this.$selectionBefore = this.getAbsoluteSelection();
             }
         },
 
         _oninput: function (e) {
-            this.$insert && clearTimeout(this.$insert);
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            var self = this;
-
-            this.$insert = setTimeout(function () {
-                var selection = window.getSelection();
-                var textAfter = selection.anchorNode.textContent;
-
-                var i = -1;
-
-                var textContainer = self.$.$textContainer.$el,
-                    child;
-                for (i = 0; i < textContainer.childNodes.length; i++) {
-                    child = textContainer.childNodes[i];
-                    if (child === selection.focusNode.parentNode) {
-                        break;
+            var selection = window.getSelection();
+            var focusNode = selection.focusNode;
+            if (this.$textBefore && focusNode) {
+                var textContent = focusNode.textContent;
+                if (this.$textBefore != textContent) {
+                    for (var i = 0; i < selection.focusOffset && i < this.$textBefore.length; i++) {
+                        var oldChar = this.$textBefore.charAt(i);
+                        var newChar = textContent.charAt(i);
+                        if (oldChar !== newChar) {
+                            break;
+                        }
                     }
+                    var text = textContent.substring(i, selection.focusOffset);
+                    var abs = this.getAbsoluteSelection();
+                    var endDiff = textContent.length - selection.focusOffset;
+                    var diff = textContent.length - this.$textBefore.length;
+
+                    this.$.textActions.insertText({
+                        textFlow: this.$.textFlow,
+                        text: text,
+                        anchorOffset: abs.focusOffset - text.length,
+                        focusOffset: abs.focusOffset - diff
+                    });
+
                 }
+            } else if (!this.$textBefore && this.$stage.$browser.isIOS) {
+                // prevents that text from the autocompletion is used
+                this.$.$textContainer._renderMeasureResult(this.$.$textContainer.$.measureResult);
+            }
+            this.$textBefore = null;
 
-                var line = self.$.$textContainer.getOriginalLine(i);
 
-
-                var absoluteSelection = self.getAbsoluteSelection();
-
-                var diff = textAfter.length - line.text.length;
-                if (selection.anchorNode.parentNode.nextSibling) {
-                    diff--;
-                }
-
-                var insertedText = textAfter.substring(0, selection.focusOffset);
-
-                self.$.textActions.insertText({
-                    textFlow: self.$.textFlow,
-                    text: insertedText,
-                    anchorOffset: absoluteSelection.focusOffset - selection.focusOffset,
-                    focusOffset: absoluteSelection.focusOffset - diff
-                });
-
-            }, 20);
-//
         },
 
         getLineIndex: function (lines, offset) {
@@ -339,12 +336,13 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
 
             if (e.domEvent.charCode > 0) {
                 e.preventDefault();
+                e.stopPropagation();
                 var sel = this.getAbsoluteSelection();
-
+                this.$textBefore = null;
 
                 this.$.textActions.insertText({
                     textFlow: this.$.textFlow,
-                    text: String.fromCharCode(e.domEvent.which),
+                    text: String.fromCharCode(e.domEvent.charCode),
                     anchorOffset: sel.anchorOffset,
                     focusOffset: sel.focusOffset
                 });

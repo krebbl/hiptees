@@ -22,16 +22,16 @@
     </js:Content>
 
     <js:Content cid="filterContent">
-        <js:Content name="headerInfo">
-            <div class="image-setting-options">
-                <a onclick="scrollTo(presetContainer)" selected="{presetsInView}">
-                    ${i18n.t('imageSettings.presets')}
-                </a>
-                <a onclick="scrollTo(manualContainer)" selected="{not(presetsInView)}">
-                    ${i18n.t('imageSettings.manual')}
-                </a>
-            </div>
-        </js:Content>
+        <!--<js:Content name="headerInfo">-->
+            <!--<div class="image-setting-options">-->
+                <!--<a onclick="scrollTo(presetContainer)" selected="{presetsInView}">-->
+                    <!--${i18n.t('imageSettings.presets')}-->
+                <!--</a>-->
+                <!--<a onclick="scrollTo(manualContainer)" selected="{not(presetsInView)}">-->
+                    <!--${i18n.t('imageSettings.manual')}-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</js:Content>-->
         <div cid="presetContainer" class="filter-presets">
             <ui:SelectionView items="{presets}" class="filter-preset-list" tagName="ul" selectedItem="{selectedPreset}">
                 <js:Template name="item">

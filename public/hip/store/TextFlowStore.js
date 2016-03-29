@@ -77,9 +77,14 @@ define(["hip/store/Store",
                 focusOffset = payload.focusOffset,
                 textFlow = payload.textFlow;
 
+            var textLength = textFlow.textLength() - 1;
+            anchorOffset = Math.min(textLength, anchorOffset);
+            focusOffset = Math.min(textLength, focusOffset);
+
             if (!textFlow.$.selection) {
-                textFlow.set('selection', TextRange.createTextRange(0, payload.textFlow.textLength() - 1));
+                textFlow.set('selection', TextRange.createTextRange(0, textLength));
             }
+
 
             textFlow.$.selection.set({
                 anchorIndex: anchorOffset,

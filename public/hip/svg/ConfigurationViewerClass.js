@@ -144,6 +144,12 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 configuration: this.$.configuration
             });
 
+            if(!this.$.selected) {
+                this.$.productActions.selectConfiguration({
+                    configuration: this.$.configuration
+                });
+            }
+
             this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).bindDomEvent("click", this.$clickDelegate, true);
             this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
@@ -328,9 +334,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 });
             }
             if (!this.$.selected || !(this.$moved || this.$resized)) {
-                this.$.productActions.selectConfiguration({
-                    configuration: this.$.configuration
-                });
+
             }
 
             this.$originalSize = null;
