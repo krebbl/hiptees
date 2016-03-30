@@ -1,0 +1,14 @@
+*.idea
+*.iml
+*-plugin.xml
+
+public/font/index.json
+public/font/*.ttf
+public/font/*.woff
+public/font/images/*.png
+env/dev.json
+
+node_modules
+public-build
+cocoon
+build.js
