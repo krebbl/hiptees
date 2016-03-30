@@ -14,7 +14,7 @@
     <!--</pattern>-->
 
     <js:Content name="renderer">
-        <parent:ContentPlaceHolder name="shape"
+        <parent:ContentPlaceholder name="shape"
                                    stroke="{configuration.stroke.toString()}"
                                    stroke-location="inside"
                                    stroke-width="{configuration.strokeWidth}"
