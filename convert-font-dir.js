@@ -1,4 +1,5 @@
 var converter = require('./converter'),
+    minimist = require('minimist'),
     fs = require('fs'),
     flow = require('flow.js').flow;
 
@@ -8,6 +9,11 @@ var fontFamilyMap = {},
     fontFamilies = [],
     dir = './fonts',
     publicFontDir = __dirname + "/public/font/";
+
+var skipImages = false;
+
+var argv = minimist(process.argv.slice(2));
+skipImages = !!argv["skip-images"];
 
 function removeFontFamily(fontFamily) {
     var index = fontFamilies.indexOf(fontFamily);
@@ -115,37 +121,43 @@ fs.readdir('./fonts', function (err, files) {
                 });
         })
         .seq(function (cb) {
-            flow()
-                .seqEach(fontFamilies, function (fontFamily, cb) {
+            if (!skipImages) {
+                console.log("Generating images ... ");
+                flow()
+                    .seqEach(fontFamilies, function (fontFamily, cb) {
 
-                    var fileWOExtension = fontFamily.regular || fontFamily.bold || fontFamily.italic;
-                    var fontFamilyName = fontFamily.name;
-
-
-                    var imagePath = "images/" + fontFamilyName.split(" ").join("");
-
-
-                    converter.convertToImage({
-                        src: publicFontDir + fileWOExtension + ".woff",
-                        dest: publicFontDir + imagePath,
-                        size: 150,
-                        label: fontFamilyName
-                    }, function (err) {
-                        if (!err) {
-                            fontFamily.image = imagePath + ".png";
-                        } else {
-                            console.warn(err);
-                            removeFontFamily(fontFamilyName);
-                        }
-                        cb(err);
-                    });
+                        var fileWOExtension = fontFamily.regular || fontFamily.bold || fontFamily.italic;
+                        var fontFamilyName = fontFamily.name;
 
 
-                })
-                .exec(cb);
+                        var imagePath = "images/" + fontFamilyName.split(" ").join("");
+
+
+                        converter.convertToImage({
+                            src: publicFontDir + fileWOExtension + ".woff",
+                            dest: publicFontDir + imagePath,
+                            size: 150,
+                            label: fontFamilyName
+                        }, function (err) {
+                            if (!err) {
+                                fontFamily.image = imagePath + ".png";
+                            } else {
+                                console.warn(err);
+                                removeFontFamily(fontFamilyName);
+                            }
+                            cb(err);
+                        });
+
+
+                    })
+                    .exec(cb);
+            } else {
+                console.log("Skipping images");
+                cb();
+            }
         })
         .exec(function (err) {
-            if(!err){
+            if (!err) {
                 fontFamilies.sort(function (f1, f2) {
                     return f1.name > f2.name ? 1 : -1;
                 });
