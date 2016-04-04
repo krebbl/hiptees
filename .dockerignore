@@ -10,5 +10,4 @@ env/dev.json
 
 node_modules
 public-build
-cocoon
 build.js
