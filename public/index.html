@@ -6,7 +6,7 @@
     Created with rAppid.js - a declarative RIA MVC JS Framework developed by Tony Findeisen and Marcus Krejpowicz
     Visit http://rappidjs.com for more Information.
     -->
-    <title>Hiptees</title>
+    <title>Spreadshirt CYO</title>
 
 
     <!-- VERSION="${VERSION}" -->
@@ -14,21 +14,9 @@
     <script type="text/javascript" src="lib/fastclick.js" data-usage="lib"></script>
     <script type="text/javascript" src="js/lib/require.js" data-usage="lib"></script>
     <script type="text/javascript" src="js/lib/rAppid.js" data-usage="lib"></script>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="cordova_plugins.js"></script>
 
     <link rel="stylesheet" href="css/font-awesome.min.css"/>
-    <link type="text/css" rel="stylesheet" href="css/hiptees.css"/>
-
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/Icon-60.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="icons/Icon-60@2x.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icons/Icon-Small.png">
-
-
-    <link rel="apple-touch-icon" href="icons/Icon-60.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="icons/Icon-76.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="icons/Icon-60@2x.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="icons/Icon-76@2x.png">
+    <link type="text/css" rel="stylesheet" href="css/sprd.css"/>
 
     <style type="text/css">
         @font-face {
@@ -80,27 +68,15 @@
 <body>
 <script type="text/javascript" data-usage="bootstrap">
     FastClick.attach(document.body);
-    // version is optional. It refers to the version of API you may want to use.
 
-    //    if (cordova && cordova.plugins && cordova.plugins.certificates) {
-    //        cordova.plugins.certificates.trustUnsecureCerts(true);
-    //    }
-
-    rAppid.bootStrap("hip/Hiptees.xml", null, null, null, function (err, stage) {
+    rAppid.bootStrap("hip/Sprd.xml", null, null, null, function (err, stage) {
         if (err) {
             console.log(err);
+        } else {
+            stage.set('height', window.innerHeight);
         }
         window.application = stage.$application;
     });
-
-    document.addEventListener("deviceready", function () {
-        try {
-            var Certificates = cordova.require("cordova-plugin-certificates.Certificates");
-            Certificates.trustUnsecureCerts(true);
-        } catch (e) {
-            console.warn(e);
-        }
-    }, false);
 
 </script>
 <div id="fb-root"></div>

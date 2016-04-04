@@ -1,25 +1,19 @@
 {
     "modules": [
         {
-            "name": "hip/Hiptees",
+            "name": "hip/Sprd",
             "include": [
-                "xaml!hip/Hiptees",
+                "xaml!hip/Sprd",
                 "json!hip/env/default",
-                "json!hip/env/dev",
                 "json!hip/locale/de",
-                "xaml!hip/module/LoginModule",
-                "xaml!hip/module/ProfileModule",
-                "xaml!hip/module/ProductTypeModule",
-                "xaml!hip/module/ProductPresetModule",
                 "xaml!hip/module/EditorModule",
-                "xaml!hip/module/ProductModule",
                 "exif"
             ]
         }
     ],
     "indexFile": "index.html",
     "targetDir": "public-build",
-    "uglify": false,
+    "uglify": true,
     "usePackageVersion": false,
     "removeSpaces": true
 }
