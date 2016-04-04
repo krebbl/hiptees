@@ -21,6 +21,10 @@ Start web server via gulp
 
 `gulp webserver`
 
+Or to run the build version
+
+`gulp build-webserver`
+
 https://www.npmjs.com/package/gulp-webserver
 
 ## SASS
@@ -30,6 +34,12 @@ use the gulp task to watch the directory
 `gulp sass:watch`
 
 
-## Cordova
+## Docker
 
-* See **init-cordova.sh** 
+**Build**
+
+`docker build -t hiptees-frontend .
+
+**Run**
+
+`docker run --link API --rm -p 32775:8000 hiptees-frontend
