@@ -144,7 +144,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 configuration: this.$.configuration
             });
 
-            if(!this.$.selected) {
+            if (!this.$.selected) {
                 this.$.productActions.selectConfiguration({
                     configuration: this.$.configuration
                 });
@@ -219,6 +219,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 diffY = diffVector[1];
 
 
+            var anchor = this.$._anchor;
             if (this.$action == "resize" || (event.touches && event.touches.length > 1)) {
                 this.set('_resizing', true);
 
@@ -260,8 +261,22 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                     diffY = 0;
                 }
 
-                size.width = this.$originalSize.width + diffX * 1 / Math.abs(1 - this.$._anchor.x);
-                size.height = this.$originalSize.height + diffY * 1 / Math.abs(1 - this.$._anchor.y);
+                size.width = this.$originalSize.width + diffX * 1 / Math.abs(1 - anchor.x);
+                size.height = this.$originalSize.height + diffY * 1 / Math.abs(1 - anchor.y);
+
+                var snappedWidth = Math.abs(snapToPoints([
+                        [size.width * (0 - anchor.x), this.$originalOffset.x],
+                        [size.width * anchor.x, this.$originalOffset.x]
+                    ], 0)) * (1 / anchor.x);
+
+                var snappedHeight = size.height;
+
+                if (this.$.keepAspectRatio) {
+                    snappedHeight = this.$originalSize.height / this.$originalSize.width * snappedWidth;
+                }
+
+                size.width = snappedWidth;
+                size.height = snappedHeight;
 
                 change._size = size;
             } else if (this.$action == "move") {
@@ -273,15 +288,15 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                     offset.y += diffY;
 
                     var x = snapToPoints([
-                        [offset.x, size.width * (0.5 - this.$._anchor.x)],
-                        [offset.x, size.width * (0 - this.$._anchor.x)],
-                        [offset.x, size.width * (1 - this.$._anchor.x)]
+                        [offset.x, size.width * (0.5 - anchor.x)],
+                        [offset.x, size.width * (0 - anchor.x)],
+                        [offset.x, size.width * (1 - anchor.x)]
                     ], 0);
 
                     var y = snapToPoints([
-                        [offset.y, size.height * (0.5 - this.$._anchor.y)],
-                        [offset.y, size.height * (0 - this.$._anchor.y)],
-                        [offset.y, size.height * (1 - this.$._anchor.y)]
+                        [offset.y, size.height * (0.5 - anchor.y)],
+                        [offset.y, size.height * (0 - anchor.y)],
+                        [offset.y, size.height * (1 - anchor.y)]
                     ], 1);
 
                     offset.x = x;
