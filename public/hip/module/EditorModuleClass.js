@@ -24,7 +24,6 @@ define([
             zoomed: false,
             zoomedConfiguration: "{productStore.zoomedConfiguration}",
             zoomVisible: "{or(productStore.selectedConfiguration,productStore.zoomedConfiguration)}",
-            showTextHint: false,
             makePublic: false,
             showConfigurationInfo: "{selectedConfiguration}",
             savingProduct: false,
@@ -118,22 +117,15 @@ define([
         },
 
         _commitSelectedConfiguration: function (configuration) {
-            var showTextHint = false;
             if (!configuration) {
                 this.set({
                     'showConfigurationInfo': false
                 });
             } else {
-                if (configuration.$.type == "text") {
-                    showTextHint = true;
-                }
                 this.set({
                     'showConfigurationInfo': true
                 });
             }
-
-
-            this.set('showTextHint', showTextHint);
         },
 
         appearanceClass: function () {
