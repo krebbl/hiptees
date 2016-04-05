@@ -905,6 +905,15 @@ ul.product-list {
   background-color: rgba(15, 21, 29, 0.81);
   display: block;
   height: 100%;
+
+  .used-colors {
+    width: 30px;
+    text-align: center;
+
+    .used-colors-item {
+      margin-top: 10px;
+    }
+  }
 }
 
 .color-picker {

@@ -9,6 +9,13 @@
         <input type="text" value="{_innerColor.toString()}" onchange="_dispatch(value)" onblur="_fixZoom"/>
     </js:Content>
     <div class="color-picker-wrapper">
+        <ui:ItemsView items="{usedColors}" class="used-colors">
+            <js:Template name="item">
+                <div class="used-colors-item">
+                    <span class="color-bubble" backgroundColor="{item}" onclick="_dispatch(item)"/>
+                </div>
+            </js:Template>
+        </ui:ItemsView>
         <ui:ColorPicker widthUpdatePolicy="in" heightUpdatePolicy="in"
                         width="auto" height="auto"
                         color="{{_innerColor}}"

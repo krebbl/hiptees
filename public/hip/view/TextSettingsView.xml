@@ -102,6 +102,6 @@
                        value="{paragraphStyle.letterSpacing}"/>
         </div>
     </js:Content>
-    <setting:ColorSetting cid="colorContent" selectedColor="{leafColor}" oncolorSelect="_updateColor"/>
+    <setting:ColorSetting cid="colorContent" selectedColor="{leafColor}" oncolorSelect="_updateColor" usedColors="{productStore.usedColors}"/>
 
 </view:TextSettingsViewClass>

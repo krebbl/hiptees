@@ -29,7 +29,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             activeTextConfiguration: null,
             selectedSize: null,
             loading: false,
-            zoomedConfiguration: null
+            zoomedConfiguration: null,
+            usedColors: []
         },
         inject: {
             api: HipDataSource,
@@ -49,7 +50,6 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 if (payload.configuration == this.$.selectedConfiguration) {
                     this._selectConfiguration(null);
                 }
-
                 this.trigger('on:configurationRemoved', {configuration: payload.configuration});
             }
         },
@@ -195,6 +195,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 self.trigger('on:configurationAdded', {configuration: configuration, cloned: false});
                 self._selectConfiguration(configuration);
                 self.editTextConfiguration(configuration);
+
+                self._calculateUsedColors();
             });
         },
 
@@ -268,6 +270,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 this.trigger('on:configurationAdded', {configuration: configuration});
 
                 this._selectConfiguration(configuration);
+
+                this._calculateUsedColors();
             }
         },
 
@@ -381,6 +385,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     } else {
                         console.warn(err);
                     }
+                    self._calculateUsedColors();
+
                     callback && callback(err, p);
                     self.set('loadingProduct', false);
                 });
@@ -396,6 +402,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     this.trigger('on:configurationRemoved', {configuration: this.$.selectedConfiguration});
                 }
             }
+            this._calculateUsedColors();
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});
         },
@@ -555,6 +562,30 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             }
 
             return ret;
+        },
+
+        _calculateUsedColors: function () {
+            var usedColors = [];
+
+            function addColor(color) {
+                if (usedColors.indexOf(color) === -1) {
+                    usedColors.push(color);
+                }
+            }
+
+            this.$.product.$.configurations.each(function (config) {
+                if (config instanceof ShapeConfiguration) {
+                    addColor(config.$.fill);
+                    addColor(config.$.stroke);
+                } else if(config instanceof TextConfiguration) {
+                    var leaf = config.$.textFlow.getFirstLeaf();
+                    if(leaf) {
+                        addColor(leaf.$.style.$.color);
+                    }
+                }
+            });
+
+            this.set('usedColors', usedColors);
         }
     });
 

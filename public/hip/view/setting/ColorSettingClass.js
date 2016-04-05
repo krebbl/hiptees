@@ -4,7 +4,8 @@ define(["js/core/Content", "js/type/Color"], function (Content, Color) {
             selectedColor: null,
             _innerColor: null,
             enableColor: true,
-            showToggleColor: false
+            showToggleColor: false,
+            usedColors: null
         },
         events: [
             'on:colorSelect',
