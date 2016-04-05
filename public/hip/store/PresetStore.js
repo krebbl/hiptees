@@ -16,23 +16,6 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
                     id: "2"
                 }
             ],
-            appearances: [
-                {
-                    id: "1",
-                    name: "white",
-                    color: "#ffffff"
-                },
-                {
-                    id: "2",
-                    name: "black",
-                    color: "#000000"
-                },
-                {
-                    id: "3",
-                    name: "red",
-                    color: "#ff0000"
-                }
-            ],
             loading: false
         },
 
@@ -47,11 +30,8 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
                 return;
             }
 
-            var appearances = this.$.appearances;
-
             this.set({
                 selectedDepartment: department,
-                selectedAppearance: appearances[0],
                 presets: null
             }, {force: true});
 
@@ -68,7 +48,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
 
             var products = api.createCollection(Collection.of(Product));
 
-            var query = new Query().eql("tags", "preset").eql('appearance', this.$.selectedAppearance.id);
+            var query = new Query().eql("tags", "preset");
 
             var queryCollection = products.query(query),
                 self = this;
@@ -88,19 +68,8 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
             this.callBase();
 
             this.set({
-                selectedDepartment: this.$.departments[0],
-                selectedAppearance: this.$.appearances[0]
+                selectedDepartment: this.$.departments[0]
             });
-
-            this._loadPresets();
-        },
-
-        selectAppearance: function (payload) {
-            if (this.$.selectedAppearance === payload.appearance) {
-                return;
-            }
-
-            this.set('selectedAppearance', payload.appearance);
 
             this._loadPresets();
         }

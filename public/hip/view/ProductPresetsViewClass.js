@@ -38,11 +38,6 @@ define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetS
             this.$.presetActions.selectDepartment({
                 department: department
             });
-        },
-        selectAppearance: function (appearance) {
-            this.$.presetActions.selectAppearance({
-                appearance: appearance
-            });
         }
 
     });

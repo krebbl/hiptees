@@ -18,13 +18,6 @@
     <view:BackToTop element="{scrollContainer}" text="${i18n.t('general.backToTop')}"/>
 
     <div class="presets-view__scroll-view" cid="scrollContainer">
-        <ui:SelectionView class="appearance-selection" items="{presetStore.appearances}" selectedItem="{presetStore.selectedAppearance}">
-            <js:Template name="item">
-                <div class="appearance-selection__item" onclick="selectAppearance(item)">
-                    <span title="{item.name}" backgroundColor="{item.color}"/>
-                </div>
-            </js:Template>
-        </ui:SelectionView>
         <ui:ItemsView items="{presetStore.presets}" tagName="ul" class="product-list">
             <js:Template name="item">
                 <li>
