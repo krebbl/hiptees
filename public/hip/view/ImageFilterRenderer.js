@@ -1,4 +1,4 @@
-define(["js/core/Component", "js/core/Base"], function (Component, Base) {
+define(["js/core/Component", "js/core/Base", "glfx"], function (Component, Base, fx) {
     var flipMatrix = [1, 0, 0, 0, -1, 0, 0, 0, 1];
 
     var Worker = Base.inherit({

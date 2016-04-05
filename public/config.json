@@ -72,6 +72,8 @@
     "namespaceMap": null,
     "rewriteMap": null,
     "paths": {
+        "glfx": "lib/glfx",
+        "fastclick": "lib/fastclick",
         "exif": "lib/exif",
         "xaml": "js/plugin/xaml",
         "json": "js/plugin/json",
@@ -85,6 +87,12 @@
         "RestConditionParser": "srv/lib/RestConditionParser"
     },
     "shim": {
+        "glfx": {
+            "exports": "fx"
+        },
+        "fastclick": {
+            "exports": "FastClick"
+        },
         "exif": {
             "exports": "EXIF"
         },

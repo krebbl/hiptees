@@ -4,9 +4,12 @@ define(
         "js/core/List",
         "js/data/Collection",
         "hip/model/Design",
-        "hip/model/Product"
+        "hip/model/Product",
+        "fastclick"
     ],
-    function (Application, Query, List, Collection, Design, Product) {
+    function (Application, Query, List, Collection, Design, Product, Fastclick) {
+
+        FastClick.attach(document.body);
 
         return Application.inherit({
             supportEnvironments: true,
