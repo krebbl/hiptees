@@ -11,11 +11,7 @@
 @import "components/size-table-view";
 @import "components/basket";
 @import "components/mini-basket-btn";
-@import "components/register";
 @import "components/loading-overlay";
-@import "components/mini-user-profile";
-@import "components/product-options";
-@import "components/profile-options";
 @import "components/modal";
 
 .stage {
@@ -40,8 +36,8 @@
     width: auto;
     text-align: center;
     color: white;
-    background-color: $color-green;
-    border-radius: 17px;
+    background-color: $color-dark1;
+    border-radius: 2px;
     padding: 5px 10px;
     opacity: 0;
     font-size: 12px;
