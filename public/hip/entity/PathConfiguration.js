@@ -25,6 +25,6 @@ define(["hip/entity/ShapeConfiguration", "js/core/List"], function (ShapeConfigu
 
             }
             return 0;
-        }.onChange("strokeWidth")
+        }.onChange("strokeWidth", "size")
     })
 });
