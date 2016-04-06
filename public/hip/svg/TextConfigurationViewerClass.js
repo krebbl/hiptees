@@ -34,7 +34,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             e.preventDefault();
 
         },
-
+        // important: DON'T REMOVE THIS!
         _renderMaxWidth: function () {
             // do nothing
         },
@@ -43,7 +43,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             this.callBase();
 
             if (this.$handleUsed) {
-                this._disableEditing();
+                this.$.productActions.editTextConfiguration({
+                    configuration: null
+                });
             }
 
             if (this.$action === "resize" || (event.touches && event.touches.length > 1)) {

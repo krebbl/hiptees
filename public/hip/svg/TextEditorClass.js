@@ -67,7 +67,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
                         focusOffset: selection.focusOffset
                     });
                     //console.log("set new selection", selection.anchorOffset, selection.focusOffset);
-                }, 300);
+                }, 20);
             }
         },
 
@@ -75,6 +75,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             this.callBase();
             var self = this;
             this.dom(this.$stage.$document).bindDomEvent("selectionchange", function (e) {
+                self.$textBefore = window.getSelection().focusNode.textContent;
                 self._onSelectionChange();
             });
         },
@@ -247,6 +248,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
                 }
                 this.$textBefore = null;
             } else {
+                console.log("keydown");
                 this.$textBefore = window.getSelection().focusNode.textContent;
                 //console.log(String.fromCharCode(domEvent.which));
                 //e.preventDefault();
@@ -257,6 +259,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
         _oninput: function (e) {
             var selection = window.getSelection();
             var focusNode = selection.focusNode;
+            console.log(this.$textBefore, focusNode);
             if (this.$textBefore && focusNode) {
                 var textContent = focusNode.textContent;
                 if (this.$textBefore != textContent) {
