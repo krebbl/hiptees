@@ -421,6 +421,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }
             }
             this._calculateUsedColors();
+            if (!configuration) {
+                this.set('activeTextConfiguration', null);
+            }
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});
         },
@@ -591,7 +594,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }
             }
 
-            if(this.$.product) {
+            if (this.$.product) {
                 this.$.product.$.configurations.each(function (config) {
                     if (config instanceof ShapeConfiguration) {
                         addColor(config.$.fill);

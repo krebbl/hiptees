@@ -31,14 +31,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             }
         },
 
-        _commitSelected: function (selected) {
-            if (!selected && this.$.activeTextConfiguration === this.$.configuration) {
-                this.$.productActions.editTextConfiguration({
-                    configuration: null
-                });
-            }
-        },
-
         _preventDefault: function (e) {
             e.preventDefault();
 
@@ -51,7 +43,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         handlePointerDown: function () {
             this.callBase();
 
-            if(this.$handleUsed) {
+            if (this.$handleUsed) {
                 this._disableEditing();
             }
 
@@ -137,25 +129,26 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         },
 
         _disableEditing: function () {
-            if (this.$.svgTextEditor.$.textFlow == this.$.configuration.$.textFlow) {
+            if (!this.$.activeTextConfiguration) {
                 this.$.svgTextEditor.set('visible', false);
-                this.$.textRenderer.set('visible', true);
-                if (this.isRendered()) {
-                    this.removeClass("editing");
-                }
-
-                var textFlow = this.$.configuration.$.textFlow;
-
-                if (textFlow.$.selection) {
-                    var totalLength = textFlow.textLength() - 1;
-                    textFlow.$.selection.set({
-                        anchorIndex: totalLength,
-                        activeIndex: totalLength
-                    });
-                }
-                this.$editing = false;
-                this._updateSnapPoints();
             }
+            this.$.textRenderer.set('visible', true);
+            if (this.isRendered()) {
+                this.removeClass("editing");
+            }
+
+            var textFlow = this.$.configuration.$.textFlow;
+
+            if (textFlow.$.selection) {
+                var totalLength = textFlow.textLength() - 1;
+                textFlow.$.selection.set({
+                    anchorIndex: totalLength,
+                    activeIndex: totalLength
+                });
+            }
+            this.$editing = false;
+            this._updateSnapPoints();
+
         },
 
         getEditorPosition: function () {
@@ -166,7 +159,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 width: Math.ceil(rect.width + 20) + "px",
                 height: Math.ceil(rect.height)
             }
-        },
+        }
+
+        ,
 
         _enableEditing: function () {
             var rect = this.getBoundRectInPx();
@@ -184,7 +179,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 svgHeight: root.$.height,
                 maxWidth: this.$.maxWidth,
                 viewBox: this.getSvgRoot().$.viewBox,
-                textFlow: null
+                textFlow: null,
+                visible: true
             }, {force: true});
 
             svgTextEditor.set(this.getEditorPosition());
@@ -202,7 +198,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             this.addClass("editing");
 
             svgTextEditor.focus();
-        },
+        }
+        ,
 
 
         handlePointerUp: function () {
@@ -221,4 +218,5 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
     });
 
 
-});
+})
+;
