@@ -13,6 +13,9 @@ define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, C
             stroke: String,
             strokeWidth: Number,
             fillOpacity: Number
-        }
+        },
+        _strokeWidth: function(){
+            return this.$.strokeWidth;
+        }.onChange("strokeWidth")
     })
 });

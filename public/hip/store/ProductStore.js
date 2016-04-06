@@ -3,6 +3,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "hip/entity/RectangleConfiguration",
     "hip/entity/CircleConfiguration",
     "hip/entity/ShapeConfiguration",
+    "hip/entity/PathConfiguration",
     "hip/entity/Filter",
     "hip/model/Design",
     "hip/model/Product",
@@ -16,7 +17,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "text/operation/ApplyStyleToElementOperation",
     "text/entity/TextFlow",
     "flow",
-    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, Filter, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
 
 
     return Store.inherit({
@@ -244,26 +245,43 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 printAreaHeight = this.get('product.productType.printArea.size.height');
 
             var Factory = null,
-                configuration;
+                configuration,
+                configurationSettings = {};
 
             if (payload.type == "circle") {
                 Factory = CircleConfiguration;
             } else if (payload.type == "rectangle") {
                 Factory = RectangleConfiguration;
+            } else if (payload.type == "heart") {
+                Factory = PathConfiguration;
+                configurationSettings.path = "M 297.29747,550.86823 C 283.52243,535.43191 249.1268,505.33855 220.86277,483.99412 C 137.11867,420.75228 125.72108,411.5999 91.719238,380.29088 C 29.03471,322.57071 2.413622,264.58086 2.5048478,185.95124 C 2.5493594,147.56739 5.1656152,132.77929 15.914734,110.15398 C 34.151433,71.768267 61.014996,43.244667 95.360052,25.799457 C 119.68545,13.443675 131.6827,7.9542046 172.30448,7.7296236 C 214.79777,7.4947896 223.74311,12.449347 248.73919,26.181459 C 279.1637,42.895777 310.47909,78.617167 316.95242,103.99205 L 320.95052,119.66445 L 330.81015,98.079942 C 386.52632,-23.892986 564.40851,-22.06811 626.31244,101.11153 C 645.95011,140.18758 648.10608,223.6247 630.69256,270.6244 C 607.97729,331.93377 565.31255,378.67493 466.68622,450.30098 C 402.0054,497.27462 328.80148,568.34684 323.70555,578.32901 C 317.79007,589.91654 323.42339,580.14491 297.29747,550.86823 z";
+                configurationSettings.pathDimensions = {
+                    width: 646,
+                    height: 610
+                };
+            } else if (payload.type == "star") {
+                Factory = PathConfiguration;
+                configurationSettings.path = "m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z";
+                configurationSettings.pathDimensions = {
+                    width: 50,
+                    height: 47
+                };
             }
 
             if (Factory) {
                 configuration = this.$.product.createEntity(Factory, this._generateConfigurationId());
-                configuration.set({
-                    offset: {
-                        x: printAreaWidth * 0.5,
-                        y: printAreaHeight * 0.2
-                    },
-                    size: {
-                        width: printAreaWidth * 0.5,
-                        height: printAreaWidth * 0.5
-                    }
-                });
+
+                configurationSettings.offset = {
+                    x: printAreaWidth * 0.5,
+                    y: printAreaHeight * 0.2
+                };
+
+                configurationSettings.size = {
+                    width: printAreaWidth * 0.5,
+                    height: printAreaWidth * 0.5
+                };
+
+                configuration.set(configurationSettings);
 
                 this.$.product.$.configurations.add(configuration);
 
@@ -577,9 +595,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 if (config instanceof ShapeConfiguration) {
                     addColor(config.$.fill);
                     addColor(config.$.stroke);
-                } else if(config instanceof TextConfiguration) {
+                } else if (config instanceof TextConfiguration) {
                     var leaf = config.$.textFlow.getFirstLeaf();
-                    if(leaf) {
+                    if (leaf) {
                         addColor(leaf.$.style.$.color);
                     }
                 }

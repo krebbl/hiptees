@@ -4,12 +4,14 @@ define(['js/svg/SvgElement', 'js/core/List',
     'xaml!hip/svg/DesignConfigurationViewer',
     'xaml!hip/svg/RectangleConfigurationViewer',
     'xaml!hip/svg/CircleConfigurationViewer',
+    'xaml!hip/svg/PathConfigurationViewer',
     'hip/entity/TextConfiguration',
     'hip/entity/DesignConfiguration',
     'hip/entity/RectangleConfiguration',
     'hip/entity/CircleConfiguration',
+    'hip/entity/PathConfiguration',
     'hip/store/ProductStore',
-'hip/action/ProductActions'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ProductStore, ProductActions) {
+'hip/action/ProductActions'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, PathConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, PathConfiguration, ProductStore, ProductActions) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
@@ -104,6 +106,8 @@ define(['js/svg/SvgElement', 'js/core/List',
                 Factory = RectangleConfigurationViewer;
             } else if (configuration instanceof CircleConfiguration) {
                 Factory = CircleConfigurationViewer;
+            } else if(configuration instanceof PathConfiguration) {
+                Factory = PathConfigurationViewer;
             }
 
             if (Factory) {

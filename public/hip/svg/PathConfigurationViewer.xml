@@ -1,0 +1,13 @@
+<parent:ShapeConfigurationViewer xmlns="http://www.w3.org/2000/svg"
+                                 xmlns:parent="hip.svg" xmlns:js="js.core" minWidth="5" minHeight="5" keepAspectRatio="true">
+    <js:Content name="shape">
+        <svg viewBox="0 0 {inner(configuration.pathDimensions.width, -1, configuration._strokeWidth())} {inner(configuration.pathDimensions.height, -1, configuration._strokeWidth())}"
+             width="{_size.width}"
+             height="{_size.height}">
+            <path
+                    d="{configuration.path}"
+                    translateX="{half(configuration._strokeWidth())}"
+                    translateY="{half(configuration._strokeWidth())}"/>
+        </svg>
+    </js:Content>
+</parent:ShapeConfigurationViewer>

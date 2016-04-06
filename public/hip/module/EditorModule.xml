@@ -108,6 +108,14 @@
                 <i class="fa fa-circle"/>
                 ${i18n.t('editor.addCircle')}
             </a>
+            <a onclick="add('heart')">
+                <i class="fa fa-heart"/>
+                ${i18n.t('editor.addHeart')}
+            </a>
+            <a onclick="add('star')">
+                <i class="fa fa-star"/>
+                ${i18n.t('editor.addStar')}
+            </a>
         </div>
 
         <a class="close-btn" onclick="navigate(null)">

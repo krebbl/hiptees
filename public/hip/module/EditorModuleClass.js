@@ -188,7 +188,7 @@ define([
                 var evt = document.createEvent('Event');
                 evt.initEvent('click', true, true);
                 this.$.fileInput.$el.dispatchEvent(evt);
-            } else if (what == "rectangle" || what == "circle") {
+            } else if (what == "rectangle" || what == "circle" || what == "heart" || what == "star") {
                 this.$.productActions.addShape({
                     type: what
                 });

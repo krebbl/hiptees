@@ -17,7 +17,7 @@
         <parent:ContentPlaceholder name="shape"
                                    stroke="{configuration.stroke.toString()}"
                                    stroke-location="inside"
-                                   stroke-width="{configuration.strokeWidth}"
+                                   stroke-width="{configuration._strokeWidth()}"
                                    fill-opacity="{configuration.fillOpacity}"
                                    fill="{configuration.fill}"/>
 
