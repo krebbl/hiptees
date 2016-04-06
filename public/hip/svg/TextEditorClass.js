@@ -248,7 +248,6 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
                 }
                 this.$textBefore = null;
             } else {
-                console.log("keydown");
                 this.$textBefore = window.getSelection().focusNode.textContent;
                 //console.log(String.fromCharCode(domEvent.which));
                 //e.preventDefault();
