@@ -54,6 +54,14 @@ define(["xaml!hip/view/SettingsView",
             this._updateAttribute("fillOpacity", this.$.configuration.$.fillOpacity ? 0 : 1);
         },
 
+        _toggleStroke: function () {
+            this._updateAttribute("strokeWidth", this.$.configuration.$.strokeWidth > 0 ? 0 : 2);
+        },
+
+        gt: function (x, y) {
+            return x > y;
+        },
+
         format: function (n) {
             if (n != null) {
                 var r = String(n);

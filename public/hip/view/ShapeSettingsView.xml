@@ -53,6 +53,9 @@
                           oncolorToggle="_toggleFill()" enableColor="{configuration.fillOpacity}"/>
 
     <setting:ColorSetting cid="strokeColorContent" selectedColor="{strokeColor}"
+                          showToggleColor="true"
+                          enableColor="{gt(configuration.strokeWidth, 0)}"
+                          oncolorToggle="_toggleStroke()"
                           oncolorSelect="_updateColor(event, 'stroke')"/>
 
 </view:ShapeSettingsViewClass>
