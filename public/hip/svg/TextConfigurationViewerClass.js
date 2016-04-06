@@ -94,7 +94,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         },
 
         handleDocumentClick: function (e) {
-            if (this.$editing == true) {
+            if (this.$editing == true || this.$fontSizeChanged) {
                 e.stopPropagation();
                 e.preventDefault();
             }
@@ -207,9 +207,12 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 });
             }
 
-            this.$fontSizeChanged = false;
-
             this.callBase();
+
+            var self = this;
+            setTimeout(function(){
+                self.$fontSizeChanged = false;
+            },10);
         }
 
 
