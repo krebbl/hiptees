@@ -400,10 +400,10 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         if (size) {
                             self._selectConfiguration(p.$.configurations.at(size - 1));
                         }
+                        self._calculateUsedColors();
                     } else {
                         console.warn(err);
                     }
-                    self._calculateUsedColors();
 
                     callback && callback(err, p);
                     self.set('loadingProduct', false);
@@ -591,19 +591,22 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }
             }
 
-            this.$.product.$.configurations.each(function (config) {
-                if (config instanceof ShapeConfiguration) {
-                    addColor(config.$.fill);
-                    addColor(config.$.stroke);
-                } else if (config instanceof TextConfiguration) {
-                    var leaf = config.$.textFlow.getFirstLeaf();
-                    if (leaf) {
-                        addColor(leaf.$.style.$.color);
+            if(this.$.product) {
+                this.$.product.$.configurations.each(function (config) {
+                    if (config instanceof ShapeConfiguration) {
+                        addColor(config.$.fill);
+                        addColor(config.$.stroke);
+                    } else if (config instanceof TextConfiguration) {
+                        var leaf = config.$.textFlow.getFirstLeaf();
+                        if (leaf) {
+                            addColor(leaf.$.style.$.color);
+                        }
                     }
-                }
-            });
+                });
 
-            this.set('usedColors', usedColors);
+                this.set('usedColors', usedColors);
+
+            }
         }
     });
 
