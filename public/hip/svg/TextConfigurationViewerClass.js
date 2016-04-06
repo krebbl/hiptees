@@ -20,15 +20,14 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         ctor: function () {
             this.callBase();
 
-            if (this.$stage.$browser.isIOS) {
-                this.bind('svgTextEditor', 'on:blur', function (e) {
-                    if(this.$.configuration.$.textFlow === this.$.svgTextEditor.$.textFlow) {
-                        this.$.productActions.editTextConfiguration({
-                            configuration: null
-                        });
-                    }
-                }, this);
-            }
+            this.bind('svgTextEditor', 'on:blur', function (e) {
+                if (this.$.configuration.$.textFlow === this.$.svgTextEditor.$.textFlow) {
+                    this.$.productActions.editTextConfiguration({
+                        configuration: null
+                    });
+                }
+            }, this);
+
         },
 
         _preventDefault: function (e) {
@@ -159,9 +158,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 width: Math.ceil(rect.width + 20) + "px",
                 height: Math.ceil(rect.height)
             }
-        }
-
-        ,
+        },
 
         _enableEditing: function () {
             var rect = this.getBoundRectInPx();
@@ -198,8 +195,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             this.addClass("editing");
 
             svgTextEditor.focus();
-        }
-        ,
+        },
 
 
         handlePointerUp: function () {
