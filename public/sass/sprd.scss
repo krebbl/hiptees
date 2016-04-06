@@ -636,6 +636,23 @@ ul.settings {
     margin-right: 1em;
     font-size: 0.9em;
   }
+
+  ul.alignments {
+    float: right;
+    width: 150px;
+
+    > li {
+      text-align: center;
+      display: inline-block;
+      width: 33.3333%;
+      padding: 1em 0;
+      color: white;
+
+      &.active {
+        background-color: $color-green;
+      }
+    }
+  }
 }
 
 ul.font-list {
@@ -695,22 +712,6 @@ ul.font-list {
 
     &.active {
       color: $color-green;
-    }
-  }
-}
-
-.text-align {
-  ul {
-    > li {
-      text-align: center;
-      display: inline-block;
-      width: 33.3333%;
-      padding: 1em 0;
-      color: white;
-
-      &.active {
-        background-color: $color-green;
-      }
     }
   }
 }

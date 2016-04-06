@@ -36,16 +36,20 @@
 
             </li>
             <li>
-                <div class="text-align">
-                    <ui:SelectionView items="{alignments}" class="alignments" tagName="ul"
-                                      selectedItem="{paragraphStyle.textAlign}">
-                        <js:Template name="item">
-                            <li onclick="_selectAlignment(item)">
-                                <i class="fa fa-align-${item}"/>
-                            </li>
-                        </js:Template>
-                    </ui:SelectionView>
-                </div>
+                <ui:SelectionView items="{alignments}" class="alignments" tagName="ul"
+                                  selectedItem="{paragraphStyle.textAlign}">
+                    <js:Template name="item">
+                        <li onclick="_selectAlignment(item)">
+                            <i class="fa fa-align-${item}"/>
+                        </li>
+                    </js:Template>
+                </ui:SelectionView>
+                <a>
+                    <span class="label">
+                        ${i18n.t('textSettings.textAlignment')}
+                    </span>
+                </a>
+
             </li>
         </ul>
     </js:Content>
@@ -102,6 +106,6 @@
                        value="{paragraphStyle.letterSpacing}"/>
         </div>
     </js:Content>
-    <setting:ColorSetting cid="colorContent" selectedColor="{leafColor}" oncolorSelect="_updateColor" />
+    <setting:ColorSetting cid="colorContent" selectedColor="{leafColor}" oncolorSelect="_updateColor"/>
 
 </view:TextSettingsViewClass>

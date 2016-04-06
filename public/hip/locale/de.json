@@ -109,7 +109,8 @@
     "fontSizeAndSettings": "Schriftgröße und Einstellungen",
     "fontSize": "Schriftgröße",
     "lineHeight": "Zeilenabstand",
-    "letterSpacing": "Zeichenabstand"
+    "letterSpacing": "Zeichenabstand",
+    "textAlignment": "Textausrichtung"
   },
   "imageSettings": {
     "presets": "Vorlagen",
