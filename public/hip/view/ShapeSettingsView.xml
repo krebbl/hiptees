@@ -44,8 +44,8 @@
             <strong>{formatNumber(configuration.strokeWidth,1)} mm</strong>
         </div>
         <div class="slider-wrapper">
-            <ui:Slider min="0" max="10" step="0.5" oninput="_updateAttribute('strokeWidth', value)"
-                       value="{configuration.strokeWidth}"/>
+            <ui:Slider min="0" max="10" step="0.5" oninput="_updateAttribute('strokeWidth', value, true)"
+                       value="{configuration.strokeWidth}" onhandleUp="_updateAttribute('strokeWidth', value, false)"/>
         </div>
     </js:Content>
     <setting:ColorSetting cid="colorContent" selectedColor="{fillColor}"

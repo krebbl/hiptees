@@ -111,14 +111,21 @@ define(["hip/store/Store",
                 }
                 (new ApplyStyleToElementOperation(range, textFlow, leafStyle, null)).doOperation();
 
-                this.trigger('on:leafStyleChanged', {textFlow: textFlow, leafStyle: leafStyle});
+                this.trigger('on:leafStyleChanged', {
+                    textFlow: textFlow,
+                    leafStyle: leafStyle,
+                    preview: payload.preview
+                });
             }
             var paragraphStyle = payload.paragraphStyle;
             if (paragraphStyle) {
                 var self = this;
                 var applyStyle = function () {
                     (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength()), textFlow, null, paragraphStyle)).doOperation();
-                    self.trigger('on:paragraphStyleChanged', {textFlow: textFlow, paragraphStyle: paragraphStyle});
+                    self.trigger('on:paragraphStyleChanged', {
+                        textFlow: textFlow, paragraphStyle: paragraphStyle,
+                        preview: payload.preview
+                    });
                 };
 
                 if (paragraphStyle.fontFamily) {

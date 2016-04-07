@@ -160,11 +160,12 @@ define(["xaml!hip/view/SettingsView",
             }
         },
 
-        _previewStyle: function (key, value) {
+        _changeStyle: function (key, value, preview) {
             this.$previewCommand = this.$previewCommand || {};
             var paragraphStyle = {};
             paragraphStyle[key] = value;
             this.$previewCommand = {
+                preview: preview,
                 textFlow: this.$.configuration.$.textFlow,
                 paragraphStyle: paragraphStyle
             };

@@ -170,6 +170,14 @@ define([
             }
         },
 
+        undo: function(){
+            this.$.productActions.undo();
+        },
+
+        redo: function () {
+            this.$.productActions.redo();
+        },
+
         add: function (what, e) {
             if (what == "text") {
                 this.$.productActions.addText({

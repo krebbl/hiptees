@@ -10,9 +10,14 @@
 
 
     <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content">
-        <!--<a>-->
-        <!--Undo-->
-        <!--</a>-->
+        <div position="absolute" right="10px" top="10px" zIndex="1000">
+            <a onclick="undo">
+                Undo
+            </a>
+            <a onclick="redo">
+                Redo
+            </a>
+        </div>
 
         <a class="zoom-btn" onclick="toggleZoom" selected="{zoomVisible}">
             <i class="fa fa-search-plus" visible="{not(zoomed)}"/>

@@ -80,8 +80,12 @@ define(
                 var products = api.createCollection(Collection.of(Product));
 
                 var product = products.createItem();
+                var executor = this.$.executor;
+                var memento = this.$.memento;
 
-                this.$.productStore.set('product', product);
+                var productStore = this.$.productStore;
+                productStore.set('product', product);
+                productStore.set('memento', memento);
 
                 try {
                     var canvas = this.$stage.$document.createElement('canvas');
@@ -102,7 +106,6 @@ define(
                 // false - disables autostart
                 this.callBase(parameter, false);
 
-                var executor = this.$.executor;
 
                 var appStarted = false;
 
@@ -146,38 +149,81 @@ define(
                  *
                  */
 
-                this.$.productStore.bind('on:productSave', function (e) {
+                var mementoCallback = function (e) {
+                    if (!e.$.preview) {
+                        memento.saveState(productStore.getMementoState());
+                    }
+                };
+
+                var listenToTextChanges = false;
+                productStore.bind('change:activeTextConfiguration', function (e) {
+                    var conf = e.$;
+                    if (!conf) {
+
+                    }
+                });
+
+                var changeTextFlowTimeout = null;
+                this.$.textFlowStore.bind('on:changeTextFlow', function () {
+                    changeTextFlowTimeout && clearTimeout(changeTextFlowTimeout);
+                    changeTextFlowTimeout = setTimeout(function () {
+                        memento.saveState(productStore.getMementoState());
+                    }, 100);
+                });
+
+                productStore.bind('on:productSave', function (e) {
                     tracking.trackEvent("PRODUCT", "savingProduct");
                 }, this);
 
-                this.$.productStore.bind('on:productSaved', function (e) {
+                productStore.bind('on:productSaved', function (e) {
                     tracking.trackEvent("PRODUCT", "productSaved");
                 }, this);
 
-                this.$.productStore.bind('on:productSaveFailed', function (e) {
+                productStore.bind('on:productSaveFailed', function (e) {
                     tracking.trackEvent("PRODUCT", "productSaveFailed");
                 }, this);
 
-                this.$.productStore.bind('on:productSaveFailed', function (e) {
+                productStore.bind('on:productSaveFailed', function (e) {
                     tracking.trackEvent("PRODUCT", "productSaveFailed", "state");
                 }, this);
 
-                this.$.productStore.bind('on:configurationAdded', function (e) {
+                productStore.bind('on:configurationAdded', function (e) {
+                    mementoCallback(e);
+
                     var config = e.$.configuration;
                     tracking.trackEvent("PRODUCT", "configurationAdded", "type", config.$.type);
                 });
 
-                this.$.productStore.bind('on:configurationRemoved', function (e) {
+                productStore.bind('on:configurationRemoved', function (e) {
+                    memento.saveState(productStore.getMementoState());
+
                     var config = e.$.configuration;
                     tracking.trackEvent("PRODUCT", "configurationRemoved", "type", config.$.type);
                 });
 
-                this.$.productStore.bind('on:imageReplaced', function () {
+                productStore.bind('on:imageReplaced', function (e) {
+                    mementoCallback(e);
+
                     tracking.trackEvent("PRODUCT", "imageReplaced");
                 });
 
-                this.$.productStore.bind('on:productStateChanged', function (e) {
+                productStore.bind('on:filterChanged', mementoCallback);
+
+                productStore.bind('on:productStateChanged', function (e) {
                     tracking.trackEvent("PRODUCT", "productStateChanged", "newState", e.$.product.$.state);
+                });
+
+                productStore.bind('on:configurationMoved', mementoCallback);
+
+                productStore.bind('on:configurationChanged', mementoCallback);
+
+                this.$.textFlowStore.bind('on:leafStyleChanged', mementoCallback);
+
+                this.$.textFlowStore.bind('on:paragraphStyleChanged', mementoCallback);
+
+                productStore.bind('on:productLoaded', function () {
+                    memento.clear();
+                    memento.saveState(productStore.getMementoState());
                 });
 
 
@@ -213,14 +259,14 @@ define(
                 //    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.thxForFeedback')}, {duration: 3});
                 //}, this);
 
-                this.$.productStore.bind('on:productStateChanged', function () {
+                productStore.bind('on:productStateChanged', function () {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.changesSuccessful')}, {duration: 3});
                 }, this);
 
-                this.$.productStore.bind('on:productSave', this.showLoading, this);
-                this.$.productStore.bind('on:productSaved', this.hideLoading, this);
+                productStore.bind('on:productSave', this.showLoading, this);
+                productStore.bind('on:productSaved', this.hideLoading, this);
 
-                this.$.productStore.bind('on:addingImage', this.showLoading, this);
+                productStore.bind('on:addingImage', this.showLoading, this);
 
                 var hasParams = location.hash.replace(/^\#\//, "").split("&"),
                     params = {};

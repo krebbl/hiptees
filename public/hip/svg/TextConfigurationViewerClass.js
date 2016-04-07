@@ -3,6 +3,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         defaults: {
             _keepHeight: true,
+            _textScale: 1.2,
             textRenderer: null,
             verticalStretchable: false,
             componentClass: "text-configuration-viewer needsclick",
@@ -80,11 +81,12 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
                 var newHeight = this.$originalSize.height + diffY * 2;
                 var nFontSize = this.$originalFontSize * (newHeight / this.$originalSize.height);
-
+                this.$lastFontSize = Math.round(nFontSize);
                 this.$.textFlowActions.changeStyle({
                     textFlow: this.$.configuration.$.textFlow,
+                    preview: true,
                     paragraphStyle: {
-                        fontSize: Math.round(nFontSize)
+                        fontSize: this.$lastFontSize
                     }
                 });
             } else {
@@ -170,7 +172,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             var textFlow = this.$.configuration.$.textFlow;
 
             svgTextEditor.set({
-//                    visible: true,
                 zIndex: 1000,
                 position: "absolute",
                 overflow: "hidden",
@@ -199,6 +200,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             svgTextEditor.focus();
         },
 
+        trans: function (scale, length) {
+            return (1 - scale) * length * 0.5;
+        },
 
         handlePointerUp: function () {
             if (this.$.selected && !this.$moved && !this.$resized && !this.$handleUsed && !this.$fontSizeChanged) {
@@ -207,12 +211,21 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 });
             }
 
+            if (this.$fontSizeChanged) {
+                this.$.textFlowActions.changeStyle({
+                    textFlow: this.$.configuration.$.textFlow,
+                    paragraphStyle: {
+                        fontSize: this.$lastFontSize
+                    }
+                });
+            }
+
             this.callBase();
 
             var self = this;
-            setTimeout(function(){
+            setTimeout(function () {
                 self.$fontSizeChanged = false;
-            },10);
+            }, 10);
         }
 
 

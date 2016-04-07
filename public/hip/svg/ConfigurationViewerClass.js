@@ -382,6 +382,10 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             return a > b;
         },
 
+        mp: function (a, b) {
+            return a * b;
+        },
+
         _handleClick: function (e) {
             this.dom(this.$stage.$document).unbindDomEvent("click", this.$clickDelegate, true);
 

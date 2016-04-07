@@ -31,6 +31,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             selectedSize: null,
             loading: false,
             zoomedConfiguration: null,
+            memento: null,
             usedColors: []
         },
         inject: {
@@ -119,6 +120,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             var configuration = payload.configuration;
             if (configuration instanceof ShapeConfiguration) {
                 configuration.set(payload.change || {});
+                this.trigger('on:configurationChanged', {configuration: configuration, preview: payload.preview});
             }
         },
 
@@ -140,7 +142,6 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             }
 
             this.set('activeTextConfiguration', configuration);
-
         },
 
         changeOrder: function (payload) {
@@ -160,6 +161,27 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     configuration: configuration,
                     index: payload.index
                 });
+            }
+        },
+
+        undo: function () {
+            var state = this.$.memento.getUndoState();
+            //console.log(this.$.memento.$.states[0].configurations[2].textFlow.children[0].style);
+            if (state) {
+                state.sync();
+                this._selectConfiguration(null);
+                this.trigger('on:productRecovered', {product: this.$.product});
+            }
+        },
+
+        redo: function () {
+            var state = this.$.memento.getRedoState();
+            //console.log(this.$.memento.$.states[0].configurations[2].textFlow.children[0].style);
+
+            if (state) {
+                state.sync();
+                this._selectConfiguration(null);
+                this.trigger('on:productRecovered', {product: this.$.product});
             }
         },
 
@@ -597,8 +619,12 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             if (this.$.product) {
                 this.$.product.$.configurations.each(function (config) {
                     if (config instanceof ShapeConfiguration) {
-                        addColor(config.$.fill);
-                        addColor(config.$.stroke);
+                        if (config.$.fillOpacity > 0) {
+                            addColor(config.$.fill);
+                        }
+                        if (config.$.strokeWidth > 0) {
+                            addColor(config.$.stroke);
+                        }
                     } else if (config instanceof TextConfiguration) {
                         var leaf = config.$.textFlow.getFirstLeaf();
                         if (leaf) {
@@ -610,6 +636,13 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 this.set('usedColors', usedColors);
 
             }
+        },
+
+        getMementoState: function () {
+            return this.$.product.clone();
+        },
+        setMementoState: function (state) {
+            // TODO: implement
         }
     });
 

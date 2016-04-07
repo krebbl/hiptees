@@ -58,6 +58,10 @@ define(['js/svg/SvgElement', 'js/core/List',
                 self._renderProduct(e.$.product);
             });
 
+            this.bind('productStore', 'on:productRecovered', function(e){
+                self._renderProduct(e.$.product);
+            });
+
             this.bind('productStore', 'on:configurationOrderChanged', function (e) {
                 var viewer = self.getViewerForConfiguration(e.$.configuration);
                 self.$.configurations.setChildIndex(viewer, e.$.index);

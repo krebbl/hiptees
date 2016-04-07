@@ -32,7 +32,8 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             applyFilter: {},
             pointDownConfiguration: {},
             changeOrder: {},
-
+            undo: {},
+            redo: {},
             addText: {
                 text: "Text",
                 paragraphStyle: null,

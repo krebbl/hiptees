@@ -32,6 +32,7 @@ define(["js/ui/View", "js/core/I18n",
                     self.set('selected', true);
 //                    self.set('minimized', self.$.minimized && hadConfiguration);
                 } else {
+                    self.set('configuration', null);
                     self.set('selected', false);
 //                    self.set('minimized', false);
                     self._selectSubContent(null);

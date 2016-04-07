@@ -28,16 +28,17 @@ define(["xaml!hip/view/SettingsView",
         _updateColor: function (e, attr) {
             var color = e.$.color;
             if (color) {
-                this._updateAttribute(attr, color);
+                this._updateAttribute(attr, color, false);
             }
         },
 
-        _updateAttribute: function (attribute, value) {
+        _updateAttribute: function (attribute, value, preview) {
             var change = {};
             change[attribute] = value;
             this.$.productActions.changeShapeConfiguration({
                 configuration: this.$.configuration,
-                change: change
+                change: change,
+                preview: preview
             });
         },
 

@@ -12,6 +12,7 @@
         <data:HipDataSource cid="api" gateway="/api/v1" endPoint="{endpoint()}"/>
         <util:CloudinaryImageUploader />
         <util:ImageFileReader/>
+        <util:Memento cid="memento"/>
         <svg:TextMeasurer/>
         <action:Executor cid="executor" />
 

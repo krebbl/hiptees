@@ -8,13 +8,13 @@ define(["js/core/Component"], function (Component) {
         },
         callAction: function (ns, action, payload) {
             if (this.beforeAll) {
-                this.beforeAll.call(this, payload, action, ns);
+                this.beforeAll(payload, action, ns);
             }
             if(this[action] instanceof Function){
                 this[action].call(this, payload);
             }
             if (this.afterAll) {
-                this.afterAll.call(this, payload, action, ns);
+                this.afterAll(payload, action, ns);
             }
 
         }
