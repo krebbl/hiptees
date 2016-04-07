@@ -4,7 +4,7 @@ define(["js/core/Component"], function (Component) {
     return Component.inherit({
         defaults: {
             states: [],
-            maxSize: 10,
+            maxSize: 20,
             needle: -1
         },
 
