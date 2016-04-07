@@ -48,7 +48,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
 
             var products = api.createCollection(Collection.of(Product));
 
-            var query = new Query().eql("tags", "preset");
+            var query = new Query().eql("tags", "preset").eql("department",this.$.selectedDepartment.name);
 
             var queryCollection = products.query(query),
                 self = this;
