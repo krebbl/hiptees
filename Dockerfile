@@ -21,8 +21,6 @@ RUN     node convert-font-dir.js
 RUN     gulp sass
 RUN     rappidjs build
 
-RUN     rm -Rf ./public
-
 ADD     nginx/nginx.conf /etc/nginx/nginx.conf
 ADD     nginx/hiptees.conf /etc/nginx/sites-enabled/hiptees.conf
 

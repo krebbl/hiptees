@@ -40,10 +40,10 @@ See Dockerfile for what is included in the image.
 
 **Build**
 
-`docker build -t hiptees-frontend .
+`docker build -t hiptees-frontend .`
 
 **Run**
 
 Run the hiptees api docker container before starting the frontend.
 
-`docker run --link API --rm -p 32775:80 hiptees-frontend
+`docker run --link API --rm -p 32775:80 hiptees-frontend`
