@@ -162,7 +162,7 @@ table {
 
 .notifications {
   position: absolute;
-  top: 66px;
+  top: 40px;
   z-index: 111;
   width: 100%;
   overflow: hidden; }
@@ -430,7 +430,6 @@ table {
   font-size: 30px;
   padding: 6px 15px;
   color: white;
-  top: 20px;
   z-index: 2; }
   .mini-basket-btn__quantity {
     color: white;
@@ -794,7 +793,7 @@ table {
       margin-top: 5px; }
     .swipe-container .swipe-view > .content {
       position: absolute;
-      top: 66px;
+      top: 40px;
       bottom: 0;
       right: 0;
       left: 0;
@@ -887,7 +886,7 @@ table {
 
 .header {
   text-align: center;
-  height: 66px;
+  height: 40px;
   padding-top: 20px;
   position: absolute;
   z-index: 15;
