@@ -443,7 +443,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }
             }
             this._calculateUsedColors();
-            if (!configuration) {
+            if (!(configuration instanceof TextConfiguration)) {
                 this.set('activeTextConfiguration', null);
             }
             this.set('selectedConfiguration', configuration);
