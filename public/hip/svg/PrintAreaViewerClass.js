@@ -11,14 +11,15 @@ define(['js/svg/SvgElement', 'js/core/List',
     'hip/entity/CircleConfiguration',
     'hip/entity/PathConfiguration',
     'hip/store/ProductStore',
-'hip/action/ProductActions'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, PathConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, PathConfiguration, ProductStore, ProductActions) {
+    'hip/action/ProductActions'], function (SvgElement, List, _, ConfigurationViewerSvg, TextConfigurationViewer, DesignConfigurationViewer, RectangleConfigurationViewer, CircleConfigurationViewer, PathConfigurationViewer, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, PathConfiguration, ProductStore, ProductActions) {
 
     return SvgElement.inherit('sprd.view.PrintAreaViewerSvg', {
 
         defaults: {
             tagName: 'g',
-            product: null,
+            product: "{productStore.product}",
             printArea: null,
+            selectedConfiguration: "{productStore.selectedConfiguration}",
             componentClass: "print-area",
             showActiveViewer: false,
             activeViewer: null,
@@ -45,20 +46,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                 self._addConfiguration(e.$.configuration);
             });
 
-            this.bind('productStore', 'on:configurationSelected', function (e) {
-                var viewer = self.getViewerForConfiguration(e.$.configuration);
-                if (viewer) {
-                    self.set('activeViewer', viewer);
-                    self._updateHandleSize();
-                }
-                self.set('showActiveViewer', !!viewer);
-            });
-
-            this.bind('productStore', 'on:productLoaded', function (e) {
-                self._renderProduct(e.$.product);
-            });
-
-            this.bind('productStore', 'on:productRecovered', function(e){
+            this.bind('productStore', 'on:productRecovered', function (e) {
                 self._renderProduct(e.$.product);
             });
 
@@ -67,16 +55,24 @@ define(['js/svg/SvgElement', 'js/core/List',
                 self.$.configurations.setChildIndex(viewer, e.$.index);
             });
         },
+
+        _renderSelectedConfiguration: function (configuration) {
+            var viewer = this.getViewerForConfiguration(configuration);
+            if (viewer) {
+                this.set('activeViewer', viewer);
+                //this._updateHandleSize();
+            }
+            this.set('showActiveViewer', !!viewer);
+        },
+
         _onDomAdded: function () {
             this.callBase();
 
-            this._updateHandleSize();
-
+            this._renderSelectedConfiguration(this.$.selectedConfiguration);
         },
 
         _updateHandleSize: function () {
             this.set('handleWidth', 9 * this.globalToLocalFactor().x);
-
         },
 
         _initializationComplete: function () {
@@ -110,7 +106,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                 Factory = RectangleConfigurationViewer;
             } else if (configuration instanceof CircleConfiguration) {
                 Factory = CircleConfigurationViewer;
-            } else if(configuration instanceof PathConfiguration) {
+            } else if (configuration instanceof PathConfiguration) {
                 Factory = PathConfigurationViewer;
             }
 
@@ -140,12 +136,12 @@ define(['js/svg/SvgElement', 'js/core/List',
             }
         },
 
-        removeConfiguration: function(event){
+        removeConfiguration: function (event) {
             event.stopPropagation();
             this.$.productActions.removeConfiguration({configuration: this.get('activeViewer.configuration')});
         },
 
-        cloneConfiguration: function(event){
+        cloneConfiguration: function (event) {
             event.stopPropagation();
             this.$.productActions.cloneConfiguration({configuration: this.get('activeViewer.configuration')})
         },
@@ -252,9 +248,6 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
         quarter: function (value) {
             return value * 0.5 || 0;
-        },
-        handleClick: function () {
-            console.log("wasdasd");
         }
 
     });

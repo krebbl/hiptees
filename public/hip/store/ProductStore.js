@@ -166,22 +166,19 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
         undo: function () {
             var state = this.$.memento.getUndoState();
-            //console.log(this.$.memento.$.states[0].configurations[2].textFlow.children[0].style);
             if (state) {
                 state.sync();
                 this._selectConfiguration(null);
-                this.trigger('on:productRecovered', {product: this.$.product});
+                this.trigger('on:productRecovered', {product: this.$.product, type: "undo"});
             }
         },
 
         redo: function () {
             var state = this.$.memento.getRedoState();
-            //console.log(this.$.memento.$.states[0].configurations[2].textFlow.children[0].style);
-
             if (state) {
                 state.sync();
                 this._selectConfiguration(null);
-                this.trigger('on:productRecovered', {product: this.$.product});
+                this.trigger('on:productRecovered', {product: this.$.product, type: "redo"});
             }
         },
 
@@ -364,10 +361,49 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             // TODO: copy
         },
 
+        init: function (productId, callback) {
+            var self = this;
+
+            flow()
+                .seq(function (cb) {
+                    if (productId) {
+                        self.loadProduct({
+                            productId: productId,
+                            callback: function () {
+                                cb();
+                            }
+                        })
+                    } else {
+                        cb();
+                    }
+                })
+                .seq(function (cb) {
+                    if (!self.$.product) {
+                        self.loadProduct({
+                            callback: function (err) {
+                                if(err) {
+
+                                }
+                                cb();
+                            }
+                        });
+                    } else {
+                        cb();
+                    }
+                })
+                .exec(callback);
+        },
+
+        selectPreset: function (payload) {
+            this.trigger('on:selectPreset', {productId: payload.productId});
+            this.loadProduct(payload);
+        },
+
         loadProduct: function (payload) {
+            this.trigger('on:loadProduct', {productId: payload.productId});
             this.set('loadingProduct', true);
             var products = this.$.api.createCollection(Collection.of(Product));
-            var product = products.createItem(payload.productId),
+            var product,
                 loadLazy = payload.lazy,
                 callback = payload.callback || function () {
                     },
@@ -377,9 +413,23 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             this.set('selectedSize', null);
             flow()
                 .seq("product", function (cb) {
-                    product.fetch({
-                        noCache: payload.noCache || false
-                    }, cb);
+                    if (payload.productId) {
+                        product = products.createItem(payload.productId);
+                        product.fetch({
+                            noCache: payload.noCache || false
+                        }, cb);
+                    } else {
+                        // READ FROM LOCAL STORAGE
+                        var composed;
+                        try {
+                            composed = JSON.parse(window.localStorage.getItem("product"));
+                            product = products.createItem();
+                            self.$.api.parseModel(product, composed);
+                            cb(null, product);
+                        } catch (e) {
+                            cb(e);
+                        }
+                    }
                 })
                 .seq("productType", function (cb) {
                     this.vars.product.$.productType.fetch({}, cb);
@@ -411,11 +461,10 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 .exec(function (err, results) {
                     var p = results.product;
                     if (!err) {
-                        if (payload.asPreset) {
-                            p = p.clone();
-                            p.set('id', undefined);
-                            p.set('state', null);
-                        }
+                        p = p.clone();
+                        p.set('id', undefined);
+                        p.set('state', null);
+
                         self.set('product', p, {force: true});
                         self.trigger('on:productLoaded', {product: p});
                         var size = p.$.configurations.size();
@@ -638,11 +687,19 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             }
         },
 
+        saveProductInLocalStorage: function () {
+            try {
+                window.localStorage.setItem("product", JSON.stringify(this.getComposedProduct()));
+            } catch (e) {
+            }
+        },
+
+        getComposedProduct: function () {
+            return this.$.api.composeModel(this.$.product);
+        },
+
         getMementoState: function () {
             return this.$.product.clone();
-        },
-        setMementoState: function (state) {
-            // TODO: implement
         }
     });
 

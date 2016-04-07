@@ -5,9 +5,10 @@ define(
         "js/data/Collection",
         "hip/model/Design",
         "hip/model/Product",
-        "fastclick"
+        "fastclick",
+        "flow"
     ],
-    function (Application, Query, List, Collection, Design, Product, Fastclick) {
+    function (Application, Query, List, Collection, Design, Product, Fastclick, flow) {
 
         FastClick.attach(document.body);
 
@@ -54,7 +55,12 @@ define(
                     return l.protocol + "//" + l.hostname + ":" + (l.port || 80) + "/api/v1"
                 }
                 return l.origin + l.pathname.replace(/\/[^/]*$/, "/api/v1");
-                ;
+            },
+
+            _initializationComplete: function () {
+                this.callBase();
+
+
             },
 
             /***
@@ -79,12 +85,10 @@ define(
 
                 var products = api.createCollection(Collection.of(Product));
 
-                var product = products.createItem();
                 var executor = this.$.executor;
                 var memento = this.$.memento;
 
                 var productStore = this.$.productStore;
-                productStore.set('product', product);
                 productStore.set('memento', memento);
 
                 try {
@@ -111,23 +115,15 @@ define(
 
                 var self = this;
 
-                function startLogin() {
+                //this.$.navigationStore.bind('on:navigate', function (e) {
+                //    var history = this.$.router.history;
+                //    var historyFragment = history.fragment();
+                //    if (e.$.fragment && /^presets|^create/.test(e.$.fragment) && historyFragment !== e.$.fragment) {
+                //        history.navigate(e.$.fragment, false, false);
+                //    }
+                //    tracking.trackView(e.$.fragment);
+                //}, this);
 
-                    //if (params.access_token) {
-                    //    self.$.executor.storeAndExecute(new LoginCommand({
-                    //        type: "accessToken",
-                    //        accessToken: params.access_token
-                    //    }));
-                    //} else {
-                    //    self.$.executor.storeAndExecute(new LoginCommand({
-                    //        type: "localStorage"
-                    //    }));
-                    //}
-                }
-
-                this.$.navigationStore.bind('on:navigate', function (e) {
-                    tracking.trackView(e.$.fragment);
-                }, this);
 
                 /**
                  * Events
@@ -152,6 +148,7 @@ define(
                 var mementoCallback = function (e) {
                     if (!e.$.preview) {
                         memento.saveState(productStore.getMementoState());
+                        productStore.saveProductInLocalStorage();
                     }
                 };
 
@@ -221,9 +218,16 @@ define(
 
                 this.$.textFlowStore.bind('on:paragraphStyleChanged', mementoCallback);
 
+                productStore.bind('on:selectPreset', function () {
+
+                });
+
                 productStore.bind('on:productLoaded', function () {
+                    // for UNDO / REDO
                     memento.clear();
                     memento.saveState(productStore.getMementoState());
+
+                    productStore.saveProductInLocalStorage();
                 });
 
 
@@ -276,12 +280,22 @@ define(
                     params[splitted[0]] = splitted[1] || "";
                 }
 
-                this.$.i18n.loadLocale(this.$.i18n.$.locale, function () {
-                    self.set('started', true);
-
-                    callback();
-                    //self.$.navigationActions.navigate({fragment: "presetsView"});
-                });
+                flow()
+                    .seq(function (cb) {
+                        self.$.i18n.loadLocale(self.$.i18n.$.locale, cb);
+                    })
+                    .seq(function (cb) {
+                        var match = window.location.search.match(/product=([^&]+)/);
+                        var productId = match ? decodeURIComponent(match[1]) : null;
+                        productStore.init(productId, cb);
+                    })
+                    .exec(function (err) {
+                        self.set('started', true);
+                        if (!productStore.$.product) {
+                            self.$.navigationActions.showMenu({menu: "presets"});
+                        }
+                        callback();
+                    })
             },
 
             _getEnvironment: function () {
@@ -306,7 +320,8 @@ define(
                 this.toggleLoading(false);
             },
 
-            defaultRoute: function (routeContext) {
+            defaultRoute: function (routeContext, route) {
+                //routeContext.navigate("presets", false);
             },
 
             statusClass: function () {

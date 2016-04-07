@@ -1,4 +1,4 @@
-define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetStore", "hip/action/PresetActions"], function (ViewBase, ConfirmDialog, PresetStore, PresetActions) {
+define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetStore", "hip/action/PresetActions", "hip/store/NavigationStore"], function (ViewBase, ConfirmDialog, PresetStore, PresetActions, NavigationStore) {
 
     return ViewBase.inherit({
         defaults: {
@@ -12,6 +12,7 @@ define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetS
         ],
 
         inject: {
+            navigationStore: NavigationStore,
             presetStore: PresetStore,
             presetActions: PresetActions,
             confirmDialog: ConfirmDialog
@@ -30,9 +31,8 @@ define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetS
             }
         },
         selectProductPreset: function (product) {
-            this.$.navActions.navigate({
-                fragment: "editor/preset/" + product.$.id
-            });
+            this.$.navActions.showMenu();
+            this.$.productActions.selectPreset({productId: product.$.id});
         },
         selectDepartment: function (department) {
             this.$.presetActions.selectDepartment({

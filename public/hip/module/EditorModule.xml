@@ -4,8 +4,8 @@
 
     <div class="header">
         <h1 class="header__logo"/>
-        <h2>{title(navigationStore.currentFragment)}</h2>
-        <view:MiniBasketButton class="header__btn btn-right" onclick="goToBasket()" visible="{basketStore.basket}"/>
+        <h2>Spreadshirt</h2>
+        <view:MiniBasketButton class="header__btn btn-right" onclick="showMenu('basket')" visible="{basketStore.basket}"/>
     </div>
 
 
@@ -39,19 +39,19 @@
 
         <div class="configuration-edit-btn-wrapper" selected="{isEditButtonVisible()}"
              _viewerPosition="{viewerPosition(configurationViewer)}">
-            <a onclick="navigate('settingsView')" selected="{navigationStore.fragmentIsActive('settingsView')}" class="configuration-edit-btn"
+            <a onclick="showMenu('settings')" selected="{navigationStore.isMenuActive('settings')}" class="configuration-edit-btn"
                left="{_viewerPosition.x}" top="{_viewerPosition.y}" position="absolute">
                 <i class="fa fa-paint-brush"/>
             </a>
         </div>
 
-        <div cid="innerContent" class="inner-content" heightUpdatePolicy="in" height="100%" visible="{productSelected}">
+        <div cid="innerContent" class="inner-content" heightUpdatePolicy="in" height="100%" visible="{product}">
             <div class="product-viewer-wrapper" cid="wrapper"
                  height="{height}"
                  width="{height}"
                  marginLeft="{minusHalf(width)}px"
                  left="50%"
-                 onclick="navigate(null)">
+                 onclick="showMenu('')">
                 <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" product="{product}"/>
             </div>
         </div>
@@ -60,20 +60,17 @@
     <div class="loading-layer" visible="{or(productStore.loading,textFlowStore.loadingFont)}"/>
 
     <div class="footer">
-        <a class="footer__btn footer__template-btn" onclick="navigate('menuView')">
+        <a class="footer__btn footer__template-btn" onclick="showMenu('options')">
             <i class="fa fa-bars"/>
             MENU
         </a>
-        <!--<a class="footer__btn" onclick="showSettings" enabled="{selectedConfiguration}">-->
-        <!--<i class="fa fa-pencil"/>-->
-        <!--${i18n.t('editor.edit')}-->
-        <!--</a>-->
-        <a class="footer__btn footer__add-btn" onclick="navigate('addView')">
+
+        <a class="footer__btn footer__add-btn" onclick="showMenu('add')">
             <i class="fa fa-plus"/>
         </a>
 
 
-        <a class="footer__btn footer__buy-btn" onclick="navigate('buyView')"
+        <a class="footer__btn footer__buy-btn" onclick="showMenu('buy')"
            enabled="{not(product.configurations.isEmpty())}">
             <i class="fa fa-shopping-cart"/>
             ${i18n.t('editor.buy')}
@@ -81,21 +78,19 @@
 
     </div>
 
-    <div class="setting-views" selected="{navigationStore.fragmentIsActive('settingsView')}">
-        <view:TextSettingsView oncloseClicked="navigate(null)"/>
-        <view:ImageSettingsView oncloseClicked="navigate(null)"/>
-        <view:ShapeSettingsView oncloseClicked="navigate(null)"/>
+    <div class="setting-views" selected="{navigationStore.isMenuActive('settings')}">
+        <view:TextSettingsView oncloseClicked="showMenu('')"/>
+        <view:ImageSettingsView oncloseClicked="showMenu('')"/>
+        <view:ShapeSettingsView oncloseClicked="showMenu('')"/>
     </div>
 
     <input cid="fileInput" type="file" onchange="handleUpload"/>
 
-    <!--<view:BackToTop element="{presetView}" text="${i18n.t('general.backToTop')}"/>-->
+    <view:ProductPresetsView selected="{navigationStore.isMenuActive('presets')}"
+                             closable="{productStore.product}"
+                             oncloseClicked="showMenu()"/>
 
-    <view:ProductPresetsView selected="{navigationStore.fragmentIsActive('presetsView')}"
-                             closable="{productSelected}"
-                             oncloseClicked="navigate(null)"/>
-
-    <div class="add-view" selected="{navigationStore.fragmentIsActive('addView')}">
+    <div class="add-view" selected="{navigationStore.isMenuActive('add')}">
         <div>
             <a onclick="add('text',event)">
                 <i class="fa fa-font"/>
@@ -122,16 +117,11 @@
                 ${i18n.t('editor.addStar')}
             </a>
         </div>
-
-        <a class="close-btn" onclick="navigate(null)">
-            ${i18n.t('general.close')}
-            <i class="fa fa-chevron-down"/>
-        </a>
     </div>
 
-    <div class="menu-view" selected="{navigationStore.fragmentIsActive('menuView')}">
+    <div class="menu-view" selected="{navigationStore.isMenuActive('options')}">
         <div>
-            <a onclick="navigate('presetsView')">
+            <a onclick="showMenu('presets')">
                 <i class="fa fa-magic"/>Start new Again
             </a>
             <a>
@@ -161,7 +151,7 @@
         </div>
     </div>
 
-    <div class="buy-view" selected="{navigationStore.fragmentIsActive('buyView')}">
+    <div class="buy-view" selected="{navigationStore.isMenuActive('buy')}">
         <table selected="{sizeTableSelected}" class="size-table-view__table" border="1" cellpadding="4">
             <thead>
                 <tr>
@@ -196,10 +186,6 @@
             </tbody>
         </table>
         <div>
-            <!--<a class="close-btn" onclick="showView(null)">Close</a>-->
-            <!--<div class="save-view__product-name">-->
-            <!--<input type="text" placeholder="${i18n.t('editor.giveItAName')}" value="{{_productName}}"/>-->
-            <!--</div>-->
             <label class="buy-view__label">
                 Choose A Size
                 <a onclick="toggleSizeTable()">Maßtabelle</a>

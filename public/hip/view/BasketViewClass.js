@@ -1,7 +1,7 @@
 define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/store/BasketStore", "hip/action/BasketActions"], function (View, Query, Collection, Product, BasketStore, BasketActions) {
     return View.inherit({
         defaults: {
-            selected: false,
+            selected: "{navigationStore.isMenuActive('basket')}",
             componentClass: "basket",
             loading: false,
             basket: "{basketStore.basket}",
@@ -15,11 +15,6 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
 
         _initializationComplete: function () {
             this.callBase();
-
-            this.$.navigationStore.bind('on:navigate', function (e) {
-                this.set('selected', e.$.fragment == "basket");
-            }, this);
-
 
             var handleCheckout = function () {
                 this.set({
@@ -35,7 +30,7 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
         closeBasket: function (e) {
             e.stopPropagation();
 
-            this.$.navActions.navigateBack();
+            this.$.navActions.showMenu();
         },
 
         goCreate: function (e) {
@@ -49,8 +44,8 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
         _editBasketItem: function (item, e) {
             this.closeBasket(e);
             var prop = this.$.basketStore.getPropertyOfBasketItem("product", item);
-            this.$.navActions.navigate({
-                fragment: "editor/preset/" + prop.value
+            this.$.productActions.selectPreset({
+                productId: prop.value
             });
         },
 

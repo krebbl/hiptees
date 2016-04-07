@@ -56,8 +56,6 @@ define([
                 }
             });
 
-            this.bind('navigationStore', 'on:navigate', this.onNavigate, this);
-
             this.bind('productStore', 'on:configurationPointDown', function (e) {
                 if (self.$.productViewer) {
                     var viewer = self.$.productViewer.getViewerForConfiguration(e.$.configuration);
@@ -136,30 +134,12 @@ define([
             return a || b;
         },
 
-        onNavigate: function (event) {
-            var fragment = event.$.fragment;
-            if (!fragment) {
-                return;
+        showMenu: function(menu){
+            if (this.$.zoomed) {
+                this.toggleZoom();
             }
-            var match = fragment.match(/^editor\/(\w+)\/(\w+)/);
-            if (match) {
-                var action = match[1];
-                var productId = match[2],
-                    asPreset = false;
 
-                if (action == "preset") {
-                    asPreset = true;
-                }
-
-                this.set({
-                    'productSelected': true
-                });
-                this.$.productActions.loadProduct({
-                    productId: productId,
-                    lazy: true,
-                    asPreset: asPreset
-                });
-            }
+            this.$.navActions.showMenu({menu: menu});
         },
 
         title: function (fragment) {
@@ -202,7 +182,7 @@ define([
                 });
             }
 
-            this.showView(null);
+            this.$.navActions.showMenu();
         },
 
         handleUpload: function (e) {
@@ -246,11 +226,6 @@ define([
         toggleSizeTable: function () {
             this.set('sizeTableSelected', !this.$.sizeTableSelected);
         },
-
-        showView: function (viewName) {
-            this.navigate(viewName);
-        },
-
 
         minusHalf: function (n) {
             return -0.5 * n;
@@ -339,6 +314,7 @@ define([
 
         addToBasket: function () {
             var self = this;
+            self.$.navActions.showMenu();
             flow()
                 .seq("product", function (cb) {
                     self.$.productActions.saveProduct({state: "final", callback: cb});
@@ -374,15 +350,6 @@ define([
                 }
             });
         },
-        goBack: function () {
-            if (this.$.zoomed) {
-                this.toggleZoom();
-            }
-
-            this.showView(null);
-
-            this.callBase();
-        },
 
         getProductText: function (p) {
             return this.$.productStore.getProductText(p);
@@ -393,7 +360,7 @@ define([
         },
 
         saveProduct: function () {
-            this.showView(null);
+            this.goBack();
             this.set('savingProduct', true);
             this.$.productActions.saveProduct({state: "draft"});
         },

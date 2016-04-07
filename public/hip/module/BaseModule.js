@@ -15,16 +15,6 @@ define(["js/ui/View", "hip/store/ProductStore", "xaml!hip/data/HipDataSource", "
 
         and: function (a, b) {
             return a && b;
-        },
-
-        goBack: function () {
-            this.$.navActions.navigateBack();
-        },
-        goToBasket: function () {
-            this.navigate("basket");
-        },
-        navigate: function (fragment) {
-            this.$.navActions.navigate({fragment: fragment});
         }
     })
 });

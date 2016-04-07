@@ -1,5 +1,5 @@
 <view:ProductPresetsViewClass xmlns="http://www.w3.org/1999/xhtml"
-                                xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
+                              xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
 
     <div class="presets-view__header">
         <ui:SelectionView class="department-selection" items="{presetStore.departments}"

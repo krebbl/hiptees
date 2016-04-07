@@ -9,7 +9,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             product: null,
             printArea: null,
             configuration: null,
-            selected: false,
+            selected: "{eq(productStore.selectedConfiguration, configuration)}",
             handleWidth: 10,
             componentClass: "configuration-viewer",
             keepAspectRatio: "{configuration.keepAspectRatio}",
@@ -44,11 +44,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             attr._maskId = "mask" + (++maskId);
 
             this.callBase();
-
-            var self = this;
-            this.bind('productStore', 'on:configurationSelected', function (e) {
-                self.set('selected', e.$.configuration === self.$.configuration);
-            });
         },
 
         offset: function () {
@@ -380,6 +375,10 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 
         gt: function (a, b) {
             return a > b;
+        },
+
+        eq: function (a, b) {
+            return a === b;
         },
 
         mp: function (a, b) {

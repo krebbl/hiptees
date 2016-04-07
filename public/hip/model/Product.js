@@ -1,10 +1,11 @@
-define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/ProductType", "hip/entity/Appearance", "js/data/AttributeTypeResolver", "hip/entity/TextConfiguration", "hip/entity/DesignConfiguration", "hip/entity/RectangleConfiguration", "hip/entity/CircleConfiguration"], function (Model, List, Configuration, ProductType, Appearance, AttributeTypeResolver, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration) {
+define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/ProductType", "hip/entity/Appearance", "js/data/AttributeTypeResolver", "hip/entity/TextConfiguration", "hip/entity/DesignConfiguration", "hip/entity/RectangleConfiguration", "hip/entity/CircleConfiguration", "hip/entity/PathConfiguration"], function (Model, List, Configuration, ProductType, Appearance, AttributeTypeResolver, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, PathConfiguration) {
     var typeResolver = new AttributeTypeResolver({
         mapping: {
             text: TextConfiguration,
             design: DesignConfiguration,
             rectangle: RectangleConfiguration,
-            circle: CircleConfiguration
+            circle: CircleConfiguration,
+            path: PathConfiguration
         }
     });
 

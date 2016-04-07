@@ -8,26 +8,27 @@
 
     <js:Injection cid="injection">
         <js:I18n cid="i18n" path="hip/locale" locale="de"/>
-        <data:SprdDataSource cid="sprdApi" gateway="/sprdApi/v1" apiKey="{ENV().apiKey}" secret="{ENV().secret}" endPoint="{ENV().endPoint}"/>
+        <data:SprdDataSource cid="sprdApi" gateway="/sprdApi/v1" apiKey="{ENV().apiKey}" secret="{ENV().secret}"
+                             endPoint="{ENV().endPoint}"/>
         <data:HipDataSource cid="api" gateway="/api/v1" endPoint="{endpoint()}"/>
-        <util:CloudinaryImageUploader />
+        <util:CloudinaryImageUploader/>
         <util:ImageFileReader/>
         <util:Memento cid="memento"/>
         <svg:TextMeasurer/>
-        <action:Executor cid="executor" />
+        <action:Executor cid="executor"/>
 
-        <action:NavigationActions cid="navigationActions" />
-        <action:BasketActions />
-        <action:ProductActions />
-        <action:PresetActions />
-        <action:TextFlowActions />
+        <action:NavigationActions cid="navigationActions"/>
+        <action:BasketActions/>
+        <action:ProductActions/>
+        <action:PresetActions/>
+        <action:TextFlowActions/>
 
         <store:LoggerStore cid="loggerStore"/>
         <store:NavigationStore cid="navigationStore"/>
         <store:ProductStore cid="productStore"/>
         <store:BasketStore cid="basketStore"/>
         <store:TextFlowStore cid="textFlowStore"/>
-        <store:PresetStore cid="presetStore" />
+        <store:PresetStore cid="presetStore"/>
 
         <tracking:TrackingManager cid="trackingManager"/>
 
@@ -45,11 +46,14 @@
                 </div>
             </js:Template>
         </js:NotificationManager>
-        <dialog:ConfirmDialog />
+        <dialog:ConfirmDialog/>
     </js:Injection>
 
     <js:Router cid="router">
         <conf:RouteConfiguration route="^$" onexec="defaultRoute"/>
+        <!--<conf:RouteConfiguration route="presets" onexec="presetsRoute" />-->
+        <!--<conf:RouteConfiguration route="create\/(\w+)" onexec="createRoute"/>-->
+        <!--<conf:RouteConfiguration route="basket\/(\w+)" onexec="basketRoute"/>-->
     </js:Router>
 
     <div class="slide-container">
@@ -59,7 +63,7 @@
     </div>
 
     <div class="module-container" visible="{started}">
-        <module:EditorModule />
+        <module:EditorModule/>
     </div>
 
 </hip:SprdClass>
