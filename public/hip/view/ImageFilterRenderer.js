@@ -42,7 +42,7 @@ define(["js/core/Component", "js/core/Base", "glfx"], function (Component, Base,
             if (canvas) {
                 canvas.draw(this.$texture, this.$image.width, this.$image.height);
 
-                if (this.$stage.$browser.isIOS) {
+                if (window.navigator.platform === "iPhone") {
                     canvas.matrix(flipMatrix);
                 }
 
