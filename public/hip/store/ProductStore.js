@@ -208,7 +208,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 textFlow.set('selection', TextRange.createTextRange(0, textFlow.textLength() - 1));
             }
             this.set('loading', true);
-            this._loadConfiguration(configuration, false, false, function () {
+            this._loadConfiguration(configuration, false, function () {
                 self.$.product.$.configurations.add(configuration);
 
                 self.set('loading', false);
@@ -454,7 +454,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }, function (cb) {
                     flow()
                         .parEach(this.vars.product.$.configurations.toArray(), function (configuration, cb) {
-                            self._loadConfiguration(configuration, payload.lazyLoadConfigurations, payload.originalImages, cb);
+                            self._loadConfiguration(configuration, payload.lazyLoadConfigurations, cb);
                         })
                         .exec(cb);
                 })
@@ -595,7 +595,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 callback && callback(err, design);
             });
         },
-        _loadConfiguration: function (configuration, loadLazy, loadOriginalImage, callback) {
+        _loadConfiguration: function (configuration, loadLazy, callback) {
             if (configuration instanceof DesignConfiguration) {
                 flow()
                     .seq("design", function (cb) {
@@ -613,11 +613,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                                 console.log("error while loading image");
                             };
 
-                            var src = this.vars.design.$.resources.SCREEN;
-                            if (loadOriginalImage) {
-                                src = this.vars.design.$.resources.ORIGINAL || src;
-                            }
-                            image.src = src;
+                            image.src = this.vars.design.$.resources.SCREEN;
                         } else {
                             cb();
                         }
