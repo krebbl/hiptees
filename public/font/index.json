@@ -239,11 +239,6 @@
       "image": "images/LomoWebPixel.png"
     },
     {
-      "name": "Lynchburg Script",
-      "regular": "LynchburgScript",
-      "image": "images/LynchburgScript.png"
-    },
-    {
       "name": "Machine",
       "bold": "Machine_bold_normal",
       "regular": "Machine_normal_normal",
@@ -294,6 +289,11 @@
       "name": "Raleway Thin",
       "regular": "ralewayThin",
       "image": "images/RalewayThin.png"
+    },
+    {
+      "name": "Reglo",
+      "bold": "Reglo-Bold",
+      "image": "images/Reglo.png"
     },
     {
       "name": "Roboto",
