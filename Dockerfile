@@ -10,6 +10,9 @@ RUN     npm install -g gulp-cli
 RUN     npm install -g rAppid.js
 RUN     apt-get -y install imagemagick
 
+ADD     nginx/nginx.conf /etc/nginx/nginx.conf
+ADD     nginx/hiptees.conf /etc/nginx/sites-enabled/hiptees.conf
+
 ADD     package.json /tmp/package.json
 RUN     cd /tmp && npm install --production
 RUN     mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
@@ -20,9 +23,6 @@ WORKDIR /opt/app
 RUN     node convert-font-dir.js
 RUN     gulp sass
 RUN     rappidjs build
-
-ADD     nginx/nginx.conf /etc/nginx/nginx.conf
-ADD     nginx/hiptees.conf /etc/nginx/sites-enabled/hiptees.conf
 
 EXPOSE  80 443
 
