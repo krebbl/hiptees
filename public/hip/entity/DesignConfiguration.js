@@ -26,6 +26,16 @@ define(["hip/entity/Configuration", "hip/entity/Filter", "hip/model/Design"], fu
                     }
                 }
             }
+        },
+
+        compose: function(){
+            var ret = this.callBase();
+
+            if(!this.$.design.$.id) {
+                ret.design = this.$context.$dataSource.composeModel(this.$.design);
+            }
+
+            return ret;
         }
 
     })

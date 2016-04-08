@@ -10,6 +10,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "hip/model/UpdateProductState",
     "hip/util/CloudinaryImageUploader",
     "hip/util/ImageFileReader",
+    "hip/util/DataUriToBlob",
     "xaml!hip/svg/TextMeasurer",
     "xaml!hip/data/HipDataSource",
     "js/data/Collection",
@@ -17,8 +18,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "text/operation/ApplyStyleToElementOperation",
     "text/entity/TextFlow",
     "flow",
-    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
-
+    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, DataUriToBlob, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
 
     return Store.inherit({
         ns: "product",
@@ -576,13 +576,15 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
                     var design = designs.createItem();
 
+                    var uploadImage = imageFileReader.resizeImage(image, 1000, 1000);
+
                     design.set({
                         id: null,
-                        file: file,
+                        file: DataUriToBlob(uploadImage),
                         type: "image",
                         resources: {
-                            SCREEN: imageFileReader.resizeImage(image, 800, 800),
-                            SMALL: imageFileReader.resizeImage(image, 100, 100)
+                            SMALL: imageFileReader.resizeImage(image, 100, 100),
+                            SCREEN: uploadImage
                         },
                         size: {
                             width: image.width,
@@ -597,28 +599,32 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
         _loadConfiguration: function (configuration, loadLazy, callback) {
             if (configuration instanceof DesignConfiguration) {
-                flow()
-                    .seq("design", function (cb) {
-                        configuration.$.design.fetch(cb);
-                    })
-                    .seq(function (cb) {
-                        if (!loadLazy) {
-                            var image = new Image();
+                if(configuration.$.design.$.id) {
+                    flow()
+                        .seq("design", function (cb) {
+                            configuration.$.design.fetch(cb);
+                        })
+                        .seq(function (cb) {
+                            if (!loadLazy) {
+                                var image = new Image();
 
-                            image.onload = function () {
+                                image.onload = function () {
+                                    cb();
+                                };
+
+                                image.onerror = function () {
+                                    console.log("error while loading image");
+                                };
+
+                                image.src = this.vars.design.$.resources.SCREEN;
+                            } else {
                                 cb();
-                            };
-
-                            image.onerror = function () {
-                                console.log("error while loading image");
-                            };
-
-                            image.src = this.vars.design.$.resources.SCREEN;
-                        } else {
-                            cb();
-                        }
-                    })
-                    .exec(callback);
+                            }
+                        })
+                        .exec(callback);
+                } else {
+                    callback();
+                }
             } else if (configuration instanceof TextConfiguration) {
                 if (!loadLazy) {
                     var textFlow = configuration.$.textFlow;

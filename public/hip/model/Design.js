@@ -1,4 +1,5 @@
-define(["js/data/Model"], function (Model) {
+define(["js/data/Model", "hip/util/DataUriToBlob"], function (Model, DataUriToBlob) {
+
     return Model.inherit('hip.model.Design', {
         defaults: {
             /**
@@ -44,11 +45,35 @@ define(["js/data/Model"], function (Model) {
                 type: String
             },
             size: Object,
-            resourceProvider: String
+            resourceProvider: String,
+            resources: {
+                type: Object,
+                required: false
+            }
         },
 
         getAspectRatio: function () {
             return this.get('size.height') / this.get('size.width');
+        },
+        compose: function () {
+            var ret = this.callBase();
+
+            if (this.$.resourceProvider) {
+                delete ret.resources;
+            }
+
+            return ret;
+        },
+
+        parse: function(data){
+            var ret = this.callBase(data);
+
+            if(data.resources && data.resources.SCREEN) {
+                ret.file = DataUriToBlob(data.resources.SCREEN);
+            }
+
+            return ret;
         }
+
     })
 });
