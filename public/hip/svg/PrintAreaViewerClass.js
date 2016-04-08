@@ -17,8 +17,8 @@ define(['js/svg/SvgElement', 'js/core/List',
 
         defaults: {
             tagName: 'g',
+            printArea: "{productStore.product.productType.printArea}",
             product: "{productStore.product}",
-            printArea: null,
             selectedConfiguration: "{productStore.selectedConfiguration}",
             componentClass: "print-area",
             showActiveViewer: false,
