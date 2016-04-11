@@ -68,7 +68,7 @@
         <g translateX="{half(_v._size.width)}" translateY="{plus(_v._size.height,multiply(handleWidth,1.4))}"
            onclick="editConfiguration"
            class="configuration-handle">
-            <circle r="{multiply(handleWidth, 2)}"/>
+            <circle r="{multiply(handleWidth, 1.5)}"/>
             <text y="{multiply(handleWidth,0.5)}"
                   text-anchor="middle"
                   font-size="{multiply(handleWidth, 1.6)}">
