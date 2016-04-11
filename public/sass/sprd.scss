@@ -493,7 +493,7 @@ $settings-height: 210px;
 
 }
 
-$add-view-height: 140px;
+$add-view-height: 300px;
 
 .add-view {
   z-index: 2;
@@ -518,8 +518,11 @@ $add-view-height: 140px;
 
   a {
     i {
-      font-size: 14px;
+      font-size: 33px;
       margin-right: 7px;
+      display: block;
+      text-align: center;
+      padding: 9px;
     }
     display: block;
     color: white;
