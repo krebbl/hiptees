@@ -7,7 +7,7 @@ var converter = require('./converter'),
 var fontFamilyMap = {},
     curruptFontFamilies = [],
     fontFamilies = [],
-    dir = './fonts',
+    dir = 'fonts',
     publicFontDir = __dirname + "/public/font/";
 
 var skipImages = false;
@@ -70,7 +70,7 @@ fs.readdir('./fonts', function (err, files) {
                     if (file.indexOf(".otf") > -1) {
                         converter.otf2ttf({
                             src: __dirname + "/" + dir + "/" + file,
-                            dest: dir
+                            dest: __dirname + "/" + dir
                         }, function (err) {
                             cb(err, file.replace(".otf", ".ttf"))
                         })
