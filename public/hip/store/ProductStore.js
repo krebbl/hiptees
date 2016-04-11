@@ -381,9 +381,6 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     if (!self.$.product) {
                         self.loadProduct({
                             callback: function (err) {
-                                if(err) {
-
-                                }
                                 cb();
                             }
                         });
@@ -480,6 +477,11 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     self.set('loadingProduct', false);
                 });
         },
+
+        editConfiguration: function (payload) {
+            this.trigger('on:editConfiguration', {configuration: payload.configuratin});
+        },
+
         changeProductState: function () {
             // TODO: implement
         },
@@ -599,7 +601,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
         _loadConfiguration: function (configuration, loadLazy, callback) {
             if (configuration instanceof DesignConfiguration) {
-                if(configuration.$.design.$.id) {
+                if (configuration.$.design.$.id) {
                     flow()
                         .seq("design", function (cb) {
                             configuration.$.design.fetch(cb);
@@ -691,8 +693,13 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
         saveProductInLocalStorage: function () {
             try {
-                window.localStorage.setItem("product", JSON.stringify(this.getComposedProduct()));
+                if (this.$.product && this.$.product.$.configurations.size() > 0) {
+                    window.localStorage.setItem("product", JSON.stringify(this.getComposedProduct()));
+                } else {
+                    window.localStorage.removeItem("product");
+                }
             } catch (e) {
+                console.warn(e);
             }
         },
 

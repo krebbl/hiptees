@@ -37,14 +37,6 @@
             </div>
         </div>
 
-        <div class="configuration-edit-btn-wrapper" selected="{isEditButtonVisible()}"
-             _viewerPosition="{viewerPosition(configurationViewer)}">
-            <a onclick="showMenu('settings')" selected="{navigationStore.isMenuActive('settings')}" class="configuration-edit-btn"
-               left="{_viewerPosition.x}" top="{_viewerPosition.y}" position="absolute">
-                <i class="fa fa-paint-brush"/>
-            </a>
-        </div>
-
         <div cid="innerContent" class="inner-content" heightUpdatePolicy="in" height="100%" visible="{product}">
             <div class="product-viewer-wrapper" cid="wrapper"
                  height="{height}"

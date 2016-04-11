@@ -6,6 +6,7 @@ define(["js/ui/View", "js/core/I18n",
     return View.inherit({
         supportedConfiguration: null,
         defaults: {
+            selectedConfiguration: "{productStore.selectedConfiguration}",
             configuration: null,
             minimized: false,
             selected: false,
@@ -21,23 +22,15 @@ define(["js/ui/View", "js/core/I18n",
 
         events: ['on:closeClicked'],
 
-        ctor: function () {
-            this.callBase();
-            var self = this;
-            this.bind('productStore', 'on:configurationSelected', function (event) {
-                if (self.supportsConfiguration(event.$.configuration)) {
-//                    var hadConfiguration = !!self.$.configuration;
-                    self.set('configuration', event.$.configuration);
-                    self.set('visible', true);
-                    self.set('selected', true);
-//                    self.set('minimized', self.$.minimized && hadConfiguration);
-                } else {
-                    self.set('configuration', null);
-                    self.set('selected', false);
-//                    self.set('minimized', false);
-                    self._selectSubContent(null);
-                }
-            });
+        _commitSelectedConfiguration: function (configuration) {
+            if (this.supportsConfiguration(configuration)) {
+                this.set('configuration', configuration, {force: true});
+                this.set('visible', true);
+                this.set('selected', true);
+            } else {
+                this.set('selected', false);
+                this._selectSubContent(null);
+            }
         },
 
         formatNumber: function (value, digits) {

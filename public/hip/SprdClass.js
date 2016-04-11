@@ -152,7 +152,6 @@ define(
                     }
                 };
 
-                var listenToTextChanges = false;
                 productStore.bind('change:activeTextConfiguration', function (e) {
                     var conf = e.$;
                     if (!conf) {
@@ -192,7 +191,7 @@ define(
                 });
 
                 productStore.bind('on:configurationRemoved', function (e) {
-                    memento.saveState(productStore.getMementoState());
+                    mementoCallback(e);
 
                     var config = e.$.configuration;
                     tracking.trackEvent("PRODUCT", "configurationRemoved", "type", config.$.type);

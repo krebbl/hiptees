@@ -25,7 +25,7 @@ define([
             zoomedConfiguration: "{productStore.zoomedConfiguration}",
             zoomVisible: "{or(productStore.selectedConfiguration,productStore.zoomedConfiguration)}",
             makePublic: false,
-            showConfigurationInfo: "{selectedConfiguration}",
+            showConfigurationInfo: false,
             savingProduct: false,
             presets: null,
             sizeTableSelected: false,
@@ -86,6 +86,10 @@ define([
                 }
             }, this);
 
+            this.bind('productStore', 'on:editConfiguration', function(){
+                 this.$.navigationStore.showMenu({menu: "settings"});
+            }, this);
+
 
             var uploads = 0,
                 uploaded = 0;
@@ -115,15 +119,7 @@ define([
         },
 
         _commitSelectedConfiguration: function (configuration) {
-            if (!configuration) {
-                this.set({
-                    'showConfigurationInfo': false
-                });
-            } else {
-                this.set({
-                    'showConfigurationInfo': true
-                });
-            }
+            this.set('showConfigurationInfo', !!configuration);
         },
 
         appearanceClass: function () {
@@ -291,22 +287,6 @@ define([
 
 
         },
-
-        viewerPosition: function (viewer) {
-            if (viewer) {
-                var rect = viewer.$el.getBoundingClientRect();
-                var moduleRect = this.$el.getBoundingClientRect();
-                return {
-                    x: rect.left + Math.round(rect.width * 0.5),
-                    y: Math.min(rect.top + rect.height + 20, moduleRect.bottom - 90) + window.scrollY
-                }
-            }
-            return {
-                x: 0,
-                y: 0
-            }
-
-        }.onChange("zoomed", "configurationViewer._realOffset", "configurationViewer._size"),
 
         isEditButtonVisible: function () {
             return this.$.showConfigurationInfo && !(this.get("configurationViewer._moving") || this.get("configurationViewer._resizing"));

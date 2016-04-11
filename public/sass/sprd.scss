@@ -175,26 +175,6 @@
   background-size: 50px;
 }
 
-.move-handle {
-  position: absolute;
-  color: white;
-  top: 0;
-  right: -40px;
-  height: 40px;
-  width: 40px;
-  background-color: $color-brand;
-}
-
-.delete-handle {
-  position: absolute;
-  left: -32px;
-  top: 0;
-  height: 32px;
-  width: 32px;
-  background-color: red;
-  color: white;
-}
-
 .active > .configuration-boundary {
   stroke: $color-brand;
   stroke-width: 2;
@@ -204,18 +184,20 @@
 
 .configuration-handle {
   circle {
-    fill: $color-green;
+    fill: white;
+    stroke: #CACACA;
+    vector-effect: non-scaling-stroke;
   }
 
   text {
-    fill: white;
+    fill: #333333;
     font-family: FontAwesome;
     pointer-events: none;
 
   }
 
   &__delete {
-    circle {
+    text {
       fill: #B33752;
     }
   }

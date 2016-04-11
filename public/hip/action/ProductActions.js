@@ -20,6 +20,9 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             editTextConfiguration: {
                 configuration: null
             },
+            editConfiguration: {
+                configuration: null
+            },
             toggleTextEditing: {
                 edit: false
             },
