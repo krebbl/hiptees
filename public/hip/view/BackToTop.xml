@@ -2,7 +2,7 @@
                        xmlns:parent="hip.view">
 
     <a onclick="goBackToTop">
-        <i class="fa fa-arrow-up"/> {text}
+        <i class="fa fa-chevron-up"/>
     </a>
 
 </parent:BackToTopClass>

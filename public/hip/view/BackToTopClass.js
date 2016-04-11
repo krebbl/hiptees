@@ -4,8 +4,7 @@ define(["js/ui/View"], function (View) {
             componentClass: "back-to-top-wrapper",
             element: null,
             maxScroll: 100,
-            selected: false,
-            text: "Back To Top"
+            selected: false
         },
 
         _commitElement: function (element) {
