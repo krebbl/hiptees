@@ -25,23 +25,21 @@
 
 .back-to-top-wrapper {
   position: absolute;
-  top: 87px;
   z-index: 0;
   text-align: center;
-  width: 100%;
   pointer-events: none;
+  bottom: 20px;
+  right: 20px;
 
   > a {
-    margin: 0 auto;
-    width: auto;
     text-align: center;
     color: white;
-    background-color: $color-dark1;
+    background-color: #00B2A5;
     border-radius: 2px;
-    padding: 5px 10px;
+    padding: 10px 15px;
     opacity: 0;
-    font-size: 12px;
-    pointer-events: all;
+    pointer-events: none;
+    font-size: 16px;
 
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
@@ -54,6 +52,7 @@
   &.active {
     z-index: 1000;
     > a {
+      pointer-events: all;
       opacity: 0.8;
     }
   }
@@ -216,12 +215,13 @@ $settings-height: 210px;
   background-color: white;
   top: 0;
   width: 100%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.23);
+  border-bottom: 1px solid $color-lightgray;
+  //box-shadow: 0 1px 2px rgba(0, 0, 0, 0.23);
 
   &__logo {
     position: absolute;
     top: 0;
-    left: 20px;
+    left: 10px;
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4yLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxMDAgMTAwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojMDBCMkE1O30NCgkuc3Qxe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPGcgaWQ9IkViZW5lXzIiPg0KCTxyZWN0IGNsYXNzPSJzdDAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIi8+DQo8L2c+DQo8ZyBpZD0iRWJlbmVfMSI+DQoJPHBhdGggY2xhc3M9InN0MSIgZD0iTTUwLDMwLjhsLTE0LTE0TDkuOCw0M0w1MCw4My4yTDkwLjIsNDNMNjQsMTYuOUw1MCwzMC44eiBNNzgsNDNMNTAsNzFMMjIsNDNsMTQtMTRMNTAsNDNsMTQtMTRMNzgsNDN6Ii8+DQo8L2c+DQo8L3N2Zz4NCg==);
     background-size: 100%;
     text-indent: -9999px;
@@ -236,7 +236,7 @@ $settings-height: 210px;
     display: block;
     padding: 0 15px;
     color: $color-dark1;
-    bottom: 0;
+    top: 0;
     z-index: 2;
     height: 46px;
     line-height: 43px;
@@ -269,7 +269,7 @@ $settings-height: 210px;
   > h2 {
     color: $color-dark1;
     margin: 0;
-    padding: 0.5em 0;
+    padding: 0.5em 65px;
     font-size: 20px;
     font-family: 'MuseoSlab-300', Georgia, "Times New Roman", Times, serif;
     font-weight: 100;
@@ -306,8 +306,10 @@ $settings-height: 210px;
 
   &__add-btn {
     height: 45px;
-    font-size: 12px;
+    font-size: 16px;
     margin-top: -5px;
+    padding: 0 1em;
+    line-height: 45px;
     background: $color-green;
   }
 
@@ -469,7 +471,7 @@ $settings-height: 210px;
 }
 
 .settings-view {
-  background: rgba($color-dark1, 0.93);
+  background: rgba($color-dark2, 0.93);
   position: absolute;
   bottom: -$settings-height;
   width: 100%;
@@ -497,7 +499,7 @@ $add-view-height: 300px;
 
 .add-view {
   z-index: 2;
-  background: rgba($color-dark1, 0.93);
+  background: rgba($color-dark2, 0.93);
   position: absolute;
   bottom: -$add-view-height;
   width: 100%;
@@ -832,12 +834,12 @@ image.masking-bg-image {
 ul.product-list {
   > li {
     position: relative;
+    margin-bottom: 5px;
   }
   > li > .product-image-wrapper {
     height: 200px;
     display: block;
     overflow: hidden;
-    border-bottom: 1px solid lightgray;
     background: lightgray;
     position: relative;
 
@@ -1262,15 +1264,16 @@ $presets-view-height: 500px;
 .presets-view{
 
   z-index: 10;
-  background: rgba(#fff, 0.93);
+  background: rgba(#fff, 0.98);
   position: absolute;
   top: 100%;
   width: 100%;
   transition: top 0.5s;
-  bottom: 0;
+  bottom: -500px;
 
   &.active {
-    top: ($header-height + 10);
+    bottom: 0;
+    top: ($header-height);
   }
 
   &__close {
@@ -1286,15 +1289,16 @@ $presets-view-height: 500px;
   &__header {
     text-align: center;
     //font-size: 18px;
-    height: 50px;
+    height: 56px;
     //line-height: 50px;
     border-bottom: 1px solid lightgray;
   }
 
   &__scroll-view {
     position: absolute;
-    top: 50px;
+    top: 56px;
     bottom: 0;
+    padding: 10px;
     width: 100%;
 
     overflow: hidden;
@@ -1306,32 +1310,31 @@ $presets-view-height: 500px;
   }
 
   .department-selection {
-    padding: 10px;
-    //border-bottom: 1px solid lightgray;
+    padding: 7px 10px;
     overflow: hidden;
-    //text-align: center;
+    text-align: left;
 
     &__item {
       display: inline-block;
-      border-radius: 2px;
-      padding: 3px;
-      width: 120px;
+      border-radius: 1px;
+      padding: 2px;
+      width: 43%;
       text-align: center;
       border: 1px solid lightgray;
       margin-right: 10px;
 
       > * {
         display: block;
-        padding: 0.3em;
-        text-transform: uppercase;
+        padding: 0.7em;
+        text-transform: capitalize;
       }
 
       &.active {
-        border-color: $color-green;
+        border-color: $color-dark1;
       }
 
       &.active > * {
-        background: $color-green;
+        background: $color-dark1;
         color: white;
       }
     }
@@ -1374,11 +1377,11 @@ $presets-view-height: 500px;
   right: 10px;
   top: 10px;
   z-index: 10;
-  font-size: 16px;
+  font-size: 20px;
 
   text-shadow: 0 0 15px white;
   > a {
-    margin-left: 5px;
+    margin-left: 10px;
     &.disabled {
       opacity: 0.2;
     }
