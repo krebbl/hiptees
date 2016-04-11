@@ -26,7 +26,7 @@ define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetS
             if(selected) {
                 var self = this;
                 setTimeout(function(){
-                    self.$.scrollContainer.$el.scrollTop = 1;
+                    self.$.scrollContainer.$el.scrollTop = self.$.scrollContainer.$el.scrollTop + 1;
                 },500);
             }
         },
