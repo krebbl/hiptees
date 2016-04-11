@@ -4,6 +4,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
     return Store.inherit({
         ns: "presets",
         defaults: {
+            mode: null,
             selectedDepartment: null,
             selectedAppearance: null,
             departments: [
@@ -39,6 +40,20 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
 
         },
 
+        removePreset: function (payload) {
+            var preset = payload.preset;
+            if (preset) {
+                var self = this;
+                preset.remove(function () {
+                    self._loadPresets();
+                });
+            }
+        },
+
+        isPresetMode: function () {
+            return this.$.mode === "presets";
+        },
+
         _loadPresets: function () {
             this.set('presets', null);
 
@@ -48,7 +63,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
 
             var products = api.createCollection(Collection.of(Product));
 
-            var query = new Query().eql("tags", "preset").eql("department",this.$.selectedDepartment.name);
+            var query = new Query().eql("tags", "preset").eql("department", this.$.selectedDepartment.name);
 
             var queryCollection = products.query(query),
                 self = this;

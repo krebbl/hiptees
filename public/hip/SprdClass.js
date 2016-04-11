@@ -271,11 +271,11 @@ define(
 
                 productStore.bind('on:addingImage', this.showLoading, this);
 
-                var hasParams = location.hash.replace(/^\#\//, "").split("&"),
+                var hasParams = location.search.replace(/^\?/,"").split("&"),
                     params = {};
 
                 for (var j = 0; j < hasParams.length; j++) {
-                    var splitted = hasParams[j].split("=");
+                    var splitted = decodeURIComponent(hasParams[j]).split("=");
                     params[splitted[0]] = splitted[1] || "";
                 }
 
@@ -284,9 +284,9 @@ define(
                         self.$.i18n.loadLocale(self.$.i18n.$.locale, cb);
                     })
                     .seq(function (cb) {
-                        var match = window.location.search.match(/product=([^&]+)/);
-                        var productId = match ? decodeURIComponent(match[1]) : null;
-                        productStore.init(productId, cb);
+                        api.set('mode', params.mode);
+                        self.$.presetStore.set('mode', params.mode);
+                        productStore.init(params.product, cb);
                     })
                     .exec(function (err) {
                         self.set('started', true);

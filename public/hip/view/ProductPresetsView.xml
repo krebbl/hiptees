@@ -24,6 +24,9 @@
                     <a class="product-image-wrapper" onclick="selectProductPreset(item, event)">
                         <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{scrollContainer}"/>
                     </a>
+                    <a class="product-option" onclick="removePreset(item)" visible="{presetStore.isPresetMode()}">
+                        <i class="fa fa-times"/>
+                    </a>
                 </li>
             </js:Template>
         </ui:ItemsView>

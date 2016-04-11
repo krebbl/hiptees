@@ -14,7 +14,7 @@ define(["js/data/Model", "js/core/List", "hip/entity/Configuration", "hip/model/
             name: '',
             configurations: List,
             state: "draft",
-            tags: ["preset"]
+            tags: []
         },
         schema: {
             name: {

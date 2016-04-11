@@ -22,6 +22,10 @@ define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetS
             this.trigger('on:closeClicked');
         },
 
+        removePreset: function(product) {
+            this.$.presetActions.removePreset({preset: product});
+        },
+
         _commitSelected: function(selected){
             if(selected) {
                 var self = this;

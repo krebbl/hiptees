@@ -5,6 +5,9 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
         actions: {
             selectDepartment: {
                 department: null
+            },
+            removePreset: {
+                preset: null
             }
         }
     })

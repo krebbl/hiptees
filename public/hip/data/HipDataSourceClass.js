@@ -1,6 +1,7 @@
 define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataSource, QueryComposer) {
     return RestDataSource.inherit({
         defaults: {
+            mode: null,
             determinateContextByGateway: false
         },
         extractListMetaData: function (collectionPage, payload, options, xhr) {
@@ -16,19 +17,29 @@ define(["js/data/RestDataSource", "hip/data/QueryComposer"], function (RestDataS
         getHeaderParameters: function (method, resource) {
             var ret = this.callBase() || {};
 
-            if(this.$.sessionToken){
+            if (this.$.sessionToken) {
                 ret["session-token"] = this.$.sessionToken;
             }
 
-            if(this.$.imageRenderSecret){
+            if (this.$.imageRenderSecret) {
                 ret["image-render-secret"] = this.$.imageRenderSecret;
             }
 
             return ret;
         },
 
+        getQueryParameters: function () {
+            var ret = this.callBase();
+
+            if (this.$.mode) {
+                ret.mode = this.$.mode;
+            }
+
+            return ret;
+        },
+
         _buildUriForResource: function (resource, endPoint) {
-            return this.callBase(resource, this.$.endPoint );
+            return this.callBase(resource, this.$.endPoint);
         },
 
 //        _handleXHRError: function (request, cb) {
