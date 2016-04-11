@@ -14,28 +14,31 @@
           fill="none"
             />
 
-    <g cid="configurations"/>
+    <g cid="configurationContainer"/>
 
     <g _v="{activeViewer}" visible="{showActiveViewer}" translateX="{_v._realOffset.x}" translateY="{_v._realOffset.y}"
-       _handleDistance="{multiply(handleWidth,1.5)}"
+       _handleDistance="{multiply(handleWidth,0.9)}"
+       _fontSize="{multiply(handleWidth, 1.3)}"
        class="needsClick">
 
 
-        <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{plus(_v._size.height,handleWidth)}"
+        <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{plus(_v._size.height,_handleDistance)}"
            rotation="90"
            onpointerdown="handlePointerDown('resize','rb',event,true)"
            class="configuration-handle">
             <circle r="{multiply(handleWidth, 1.4)}"/>
-            <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}" font-size="{multiply(handleWidth, 1.6)}">
+            <text y="{multiply(handleWidth,0.5)}" font-size="{_fontSize}" text-anchor="middle">
                 &#xf065;
             </text>
         </g>
 
-        <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{minus(0,handleWidth)}"
+        <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{minus(0,_handleDistance)}"
            onpointerdown="handlePointerDown('move','b',event,true)"
                 class="configuration-handle">
             <circle r="{multiply(handleWidth, 1.4)}"/>
-            <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}" font-size="{multiply(handleWidth, 1.6)}">
+            <text y="{multiply(handleWidth,0.5)}"
+                  font-size="{_fontSize}"
+                  text-anchor="middle">
                 &#xf047;
             </text>
         </g>
@@ -44,19 +47,32 @@
            onclick="removeConfiguration"
            class="configuration-handle configuration-handle__delete">
             <circle r="{multiply(handleWidth, 1.4)}"/>
-            <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}"
-                  font-size="{multiply(handleWidth, 1.6)}">
+            <text y="{multiply(handleWidth,0.5)}"
+                  text-anchor="middle"
+                  font-size="{_fontSize}">
                 &#xf014;
             </text>
         </g>
 
-        <g translateX="{minus(0,_handleDistance)}" translateY="{plus(_v._size.height,handleWidth)}"
+        <g translateX="{minus(0,_handleDistance)}" translateY="{plus(_v._size.height,_handleDistance)}"
            onclick="cloneConfiguration"
            class="configuration-handle">
             <circle r="{multiply(handleWidth, 1.4)}"/>
-            <text x="{multiply(-0.7,handleWidth)}" y="{multiply(handleWidth,0.5)}"
-                  font-size="{multiply(handleWidth, 1.6)}">
+            <text y="{multiply(handleWidth,0.5)}"
+                  text-anchor="middle"
+                  font-size="{_fontSize}">
                 &#xf0c5;
+            </text>
+        </g>
+
+        <g translateX="{half(_v._size.width)}" translateY="{plus(_v._size.height,multiply(handleWidth,1.4))}"
+           onclick="editConfiguration"
+           class="configuration-handle">
+            <circle r="{multiply(handleWidth, 2)}"/>
+            <text y="{multiply(handleWidth,0.5)}"
+                  text-anchor="middle"
+                  font-size="{multiply(handleWidth, 1.6)}">
+                &#xf1fc;
             </text>
         </g>
 

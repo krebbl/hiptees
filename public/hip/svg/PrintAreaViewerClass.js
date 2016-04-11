@@ -32,7 +32,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             productActions: ProductActions
         },
 
-        $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer", "handleWidth", "border", "configurations", "snapLines"],
+        $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer", "handleWidth", "border", "configurationContainer", "snapLines"],
 
         ctor: function () {
             this.callBase();
@@ -52,7 +52,7 @@ define(['js/svg/SvgElement', 'js/core/List',
 
             this.bind('productStore', 'on:configurationOrderChanged', function (e) {
                 var viewer = self.getViewerForConfiguration(e.$.configuration);
-                self.$.configurations.setChildIndex(viewer, e.$.index);
+                self.$.configurationContainer.setChildIndex(viewer, e.$.index);
             });
         },
 
@@ -72,7 +72,7 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         _updateHandleSize: function () {
-            this.set('handleWidth', 9 * this.globalToLocalFactor().x);
+            this.set('handleWidth', 10 * this.globalToLocalFactor().x);
         },
 
         _initializationComplete: function () {
@@ -86,8 +86,9 @@ define(['js/svg/SvgElement', 'js/core/List',
         _renderProduct: function (product) {
             if (product) {
                 var self = this;
-                while (this.$.configurations.$children.length) {
-                    this._removeConfiguration(this.$.configurations.$children[0].$.configuration);
+                var configurationContainer = this.$.configurationContainer;
+                while (configurationContainer.$children.length) {
+                    this._removeConfiguration(configurationContainer.$children[0].$.configuration);
                 }
 
                 product.$.configurations.each(function (configuration) {
@@ -123,7 +124,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                     self.$.snapLines.$children[1].set('stroke-opacity', 0);
                 });
 
-                this.$.configurations.addChild(configurationViewer);
+                this.$.configurationContainer.addChild(configurationViewer);
             }
 
         },
@@ -131,7 +132,7 @@ define(['js/svg/SvgElement', 'js/core/List',
         _removeConfiguration: function (configuration, destroy) {
             var viewer = this.getViewerForConfiguration(configuration);
             if (viewer) {
-                this.$.configurations.removeChild(viewer);
+                this.$.configurationContainer.removeChild(viewer);
                 viewer.destroy();
             }
         },
@@ -139,6 +140,11 @@ define(['js/svg/SvgElement', 'js/core/List',
         removeConfiguration: function (event) {
             event.stopPropagation();
             this.$.productActions.removeConfiguration({configuration: this.get('activeViewer.configuration')});
+        },
+
+        editConfiguration: function(event){
+            event.stopPropagation();
+            this.$.productActions.editConfiguration({configuration: this.get('activeViewer.configuration')});
         },
 
         cloneConfiguration: function (event) {
@@ -156,8 +162,9 @@ define(['js/svg/SvgElement', 'js/core/List',
                     [y, y + height * 0.5, y + height]
                 ];
 
-            for (var i = 0; i < this.$.configurations.$children.length; i++) {
-                var configViewer = this.$.configurations.$children[i];
+            var configurationContainer = this.$.configurationContainer;
+            for (var i = 0; i < configurationContainer.$children.length; i++) {
+                var configViewer = configurationContainer.$children[i];
                 if (configViewer !== viewer) {
                     var confSnappingPoints = configViewer.getSnappingPoints();
 
@@ -210,9 +217,9 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         getViewerForConfiguration: function (configuration) {
-
-            for (var i = 0; i < this.$.configurations.$children.length; i++) {
-                var configViewer = this.$.configurations.$children[i];
+            var configurationContainer = this.$.configurationContainer;
+            for (var i = 0; i < configurationContainer.$children.length; i++) {
+                var configViewer = configurationContainer.$children[i];
                 if (configViewer.$.configuration === configuration) {
                     return configViewer;
                 }
