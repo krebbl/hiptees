@@ -3,10 +3,6 @@
 
 ## Installation
 * run **npm install** inside repo dir
-* Clone https://github.com/rappid/rAppid.js in some directory
-* Link **js** dir into public dir via `ln -s`
-* Clone https://github.com/rappid/rappidjs-text in some directory
-* Link **text** dir into public dir via `ln -s`
 * Run `sudo npm install -g rAppid.js` (later used to build project)
 
 ## Fonts
