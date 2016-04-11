@@ -14,6 +14,11 @@
     "giveFeedback": "Feedback geben",
     "visitPage": "Seite besuchen"
   },
+  "menu": {
+    "startNewAgain": "Neues Shirt Gestalten",
+    "giveFeedback": "Sag uns deine Meinung",
+    "legalAndPrivacy": "Impressum und Datenschutz"
+  },
   "dialog": {
     "feedback": "Feedback",
     "confirm": "Bestätigen",
@@ -34,9 +39,9 @@
     "changesSuccessful": "Änderungen erfolgreich."
   },
   "login": {
-      "withTwitter": "Mit Twitter anmelden",
-      "withFacebook": "Mit Facebook anmelden",
-     "forTesting": "Zum Testen anmelden"
+    "withTwitter": "Mit Twitter anmelden",
+    "withFacebook": "Mit Facebook anmelden",
+    "forTesting": "Zum Testen anmelden"
   },
   "profile": {
     "yourProfile": "Dein Profil",
@@ -96,7 +101,9 @@
     "confirmGoBack": "Willst du wirklich zurück? Alle deine Änderungen gehen verloren!",
     "savingProduct": "Speichere Shirt",
     "addingProduct": "Füge Produkt zum Warenkorb hinzu",
-    "uploadingImages": "Lade Bilder hoch (%0 / %1)"
+    "uploadingImages": "Lade Bilder hoch (%0 / %1)",
+    "sizeTable": "Maßtabelle",
+    "chooseSize": "Wähle eine Größe"
   },
   "settings": {
     "color": "Farbe",

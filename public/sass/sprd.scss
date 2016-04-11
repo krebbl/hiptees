@@ -1368,3 +1368,19 @@ $presets-view-height: 500px;
   }
 
 }
+
+.undo-redo-buttons {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 10;
+  font-size: 16px;
+
+  text-shadow: 0 0 15px white;
+  > a {
+    margin-left: 5px;
+    &.disabled {
+      opacity: 0.2;
+    }
+  }
+}

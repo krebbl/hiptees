@@ -10,12 +10,12 @@
 
 
     <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content">
-        <div position="absolute" right="10px" top="10px" zIndex="1000">
-            <a onclick="undo">
-                Undo
+        <div class="undo-redo-buttons">
+            <a onclick="undo" enabled="{memento.hasUndoState()}">
+                <i class="fa fa-undo"/>
             </a>
-            <a onclick="redo">
-                Redo
+            <a onclick="redo" enabled="{memento.hasRedoState()}">
+                <i class="fa fa-repeat"/>
             </a>
         </div>
 
@@ -114,23 +114,16 @@
     <div class="menu-view" selected="{navigationStore.isMenuActive('options')}">
         <div>
             <a onclick="showMenu('presets')">
-                <i class="fa fa-magic"/>Start new Again
+                <i class="fa fa-magic"/>
+                ${i18n.t('menu.startNewAgain')}
             </a>
             <a>
                 <i class="fa fa-bullhorn"/>
-                Give Feedback
+                ${i18n.t('menu.giveFeedback')}
             </a>
             <a>
                 <i class="fa fa-external-link"/>
-                Privacy
-            </a>
-            <a>
-                <i class="fa fa-external-link"/>
-                Legal Info
-            </a>
-            <a>
-                <i class="fa fa-external-link"/>
-                Go To Old Version
+                ${i18n.t('menu.legalAndPrivacy')}
             </a>
         </div>
     </div>
@@ -179,8 +172,8 @@
         </table>
         <div>
             <label class="buy-view__label">
-                Choose A Size
-                <a onclick="toggleSizeTable()">Maßtabelle</a>
+                ${i18n.t('editor.chooseSize')}
+                <a onclick="toggleSizeTable()">${i18n.t('editor.sizeTable')}</a>
             </label>
             <ui:SelectionView class="buy-view__size-list" items="{product.productType.sizes}"
                               itemKey="size" tagName="ul" selectedItem="{productStore.selectedSize}">

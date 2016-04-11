@@ -9,8 +9,9 @@ define([
     "js/data/Collection",
     "js/type/Color",
     "hip/store/TextFlowStore",
-    "flow"
-], function (BaseModule, Query, ProductType, Product, BasketStore, ProductActions, BasketActions, Collection, Color, TextFlowStore, flow) {
+    "flow",
+    "hip/util/Memento"
+], function (BaseModule, Query, ProductType, Product, BasketStore, ProductActions, BasketActions, Collection, Color, TextFlowStore, flow, Memento) {
     return BaseModule.inherit({
         defaults: {
             basketStore: null,
@@ -39,7 +40,8 @@ define([
             productActions: ProductActions,
             basketActions: BasketActions,
             textFlowStore: TextFlowStore,
-            basketStore: BasketStore
+            basketStore: BasketStore,
+            memento: Memento
         },
 
         ctor: function () {
