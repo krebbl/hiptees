@@ -222,7 +222,7 @@ $settings-height: 210px;
     position: absolute;
     top: 0;
     left: 10px;
-    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4yLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxMDAgMTAwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojMDBCMkE1O30NCgkuc3Qxe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPGcgaWQ9IkViZW5lXzIiPg0KCTxyZWN0IGNsYXNzPSJzdDAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIi8+DQo8L2c+DQo8ZyBpZD0iRWJlbmVfMSI+DQoJPHBhdGggY2xhc3M9InN0MSIgZD0iTTUwLDMwLjhsLTE0LTE0TDkuOCw0M0w1MCw4My4yTDkwLjIsNDNMNjQsMTYuOUw1MCwzMC44eiBNNzgsNDNMNTAsNzFMMjIsNDNsMTQtMTRMNTAsNDNsMTQtMTRMNzgsNDN6Ii8+DQo8L2c+DQo8L3N2Zz4NCg==);
+    background: $color-brand url(../img/lovetab.svg) no-repeat;
     background-size: 100%;
     text-indent: -9999px;
     height: $header-height;
@@ -824,7 +824,7 @@ image.masking-bg-image {
 
 .lazy-image {
   &.loading {
-    background: transparent url(../img/hiptees.png) no-repeat center center;
+    background: transparent url(../img/lovetab.svg) no-repeat center center;
     background-size: 50%;
     opacity: 0.5;
   }
