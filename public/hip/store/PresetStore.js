@@ -69,7 +69,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
                 self = this;
 
             queryCollection.fetch({
-                limit: 20
+                limit: 40
             }, function (err, productPresets) {
                 self.set('loading', false);
                 if (!err) {
