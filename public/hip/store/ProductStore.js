@@ -466,8 +466,11 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     var p = results.product;
                     if (!err) {
                         p = p.clone();
-                        p.set('id', undefined);
-                        p.set('state', null);
+                        p.set({
+                            'id': undefined,
+                            'state': null,
+                            'tags': []
+                        });
 
                         self.set('product', p, {force: true});
                         self.trigger('on:productLoaded', {product: p});
