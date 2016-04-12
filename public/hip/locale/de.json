@@ -71,9 +71,6 @@
   "productType": {
     "chooseATee": "Wähle ein Shirt"
   },
-  "presets": {
-    "chooseAPreset": "Wähle eine Vorlage"
-  },
   "departments": {
     "men": "Männer",
     "women": "Frauen"
@@ -98,8 +95,8 @@
     "saveAsDraft": "Als Entwurf speichern",
     "giveItAName": "Geb dem Shirt einen Namen",
     "title": "editor",
-    "chooseTemplate": "Wähle eine Vorlage",
-    "createYourOwn": "Gestalte selbst",
+    "chooseTemplate": "Wähle eine Vorlage aus",
+    "createYourOwn": "Bearbeiten",
     "confirmGoBack": "Willst du wirklich zurück? Alle deine Änderungen gehen verloren!",
     "savingProduct": "Speichere Shirt",
     "addingProduct": "Füge Produkt zum Warenkorb hinzu",

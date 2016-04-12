@@ -353,6 +353,13 @@ define([
 
         zoomClass: function () {
             return this.$.zoomed ? "zoomed" : "";
+        },
+        titleForMenu: function(menu){
+            if(menu === "presets") {
+                return this.$.i18n.t('editor.chooseTemplate');
+            } else {
+                return this.$.i18n.t('editor.createYourOwn');
+            }
         }
     })
 });

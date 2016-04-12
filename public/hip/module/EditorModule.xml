@@ -4,7 +4,9 @@
 
     <div class="header">
         <h1 class="header__logo"/>
-        <h2>Spreadshirt</h2>
+        <h2>
+            {titleForMenu(navigationStore.activeMenu)}
+        </h2>
         <view:MiniBasketButton class="header__btn btn-right" onclick="showMenu('basket')" visible="{basketStore.basket}"/>
     </div>
 
