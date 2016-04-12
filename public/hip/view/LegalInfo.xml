@@ -1,0 +1,99 @@
+<ui:View xmlns:ui="js.ui" componentClass="legal-info" xmlns="http://www.w3.org/1999/xhtml">
+    <h1>Impressum</h1>
+
+    <div class="grid_5 alpha">
+        <table class="full_width">
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>Adresse</strong>
+                    </td>
+                    <td class="text_right">
+                        <strong>sprd.net AG
+                            <br/>
+                            Gießerstraße 27
+                            <br/>
+                            04229 Leipzig
+                            <br/>
+                            Deutschland
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="14px" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>E-Mail</strong>
+                    </td>
+                    <td class="text_right">
+                        <a href="mailto:info@spreadshirt.net">info@spreadshirt.net</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Telefon</strong>
+                    </td>
+                    <td class="text_right">+49 (0) 341 59 400 5900</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Fax</strong>
+                    </td>
+                    <td class="text_right">+49 (0) 341 59 400 5499</td>
+                </tr>
+                <tr>
+                    <td height="14px" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Vorstand</strong>
+                    </td>
+                    <td class="text_right">Philip Rooke (CEO)
+                        <br/>
+                        Tobias Schaugg (CFO)
+                        <br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="14px" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Aufsichtsratsvorsitzender</strong>
+                    </td>
+                    <td class="text_right">
+                        <strong>Lukasz Gadowski</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="14px" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Handelsregister</strong>
+                    </td>
+                    <td class="text_right">Amtsgericht Leipzig, HRB 22478</td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Umsatzsteuer-ID-Nr.</strong>
+                    </td>
+                    <td class="text_right">DE 8138 7149 4</td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <br/>
+
+        <p>
+            <strong>Link zur Plattform der Europäischen Kommission für die Online-Streitbeilegung in
+                Verbraucherangelegenheiten:
+            </strong>
+            <a href="https://www.ec.europa.eu/consumers/odr/" target="_blank">
+                www.ec.europa.eu/consumers/odr/
+            </a>
+        </p>
+    </div>
+
+</ui:View>

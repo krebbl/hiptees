@@ -17,7 +17,9 @@
   "menu": {
     "startNewAgain": "Neues Shirt Gestalten",
     "giveFeedback": "Sag uns deine Meinung",
-    "legalAndPrivacy": "Impressum und Datenschutz"
+    "privacy": "Datenschutz",
+    "termsAndConditions": "AGB`s",
+    "legalInfo": "Impressum"
   },
   "dialog": {
     "feedback": "Feedback",

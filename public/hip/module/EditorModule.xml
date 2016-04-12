@@ -121,9 +121,17 @@
                 <i class="fa fa-bullhorn"/>
                 ${i18n.t('menu.giveFeedback')}
             </a>
-            <a>
-                <i class="fa fa-external-link"/>
-                ${i18n.t('menu.legalAndPrivacy')}
+            <a onclick="showMenu('legalInfo')">
+                <i class="fa fa-info-circle"/>
+                ${i18n.t('menu.legalInfo')}
+            </a>
+            <a onclick="showMenu('termsAndConditions')">
+                <i class="fa fa-paragraph" />
+                ${i18n.t('menu.termsAndConditions')}
+            </a>
+            <a onclick="showMenu('privacy')">
+                <i class="fa fa-user-secret"/>
+                ${i18n.t('menu.privacy')}
             </a>
         </div>
     </div>
@@ -188,6 +196,18 @@
                 ${i18n.t('editor.addToBasket')}
             </a>
         </div>
+    </div>
+
+    <div class="info-view" _isActive="{navigationStore.isMenuActive('legalInfo')}" selected="{_isActive}">
+       <view:LegalInfo />
+    </div>
+
+    <div class="info-view" _isActive="{navigationStore.isMenuActive('privacy')}" selected="{_isActive}">
+        <iframe src="https://www.spreadshirt.de/-C8681" visible="{or(_isActive, visible)}"/>
+    </div>
+
+    <div class="info-view" _isActive="{navigationStore.isMenuActive('termsAndConditions')}" selected="{_isActive}">
+        <iframe src="https://www.spreadshirt.de/-C8662" visible="{or(_isActive, visible)}"/>
     </div>
 
 </parent:EditorModuleClass>
