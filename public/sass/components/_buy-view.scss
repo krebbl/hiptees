@@ -40,16 +40,16 @@ $buy-view-height: 450px;
     align-items: stretch;
     flex-shrink: 0;
     flex-direction: row;
-    margin: 0 -10px;
+    margin: 0 -5px;
     margin-bottom: 10px;
   }
 
   &__size-list-item {
-    margin: 10px;
-    border: 1px solid $color-lightgray;
+    margin: 10px 5px;
+    border: 1px solid $color-gray;
     flex-basis: 0;
     flex-grow: 2;
-    color: $color-gray;
+    color: $color-dark1;
     text-align: center;
     padding: 3px;
 
@@ -59,9 +59,9 @@ $buy-view-height: 450px;
 
     &.active {
       color: white;
-      border-color: $color-green;
+      border-color: $color-dark1;
       > div {
-        background: $color-green;
+        background: $color-dark1;
       }
     }
   }
