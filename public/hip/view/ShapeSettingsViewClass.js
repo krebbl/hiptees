@@ -63,20 +63,6 @@ define(["xaml!hip/view/SettingsView",
             return x > y;
         },
 
-        format: function (n) {
-            if (n != null) {
-                var r = String(n);
-                var s = r.split(".");
-                if (s.length > 1) {
-                    s[1] = s[1].substr(0, 1);
-                }
-                return s.join(".");
-            }
-
-            return "";
-
-        },
-
         divide: function (a, b) {
             return a / b;
         },

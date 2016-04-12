@@ -36,7 +36,7 @@ define(["js/ui/View", "js/core/I18n",
         formatNumber: function (value, digits) {
             if (typeof(value) == "number") {
                 digits = digits || 2;
-                return value.toFixed(digits);
+                return (value).toFixed(digits);
             }
             return "";
         },
