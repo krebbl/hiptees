@@ -119,7 +119,14 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         changeShapeConfiguration: function (payload) {
             var configuration = payload.configuration;
             if (configuration instanceof ShapeConfiguration) {
-                configuration.set(payload.change || {});
+                var change = payload.change || {};
+                if (change.fill && configuration.$.fillOpacity === 0) {
+                    change.fillOpacity = 1;
+                }
+                if (change.stroke && configuration.$.strokeWidth === 0) {
+                    change.strokeWidth = 4;
+                }
+                configuration.set(change);
                 this.trigger('on:configurationChanged', {configuration: configuration, preview: payload.preview});
             }
         },
