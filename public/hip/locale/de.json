@@ -105,7 +105,7 @@
     "addingProduct": "Füge Produkt zum Warenkorb hinzu",
     "uploadingImages": "Lade Bilder hoch (%0 / %1)",
     "sizeTable": "Maßtabelle",
-    "chooseSize": "Wähle eine Größe"
+    "chooseSize": "Wähle [deine Größe|0]:"
   },
   "settings": {
     "color": "Farbe",

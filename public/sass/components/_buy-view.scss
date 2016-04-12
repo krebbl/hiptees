@@ -13,10 +13,9 @@ $buy-view-height: 450px;
 
   &__label {
     display: block;
-    > a {
+    a {
       color: $color-green;
       font-weight: bold;
-      float: right;
     }
   }
 
@@ -29,6 +28,13 @@ $buy-view-height: 450px;
     &.active {
       display: table;
     }
+  }
+
+  &__price {
+    position: absolute;
+    font-weight: bold;
+    right: 10px;
+    top: 15px;
   }
 
   &.active {

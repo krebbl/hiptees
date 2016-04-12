@@ -180,9 +180,13 @@
         </table>
         <div>
             <label class="buy-view__label">
-                ${i18n.t('editor.chooseSize')}
-                <a onclick="toggleSizeTable()">${i18n.t('editor.sizeTable')}</a>
+                <ui:TextWrapper string="${i18n.t('editor.chooseSize')}">
+                    <a onclick="toggleSizeTable()">{$text}</a>
+                </ui:TextWrapper>
             </label>
+            <div class="buy-view__price">
+                19,99 €
+            </div>
             <ui:SelectionView class="buy-view__size-list" items="{product.productType.sizes}"
                               itemKey="size" tagName="ul" selectedItem="{productStore.selectedSize}">
                 <js:Template name="item">
