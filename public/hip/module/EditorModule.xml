@@ -12,10 +12,10 @@
     <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content">
         <div class="undo-redo-buttons">
             <a onclick="undo" enabled="{memento.hasUndoState()}">
-                <i class="fa fa-undo"/>
+                <i class="fa fa-reply"/>
             </a>
             <a onclick="redo" enabled="{memento.hasRedoState()}">
-                <i class="fa fa-repeat"/>
+                <i class="fa fa-share"/>
             </a>
         </div>
 
