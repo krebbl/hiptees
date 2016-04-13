@@ -4,4 +4,4 @@
 	branch = sprd
 [submodule "rappidjs-text"]
 	path = rappidjs-text
-	url = git@github.com:rappid/rappidjs-text.git
+	url = https://github.com/rappid/rappidjs-text.git
