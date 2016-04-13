@@ -18,6 +18,7 @@
                                    stroke="{configuration.stroke.toString()}"
                                    stroke-location="inside"
                                    stroke-width="{configuration._strokeWidth()}"
+                                   stroke-opacity="{configuration.fillOpacity}"
                                    fill-opacity="{configuration.fillOpacity}"
                                    fill="{configuration.fill}"/>
 

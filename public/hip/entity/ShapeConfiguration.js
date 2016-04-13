@@ -14,7 +14,7 @@ define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, C
             strokeWidth: Number,
             fillOpacity: Number
         },
-        _strokeWidth: function(){
+        _strokeWidth: function () {
             return this.$.strokeWidth;
         }.onChange("strokeWidth")
     })

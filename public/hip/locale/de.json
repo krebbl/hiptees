@@ -107,8 +107,11 @@
   "settings": {
     "color": "Farbe",
     "fillColor": "Füllfarbe",
-    "strokeColor": "Linienfarbe",
-    "strokeWidth": "Linienbreite"
+    "strokeColor": "Randfarbe",
+    "strokeWidth": "Randbreite",
+    "opacity": "Deckkraft",
+    "fillOpacity": "Deckkraft Fläche",
+    "strokeOpacity": "Deckkraft Rand"
   },
   "textSettings": {
     "bold": "fett",

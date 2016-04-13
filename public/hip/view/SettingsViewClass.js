@@ -33,10 +33,11 @@ define(["js/ui/View", "js/core/I18n",
             }
         },
 
-        formatNumber: function (value, digits) {
+        formatNumber: function (value, digits, multiply) {
             if (typeof(value) == "number") {
-                digits = digits || 2;
-                return (value).toFixed(digits);
+                multiply = multiply || 1;
+                digits = isNaN(digits) ? 2 : digits;
+                return (value * multiply).toFixed(digits);
             }
             return "";
         },

@@ -36,18 +36,40 @@
                     </span>
                 </a>
             </li>
+            <li>
+                <a onclick="_selectSubContent(transparencyContent)">
+                    <span class="label">
+                        ${i18n.t('settings.opacity')}
+                    </span>
+                    <span class="value">
+                        {formatNumber(configuration.fillOpacity,0,100)}%
+                    </span>
+                </a>
+            </li>
         </ul>
     </js:Content>
     <js:Content cid="strokeContent">
         <div class="slider-label">
             ${i18n.t('settings.strokeWidth')}
-            <strong>{formatNumber(configuration.strokeWidth,1)} mm</strong>
+            <strong>{formatNumber(configuration.strokeWidth,2)} mm</strong>
         </div>
         <div class="slider-wrapper">
             <ui:Slider min="0" max="10" step="0.5" oninput="_updateAttribute('strokeWidth', value, true)"
                        value="{configuration.strokeWidth}" onhandleUp="_updateAttribute('strokeWidth', value, false)"/>
         </div>
     </js:Content>
+
+    <js:Content cid="transparencyContent">
+        <div class="slider-label">
+            ${i18n.t('settings.opacity')}
+            <strong>{formatNumber(configuration.fillOpacity,0,100)}%</strong>
+        </div>
+        <div class="slider-wrapper">
+            <ui:Slider min="0" max="1" step="0.1" oninput="_updateAttribute('fillOpacity', value, true)"
+                       value="{configuration.fillOpacity}" onhandleUp="_updateAttribute('fillOpacity', value, false)"/>
+        </div>
+    </js:Content>
+
     <setting:ColorSetting cid="colorContent" selectedColor="{fillColor}"
                           oncolorSelect="_updateColor(event, 'fill')" showToggleColor="true"
                           oncolorToggle="_toggleFill()" enableColor="{configuration.fillOpacity}"/>
