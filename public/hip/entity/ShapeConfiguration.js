@@ -4,6 +4,7 @@ define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, C
             type: "rectangle",
             fill: "#000000",
             fillOpacity: 1,
+            strokeOpacity: 1,
             stroke: "#000000",
             strokeWidth: 6
         },
@@ -12,7 +13,8 @@ define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, C
             fill: String,
             stroke: String,
             strokeWidth: Number,
-            fillOpacity: Number
+            fillOpacity: Number,
+            strokeOpacity: Number
         },
         _strokeWidth: function () {
             return this.$.strokeWidth;
