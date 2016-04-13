@@ -7,13 +7,13 @@ WS=`pwd`
 D="${WS}/dependencies"
 
 BRANCH=$GIT_BRANCH;
-#BRANCHID=`echo "$BRANCH"  | sed -r 's/origin\///g' | sed -r 's/\//-/'g`
+BRANCHID=`echo "$BRANCH"  | sed -r 's/origin\///g' | sed -r 's/\//-/'g`
 echo "BRANCH: $BRANCH";
 echo "BRANCHID: $BRANCHID";
 echo "";
 
-#rm -rf public public-build
-#git reset --hard HEAD
+rm -rf public public-build
+git reset --hard HEAD
 
 git branch
 
