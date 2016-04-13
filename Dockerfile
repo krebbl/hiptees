@@ -20,7 +20,7 @@ RUN     mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
 ADD     . /opt/app
 WORKDIR /opt/app
 
-RUN     node convert-font-dir.js
+RUN     gulp fonts
 RUN     gulp sass
 RUN     rappidjs build
 

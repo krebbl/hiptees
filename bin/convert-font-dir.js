@@ -7,8 +7,8 @@ var converter = require('./converter'),
 var fontFamilyMap = {},
     curruptFontFamilies = [],
     fontFamilies = [],
-    dir = 'fonts',
-    publicFontDir = __dirname + "/public/font/";
+    srcDir = process.cwd() + '/fonts',
+    publicFontDir = process.cwd() + "/public/font/";
 
 var skipImages = false;
 
@@ -69,8 +69,8 @@ fs.readdir('./fonts', function (err, files) {
                 .seq("file", function (cb) {
                     if (file.indexOf(".otf") > -1) {
                         converter.otf2ttf({
-                            src: __dirname + "/" + dir + "/" + file,
-                            dest: __dirname + "/" + dir
+                            src: srcDir + "/" + file,
+                            dest: srcDir
                         }, function (err) {
                             cb(err, file.replace(".otf", ".ttf"))
                         })
@@ -101,13 +101,13 @@ fs.readdir('./fonts', function (err, files) {
                     var fileWOExtension = this.vars.desc.fileWOExtension;
                     var fontFamilyName = this.vars.desc.fontFamilyName;
 
-                    fs.createReadStream(__dirname + "/" + dir + "/" + file).pipe(fs.createWriteStream(__dirname + "/" + "public/font" + "/" + file));
+                    fs.createReadStream(srcDir + "/" + file).pipe(fs.createWriteStream(publicFontDir + file));
 
                     addFontToFamily(fontFamilyName, fileWOExtension);
 
                     if (file.indexOf("woff") === -1) {
                         converter.ttf2Woff({
-                            src: __dirname + "/" + dir + "/" + file,
+                            src: srcDir + "/" + file,
                             dest: publicFontDir + file.replace('.ttf', '.woff')
                         }, function (err) {
                             cb(err);
