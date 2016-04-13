@@ -17,7 +17,7 @@ git reset --hard HEAD
 
 git branch
 
-git submodule update --recursive
+git submodule update --init --recursive --remote
 
 npm install --production
 
