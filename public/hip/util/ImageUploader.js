@@ -130,12 +130,7 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1'], function (Compo
         },
 
         makeAjaxCall: function (url, options, callback) {
-            if (window.cordovaHTTP) {
-
-                return null;
-            } else {
-                return rAppid.ajax(url, options, callback);
-            }
+           return rAppid.ajax(url, options, callback);
         }
 
 

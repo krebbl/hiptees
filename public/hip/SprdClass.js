@@ -47,9 +47,6 @@ define(
             },
 
             endpoint: function () {
-                if (typeof(cordova) !== "undefined" && cordova.platformId != "browser") {
-                    return "https://127.0.0.1:8000/api/v1";
-                }
                 var l = document.location;
                 if (l.hostname.indexOf("hiptees") > -1) {
                     return l.protocol + "//" + l.hostname + ":" + (l.port || 80) + "/api/v1"
