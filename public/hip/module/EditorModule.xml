@@ -46,7 +46,7 @@
                  marginLeft="{minusHalf(width)}px"
                  left="50%"
                  onclick="showMenu('')">
-                <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" product="{product}"/>
+                <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" />
             </div>
         </div>
     </div>

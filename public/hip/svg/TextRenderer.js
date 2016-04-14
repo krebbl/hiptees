@@ -1,4 +1,4 @@
-define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasurer', 'js/svg/Svg'], function (SvgElement, TextFlowStore, SvgMeasurer, Svg) {
+define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasurer', 'js/svg/Svg', "hip/util/LetterSpacing"], function (SvgElement, TextFlowStore, SvgMeasurer, Svg, LetterSpacing) {
 
     var EMPTY_LINE_TEXT = "\n" + String.fromCharCode(173);
     var XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
@@ -12,7 +12,7 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
             componentClass: "text-renderer"
         },
 
-        $classAttributes: ['textFlow', 'maxWidth', 'measureResult'],
+        $classAttributes: ['textFlow', 'maxWidth', 'measureResult', "overwrite"],
 
         events: ["on:sizeChanged", "on:textflowRendered"],
 
@@ -88,7 +88,10 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                     child.setAttribute("transform", transform.replace(/translate\(([^,]+),[^,]+\)/, "translate($1," + y + ")"));
                 }
                 var height = (this.$el.childNodes.length - 1) * measureHeight * lineHeight + measureHeight;
-                this.trigger('on:sizeChanged', {height: height, width: this.$.maxWidth || this.$.measureResult.maxWidth}, this);
+                this.trigger('on:sizeChanged', {
+                    height: height,
+                    width: this.$.maxWidth || this.$.measureResult.maxWidth
+                }, this);
             }
 
         },
@@ -116,15 +119,28 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
             }
         },
 
+        _onDomAdded: function () {
+            this.callBase();
+
+            this._renderTextFlow(this.$.textFlow);
+        },
+
         _renderTextFlow: function (textFlow) {
 
-            if (textFlow) {
+            if (textFlow && this.$addedToDom) {
+
+                //console.log(this.$el.getCTM());
+
                 var self = this;
                 var root = this.getSvgRoot();
-                this.$.svgMeasurer.measureTextFlow(textFlow, {maxWidth: this.$.maxWidth, viewBox: root.$.viewBox, width: root.$.width, height: root.$.height}, function (err, result) {
+
+                this.$.svgMeasurer.measureTextFlow(textFlow, {
+                    maxWidth: this.$.maxWidth,
+                    viewBox: root.$.viewBox,
+                    width: root.$.width,
+                    height: root.$.height
+                }, function (err, result) {
                     if (!err) {
-
-
                         self.set('measureResult', result, {force: true});
                     }
                 });
@@ -161,21 +177,25 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                     transform,
                     leaf, tspan,
                     textAnchor,
-                    style;
-
+                    style,
+                    next;
 
                 for (var i = 0; i < lines.length; i++) {
                     line = lines[i];
                     if (i < group.childNodes.length) {
                         text = group.childNodes[i];
+                        next = text.nextSibling;
+                        // remove text from group
+                        group.removeChild(text);
                     } else {
                         text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                         text.setAttributeNS(XML_NAMESPACE, "space", "preserve");
-                        text.setAttribute("text-rendering", "optimizeSpeed");
+                        text.setAttribute("text-rendering", "geometricPrecision");
 //                        text.style.textRendering = "geometricPrecision";
 //                        text.setAttribute("text-rendering", );
 //                        text.setAttributeNodeNS(s) = "needsclick";
                         text.setAttribute("class", "needsclick");
+                        next = null;
                         group.appendChild(text);
                     }
                     text.setAttribute("y", ascent);
@@ -193,14 +213,15 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                     for (var j = line.paragraph.$.children.length - 1; j >= 0; j--) {
                         leaf = line.paragraph.$.children.at(j);
                         tspan = j < text.childNodes.length ? text.childNodes[j] : null;
-                        if(tspan && tspan.tagName !== "tspan") {
+                        if (tspan && tspan.tagName !== "tspan") {
                             text.removeChild(tspan);
                             tspan = null;
                         }
-                        if(!tspan){
+                        if (!tspan) {
                             tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
                             tspan.setAttributeNS(XML_NAMESPACE, "space", "preserve");
                             tspan.setAttribute("class", "needsclick");
+                            tspan.textContent = "";
                             text.appendChild(tspan);
                         }
                         lineText = leaf.text();
@@ -227,10 +248,9 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                     x = 0;
                     textAnchor = style.$.textAlign;
 
-
                     text.setAttribute("font-size", style.$.fontSize);
                     text.setAttribute("font-family", style.$.fontFamily);
-                    text.setAttribute("letter-spacing", Math.ceil(style.$.letterSpacing) + "");
+                    text.setAttribute("letter-spacing", LetterSpacing(style.$.letterSpacing));
 
                     if (textAnchor == "center") {
                         x = 0.5 * (maxWidth - line.width);
@@ -238,6 +258,12 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                         x = maxWidth - line.width;
                     }
                     text.setAttribute("transform", "translate(" + x + "," + y + ")");
+
+                    if (next) {
+                        group.insertBefore(text, next);
+                    } else {
+                        group.appendChild(text);
+                    }
                 }
 
                 while (group.childNodes.length > lines.length) {

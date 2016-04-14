@@ -3,13 +3,14 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
     return Svg.inherit('', {
 
         defaults: {
-            width: 1000,
-            height: 1000,
-            product: null,
+            width: null,
+            height: null,
+            addedToDom: false,
+            productType: "{productStore.product.productType}",
+            printArea: "{productType.printArea}",
+            product: "{productStore.product}",
             componentClass: "needsclick",
-            appearance: "{product.appearance}",
-            productType: "{product.productType}",
-            printArea: "{productType.printArea}"
+            appearance: "{product.appearance}"
         },
 
         inject: {
@@ -18,7 +19,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
         },
 
         events: ['on:configurationLongTapped'],
-        $classAttributes: ["product", "productType", "printAreaViewer", "printAreaContainer", "appearance", "printArea"],
+        $classAttributes: ["product", "productType", "printAreaViewer", "printAreaContainer", "appearance", "printArea", "addedToDom"],
 
         ctor: function () {
             this.callBase();
@@ -39,14 +40,26 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
         _onDomAdded: function () {
             this.callBase();
 
-            if (this.$.productType) {
-                this.setViewBox(0, 0, this.get('productType.size.width'), this.get('productType.size.height'));
-            }
+
+            var box = this.$el.getBoundingClientRect();
+            this.set({
+                'width': box.height,
+                'height': box.height
+            });
+
+            this._renderProductType(this.$.productType);
+
+            this.set('addedToDom', true);
+        },
+
+        _initializeRenderer: function () {
+            this.callBase();
+            this._renderProductType(this.$.productType);
         },
 
         _renderProductType: function (productType) {
 
-            if (productType) {
+            if (productType && this.$addedToDom) {
                 var width = productType.get('size.width'),
                     height = productType.get('size.height');
 
@@ -56,6 +69,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
             }
 
         },
+
         getViewerForConfiguration: function (configuration) {
             return this.$.printAreaViewer.getViewerForConfiguration(configuration);
         },

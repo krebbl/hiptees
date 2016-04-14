@@ -60,7 +60,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             var viewer = this.getViewerForConfiguration(configuration);
             if (viewer) {
                 this.set('activeViewer', viewer);
-                //this._updateHandleSize();
+                this._updateHandleSize();
             }
             this.set('showActiveViewer', !!viewer);
         },

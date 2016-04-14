@@ -1,7 +1,7 @@
 <parent:PrintoutViewerClass xmlns="js.svg"
                            xmlns:parent="hip.svg">
 
-    <g cid="printAreaContainer">
+    <g cid="printAreaContainer" visible="{addedToDom}">
         <parent:PrintAreaViewer cid="printAreaViewer" translateX="0" translateY="0"/>
     </g>
 

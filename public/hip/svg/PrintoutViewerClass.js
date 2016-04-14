@@ -3,10 +3,11 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
     return Svg.inherit('', {
 
         defaults: {
+            addedToDom: false,
             width: 1000,
             height: 1000,
-            product: null,
-            productType: "{product.productType}",
+            product: "{productStore.product}",
+            productType: "{productStore.product.productType}",
             printArea: "{productType.printArea}"
         },
 
@@ -35,15 +36,19 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
         _onDomAdded: function () {
             this.callBase();
 
-            if (this.$.productType) {
-                this.setViewBox(0, 0, this.get('printArea.size.width'), this.get('printArea.size.height'));
-            }
+            var box = this.$el.getBoundingClientRect();
+            this.set({
+                'width': box.height,
+                'height': box.height
+            });
 
+            this._renderPrintArea(this.$.printArea);
+            this.set('addedToDom', true);
         },
 
         _renderPrintArea: function (printArea) {
 
-            if (printArea) {
+            if (printArea && this.$addedToDom) {
                 var width = printArea.get('size.width'),
                     height = printArea.get('size.height');
 

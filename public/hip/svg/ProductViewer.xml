@@ -6,7 +6,7 @@
 
     <!--<rect fill="url(#p-img)" width="100" height="200" />-->
 
-    <g cid="printAreaContainer">
+    <g cid="printAreaContainer" visible="{addedToDom}">
         <parent:PrintAreaViewer cid="printAreaViewer" />
     </g>
 

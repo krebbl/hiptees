@@ -30,10 +30,10 @@
         <conf:RouteConfiguration route="^product/(\w+)$" onexec="renderProduct"/>
     </js:Router>
 
-    <svg:PrintoutViewer visible="{isPrintout}" height="4000" width="{height2With(height)}" product="{product}"
+    <svg:PrintoutViewer visible="{isPrintout}" height="4000" width="{height2With(height)}"
                        style="display: block; -webkit-transform: translateZ(0);"/>
 
-    <svg:ProductViewer visible="{not(isPrintout)}" width="1600" height="1600" product="{product}"
+    <svg:ProductViewer visible="{not(isPrintout)}" width="1600" height="1600"
                        style="display: block; -webkit-transform: translateZ(0);"/>
 
 </hip:ImageRendererClass>

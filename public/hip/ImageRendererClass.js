@@ -62,6 +62,8 @@ define(
 
                 console.log("rendererStarted");
 
+                console.log("pixel ratio : " + +window.devicePixelRatio);
+
                 callback();
             },
 

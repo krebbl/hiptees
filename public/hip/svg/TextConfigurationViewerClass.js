@@ -11,7 +11,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             activeTextConfiguration: "{productStore.activeTextConfiguration}"
         },
 
-        $classAttributes: ["textRenderer"],
+        $classAttributes: ["textRenderer", "activeTextConfiguration"],
 
         inject: {
             svgTextEditor: SvgTextEditor,

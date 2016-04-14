@@ -3,7 +3,9 @@
                        xmlns:text="hip.svg">
 
     <svg cid="svg">
-        <text cid="_textContainer" xml:space="preserve" fill="red" text-rendering="optimizeSpeed"/>
+        <text cid="_textContainer" xml:space="preserve" fill="red" text-rendering="geometricPrecision">
+            <tspan xml:space="preserve" fill="white" cid="_tspan"/>
+        </text>
     </svg>
 
 </text:TextMeasurerClass>

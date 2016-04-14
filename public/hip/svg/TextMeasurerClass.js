@@ -1,4 +1,4 @@
-define(["js/ui/View"], function (View) {
+define(["js/ui/View", "hip/util/LetterSpacing"], function (View, LetterSpacing) {
 
     var fontMeasureCache = {};
     var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
@@ -23,7 +23,7 @@ define(["js/ui/View"], function (View) {
                 "font-family": pStyle.get('fontFamily')
             }, measurer);
 
-            measurer.textContent = "";
+            this.$._tspan.$el.textContent = "";
 
             this.$.svg.$el.removeChild(measurer);
             this.$.svg.$el.appendChild(measurer);
@@ -32,7 +32,7 @@ define(["js/ui/View"], function (View) {
             measurer.getBBox();
 
 
-            measurer.textContent = "ÈÄgqÜ";
+            this.$._tspan.$el.textContent = "ÈÄgqÜ";
 
             var rect = measurer.getBoundingClientRect();
 
@@ -69,34 +69,27 @@ define(["js/ui/View"], function (View) {
             var text = this.$._textContainer.$el,
                 spacing = Math.ceil(paragraph.get('style.letterSpacing')) || 0;
 
+            this.$._tspan.$el.textContent = "";
+            text.getBBox();
+
+            this.$.svg.$el.removeChild(text);
+
+            this.$._tspan.$el.textContent = paragraph.text();
+
             this.applyStyle({
                 "font-family": paragraph.get('style.fontFamily'),
                 "font-size": paragraph.get('style.fontSize'),
-                "letter-spacing": "" + (spacing)
+                "letter-spacing": LetterSpacing(spacing)
             }, text);
-//            text.style.letterSpacing = spacing + "px";
-            text.textContent = "";
-            text.getBBox();
 
-            text.textContent = paragraph.text();
+            this.$._tspan.$el.textContent = paragraph.text();
 
-            // TODO: if its necessary to have layout options on tspans
-//            for (var i = 0; i < children.length; i++) {
-//                child = children.at(i);
-//                childStyle = child.$.style;
-//
-//                tspan = document.createElementNS(SVG_NAMESPACE, "tspan");
-//                tspan.textContent = child.getText();
-//
-////                applyStyleToElement(childStyle, tspan);
-//
-//                text.appendChild(tspan);
-//            }
+            this.$.svg.$el.appendChild(text);
 
             var w = text.getBBox().width;
 
-            if (/PhantomJS/.test(window.navigator.userAgent)) {
-                w -= spacing * text.textContent.length;
+            if (/Chrome/.test(window.navigator.userAgent)) {
+                w -= spacing;
             }
 
             return w;
