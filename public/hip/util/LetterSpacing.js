@@ -4,7 +4,12 @@ define([], function () {
         if (/PhantomJS/.test(window.navigator.userAgent)) {
             return (letterSpacing * 2) + "px";
         }
-        return (letterSpacing * window.devicePixelRatio) + "px";
+
+        if (/iPhone/.test(window.navigator.platform)) {
+            return (letterSpacing * window.devicePixelRatio) + "px";
+        }
+
+        return letterSpacing;
     }
 
 });
