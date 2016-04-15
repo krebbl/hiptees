@@ -22,6 +22,111 @@
             src: url('./font/LeckerliOne-Regular.woff') format('woff'),
             url('./font/LeckerliOne-Regular.ttf') format('truetype');
         }
+
+        #preloader {
+            position: absolute;
+            top: 0;
+            background: #00B2A5;
+            height: 100%;
+            z-index: 10000;
+            left: 0;
+            right: 0;
+
+            transition: top 800ms;
+
+        }
+
+        #preloader.loaded {
+            top: -100%;
+
+        }
+
+        #preloader .lovetab {
+            display: block;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+            margin-top: 140px;
+        }
+
+        .lovetab {
+            -webkit-animation: pulse2 1s linear infinite;
+            -moz-animation: pulse2 1s linear infinite;
+            -ms-animation: pulse2 1s linear infinite;
+            animation: pulse2 1s linear infinite;
+        }
+
+        @keyframes "pulse2" {
+            0% {
+                -webkit-transform: scale(1.1);
+                -moz-transform: scale(1.1);
+                -o-transform: scale(1.1);
+                -ms-transform: scale(1.1);
+                transform: scale(1.1);
+            }
+            50% {
+                -webkit-transform: scale(0.8);
+                -moz-transform: scale(0.8);
+                -o-transform: scale(0.8);
+                -ms-transform: scale(0.8);
+                transform: scale(0.8);
+            }
+            100% {
+                -webkit-transform: scale(1);
+                -moz-transform: scale(1);
+                -o-transform: scale(1);
+                -ms-transform: scale(1);
+                transform: scale(1);
+            }
+
+        }
+
+        @-moz-keyframes pulse2 {
+            0% {
+                -moz-transform: scale(1.1);
+                transform: scale(1.1);
+            }
+            50% {
+                -moz-transform: scale(0.8);
+                transform: scale(0.8);
+            }
+            100% {
+                -moz-transform: scale(1);
+                transform: scale(1);
+            }
+
+        }
+
+        @-webkit-keyframes "pulse2" {
+            0% {
+                -webkit-transform: scale(1.1);
+                transform: scale(1.1);
+            }
+            50% {
+                -webkit-transform: scale(0.8);
+                transform: scale(0.8);
+            }
+            100% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+        }
+
+        @-ms-keyframes "pulse2" {
+            0% {
+                -ms-transform: scale(1.1);
+                transform: scale(1.1);
+            }
+            50% {
+                -ms-transform: scale(0.8);
+                transform: scale(0.8);
+            }
+            100% {
+                -ms-transform: scale(1);
+                transform: scale(1);
+            }
+        }
     </style>
 
     <!--<meta name="fragment" content="!">-->
@@ -64,12 +169,24 @@
 
 </head>
 <body>
+<div id="preloader">
+    <svg class="lovetab" viewBox="0 0 100 100" id="heart">
+        <path class="st0" fill="white"
+              d="M50,30.8l-14-14L9.8,43L50,83.2L90.2,43L64,16.9L50,30.8z M78,43L50,71L22,43l14-14L50,43l14-14L78,43z"/>
+    </svg>
+</div>
 <script type="text/javascript" data-usage="bootstrap">
     rAppid.bootStrap("hip/Sprd.xml", null, null, null, function (err, stage) {
+        var preloader = document.getElementById("preloader");
         if (err) {
+            preloader.style.backgroundColor = "red";
             console.log(err);
         } else {
             stage.set('height', window.innerHeight);
+            preloader.className += " loaded";
+            setTimeout(function(){
+                document.body.removeChild(preloader);
+            },1000);
         }
         window.application = stage.$application;
     });
