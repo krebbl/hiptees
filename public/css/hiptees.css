@@ -326,6 +326,19 @@ table {
     height: 100px;
     background: white url(../img/loader.gif) no-repeat center center;
     background-size: 50px; }
+  .basket__content {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch; }
+  .basket__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0; }
   .basket__updating {
     position: absolute;
     top: 0;
@@ -343,7 +356,7 @@ table {
   .basket__item {
     position: relative;
     padding: 15px;
-    border-bottom: 1px solid lightgrey;
+    border-top: 1px solid lightgrey;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -406,8 +419,13 @@ table {
     .basket__item-actions a {
       margin-left: 0.5em; }
   .basket__summary {
-    padding: 15px 15px; }
+    padding: 10px 15px;
+    vertical-align: top; }
+    .basket__summary > label {
+      display: inline-block;
+      line-height: 1.3em; }
   .basket__total-price {
+    display: inline-block;
     float: right;
     font-weight: bold; }
   .basket__btn-wrapper {

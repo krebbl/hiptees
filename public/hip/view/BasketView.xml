@@ -5,21 +5,18 @@
 
     <div class="basket__header">
         <a class="back-btn" onclick="closeBasket">
-            <i class="fa fa-times"/>
+            <i class="fa fa-chevron-up"/>
         </a>
         <h2>{i18n.t('basket.basket')}</h2>
     </div>
 
-    <view:BackToTop element="{content}" text="${i18n.t('general.backToTop')}"/>
 
     <div class="basket__loading" visible="{and(basketStore.loadingBasket, not(basketStore.updatingBasket))}"/>
 
-    <div class="basket__content" cid="content" visible="{basket.basketItems.length}" onclick="stopPropagation">
-        <div class="basket__updating" visible="{basketStore.updatingBasket}"/>
-        <div class="basket__total">
-            {basketStore.totalQuantity()} {i18n.t('general.article')}
-        </div>
-        <ui:ItemsView items="{basket.basketItems}">
+    <div class="basket__updating" visible="{basketStore.updatingBasket}"/>
+
+    <div class="basket__content" visible="{basketStore.basket}" cid="content" onclick="stopPropagation">
+        <ui:ItemsView class="basket__items" items="{basket.basketItems}">
             <js:Template name="item">
                 <div class="basket__item">
                     <a class="basket__item-image" onclick="_editBasketItem(item, event)">
@@ -35,7 +32,8 @@
                         <div class="basket__item-size">
                             <label>${i18n.t('general.size')}:</label>
                             <div class="btn btn-whitesmoke">
-                                <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}" emptyOption="true"
+                                <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}"
+                                                 emptyOption="true"
                                                  items="{basketStore.getSizes(item)}"
                                                  enableAutoFillCheck="false"
                                                  selectedItem="{basketStore.getSize(item)}"
@@ -62,8 +60,14 @@
                 </div>
             </js:Template>
         </ui:ItemsView>
+    </div>
+
+    <div class="basket__footer" visible="{basketStore.basket}">
         <div class="basket__summary">
-            <label>{i18n.t('basket.subTotalWithoutShipping')}</label>
+            <label>
+                {i18n.t('basket.subTotalWithoutShipping')}<br/>
+                {basketStore.totalQuantity()} {i18n.t('general.article')}
+            </label>
             <div class="basket__total-price">
                 <div>{basketStore.formatPrice(basket.priceItems)}</div>
             </div>
