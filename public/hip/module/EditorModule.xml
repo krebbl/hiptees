@@ -3,7 +3,7 @@
                           xmlns:js="js.core" class="module {loadingClass()}">
 
     <div class="header">
-        <h1 class="header__logo"/>
+        <h1 class="header__logo" onclick="showMenu('presets')"/>
         <h2>
             {titleForMenu(navigationStore.activeMenu)}
         </h2>
