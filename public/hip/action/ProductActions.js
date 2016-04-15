@@ -34,7 +34,10 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             },
             applyFilter: {},
             pointDownConfiguration: {},
-            changeOrder: {},
+            changeOrder: {
+                configuration: null,
+                move: 0
+            },
             undo: {},
             redo: {},
             addText: {

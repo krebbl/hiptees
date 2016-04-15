@@ -50,7 +50,7 @@ define(["js/ui/View", "js/core/I18n",
             var product = this.$.productStore.$.product;
             this.$.productActions.changeOrder({
                 configuration: this.$.configuration,
-                index: Math.min(product.numConfigurations() - 1, product.getIndexOfConfiguration(this.$.configuration) + 1)
+                move: 1
             });
         },
 
@@ -58,7 +58,7 @@ define(["js/ui/View", "js/core/I18n",
             var product = this.$.productStore.$.product;
             this.$.productActions.changeOrder({
                 configuration: this.$.configuration,
-                index: Math.max(0, product.getIndexOfConfiguration(this.$.configuration) - 1)
+                move: -1
             });
         },
 

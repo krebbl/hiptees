@@ -154,20 +154,25 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         changeOrder: function (payload) {
             var configuration = this.$.selectedConfiguration;
             if (configuration) {
-                var index = this.$.product.getIndexOfConfiguration(configuration),
-                    newIndex = payload.index;
+                var index = this.$.product.getIndexOfConfiguration(configuration);
+                if (index > -1) {
+                    var newIndex = index + payload.move;
 
-                if (newIndex > index) {
-                    newIndex--;
+
+                    newIndex = Math.max(0, newIndex);
+                    newIndex = Math.min(this.$.product.$.configurations.size() - 1, newIndex);
+
+                    if (newIndex !== index) {
+                        this.$.product.$.configurations.remove(configuration);
+                        this.$.product.$.configurations.add(configuration, {index: newIndex});
+
+                        this.trigger('on:configurationOrderChanged', {
+                            configuration: configuration,
+                            index: newIndex
+                        });
+                    }
+
                 }
-
-                this.$.product.$.configurations.remove(configuration);
-                this.$.product.$.configurations.add(configuration, {index: newIndex});
-
-                this.trigger('on:configurationOrderChanged', {
-                    configuration: configuration,
-                    index: payload.index
-                });
             }
         },
 
