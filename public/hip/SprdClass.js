@@ -294,20 +294,6 @@ define(
                     })
             },
 
-            _getEnvironment: function () {
-                var hostname = location.hostname;
-
-                if (/^([^.]+\.)?hiptees/i.test(hostname)) {
-                    return null;
-                }
-
-                if ((/vm1[0-9]{2}\.v/).test(hostname)) {
-                    return "test";
-                }
-
-                return "dev";
-            },
-
             showLoading: function () {
                 this.toggleLoading(true);
             },
