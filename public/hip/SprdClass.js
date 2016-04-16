@@ -60,6 +60,13 @@ define(
 
             },
 
+            getCustomErrorData: function(){
+                return {
+                    product: this.$.productStore.getComposedProduct(),
+                    userActions: this.$.loggerStore.$.actionsDone
+                }
+            },
+
             /***
              * Starts the application
              * @param parameter
