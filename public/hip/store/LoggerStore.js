@@ -18,7 +18,11 @@ define(["hip/store/Store", "js/data/Entity", "underscore"], function (Store, Ent
                         if (payload.hasOwnProperty(key)) {
                             value = payload[key];
                             if (value instanceof Entity) {
-                                value = value.$context.$dataSource.composeModel(value);
+                                if (value.$context) {
+                                    value = value.$context.$dataSource.composeModel(value);
+                                } else {
+                                    value = {};
+                                }
                             } else {
                                 value = _.clone(value);
                             }
