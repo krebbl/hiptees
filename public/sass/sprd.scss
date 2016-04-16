@@ -176,11 +176,12 @@
   background-size: 50px;
 }
 
-.active > .configuration-boundary {
+.active-configuration-boundary {
   stroke: $color-brand;
   stroke-width: 2;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 9 6;
+  pointer-events: none;
 }
 
 .configuration-handle {
