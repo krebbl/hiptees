@@ -16,10 +16,11 @@ define([
         defaults: {
             basketStore: null,
             productStore: null,
+            productViewer: null,
             product: "{productStore.product}",
             appearance: "{product.appearance}",
             selectedConfiguration: "{productStore.selectedConfiguration}",
-            configurationViewer: null,
+            configurationViewer: "{productViewer.activeViewer}",
             saveView: null,
             addView: null,
             zoomed: false,
@@ -56,21 +57,6 @@ define([
                         viewer._enableEditing();
                     }, 10);
                 }
-            });
-
-            this.bind('productStore', 'on:configurationPointDown', function (e) {
-                if (self.$.productViewer) {
-                    var viewer = self.$.productViewer.getViewerForConfiguration(e.$.configuration);
-                    self.set('configurationViewer', viewer);
-                }
-            });
-
-            this.bind('productStore', 'on:configurationSelected', function (e) {
-                if (e.$.configuration && self.$.productViewer) {
-                    var viewer = self.$.productViewer.getViewerForConfiguration(e.$.configuration);
-                    self.set('configurationViewer', viewer);
-                }
-
             });
 
             this.bind('productStore', 'on:productSave', function () {

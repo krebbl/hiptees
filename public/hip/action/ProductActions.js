@@ -33,7 +33,6 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
                 configuration: null
             },
             applyFilter: {},
-            pointDownConfiguration: {},
             changeOrder: {
                 configuration: null,
                 move: 0

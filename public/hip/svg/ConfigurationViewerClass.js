@@ -135,10 +135,6 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             this.$moved = false;
             this.$resized = false;
 
-            this.$.productActions.pointDownConfiguration({
-                configuration: this.$.configuration
-            });
-
             if (!this.$.selected) {
                 this.$.productActions.selectConfiguration({
                     configuration: this.$.configuration

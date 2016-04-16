@@ -324,10 +324,6 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             }
         },
 
-        pointDownConfiguration: function (payload) {
-            this.trigger('on:configurationPointDown', {configuration: payload.configuration}, this);
-        },
-
         saveProduct: function (payload) {
             this._saveProduct(this.$.product, payload.state, payload.callback);
         },

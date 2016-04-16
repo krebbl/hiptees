@@ -10,7 +10,9 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
             printArea: "{productType.printArea}",
             product: "{productStore.product}",
             componentClass: "needsclick",
-            appearance: "{product.appearance}"
+            appearance: "{product.appearance}",
+            printAreaViewer: null,
+            activeViewer: "{printAreaViewer.activeViewer}"
         },
 
         inject: {
@@ -19,7 +21,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
         },
 
         events: ['on:configurationLongTapped'],
-        $classAttributes: ["product", "productType", "printAreaViewer", "printAreaContainer", "appearance", "printArea", "addedToDom"],
+        $classAttributes: ["product", "productType", "printAreaViewer", "activeViewer", "printAreaContainer", "appearance", "printArea", "addedToDom"],
 
         ctor: function () {
             this.callBase();
