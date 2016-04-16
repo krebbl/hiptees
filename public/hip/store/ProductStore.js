@@ -215,6 +215,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 textFlow: textFlow,
                 offset: offset
             });
+
+            textFlow.$context = configuration.$context;
 //
             if (!textFlow.$.selection) {
                 textFlow.set('selection', TextRange.createTextRange(0, textFlow.textLength() - 1));
