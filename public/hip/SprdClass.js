@@ -6,9 +6,10 @@ define(
         "hip/model/Design",
         "hip/model/Product",
         "fastclick",
-        "flow"
+        "flow",
+        "underscore"
     ],
-    function (Application, Query, List, Collection, Design, Product, Fastclick, flow) {
+    function (Application, Query, List, Collection, Design, Product, Fastclick, flow, _) {
 
         FastClick.attach(document.body);
 
@@ -60,9 +61,18 @@ define(
 
             },
 
-            getCustomErrorData: function(){
+            getCustomErrorData: function () {
+                var composedProduct = this.$.productStore.getComposedProduct();
+                if (composedProduct) {
+                    // remove design resources
+                    _.forEach(composedProduct.configurations, function (configuration) {
+                        if (configuration.design && !configuration.design.id) {
+                            configuration.design.resources = {};
+                        }
+                    });
+                }
                 return {
-                    product: this.$.productStore.getComposedProduct(),
+                    product: composedProduct,
                     userActions: this.$.loggerStore.$.actionsDone
                 }
             },
@@ -275,7 +285,7 @@ define(
 
                 productStore.bind('on:addingImage', this.showLoading, this);
 
-                var hasParams = location.search.replace(/^\?/,"").split("&"),
+                var hasParams = location.search.replace(/^\?/, "").split("&"),
                     params = {};
 
                 for (var j = 0; j < hasParams.length; j++) {
