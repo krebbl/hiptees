@@ -176,6 +176,10 @@ define(
                     tracking.trackEvent("PRODUCT", "configurationCloned");
                 });
 
+                productStore.bind('on:sizeSelected', function (e) {
+                    tracking.trackEvent("PRODUCT", "sizeSelected", e.$.size.$.name);
+                });
+
                 productStore.bind('on:configurationAdded', function (e) {
                     mementoCallback(e);
 

@@ -43,6 +43,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
         selectSize: function (payload) {
             this.set('selectedSize', payload.size);
+            this.trigger('on:sizeSelected', {size: payload.size});
         },
 
         removeConfiguration: function (payload) {
