@@ -281,7 +281,10 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                     return l.type === "defaultCheckout";
                 });
                 if (link) {
-                    window.location.href = link.href;
+                    this.trigger('on:checkout');
+                    setTimeout(function () {
+                        window.location.href = link.href;
+                    }, 100);
                 }
             }
         }

@@ -228,12 +228,12 @@ define(
                 var basketStore = this.$.basketStore;
                 basketStore.bind('on:addToBasketSuccess', function (e) {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.itemAdded')}, {duration: 3});
-                    tracking.trackEvent("BASKET", "addToBasketSuccess", "product", e.$.product.$.id);
+                    tracking.trackEvent("BASKET", "addToBasketSuccess");
                 }, this);
 
                 basketStore.bind('on:addToBasketFailed', function (e) {
                     this.$.notificationManager.showNotification('error', {message: this.$.i18n.t('message.addingItemFailed')}, {duration: 3});
-                    tracking.trackEvent("BASKET", "addToBasketFailed", "reason", e.$.reason);
+                    tracking.trackEvent("BASKET", "addToBasketFailed", e.$.reason);
                 }, this);
 
                 basketStore.bind('on:basketItemCloned', function (e) {
@@ -246,6 +246,10 @@ define(
 
                 basketStore.bind('on:basketItemRemoved', function (e) {
                     tracking.trackEvent("BASKET", "basketItemRemoved");
+                });
+
+                basketStore.bind('on:checkout', function () {
+                    tracking.trackEvent("BASKET", "checkout");
                 });
 
                 basketStore.bind('on:checkoutSuccess', function (e) {
