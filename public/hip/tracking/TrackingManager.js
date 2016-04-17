@@ -2,41 +2,42 @@ define(["js/core/Component"], function (Component) {
 
     return Component.inherit({
         defaults: {
-            trackingId: 'UA-XXXX-YY',
+            trackingId: 'UA-69705403-1',
             debugMode: false
         },
 
-        initializationComplete: function () {
+        _initializationComplete: function () {
             this.callBase();
 
+            if (typeof (ga) !== "undefined") {
+                ga('create', this.$.trackingId, 'auto');
+                ga('send', 'screenView');
 
-            if (window.analytics) {
-                window.analytics.startTrackerWithId(this.$.trackingId);
                 if (this.$.debugMode) {
-                    window.analytics.debugMode();
+                    ga.debugMode();
                 }
             }
 
         },
 
         trackView: function (view) {
-            window.analytics && window.analytics.trackView(view);
+            ga && ga('send', 'pageview', {screenName: view});
         },
         trackEvent: function (category, action, label, value) {
-            window.analytics && window.analytics.trackEvent(category, action, label, value);
+            ga && ga('send', 'event', category, action, label, value);
         },
         trackException: function (description, fatal) {
-            window.analytics && window.analytics.trackException(description, fatal);
+            ga && ga('send', 'exception', description, fatal);
         },
         trackTiming: function (category, ms, variable, label) {
-            window.analytics && window.analytics.trackTiming(category, ms, variable, label);
-        },
-        addTransaction: function (id, affiliation, revenue, tax, shipping, currencyCode) {
-            window.analytics && window.analytics.addTransaction(id, affiliation, revenue, tax, shipping, currencyCode)
-        },
-        setUserId: function (userId) {
-            window.analytics && window.analytics.setUserId(userId);
+            ga && ga('send', 'timing', category, ms, variable, label);
         }
+        //addTransaction: function (id, affiliation, revenue, tax, shipping, currencyCode) {
+        //    ga && ga.addTransaction(id, affiliation, revenue, tax, shipping, currencyCode)
+        //},
+        //setUserId: function (userId) {
+        //    ga && ga.setUserId(userId);
+        //}
     });
 
 });

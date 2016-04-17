@@ -129,35 +129,10 @@ define(
 
                 var self = this;
 
-                //this.$.navigationStore.bind('on:navigate', function (e) {
-                //    var history = this.$.router.history;
-                //    var historyFragment = history.fragment();
-                //    if (e.$.fragment && /^presets|^create/.test(e.$.fragment) && historyFragment !== e.$.fragment) {
-                //        history.navigate(e.$.fragment, false, false);
-                //    }
-                //    tracking.trackView(e.$.fragment);
-                //}, this);
+                this.$.navigationStore.bind('on:menuChanged', function (e) {
+                    tracking.trackView(e.$.menu || 'editor');
+                }, this);
 
-
-                /**
-                 * Events
-                 * * Category Editor
-                 * * Actions: Added Configuration, Removed Configuration
-                 * * Label: ??
-                 * * Value: ??
-                 *
-                 *
-                 *
-                 * * Category Product
-                 * * Actions: Publish, Unpublish, Delete, Share
-                 *
-                 *
-                 * * Sessions
-                 * * Actions: Logged In, Logged Out, Registered
-                 *
-                 *
-                 *
-                 */
 
                 var mementoCallback = function (e) {
                     if (!e.$.preview) {
@@ -194,21 +169,27 @@ define(
                 }, this);
 
                 productStore.bind('on:productSaveFailed', function (e) {
-                    tracking.trackEvent("PRODUCT", "productSaveFailed", "state");
+                    tracking.trackEvent("PRODUCT", "productSaveFailed");
                 }, this);
+
+                productStore.bind('on:configurationCloned', function (e) {
+                    tracking.trackEvent("PRODUCT", "configurationCloned");
+                });
 
                 productStore.bind('on:configurationAdded', function (e) {
                     mementoCallback(e);
 
-                    var config = e.$.configuration;
-                    tracking.trackEvent("PRODUCT", "configurationAdded", "type", config.$.type);
+                    if (!e.$.cloned) {
+                        var config = e.$.configuration;
+                        tracking.trackEvent("PRODUCT", "configurationAdded", config.$.type);
+                    }
                 });
 
                 productStore.bind('on:configurationRemoved', function (e) {
                     mementoCallback(e);
 
                     var config = e.$.configuration;
-                    tracking.trackEvent("PRODUCT", "configurationRemoved", "type", config.$.type);
+                    tracking.trackEvent("PRODUCT", "configurationRemoved", config.$.type);
                 });
 
                 productStore.bind('on:imageReplaced', function (e) {
@@ -218,10 +199,6 @@ define(
                 });
 
                 productStore.bind('on:filterChanged', mementoCallback);
-
-                productStore.bind('on:productStateChanged', function (e) {
-                    tracking.trackEvent("PRODUCT", "productStateChanged", "newState", e.$.product.$.state);
-                });
 
                 productStore.bind('on:configurationMoved', mementoCallback);
 
@@ -244,32 +221,33 @@ define(
                 });
 
 
-                this.$.basketStore.bind('on:addToBasketSuccess', function (e) {
+                var basketStore = this.$.basketStore;
+                basketStore.bind('on:addToBasketSuccess', function (e) {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.itemAdded')}, {duration: 3});
                     tracking.trackEvent("BASKET", "addToBasketSuccess", "product", e.$.product.$.id);
                 }, this);
 
-                this.$.basketStore.bind('on:addToBasketFailed', function (e) {
+                basketStore.bind('on:addToBasketFailed', function (e) {
                     this.$.notificationManager.showNotification('error', {message: this.$.i18n.t('message.addingItemFailed')}, {duration: 3});
                     tracking.trackEvent("BASKET", "addToBasketFailed", "reason", e.$.reason);
                 }, this);
 
-                this.$.basketStore.bind('on:removeFromBasketSuccess', function (e) {
-                    tracking.trackEvent("BASKET", "removeFromBasketSuccess", "product", e.$.product);
+                basketStore.bind('on:basketItemCloned', function (e) {
+                    tracking.trackEvent("BASKET", "basketItemCloned");
                 }, this);
 
-                this.$.basketStore.bind('on:removeFromBasketFailed', function (e) {
-                    tracking.trackEvent("BASKET", "removeFromBasketFailed", "reason", e.$.reason);
-                }, this);
+                basketStore.bind('on:basketItemChanged', function (e) {
+                    tracking.trackEvent("BASKET", "basketItemChanged");
+                });
 
-                this.$.basketStore.bind('on:checkoutSuccess', function (e) {
-                    tracking.trackEvent("BASKET", "checkoutSuccess", "checkoutUrl", e.$.checkoutUrl);
+                basketStore.bind('on:basketItemRemoved', function (e) {
+                    tracking.trackEvent("BASKET", "basketItemRemoved");
+                });
+
+                basketStore.bind('on:checkoutSuccess', function (e) {
+                    tracking.trackEvent("BASKET", "checkoutSuccess", e.$.checkoutUrl);
                     var url = e.$.checkoutUrl;
                     window.open(url, "_system");
-                }, this);
-
-                this.$.basketStore.bind('on:checkoutFailed', function (e) {
-                    tracking.trackEvent("BASKET", "checkoutFailed", "reason", e.$.error);
                 }, this);
 
                 //this.$.feedbackHandler.bind('on:feedbackSent', function () {

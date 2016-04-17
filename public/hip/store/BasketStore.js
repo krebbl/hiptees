@@ -90,6 +90,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                         self.loadCombinedBasket(function () {
                             self.set('updatingBasket', false);
                         });
+                        self.trigger('on:basketItemRemoved', {item: payload.item});
                     } else {
                         self.set('updatingBasket', false);
                     }
@@ -128,6 +129,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                     } else {
                         self.set('updatingBasket', false);
                     }
+                    self.trigger('on:basketItemChanged', {item: payload.item});
                 } else {
                     self.set('updatingBasket', false);
                 }
@@ -153,9 +155,9 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                     self.loadCombinedBasket(function () {
                         self.set('updatingBasket', false);
                     });
+                    self.trigger('on:basketItemCloned', {item: payload.item});
                 } else {
                     self.set('updatingBasket', false);
-
                 }
             });
         },
