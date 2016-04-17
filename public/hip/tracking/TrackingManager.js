@@ -11,7 +11,7 @@ define(["js/core/Component"], function (Component) {
 
             if (typeof (ga) !== "undefined") {
                 ga('create', this.$.trackingId, 'auto');
-                ga('send', 'screenView');
+                ga('send', 'screenview', {appName: "hiptees"});
 
                 if (this.$.debugMode) {
                     ga.debugMode();
@@ -21,7 +21,7 @@ define(["js/core/Component"], function (Component) {
         },
 
         trackView: function (view) {
-            ga && ga('send', 'pageview', {screenName: view});
+            ga && ga('send', 'screenview', {screenName: view, appName: "hiptees"});
         },
         trackEvent: function (category, action, label, value) {
             ga && ga('send', 'event', category, action, label, value);
