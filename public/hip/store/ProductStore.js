@@ -506,7 +506,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
 
         editConfiguration: function (payload) {
-            this.trigger('on:editConfiguration', {configuration: payload.configuratin});
+            this.trigger('on:editConfiguration', {configuration: payload.configuration});
         },
 
         changeProductState: function () {

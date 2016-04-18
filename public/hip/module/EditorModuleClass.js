@@ -21,6 +21,7 @@ define([
             appearance: "{product.appearance}",
             selectedConfiguration: "{productStore.selectedConfiguration}",
             configurationViewer: "{productViewer.activeViewer}",
+            editMode: "{navigationStore.isMenuActive('settings')}",
             saveView: null,
             addView: null,
             makePublic: false,
@@ -66,13 +67,17 @@ define([
 
             }, this);
 
+            this.bind('productStore', 'change:activeTextConfiguration', function (e) {
+                this.set('editMode', e.$ || this.$.navigationStore.isMenuActive('settings'));
+            }, this);
+
             this.bind('productStore', 'on:productSaveFailed', function (e) {
                 if (this.$.savingProduct) {
                     this.set('savingProduct', false);
                 }
             }, this);
 
-            this.bind('productStore', 'on:editConfiguration', function () {
+            this.bind('productStore', 'on:editConfiguration', function (e) {
                 this.$.navigationStore.showMenu({menu: "settings"});
             }, this);
 
@@ -223,6 +228,24 @@ define([
             this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
 
+        },
+
+        _renderEditMode: function (editMode) {
+            if (editMode) {
+                var viewer = this.$.productViewer.getViewerForConfiguration(this.$.selectedConfiguration);
+                if (viewer) {
+                    var viewerRect = viewer.$el.getBoundingClientRect();
+
+                    var bottomDistance = window.innerHeight - viewerRect.bottom - this.$.innerContent.$el.scrollTop;
+                    if (bottomDistance < 220) {
+                        this.$.wrapper.set('top', (bottomDistance - 210 - 40) + "px");
+                    }
+                }
+            } else {
+                var scrollTop = this.$.innerContent.$el.scrollTop;
+                this.$.wrapper.set('top', "0");
+                this.$.innerContent.$el.scrollTop = scrollTop;
+            }
         },
 
         add: function (what, e) {

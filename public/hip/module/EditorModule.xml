@@ -71,7 +71,7 @@
 
     </div>
 
-    <div class="setting-views" selected="{navigationStore.isMenuActive('settings')}">
+    <div class="setting-views" cid="settingsView" selected="{navigationStore.isMenuActive('settings')}">
         <view:TextSettingsView oncloseClicked="showMenu('')"/>
         <view:ImageSettingsView oncloseClicked="showMenu('')"/>
         <view:ShapeSettingsView oncloseClicked="showMenu('')"/>
