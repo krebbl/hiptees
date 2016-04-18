@@ -139,16 +139,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             if (this.isRendered()) {
                 this.removeClass("editing");
             }
-
-            var textFlow = this.$.configuration.$.textFlow;
-
-            if (textFlow.$.selection) {
-                var totalLength = textFlow.textLength() - 1;
-                textFlow.$.selection.set({
-                    anchorIndex: totalLength,
-                    activeIndex: totalLength
-                });
-            }
             this.$editing = false;
             this._updateSnapPoints();
 

@@ -233,7 +233,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 self.set('loading', false);
                 self.trigger('on:configurationAdded', {configuration: configuration, cloned: false});
                 self._selectConfiguration(configuration);
-                self.editTextConfiguration(configuration);
+                self.set('activeTextConfiguration', configuration);
 
                 self._calculateUsedColors();
             });
@@ -279,7 +279,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             });
         },
 
-        _getNextColor: function(){
+        _getNextColor: function () {
             colorIndex = (colorIndex + 1) % COLORS.length;
 
             return COLORS[colorIndex];
