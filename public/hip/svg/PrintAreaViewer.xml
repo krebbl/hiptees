@@ -80,6 +80,30 @@
             </text>
         </g>
 
+        <g translateX="{minus(half(_v._size.width),multiply(handleWidth,1.5))}" translateY="{minus(0,handleWidth)}"
+           onclick="layerDown"
+           class="configuration-handle"
+                visible="{showLayerButtons}">
+            <circle r="{multiply(handleWidth, 1.4)}"/>
+            <text y="{multiply(handleWidth,0.5)}"
+                  text-anchor="middle"
+                  font-size="{_fontSize}">
+                &#xf149;
+            </text>
+        </g>
+
+        <g translateX="{plus(half(_v._size.width),multiply(handleWidth,1.5))}" translateY="{minus(0,handleWidth)}"
+           onclick="layerUp"
+           class="configuration-handle"
+           visible="{showLayerButtons}">
+            <circle r="{multiply(handleWidth, 1.4)}"/>
+            <text y="{multiply(handleWidth,0.5)}"
+                  text-anchor="middle"
+                  font-size="{_fontSize}">
+                &#xf148;
+            </text>
+        </g>
+
     </g>
 
     <g cid="snapLines">

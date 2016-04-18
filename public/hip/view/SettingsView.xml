@@ -7,12 +7,6 @@
             ${i18n.t('general.back')}
         </a>
         <div class="default-options">
-            <a class="layer-btn" onclick="layerDown">
-                <i class="fa fa-level-down"/>
-            </a>
-            <a class="layer-btn" onclick="layerUp">
-                <i class="fa fa-level-up"/>
-            </a>
         </div>
 
 
