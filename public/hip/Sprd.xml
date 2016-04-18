@@ -8,9 +8,9 @@
 
     <js:Injection cid="injection">
         <js:I18n cid="i18n" path="hip/locale" locale="de"/>
-        <data:SprdDataSource cid="sprdApi" gateway="/sprdApi/v1" apiKey="{ENV().apiKey}" secret="{ENV().secret}"
+        <data:SprdDataSource cid="sprdApi" gateway="/api/v1" apiKey="{ENV().apiKey}" secret="{ENV().secret}"
                              endPoint="{ENV().endPoint}"/>
-        <data:HipDataSource cid="api" gateway="/api/v1" endPoint="{endpoint()}"/>
+        <data:HipDataSource cid="api" gateway="/hapi/v1" endPoint="{endpoint()}"/>
         <util:CloudinaryImageUploader/>
         <util:ImageFileReader/>
         <util:Memento cid="memento"/>

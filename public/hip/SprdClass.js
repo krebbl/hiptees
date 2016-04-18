@@ -50,9 +50,9 @@ define(
             endpoint: function () {
                 var l = document.location;
                 if (l.hostname.indexOf("hiptees") > -1) {
-                    return l.protocol + "//" + l.hostname + ":" + (l.port || 80) + "/api/v1"
+                    return l.protocol + "//" + l.hostname + ":" + (l.port || 80) + "/hapi/v1"
                 }
-                return l.origin + l.pathname.replace(/\/[^/]*$/, "/api/v1");
+                return l.origin + l.pathname.replace(/\/[^/]*$/, "/hapi/v1");
             },
 
             _initializationComplete: function () {
