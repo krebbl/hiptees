@@ -75,8 +75,13 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             this.callBase();
             var self = this;
             this.dom(this.$stage.$document).bindDomEvent("selectionchange", function (e) {
-                self.$textBefore = window.getSelection().focusNode.textContent;
-                self._onSelectionChange();
+                var selection = window.getSelection();
+                if(selection && selection.focusNode) {
+                    self.$textBefore = selection.focusNode.textContent;
+                    self._onSelectionChange();
+                } else {
+                    self.$textBefore = "";
+                }
             });
         },
 
