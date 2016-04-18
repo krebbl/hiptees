@@ -12,7 +12,7 @@
         </ui:SelectionView>
     </div>
     <a class="presets-view__close" onclick="hide" visible="{closable}">
-        <i class="fa fa-chevron-down"/>
+        <i class="fa fa-times"/>
     </a>
 
     <view:BackToTop element="{scrollContainer}" text="${i18n.t('general.backToTop')}"/>

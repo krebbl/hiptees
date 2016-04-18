@@ -19,7 +19,7 @@
         <ui:ContentPlaceHolder name="headerInfo" cid="headerInfo" class="header-info"/>
 
         <a class="minimize-btn" onclick="toggle()">
-            <i class="fa fa-chevron-down"/>
+            <i class="fa fa-times"/>
         </a>
 
     </div>
