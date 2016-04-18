@@ -36,7 +36,7 @@ define(["js/core/Component", "hip/tracking/Omniture", "hip/tracking/Google"], fu
         },
 
         trackAddToBasket: function () {
-            this.$.omninture.track(null, null, ["event24"]);
+            this.$.omniture.track(null, null, ["event24"]);
             this.$.g.trackEvent("BASKET", "addToBasketSuccess");
         },
 
