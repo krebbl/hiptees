@@ -132,34 +132,7 @@
     <!--<meta name="fragment" content="!">-->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <script type="text/javascript">
-        var viewportTag;
-        (function (document, screen) {
-
-
-            var head = document.head || document.getElementsByTagName("head")[0],
-                    scale = 1,
-                    meta;
-
-            if (window.matchMedia) {
-                var matchMedia = window.matchMedia("(max-device-width: 400px)");
-                if (matchMedia && matchMedia.matches) {
-                    scale = 1;
-                }
-            } else if (screen.width <= 720) {
-                scale = 1;
-            }
-
-            meta = document.createElement("meta");
-            meta.setAttribute("name", "viewport");
-            meta.setAttribute("content", "width=device-width, height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no");
-
-            viewportTag = meta;
-
-            head.appendChild(meta);
-        })(document, screen);
-    </script>
+    <meta name="viewport" content="width=device-width, height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
