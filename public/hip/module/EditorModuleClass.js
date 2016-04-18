@@ -208,6 +208,8 @@ define([
                 this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
                 this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
             }
+
+            this.$.productActions.editTextConfiguration();
         },
 
         _onPointerMove: function (e) {
