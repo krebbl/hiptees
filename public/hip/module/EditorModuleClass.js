@@ -23,7 +23,6 @@ define([
             configurationViewer: "{productViewer.activeViewer}",
             saveView: null,
             addView: null,
-            zoomVisible: "{or(productStore.selectedConfiguration,productStore.zoomedConfiguration)}",
             makePublic: false,
             showConfigurationInfo: false,
             savingProduct: false,
