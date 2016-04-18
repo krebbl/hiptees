@@ -91,15 +91,6 @@
                        value="{paragraphStyle.fontSize}"/>
         </div>
         <div class="slider-label">
-            ${i18n.t('textSettings.lineHeight')}
-            <strong>{format(paragraphStyle.lineHeight)}</strong>
-        </div>
-        <div class="slider-wrapper">
-            <ui:Slider min="0.5" max="2" step="0.1" oninput="_changeStyle('lineHeight', value, true)"
-                       onhandleUp="_changeStyle('lineHeight', value)"
-                       value="{paragraphStyle.lineHeight}"/>
-        </div>
-        <div class="slider-label">
             ${i18n.t('textSettings.letterSpacing')}
             <strong>{format(paragraphStyle.letterSpacing)}</strong>
         </div>
@@ -107,6 +98,15 @@
             <ui:Slider min="-5" max="10" step="1" oninput="_changeStyle('letterSpacing', value, true)"
                        onhandleUp="_changeStyle('letterSpacing', value)"
                        value="{paragraphStyle.letterSpacing}"/>
+        </div>
+        <div class="slider-label">
+            ${i18n.t('textSettings.lineHeight')}
+            <strong>{format(paragraphStyle.lineHeight)}</strong>
+        </div>
+        <div class="slider-wrapper">
+            <ui:Slider min="0.5" max="2" step="0.1" oninput="_changeStyle('lineHeight', value, true)"
+                       onhandleUp="_changeStyle('lineHeight', value)"
+                       value="{paragraphStyle.lineHeight}"/>
         </div>
     </js:Content>
     <setting:ColorSetting cid="colorContent" selectedColor="{leafColor}" oncolorSelect="_updateColor"/>
