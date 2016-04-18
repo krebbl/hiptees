@@ -30,6 +30,8 @@
         <store:TextFlowStore cid="textFlowStore"/>
         <store:PresetStore cid="presetStore"/>
 
+        <tracking:Google/>
+        <tracking:Omniture/>
         <tracking:TrackingManager cid="trackingManager"/>
 
         <svg:TextEditor class="needsclick"/>

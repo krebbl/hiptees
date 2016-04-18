@@ -117,10 +117,6 @@ define(
 
                 var tracking = this.$.trackingManager;
 
-                window.onerror = function (message, file, line) {
-                    tracking.trackException(message + "\n AT " + file + ":" + line, false);
-                };
-
                 // false - disables autostart
                 this.callBase(parameter, false);
 
@@ -130,7 +126,10 @@ define(
                 var self = this;
 
                 this.$.navigationStore.bind('on:menuChanged', function (e) {
-                    tracking.trackView(e.$.menu || 'editor');
+                    tracking.trackNavigation(e.$.menu || 'editor');
+                    if (e.$.menu === "buy") {
+                        tracking.trackBuyClicked();
+                    }
                 }, this);
 
 
@@ -156,50 +155,44 @@ define(
                     }, 100);
                 });
 
+                var savingTime = 0;
                 productStore.bind('on:productSave', function (e) {
-                    tracking.trackEvent("PRODUCT", "savingProduct");
+                    savingTime = (new Date()).getTime();
                 }, this);
 
                 productStore.bind('on:productSaved', function (e) {
-                    tracking.trackEvent("PRODUCT", "productSaved");
+                    tracking.trackProductSaved();
+                    tracking.trackProductSaveTiming((new Date()).getTime() - savingTime);
                 }, this);
 
                 productStore.bind('on:productSaveFailed', function (e) {
-                    tracking.trackEvent("PRODUCT", "productSaveFailed");
-                }, this);
-
-                productStore.bind('on:productSaveFailed', function (e) {
-                    tracking.trackEvent("PRODUCT", "productSaveFailed");
+                    tracking.trackProductSaveFailed();
                 }, this);
 
                 productStore.bind('on:configurationCloned', function (e) {
-                    tracking.trackEvent("PRODUCT", "configurationCloned");
+                    tracking.trackConfigurationCloned(e.$.configuration);
                 });
 
                 productStore.bind('on:sizeSelected', function (e) {
-                    tracking.trackEvent("PRODUCT", "sizeSelected", e.$.size.$.name);
+                    tracking.trackSizeSelected(e.$.size);
                 });
 
                 productStore.bind('on:configurationAdded', function (e) {
                     mementoCallback(e);
 
                     if (!e.$.cloned) {
-                        var config = e.$.configuration;
-                        tracking.trackEvent("PRODUCT", "configurationAdded", config.$.type);
+                        tracking.trackConfigurationAdded(e.$.configuration);
                     }
                 });
 
                 productStore.bind('on:configurationRemoved', function (e) {
                     mementoCallback(e);
 
-                    var config = e.$.configuration;
-                    tracking.trackEvent("PRODUCT", "configurationRemoved", config.$.type);
+                    tracking.trackConfigurationRemoved(e.$.configuration);
                 });
 
                 productStore.bind('on:imageReplaced', function (e) {
                     mementoCallback(e);
-
-                    tracking.trackEvent("PRODUCT", "imageReplaced");
                 });
 
                 productStore.bind('on:filterChanged', mementoCallback);
@@ -212,8 +205,8 @@ define(
 
                 this.$.textFlowStore.bind('on:paragraphStyleChanged', mementoCallback);
 
-                productStore.bind('on:selectPreset', function () {
-
+                productStore.bind('on:selectPreset', function (e) {
+                    tracking.trackSelectPreset(e.$.productId);
                 });
 
                 productStore.bind('on:productLoaded', function () {
@@ -226,49 +219,47 @@ define(
 
 
                 var basketStore = this.$.basketStore;
+                var addToBasketTime = 0;
+
+                basketStore.bind('on:addingToBasket', function () {
+                    addToBasketTime = (new Date()).getTime();
+                    tracking.trackAddToBasketSize();
+                });
+
                 basketStore.bind('on:addToBasketSuccess', function (e) {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.itemAdded')}, {duration: 3});
-                    tracking.trackEvent("BASKET", "addToBasketSuccess");
+                    tracking.trackAddToBasket();
+                    tracking.trackAddToBasketTiming((new Date().getTime()) - addToBasketTime);
                 }, this);
 
                 basketStore.bind('on:addToBasketFailed', function (e) {
                     this.$.notificationManager.showNotification('error', {message: this.$.i18n.t('message.addingItemFailed')}, {duration: 3});
-                    tracking.trackEvent("BASKET", "addToBasketFailed", e.$.reason);
+                    tracking.trackAddToBasketFailed(e.$.productId);
                 }, this);
 
+                basketStore.bind('on:basketCreated', function (e) {
+                    tracking.trackBasketCreated(e.$.basketId);
+                });
+
                 basketStore.bind('on:basketItemCloned', function (e) {
-                    tracking.trackEvent("BASKET", "basketItemCloned");
+                    tracking.trackBasketItemCloned();
                 }, this);
 
                 basketStore.bind('on:basketItemChanged', function (e) {
-                    tracking.trackEvent("BASKET", "basketItemChanged");
+                    tracking.trackBasketItemChanged();
                 });
 
                 basketStore.bind('on:basketItemRemoved', function (e) {
-                    tracking.trackEvent("BASKET", "basketItemRemoved");
+                    tracking.trackBasketItemRemoved();
                 });
 
                 basketStore.bind('on:checkout', function () {
-                    tracking.trackEvent("BASKET", "checkout");
+                    tracking.trackGotoCheckout();
                 });
 
-                basketStore.bind('on:checkoutSuccess', function (e) {
-                    tracking.trackEvent("BASKET", "checkoutSuccess", e.$.checkoutUrl);
-                    var url = e.$.checkoutUrl;
-                    window.open(url, "_system");
-                }, this);
-
-                //this.$.feedbackHandler.bind('on:feedbackSent', function () {
-                //    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.thxForFeedback')}, {duration: 3});
-                //}, this);
-
-                productStore.bind('on:productStateChanged', function () {
-                    this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.changesSuccessful')}, {duration: 3});
-                }, this);
 
                 productStore.bind('on:productSave', this.showLoading, this);
                 productStore.bind('on:productSaved', this.hideLoading, this);
-
                 productStore.bind('on:addingImage', this.showLoading, this);
 
                 var hasParams = location.search.replace(/^\?/, "").split("&"),
