@@ -255,7 +255,7 @@ define([
                     paragraphStyle: {
                         textAlign: "center",
                         lineHeight: 1.3,
-                        fontSize: 30,
+                        fontSize: 70,
                         letterSpacing: 0,
                         fontFamily: "HammersmithOne"
                     },
