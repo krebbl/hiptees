@@ -2,7 +2,7 @@ define(["js/core/Component"], function (Component) {
 
     return Component.inherit({
         defaults: {
-            trackingId: 'UA-69705403-1',
+            trackingId: 'UA-24747471-32',
             debugMode: false
         },
 
