@@ -284,7 +284,7 @@ define(
                         if (!productStore.$.product) {
                             self.$.navigationActions.showMenu({menu: "presets"});
                         }
-                        callback();
+                        callback(err);
                     })
             },
 
