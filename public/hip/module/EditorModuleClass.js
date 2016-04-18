@@ -145,7 +145,7 @@ define([
         add: function (what, e) {
             if (what == "text") {
                 this.$.productActions.addText({
-                    text: "New Text",
+                    text: "Text",
                     paragraphStyle: {
                         textAlign: "center",
                         lineHeight: 1.3,
