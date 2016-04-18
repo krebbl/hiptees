@@ -81,6 +81,10 @@ define([
                 this.$.navigationStore.showMenu({menu: "settings"});
             }, this);
 
+            this.bind('innerContent', 'dom:add', function(){
+                this._setScrollLeft();
+            }, this);
+
 
             var uploads = 0,
                 uploaded = 0;
@@ -107,12 +111,6 @@ define([
                 }
 
             }, this);
-        },
-
-        _onDomAdded: function () {
-            this.callBase();
-
-            this._setScrollLeft();
         },
 
         _commitSelectedConfiguration: function (configuration) {
@@ -242,9 +240,11 @@ define([
                     }
                 }
             } else {
-                var scrollTop = this.$.innerContent.$el.scrollTop;
-                this.$.wrapper.set('top', "0");
-                this.$.innerContent.$el.scrollTop = scrollTop;
+                if (this.$.innerContent.isRendered()) {
+                    var scrollTop = this.$.innerContent.$el.scrollTop;
+                    this.$.wrapper.set('top', "0");
+                    this.$.innerContent.$el.scrollTop = scrollTop;
+                }
             }
         },
 
@@ -326,7 +326,7 @@ define([
         },
 
         _render_zoom: function (zoom) {
-            if (this.isRendered()) {
+            if (this.isRendered() && this.$.innerContent.isRendered()) {
                 var offsetWidth = this.$.innerContent.$el.offsetWidth;
                 var rect = this.$stage.$el.getBoundingClientRect();
                 var zoomHeight = rect.height * zoom;
@@ -345,10 +345,12 @@ define([
         },
 
         _setScrollLeft: function () {
-            var offsetWidth = this.$.innerContent.$el.offsetWidth;
-            var rect = this.$.wrapper.$el.getBoundingClientRect();
+            if(this.$.innerContent.isRendered()) {
+                var offsetWidth = this.$.innerContent.$el.offsetWidth;
+                var rect = this.$.wrapper.$el.getBoundingClientRect();
 
-            this.$.innerContent.$el.scrollLeft = (rect.width - offsetWidth) * 0.5;
+                this.$.innerContent.$el.scrollLeft = (rect.width - offsetWidth) * 0.5;
+            }
         },
 
         isEditButtonVisible: function () {
