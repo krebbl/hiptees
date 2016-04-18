@@ -72,7 +72,9 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         _updateHandleSize: function () {
-            this.set('handleWidth', 10 * this.globalToLocalFactor().x);
+            if(this.$addedToDom){
+                this.set('handleWidth', 10 * this.globalToLocalFactor().x);
+            }
         },
 
         _initializationComplete: function () {

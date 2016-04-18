@@ -23,8 +23,6 @@ define([
             configurationViewer: "{productViewer.activeViewer}",
             saveView: null,
             addView: null,
-            zoomed: false,
-            zoomedConfiguration: "{productStore.zoomedConfiguration}",
             zoomVisible: "{or(productStore.selectedConfiguration,productStore.zoomedConfiguration)}",
             makePublic: false,
             showConfigurationInfo: false,
@@ -33,6 +31,7 @@ define([
             sizeTableSelected: false,
             navigationStore: null,
             productSelected: false,
+            _zoom: 1,
             _loadingMessage: "",
             _productName: ""
         },
@@ -74,8 +73,8 @@ define([
                 }
             }, this);
 
-            this.bind('productStore', 'on:editConfiguration', function(){
-                 this.$.navigationStore.showMenu({menu: "settings"});
+            this.bind('productStore', 'on:editConfiguration', function () {
+                this.$.navigationStore.showMenu({menu: "settings"});
             }, this);
 
 
@@ -106,6 +105,12 @@ define([
             }, this);
         },
 
+        _onDomAdded: function () {
+            this.callBase();
+
+            this._setScrollLeft();
+        },
+
         _commitSelectedConfiguration: function (configuration) {
             this.set('showConfigurationInfo', !!configuration);
         },
@@ -118,7 +123,7 @@ define([
             return a || b;
         },
 
-        showMenu: function(menu){
+        showMenu: function (menu) {
             if (this.$.zoomed) {
                 this.toggleZoom();
             }
@@ -134,12 +139,91 @@ define([
             }
         },
 
-        undo: function(){
+        undo: function () {
             this.$.productActions.undo();
         },
 
         redo: function () {
             this.$.productActions.redo();
+        },
+
+        vectorLength: function (v) {
+            return Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2));
+        },
+
+        _createDiffVector: function (event) {
+
+            var changedEvent = event.touches ? event.touches[0] : event,
+                f = {x: 1, y: 1},
+                diffX = (changedEvent.pageX - this.$downPoint.x) * f.x,
+                diffY = (changedEvent.pageY - this.$downPoint.y) * f.y;
+
+            if (event.touches && event.touches.length == 2) {
+                //if (this.$.keepAspectRatio || this.$._keepHeight) {
+                var length = this.vectorLength([
+                    event.touches[0].pageX - event.touches[1].pageX,
+                    event.touches[0].pageY - event.touches[1].pageY]);
+                if (!this.$startLength) {
+                    this.$startLength = length;
+                } else {
+                    diffX = (length - this.$startLength) * f.x;
+                    diffY = 0;
+                }
+                //} else {
+                //var vector = [
+                //    Math.abs(event.touches[0].pageX - event.touches[1].pageX),
+                //    Math.abs(event.touches[0].pageY - event.touches[1].pageY)];
+                //if (!this.$startVector) {
+                //    this.$startVector = vector;
+                //} else {
+                //
+                //    diffX = (vector[0] - this.$startVector[0]) * f.x;
+                //    diffY = (vector[1] - this.$startVector[1]) * f.y;
+                //}
+                //}
+            }
+
+            return [diffX, diffY];
+        },
+
+        _onPointerDown: function (event) {
+            if (event.domEvent.touches && event.domEvent.touches.length === 2) {
+                this.$originalZoom = this.$._zoom;
+                this.$downPoint = {
+                    x: event.pointerEvent.pageX,
+                    y: event.pointerEvent.pageY
+                };
+
+                var self = this;
+                this.$moveDelegate = this.$moveDelegate || function (e) {
+                        self._onPointerMove(e);
+                    };
+
+                this.$upDelegate = this.$upDelegate || function (e) {
+                        self._onPointerUp(e);
+                    };
+
+                this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
+                this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
+            }
+        },
+
+        _onPointerMove: function (e) {
+            var diff = this._createDiffVector(e);
+
+            //console.log(this.$originalZoom, diff[0]);
+
+            this.set('_zoom', Math.max(1, this.$originalZoom + diff[0] / 320));
+        },
+
+        _onPointerUp: function () {
+            this.$startLength = null;
+
+            this.$.innerContent.set('overflow', 'scroll');
+
+            this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
+            this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
+
         },
 
         add: function (what, e) {
@@ -215,65 +299,34 @@ define([
             return -0.5 * n;
         },
 
-        _commitZoomedConfiguration: function (configuration) {
+        zoomOut: function () {
+            this.set('_zoom', 1);
+        },
+
+        _render_zoom: function (zoom) {
             if (this.isRendered()) {
-                var self = this;
-                if (configuration) {
-                    var viewer = this.$.productViewer.getViewerForConfiguration(configuration);
-                    if (viewer) {
-                        var offsetWidth = this.$.innerContent.$el.offsetWidth;
-                        var rect = viewer.$el.getBoundingClientRect();
-                        var zoomHeight = Math.min(2000, (0.8 * offsetWidth) / rect.width * this.$.innerContent.$.height);
-                        this.$.innerContent.set('overflow', 'scroll');
-                        this.$.wrapper.set({
-                            'height': zoomHeight
-                        });
-                        this.$.wrapper.set('marginLeft', (this.minusHalf(this.$heightBefore)) + "px");
+                var offsetWidth = this.$.innerContent.$el.offsetWidth;
+                var rect = this.$stage.$el.getBoundingClientRect();
+                var zoomHeight = rect.height * zoom;
+                this.$.innerContent.set('overflow', 'hidden');
+                var oldMiddle = (this.$.wrapper.$.height - offsetWidth) * 0.5;
+                var oldScrollLeft = this.$.innerContent.$el.scrollLeft;
 
-                        var rectAfter = viewer.$el.getBoundingClientRect();
-                        this.$.innerContent.$el.scrollLeft = rectAfter.left - (offsetWidth - rectAfter.width) * 0.5;
-                        this.$.innerContent.$el.scrollTop = rectAfter.top - (this.$.innerContent.$el.offsetHeight - rectAfter.height) * 0.5;
+                this.$.wrapper.set({
+                    'height': zoomHeight
+                });
+                //this.$.wrapper.set('marginLeft', (this.minusHalf(this.$heightBefore)) + "px");
 
-                        this.set('zoomed', true);
-                    }
-                } else {
-                    var innerContent = this.$.innerContent;
-                    setTimeout(function () {
-                        innerContent.set('overflow', 'hidden');
-                        innerContent.$el.scrollLeft = 0;
-                        innerContent.$el.scrollTop = 0;
-                    }, 1);
-                    setTimeout(function () {
-                        self.$.wrapper.set({
-                            'left': "0",
-                            'height': self.$heightBefore
-                        });
-                    }, 2);
-                    setTimeout(function () {
-                        self.$.wrapper.set({
-                            'left': "50%"
-                        });
-                        self.set('zoomed', false);
-                    }, 10);
-                }
+                this.$.innerContent.$el.scrollLeft = (zoomHeight - offsetWidth) * 0.5 + (zoom > 1 ? oldScrollLeft - oldMiddle : 0);
+
             }
         },
 
-        toggleZoom: function () {
-            if (!this.$heightBefore) {
-                this.$heightBefore = this.$.wrapper.$.height;
-            }
+        _setScrollLeft: function () {
+            var offsetWidth = this.$.innerContent.$el.offsetWidth;
+            var rect = this.$.wrapper.$el.getBoundingClientRect();
 
-            var configuration;
-            if (this.$.productStore.$.zoomedConfiguration) {
-                configuration = null
-            } else {
-                configuration = this.$.selectedConfiguration;
-            }
-
-            this.$.productActions.zoomConfiguration({configuration: configuration});
-
-
+            this.$.innerContent.$el.scrollLeft = (rect.width - offsetWidth) * 0.5;
         },
 
         isEditButtonVisible: function () {
@@ -319,6 +372,10 @@ define([
             });
         },
 
+        gt: function (a, b) {
+            return a > b;
+        },
+
         getProductText: function (p) {
             return this.$.productStore.getProductText(p);
         },
@@ -338,10 +395,10 @@ define([
         }.onChange('productStore.loadingProduct'),
 
         zoomClass: function () {
-            return this.$.zoomed ? "zoomed" : "";
-        },
-        titleForMenu: function(menu){
-            if(menu === "presets") {
+            return this.$._zoom === 1 ? "zoomed" : "";
+        }.onChange('_zoom'),
+        titleForMenu: function (menu) {
+            if (menu === "presets") {
                 return this.$.i18n.t('editor.chooseTemplate');
             } else {
                 return this.$.i18n.t('editor.createYourOwn');
