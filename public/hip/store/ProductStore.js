@@ -36,7 +36,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             loading: false,
             zoomedConfiguration: null,
             memento: null,
-            usedColors: []
+            usedColors: [],
+            defaultFont: "HammersmithOne"
         },
         inject: {
             api: HipDataSource,
@@ -207,10 +208,13 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             var leafStyle = payload.leafStyle || {};
             leafStyle.color = this._getNextColor();
 
+
             (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, leafStyle, payload.paragraphStyle || {
+                    textAlign: "center",
+                    lineHeight: 1.3,
+                    fontSize: 70,
                     letterSpacing: 0,
-                    fontSize: 30,
-                    lineHeight: 1.3
+                    fontFamily: this.$.defaultFont
                 })).doOperation();
 
 
@@ -389,6 +393,12 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             var self = this;
 
             flow()
+                .seq(function (cb) {
+                    // load default font
+                    self.$.textMeasurer.loadFont(self.$.defaultFont, function (err) {
+                        cb();
+                    });
+                })
                 .seq(function (cb) {
                     if (productId) {
                         self.loadProduct({

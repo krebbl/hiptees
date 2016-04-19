@@ -48,15 +48,15 @@ define([
             this.callBase();
 
             var self = this;
-            this.bind('productStore', 'on:configurationAdded', function (e) {
-                var configuration = e.$.configuration;
-                if (configuration.$.type == "text" && e.$.cloned == false) {
-                    setTimeout(function () {
-                        var viewer = self.$.productViewer.getViewerForConfiguration(configuration);
-                        viewer._enableEditing();
-                    }, 10);
-                }
-            });
+            //this.bind('productStore', 'on:configurationAdded', function (e) {
+            //    var configuration = e.$.configuration;
+            //    if (configuration.$.type == "text" && e.$.cloned == false) {
+            //        setTimeout(function () {
+            //            var viewer = self.$.productViewer.getViewerForConfiguration(configuration);
+            //            viewer._enableEditing();
+            //        }, 10);
+            //    }
+            //});
 
             this.bind('productStore', 'on:productSave', function () {
 
@@ -250,17 +250,7 @@ define([
 
         add: function (what, e) {
             if (what == "text") {
-                this.$.productActions.addText({
-                    text: "Text",
-                    paragraphStyle: {
-                        textAlign: "center",
-                        lineHeight: 1.3,
-                        fontSize: 70,
-                        letterSpacing: 0,
-                        fontFamily: "HammersmithOne"
-                    },
-                    leafStyle: {}
-                });
+                this.$.productActions.addText();
             } else if (what == "image") {
                 // Simulate click on the element.
                 var evt = document.createEvent('Event');
