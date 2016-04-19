@@ -536,6 +536,10 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             }
             this.set('selectedConfiguration', configuration);
             this.trigger('on:configurationSelected', {configuration: configuration});
+
+            if (!configuration) {
+                this.editConfiguration({});
+            }
         },
 
         _saveProduct: function (product, state, cb) {

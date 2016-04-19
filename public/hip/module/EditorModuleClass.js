@@ -21,7 +21,7 @@ define([
             appearance: "{product.appearance}",
             selectedConfiguration: "{productStore.selectedConfiguration}",
             configurationViewer: "{productViewer.activeViewer}",
-            editMode: "{navigationStore.isMenuActive('settings')}",
+            centeredConfiguration: null,
             saveView: null,
             addView: null,
             makePublic: false,
@@ -67,8 +67,16 @@ define([
 
             }, this);
 
+            var editModeTimeout = null;
+
             this.bind('productStore', 'change:activeTextConfiguration', function (e) {
-                this.set('editMode', e.$ || this.$.navigationStore.isMenuActive('settings'));
+                if (!e.$) {
+                    editModeTimeout = setTimeout(function () {
+                        self.set('centeredConfiguration', null);
+                    }, 100);
+                } else {
+                    self.set('centeredConfiguration', e.$);
+                }
             }, this);
 
             this.bind('productStore', 'on:productSaveFailed', function (e) {
@@ -78,10 +86,14 @@ define([
             }, this);
 
             this.bind('productStore', 'on:editConfiguration', function (e) {
-                this.$.navigationStore.showMenu({menu: "settings"});
+                if (e.$.configuration) {
+                    this.$.navigationStore.showMenu({menu: "settings"});
+                }
+                editModeTimeout && clearTimeout(editModeTimeout);
+                self.set('centeredConfiguration', e.$.configuration);
             }, this);
 
-            this.bind('innerContent', 'dom:add', function(){
+            this.bind('innerContent', 'dom:add', function () {
                 this._setScrollLeft();
             }, this);
 
@@ -207,9 +219,10 @@ define([
 
                 this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
                 this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
+
+                this.$.productActions.editTextConfiguration();
             }
 
-            this.$.productActions.editTextConfiguration();
         },
 
         _onPointerMove: function (e) {
@@ -228,15 +241,16 @@ define([
 
         },
 
-        _renderEditMode: function (editMode) {
-            if (editMode) {
-                var viewer = this.$.productViewer.getViewerForConfiguration(this.$.selectedConfiguration);
+        _renderCenteredConfiguration: function (config) {
+            if (config) {
+                var viewer = this.$.productViewer.getViewerForConfiguration(config);
                 if (viewer) {
                     var viewerRect = viewer.$el.getBoundingClientRect();
 
-                    var bottomDistance = window.innerHeight - viewerRect.bottom;
-                    if (bottomDistance < 250) {
-                        this.$.wrapper.set('top', (bottomDistance - 250) + "px");
+                    var bottomDistance = this.$stage.$el.offsetHeight - (viewerRect.top + viewerRect.height);
+                    var bottomThreshold = this.$stage.$browser.isIOS ? 250 : 300;
+                    if (bottomDistance < bottomThreshold) {
+                        this.$.wrapper.set('top', (bottomDistance - bottomThreshold) + "px");
                     }
                 }
             } else {
@@ -335,7 +349,7 @@ define([
         },
 
         _setScrollLeft: function () {
-            if(this.$.innerContent.isRendered()) {
+            if (this.$.innerContent.isRendered()) {
                 var offsetWidth = this.$.innerContent.$el.offsetWidth;
                 var rect = this.$.wrapper.$el.getBoundingClientRect();
 
