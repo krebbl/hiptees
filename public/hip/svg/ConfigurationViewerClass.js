@@ -99,6 +99,8 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 return;
             }
 
+            this.$downTime = (new Date()).getTime();
+
 //            event.stopPropagation();
             this.$currentTarget = event.target;
             this.$action = action;
@@ -112,12 +114,20 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             this.$originalOffset = this.$._offset;
 
             var self = this;
+            var firstMoveDone = false;
+            var moveTimeout = false;
 
-            if (!this.$moveDelegate) {
-                this.$moveDelegate = function (e) {
+            this.$moveDelegate = function (e) {
+                if (!firstMoveDone && !moveTimeout) {
+                    moveTimeout = setTimeout(function () {
+                        self.handlePointerMove(e);
+                        firstMoveDone = true;
+                    }, 100);
+                } else if (firstMoveDone) {
                     self.handlePointerMove(e);
                 }
-            }
+            };
+
 
             if (!this.$upDelegate) {
                 this.$upDelegate = function (e) {
