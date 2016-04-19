@@ -60,7 +60,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         handlePointerMove: function (event) {
 
-            if (this.$action === "resize" || (event.touches && event.touches.length > 1)) {
+            if (this.$action === "resize") {
                 event.preventDefault();
                 this.set('_resizing', true);
                 this.$resized = false;
@@ -138,16 +138,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             this.$.textRenderer.set('visible', true);
             if (this.isRendered()) {
                 this.removeClass("editing");
-            }
-
-            var textFlow = this.$.configuration.$.textFlow;
-
-            if (textFlow.$.selection) {
-                var totalLength = textFlow.textLength() - 1;
-                textFlow.$.selection.set({
-                    anchorIndex: totalLength,
-                    activeIndex: totalLength
-                });
             }
             this.$editing = false;
             this._updateSnapPoints();

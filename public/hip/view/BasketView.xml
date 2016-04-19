@@ -5,7 +5,7 @@
 
     <div class="basket__header">
         <a class="back-btn" onclick="closeBasket">
-            <i class="fa fa-chevron-up"/>
+            <i class="fa fa-times"/>
         </a>
         <h2>{i18n.t('basket.basket')}</h2>
     </div>

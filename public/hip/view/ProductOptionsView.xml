@@ -35,7 +35,7 @@
     <div class="product-options__footer">
         <a onclick="hide">
             {i18n.t('general.close')}
-            <i class=" fa fa-chevron-down"/>
+            <i class=" fa fa-times"/>
         </a>
     </div>
 </parent:ProductOptionsViewClass>

@@ -824,28 +824,40 @@ image.masking-bg-image {
 }
 
 .slider {
-  height: 1px;
-  background: rgba(222, 222, 222, 0.44);
+  margin-top: -11px;
+  height: 20px;
+
+  &::after {
+    content: "";
+    background: #777777;
+    display: block;
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    top: 9px;
+  }
 }
 
 /* line 32, ../sass/_categorize.scss */
 .slider-bar {
-  top: 0;
+  top: 9px;
   height: 1px;
   background: #FFFFFF;
+  z-index: 10;
 }
 
 /* line 37, ../sass/_categorize.scss */
 .slider-handle {
-  top: -8px;
+  top: -6px;
+  z-index: 10;
 }
 
 /* line 41, ../sass/_categorize.scss */
 .slider-handle .inner-handle {
-  width: 17px;
-  height: 17px;
-  border: 5px solid transparent;
+  width: 20px;
+  height: 20px;
   border-radius: 25px;
+  margin: 5px;
   background: #FFFFFF;
   display: block;
   -webkit-transform: translatez(0);

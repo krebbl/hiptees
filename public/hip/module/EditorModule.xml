@@ -7,23 +7,24 @@
         <h2>
             {titleForMenu(navigationStore.activeMenu)}
         </h2>
-        <view:MiniBasketButton class="header__btn btn-right" onclick="showMenu('basket')" visible="{basketStore.basket}"/>
+        <view:MiniBasketButton class="header__btn btn-right" onclick="showMenu('basket')"
+                               visible="{basketStore.basket}"/>
     </div>
 
 
-    <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content">
+    <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content" onpointerdown="_onPointerDown">
         <div class="undo-redo-buttons">
             <a onclick="undo" enabled="{memento.hasUndoState()}">
-                <i class="fa fa-reply"/>
+            <i class="fa fa-reply"/>
             </a>
             <a onclick="redo" enabled="{memento.hasRedoState()}">
-                <i class="fa fa-share"/>
+            <i class="fa fa-share"/>
             </a>
         </div>
 
-        <a class="zoom-btn" onclick="toggleZoom" selected="{zoomVisible}">
-            <i class="fa fa-search-plus" visible="{not(zoomed)}"/>
-            <i class="fa fa-search-minus" visible="{zoomed}"/>
+        <a class="zoom-btn" onclick="zoomOut" selected="{gt(_zoom,1)}">
+            <!--<i class="fa fa-search-plus" visible="{not(zoomed)}"/>-->
+            <i class="fa fa-search-minus"/>
         </a>
 
         <div class="configuration-info" selected="{showConfigurationInfo}">
@@ -43,10 +44,8 @@
             <div class="product-viewer-wrapper" cid="wrapper"
                  height="{height}"
                  width="{height}"
-                 marginLeft="{minusHalf(width)}px"
-                 left="50%"
                  onclick="showMenu('')">
-                <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" />
+                <svg:ProductViewer cid="productViewer" height="{height}" width="{height}" visible="{height}"/>
             </div>
         </div>
     </div>
@@ -72,7 +71,7 @@
 
     </div>
 
-    <div class="setting-views" selected="{navigationStore.isMenuActive('settings')}">
+    <div class="setting-views" cid="settingsView" selected="{navigationStore.isMenuActive('settings')}">
         <view:TextSettingsView oncloseClicked="showMenu('')"/>
         <view:ImageSettingsView oncloseClicked="showMenu('')"/>
         <view:ShapeSettingsView oncloseClicked="showMenu('')"/>
@@ -128,7 +127,7 @@
                 ${i18n.t('menu.legalInfo')}
             </a>
             <a onclick="showMenu('termsAndConditions')">
-                <i class="fa fa-paragraph" />
+                <i class="fa fa-paragraph"/>
                 ${i18n.t('menu.termsAndConditions')}
             </a>
             <a onclick="showMenu('privacy')">
@@ -198,14 +197,15 @@
                 </js:Template>
             </ui:SelectionView>
 
-            <a class="btn btn-orange" enabled="{and(productStore.selectedSize,not(basketStore.loadingBasket))}" onclick="addToBasket">
+            <a class="btn btn-orange" enabled="{and(productStore.selectedSize,not(basketStore.loadingBasket))}"
+               onclick="addToBasket">
                 ${i18n.t('editor.addToBasket')}
             </a>
         </div>
     </div>
 
     <div class="info-view" _isActive="{navigationStore.isMenuActive('legalInfo')}" selected="{_isActive}">
-       <view:LegalInfo />
+        <view:LegalInfo/>
     </div>
 
     <div class="info-view" _isActive="{navigationStore.isMenuActive('privacy')}" selected="{_isActive}">

@@ -5,6 +5,7 @@
                         onkeypress="_onkeyPress"
                         onkeyup="_onkeyUp"
                         onscroll="_onscroll"
+                        onpointermove="_onpointerMove"
                         autocorrect="off"
                         autocapitalize="off"
                         autocomplete="off"

@@ -6,7 +6,7 @@ define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, C
             fillOpacity: 1,
             strokeOpacity: 1,
             stroke: "#000000",
-            strokeWidth: 6
+            strokeWidth: 0
         },
         schema: {
             type: String,

@@ -24,7 +24,8 @@ define(['js/svg/SvgElement', 'js/core/List',
             showActiveViewer: false,
             activeViewer: null,
             handleWidth: 20,
-            snapLines: null
+            snapLines: null,
+            showLayerButtons: false
         },
 
         inject: {
@@ -32,7 +33,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             productActions: ProductActions
         },
 
-        $classAttributes: ["product", "printArea", "activeViewer", "showActiveViewer", "handleWidth", "border", "configurationContainer", "snapLines"],
+        $classAttributes: ["showLayerButtons", "product", "printArea", "activeViewer", "showActiveViewer", "handleWidth", "border", "configurationContainer", "snapLines"],
 
         ctor: function () {
             this.callBase();
@@ -61,6 +62,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             if (viewer) {
                 this.set('activeViewer', viewer);
                 this._updateHandleSize();
+                this._checkViewer(viewer);
             }
             this.set('showActiveViewer', !!viewer);
         },
@@ -72,7 +74,9 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         _updateHandleSize: function () {
-            this.set('handleWidth', 10 * this.globalToLocalFactor().x);
+            if (this.$addedToDom) {
+                this.set('handleWidth', 10 * this.globalToLocalFactor().x);
+            }
         },
 
         _initializationComplete: function () {
@@ -81,6 +85,33 @@ define(['js/svg/SvgElement', 'js/core/List',
             var self = this;
             this.getSvgRoot().bind('change:width', this._updateHandleSize, this);
 
+        },
+
+        _checkViewer: function (activeViewer) {
+            if(!this.$addedToDom) {
+                return;
+            }
+
+            var collides = false;
+
+            var aX = activeViewer.$.translateX;
+            var aY = activeViewer.$.translateY;
+            var aEndX = aX + activeViewer.$._size.width;
+            var aEndY = aY + activeViewer.$._size.height;
+
+            _.forEach(this.$.configurationContainer.$children, function (viewer) {
+                if(!collides && viewer !== activeViewer) {
+                    var vX = viewer.$.translateX;
+                    var vY = viewer.$.translateY;
+                    var vEndX = vX + viewer.$._size.width;
+                    var vEndY = vY + viewer.$._size.height;
+                    if (aX < vEndX && aY < vEndY && aEndX > vX && aEndY > vY) {
+                        collides = true;
+                    }
+                }
+            });
+
+            this.set('showLayerButtons', collides);
         },
 
         _renderProduct: function (product) {
@@ -122,6 +153,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                 configurationViewer.bind('on:configurationPointerUp', function () {
                     self.$.snapLines.$children[0].set('stroke-opacity', 0);
                     self.$.snapLines.$children[1].set('stroke-opacity', 0);
+                    self._checkViewer(configurationViewer);
                 });
 
                 this.$.configurationContainer.addChild(configurationViewer);
@@ -142,7 +174,23 @@ define(['js/svg/SvgElement', 'js/core/List',
             this.$.productActions.removeConfiguration({configuration: this.get('activeViewer.configuration')});
         },
 
-        editConfiguration: function(event){
+        layerUp: function (event) {
+            event.stopPropagation();
+            this.$.productActions.changeOrder({
+                configuration: this.get('activeViewer.configuration'),
+                move: 1
+            });
+        },
+
+        layerDown: function (event) {
+            event.stopPropagation();
+            this.$.productActions.changeOrder({
+                configuration: this.get('activeViewer.configuration'),
+                move: -1
+            });
+        },
+
+        editConfiguration: function (event) {
             event.stopPropagation();
             this.$.productActions.editConfiguration({configuration: this.get('activeViewer.configuration')});
         },

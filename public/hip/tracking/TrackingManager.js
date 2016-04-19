@@ -1,43 +1,119 @@
-define(["js/core/Component"], function (Component) {
+define(["js/core/Component", "hip/tracking/Omniture", "hip/tracking/Google"], function (Component, Omniture, Google) {
+
+
+    var ViewMapping = {
+        options: "Hiptees - Menu",
+        presets: "Hiptees - Presets",
+        editor: "Hiptees - Editor",
+        basket: "Hiptees  - Basket",
+        add: "Hiptees - Add View",
+        buy: "Hiptees - Size Selection"
+    };
 
     return Component.inherit({
         defaults: {
-            trackingId: 'UA-24747471-32',
             debugMode: false
         },
 
-        _initializationComplete: function () {
-            this.callBase();
-
-            if (typeof (ga) !== "undefined") {
-                ga('create', this.$.trackingId, 'auto');
-                ga('send', 'screenview', {appName: "hiptees"});
-
-                if (this.$.debugMode) {
-                    ga.debugMode();
-                }
-            }
-
+        inject: {
+            g: Google,
+            omniture: Omniture
         },
 
-        trackView: function (view) {
-            ga && ga('send', 'screenview', {screenName: view, appName: "hiptees"});
+        trackBuyClicked: function () {
+            var value = "Hiptees - choose size";
+            this.$.omniture.track(null, {
+                prop30: value,
+                eVar34: value
+            }, ["event220"]);
+
+            this.$.g.trackEvent("PRODUCT", "buyClicked");
         },
-        trackEvent: function (category, action, label, value) {
-            ga && ga('send', 'event', category, action, label, value);
+
+        trackAddToBasketSize: function () {
+            this.$.omniture.track(null, null, ["scAdd", "event49"]);
+            this.$.g.trackEvent("BASKET", "addToBasket");
         },
-        trackException: function (description, fatal) {
-            ga && ga('send', 'exception', description, fatal);
+
+        trackAddToBasket: function () {
+            this.$.omniture.track(null, null, ["event24"]);
+            this.$.g.trackEvent("BASKET", "addToBasketSuccess");
         },
-        trackTiming: function (category, ms, variable, label) {
-            ga && ga('send', 'timing', category, ms, variable, label);
+
+        trackAddToBasketFailed: function (productId) {
+            this.$.g.trackException("Couldn't add to product " + productId);
+        },
+
+        trackBasketItemCloned: function () {
+            this.$.g.trackEvent("BASKET", "basketItemCloned");
+        },
+
+        trackBasketItemChanged: function () {
+            this.$.g.trackEvent("BASKET", "basketItemChanged");
+        },
+
+        trackBasketItemRemoved: function () {
+            this.$.g.trackEvent("BASKET", "basketItemRemoved");
+        },
+
+
+        trackGotoCheckout: function () {
+            this.$.omniture.track(null, {eVar33: "Designer - Checkout Button"});
+
+            this.$.g.trackEvent("BASKET", "checkout");
+        },
+
+        trackBasketCreated: function (id) {
+            this.$.omniture.track("scOpen", null, ["scOpen"]);
+
+            this.$.g.trackEvent("BASKET", "basketCreated", id);
+        },
+
+        trackNavigation: function (view) {
+            var screeName = ViewMapping[view];
+
+            this.$.omniture.track("Navigation-" + screeName, {
+                eVar33: screeName
+            });
+
+            this.$.g.trackView(screeName);
+        },
+
+        trackSelectPreset: function (productId) {
+            this.$.g.trackEvent('PRODUCT', 'selectedPreset', productId);
+        },
+
+        trackSizeSelected: function (size) {
+            this.$.g.trackEvent("PRODUCT", 'sizeSelected', size.$.name);
+        },
+
+        trackConfigurationAdded: function (config) {
+            this.$.g.trackEvent("PRODUCT", "configurationAdded", config.$.type);
+        },
+
+        trackConfigurationCloned: function (config) {
+            this.$.g.trackEvent("PRODUCT", "configurationCloned", config.$.type);
+        },
+
+        trackConfigurationRemoved: function (config) {
+            this.$.g.trackEvent("PRODUCT", "configurationRemoved", config.$.type);
+        },
+
+        trackProductSaved: function () {
+            this.$.g.trackEvent("PRODUCT", "productSaved");
+        },
+
+        trackProductSaveFailed: function () {
+            this.$.g.trackException("Couldn't save product")
+        },
+
+        trackProductSaveTiming: function (time) {
+            this.$.g.trackTiming("PRODUCT", time, "productSave");
+        },
+
+        trackAddToBasketTiming: function (time) {
+            this.$.g.trackTiming("BASKET", time, "addedToBasket");
         }
-        //addTransaction: function (id, affiliation, revenue, tax, shipping, currencyCode) {
-        //    ga && ga.addTransaction(id, affiliation, revenue, tax, shipping, currencyCode)
-        //},
-        //setUserId: function (userId) {
-        //    ga && ga.setUserId(userId);
-        //}
     });
 
 });

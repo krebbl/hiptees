@@ -95,6 +95,10 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 event.preventDefault();
             }
 
+            if (event.domEvent.touches && event.domEvent.touches.length > 1) {
+                return;
+            }
+
 //            event.stopPropagation();
             this.$currentTarget = event.target;
             this.$action = action;
@@ -170,30 +174,30 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 diffX = (changedEvent.pageX - this.$downPoint.x) * f.x,
                 diffY = (changedEvent.pageY - this.$downPoint.y) * f.y;
 
-            if (event.touches && event.touches.length == 2) {
-                if (this.$.keepAspectRatio || this.$._keepHeight) {
-                    var length = this.vectorLength([
-                        event.touches[0].pageX - event.touches[1].pageX,
-                        event.touches[0].pageY - event.touches[1].pageY]);
-                    if (!this.$startLength) {
-                        this.$startLength = length;
-                    } else {
-                        diffX = (length - this.$startLength) * f.x;
-                        diffY = 0;
-                    }
-                } else {
-                    var vector = [
-                        Math.abs(event.touches[0].pageX - event.touches[1].pageX),
-                        Math.abs(event.touches[0].pageY - event.touches[1].pageY)];
-                    if (!this.$startVector) {
-                        this.$startVector = vector;
-                    } else {
-
-                        diffX = (vector[0] - this.$startVector[0]) * f.x;
-                        diffY = (vector[1] - this.$startVector[1]) * f.y;
-                    }
-                }
-            }
+            //if (event.touches && event.touches.length == 2) {
+            //    if (this.$.keepAspectRatio || this.$._keepHeight) {
+            //        var length = this.vectorLength([
+            //            event.touches[0].pageX - event.touches[1].pageX,
+            //            event.touches[0].pageY - event.touches[1].pageY]);
+            //        if (!this.$startLength) {
+            //            this.$startLength = length;
+            //        } else {
+            //            diffX = (length - this.$startLength) * f.x;
+            //            diffY = 0;
+            //        }
+            //    } else {
+            //        var vector = [
+            //            Math.abs(event.touches[0].pageX - event.touches[1].pageX),
+            //            Math.abs(event.touches[0].pageY - event.touches[1].pageY)];
+            //        if (!this.$startVector) {
+            //            this.$startVector = vector;
+            //        } else {
+            //
+            //            diffX = (vector[0] - this.$startVector[0]) * f.x;
+            //            diffY = (vector[1] - this.$startVector[1]) * f.y;
+            //        }
+            //    }
+            //}
 
             return [diffX, diffY];
         },
@@ -211,7 +215,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 
 
             var anchor = this.$._anchor;
-            if (this.$action == "resize" || (event.touches && event.touches.length > 1)) {
+            if (this.$action == "resize") {
                 this.set('_resizing', true);
 
                 this.$resized = true;

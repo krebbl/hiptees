@@ -46,22 +46,6 @@ define(["js/ui/View", "js/core/I18n",
             this.trigger('on:closeClicked', {}, this);
         },
 
-        layerUp: function () {
-            var product = this.$.productStore.$.product;
-            this.$.productActions.changeOrder({
-                configuration: this.$.configuration,
-                move: 1
-            });
-        },
-
-        layerDown: function () {
-            var product = this.$.productStore.$.product;
-            this.$.productActions.changeOrder({
-                configuration: this.$.configuration,
-                move: -1
-            });
-        },
-
         _renderMinimized: function (minimized) {
             if (minimized) {
                 this.addClass('minimize');

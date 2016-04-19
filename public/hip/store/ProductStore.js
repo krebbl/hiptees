@@ -20,6 +20,10 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "flow",
     "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, DataUriToBlob, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
 
+
+    var colorIndex = 0;
+    var COLORS = ["#00B2A5", "#4099FF", "#FFA500", "#B33752"];
+
     return Store.inherit({
         ns: "product",
 
@@ -201,7 +205,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             var offset = this._convertOffset(payload.offset);
 
             var leafStyle = payload.leafStyle || {};
-            leafStyle.color = this.get('product.appearance.name') == "black" ? "#ffffff" : "#000000";
+            leafStyle.color = this._getNextColor();
 
             (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, leafStyle, payload.paragraphStyle || {
                     letterSpacing: 0,
@@ -229,7 +233,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 self.set('loading', false);
                 self.trigger('on:configurationAdded', {configuration: configuration, cloned: false});
                 self._selectConfiguration(configuration);
-                self.editTextConfiguration(configuration);
+                self.set('activeTextConfiguration', configuration);
 
                 self._calculateUsedColors();
             });
@@ -274,6 +278,13 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }
             });
         },
+
+        _getNextColor: function () {
+            colorIndex = (colorIndex + 1) % COLORS.length;
+
+            return COLORS[colorIndex];
+        },
+
         addShape: function (payload) {
             var printAreaWidth = this.get('product.productType.printArea.size.width'),
                 printAreaHeight = this.get('product.productType.printArea.size.height');
@@ -314,6 +325,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     width: printAreaWidth * 0.5,
                     height: printAreaWidth * 0.5
                 };
+
+                configurationSettings.fill = this._getNextColor();
 
                 configuration.set(configurationSettings);
 
@@ -493,7 +506,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
 
         editConfiguration: function (payload) {
-            this.trigger('on:editConfiguration', {configuration: payload.configuratin});
+            this.trigger('on:editConfiguration', {configuration: payload.configuration});
         },
 
         changeProductState: function () {

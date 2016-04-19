@@ -43,6 +43,8 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                 action.set('basketId', this.$.basket.id);
             }
 
+            var isNewBasket = !action.$.basketId;
+
             action.set({
                 product: payload.product,
                 size: payload.size,
@@ -56,9 +58,12 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                 if (!err) {
                     self.set('combinedBasket', combinedBasket.$);
                     self._saveBasketId(combinedBasket.get('basket.id'));
-                    self.trigger('on:addToBasketSuccess', {product: payload.product})
+                    self.trigger('on:addToBasketSuccess', {product: payload.product});
+                    if (isNewBasket) {
+                        self.trigger('on:basketCreated', {basketId: combinedBasket.get('basket.id')});
+                    }
                 } else {
-                    self.trigger('on:addToBasketFailed', {reason: err});
+                    self.trigger('on:addToBasketFailed', {reason: err, productId: payload.product.$.id});
                 }
 
                 self.set('updatingBasket', false);
