@@ -33,7 +33,9 @@ define(
                 addViewSelected: false,
                 loaderVisible: false,
                 started: false,
-                selectedProduct: null
+                selectedProduct: null,
+
+                editorModule: null
             },
             /**
              *  initializes the application variables
@@ -228,6 +230,10 @@ define(
 
                 basketStore.bind('on:addToBasketSuccess', function (e) {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.itemAdded')}, {duration: 3});
+
+                    var editorModule = this.$.editorModule;
+                    editorModule && editorModule.showMenu('basket');
+
                     tracking.trackAddToBasket();
                     tracking.trackAddToBasketTiming((new Date().getTime()) - addToBasketTime);
                 }, this);
