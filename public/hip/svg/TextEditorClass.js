@@ -267,7 +267,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
         _oninput: function (e) {
             var selection = window.getSelection();
             var focusNode = selection.focusNode;
-            console.log(this.$textBefore, focusNode);
+            //console.log(this.$textBefore, focusNode);
             if (this.$textBefore && focusNode) {
                 var textContent = focusNode.textContent;
                 if (this.$textBefore != textContent) {
