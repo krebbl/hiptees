@@ -1354,27 +1354,29 @@ $presets-view-height: 500px;
   transition: top 0.5s;
   bottom: -500px;
 
+  &__wrapper {
+    display: flex;
+    border-bottom: 1px solid lightgray;
+
+  }
+
   &.active {
     bottom: 0;
     top: ($header-height);
   }
 
   &__close {
-    position: absolute;
-    right: 0;
     padding: 15px 15px;
     color: $color-dark1;
-    top: 0;
     font-size: 16px;
-
   }
 
   &__header {
     text-align: center;
     //font-size: 18px;
-    height: 56px;
+    //height: 56px;
     //line-height: 50px;
-    border-bottom: 1px solid lightgray;
+    flex: 1 0 auto;
   }
 
   &__scroll-view {
@@ -1396,13 +1398,15 @@ $presets-view-height: 500px;
     padding: 7px 10px;
     overflow: hidden;
     text-align: left;
+    display: flex;
 
     &__item {
       display: inline-block;
-      border-radius: 1px;
-      padding: 2px;
-      width: 43%;
+      flex: 1 0 auto;
       text-align: center;
+
+      border-radius: 1px;
+      //padding: 2px;
       border: 1px solid lightgray;
       margin-right: 10px;
 
@@ -1419,6 +1423,10 @@ $presets-view-height: 500px;
       &.active > * {
         background: $color-dark1;
         color: white;
+      }
+
+      &:last-child {
+        margin-right: 0;
       }
     }
   }
