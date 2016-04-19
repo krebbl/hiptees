@@ -1423,6 +1423,7 @@ $presets-view-height: 500px;
       &.active > * {
         background: $color-dark1;
         color: white;
+        box-shadow: inset 0 0 0 2px white;
       }
 
       &:last-child {
