@@ -44,7 +44,7 @@
                         </div>
                         <div class="basket__item-quantity">
                             <label>${i18n.t('general.quantity')}:</label>
-                            <input type="text" value="{item.quantity}"
+                            <input type="tel" value="{item.quantity}"
                                    onkeyup="_handleQuantityKeyUp"
                                    onblur="_handleQuantityChange(item,event)"/>
                         </div>
