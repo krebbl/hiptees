@@ -215,8 +215,6 @@ define([
         _onPointerMove: function (e) {
             var diff = this._createDiffVector(e);
 
-            //console.log(this.$originalZoom, diff[0]);
-
             this.set('_zoom', Math.max(1, this.$originalZoom + diff[0] / 320));
         },
 

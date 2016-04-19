@@ -55,6 +55,10 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             //}, 1)
         },
 
+        _onpointerMove: function(e){
+            e.stopPropagation();
+        },
+
         _onSelectionChange: function () {
             if (this.$.textFlow) {
                 var self = this;
