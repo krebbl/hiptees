@@ -118,7 +118,7 @@
                 <i class="fa fa-magic"/>
                 ${i18n.t('menu.startNewAgain')}
             </a>
-            <a>
+            <a id="uservoice">
                 <i class="fa fa-bullhorn"/>
                 ${i18n.t('menu.giveFeedback')}
             </a>
