@@ -22,16 +22,16 @@ define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetS
             this.trigger('on:closeClicked');
         },
 
-        removePreset: function(product) {
+        removePreset: function (product) {
             this.$.presetActions.removePreset({preset: product});
         },
 
-        _commitSelected: function(selected){
-            if(selected) {
+        _renderSelected: function (selected) {
+            if (selected) {
                 var self = this;
-                setTimeout(function(){
+                setTimeout(function () {
                     self.$.scrollContainer.$el.scrollTop = self.$.scrollContainer.$el.scrollTop + 1;
-                },500);
+                }, 500);
             }
         },
         selectProductPreset: function (product) {
