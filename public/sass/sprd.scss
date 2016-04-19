@@ -152,8 +152,6 @@
       }
     }
 
-
-
     &.with-footer > .content {
       bottom: 40px;
     }
@@ -372,6 +370,7 @@ $settings-height: 210px;
     top: 0;
     bottom: 0;
     text-align: center;
+    line-height: 30px;
     input {
       background-color: $color-dark2;
       height: 100%;
@@ -381,7 +380,7 @@ $settings-height: 210px;
       color: white;
       text-align: center;
       font-size: 0.9em;
-      width: 120px;
+      width: 50px;
     }
 
   }
@@ -623,7 +622,6 @@ $info-view-height: 400px;
   }
 }
 
-
 ul.settings {
   font-weight: 300;
   > li {
@@ -702,7 +700,7 @@ ul.font-list {
       background: none;
     }
 
-    .lazy-image img{
+    .lazy-image img {
       width: auto;
     }
 
@@ -902,7 +900,6 @@ image.masking-bg-image {
 
   }
 
-
   > li {
     width: 100%;
     position: relative;
@@ -971,11 +968,16 @@ image.masking-bg-image {
   height: 100%;
 
   .used-colors {
-    width: 30px;
+    width: 45px;
     text-align: center;
 
     .used-colors-item {
-      margin-top: 10px;
+      padding-top: 10px;
+    }
+
+    .color-bubble {
+      width: 22px;
+      height: 22px;
     }
   }
 }
@@ -983,7 +985,7 @@ image.masking-bg-image {
 .color-picker {
   position: absolute;
   top: 30px;
-  left: 30px;
+  left: 45px;
   right: 0;
   bottom: 15px;
   overflow: hidden;
@@ -992,8 +994,8 @@ image.masking-bg-image {
 .color-toggle {
   display: inline-block;
   color: white !important;
-  margin-left: 7px;
-  font-size: 18px;
+  margin-left: 12px;
+  font-size: 25px;
   margin-top: 5px;
 
   &.active {
@@ -1335,7 +1337,7 @@ input[type=checkbox]:checked, input[type=radio]:checked {
 
 $presets-view-height: 500px;
 
-.presets-view{
+.presets-view {
 
   z-index: 10;
   background: rgba(#fff, 0.98);
@@ -1461,7 +1463,6 @@ $presets-view-height: 500px;
     }
   }
 }
-
 
 .legal-info {
   padding: 10px;

@@ -2,7 +2,9 @@
                           xmlns:parent="hip.view.setting" xmlns:js="js.core" xmlns:ui="js.ui">
 
     <js:Content name="headerInfo">
-        <input type="text" value="{_innerColor.toString()}" onchange="_dispatch(value)" onblur="_fixZoom"/>
+        {title}
+        <input type="text" value="{_innerColor.toString()}" onchange="_dispatch(value)" onblur="_fixZoom" visible="{enableColor}"/>
+        <span visible="{not(enableColor)}">${i18n.t('settings.none')}</span>
     </js:Content>
     <div class="color-picker-wrapper">
         <a class="color-toggle" onclick="_toggleFill" visible="{showToggleColor}" selected="{enableColor}">

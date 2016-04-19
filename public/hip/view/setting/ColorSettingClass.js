@@ -1,6 +1,7 @@
-define(["js/core/Content", "js/type/Color", "hip/store/ProductStore"], function (Content, Color, ProductStore) {
+define(["js/core/Content", "js/type/Color", "hip/store/ProductStore", "js/core/I18n"], function (Content, Color, ProductStore, I18n) {
     return Content.inherit({
         defaults: {
+            title: "",
             selectedColor: null,
             _innerColor: null,
             enableColor: true,
@@ -8,7 +9,8 @@ define(["js/core/Content", "js/type/Color", "hip/store/ProductStore"], function 
             usedColors: "{productStore.usedColors}"
         },
         inject: {
-            productStore: ProductStore
+            productStore: ProductStore,
+            i18n: I18n
         },
         events: [
             'on:colorSelect',
