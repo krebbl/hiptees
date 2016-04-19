@@ -213,7 +213,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                     product = this.$.combinedBasket.products.products[i];
 
                     if (product.id === prop.value) {
-                        return product.resources[0].href;
+                        return product.resources[0].href + "?width=250";
                     }
                 }
             }
