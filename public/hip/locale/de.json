@@ -111,7 +111,8 @@
     "strokeWidth": "Randbreite",
     "opacity": "Deckkraft",
     "fillOpacity": "Deckkraft Fläche",
-    "strokeOpacity": "Deckkraft Rand"
+    "strokeOpacity": "Deckkraft Rand",
+    "none": "Keine"
   },
   "textSettings": {
     "bold": "fett",

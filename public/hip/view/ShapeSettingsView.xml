@@ -9,9 +9,12 @@
                     <span class="label">
                         ${i18n.t('settings.fillColor')}
                     </span>
-                    <span class="value">
+                    <span class="value" visible="{configuration.fillOpacity}">
                         <span class="meta">{fillColor}</span>
                         <span class="color-bubble" backgroundColor="{fillColor}"/>
+                    </span>
+                    <span class="value" visible="{not(configuration.fillOpacity)}">
+                        ${i18n.t('settings.none')}
                     </span>
                 </a>
             </li>
@@ -20,9 +23,12 @@
                     <span class="label">
                         ${i18n.t('settings.strokeColor')}
                     </span>
-                    <span class="value">
+                    <span class="value" visible="{configuration.strokeWidth}">
                         <span class="meta">{strokeColor}</span>
                         <span class="color-bubble" backgroundColor="{strokeColor}"/>
+                    </span>
+                    <span class="value" visible="{not(configuration.strokeWidth)}">
+                        ${i18n.t('settings.none')}
                     </span>
                 </a>
             </li>
