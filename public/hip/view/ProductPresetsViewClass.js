@@ -27,6 +27,7 @@ define(["hip/view/ViewBase", "xaml!hip/dialog/ConfirmDialog", "hip/store/PresetS
         },
 
         _renderSelected: function (selected) {
+            this.callBase();
             if (selected) {
                 var self = this;
                 setTimeout(function () {
