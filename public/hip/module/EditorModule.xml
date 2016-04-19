@@ -205,14 +205,23 @@
     </div>
 
     <div class="info-view" _isActive="{navigationStore.isMenuActive('legalInfo')}" selected="{_isActive}">
+        <a class="back-btn" onclick="hidePanel">
+            <i class=" fa fa-times"/>
+        </a>
         <view:LegalInfo/>
     </div>
 
     <div class="info-view" _isActive="{navigationStore.isMenuActive('privacy')}" selected="{_isActive}">
+        <a class="back-btn" onclick="hidePanel">
+            <i class=" fa fa-times"/>
+        </a>
         <iframe src="https://www.spreadshirt.de/-C8681" visible="{or(_isActive, visible)}"/>
     </div>
 
     <div class="info-view" _isActive="{navigationStore.isMenuActive('termsAndConditions')}" selected="{_isActive}">
+        <a class="back-btn" onclick="hidePanel">
+            <i class=" fa fa-times"/>
+        </a>
         <iframe src="https://www.spreadshirt.de/-C8662" visible="{or(_isActive, visible)}"/>
     </div>
 

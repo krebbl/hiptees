@@ -600,6 +600,13 @@ $info-view-height: 400px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 
+  .back-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+  }
+
   &.active {
     bottom: 0;
   }
@@ -896,7 +903,6 @@ image.masking-bg-image {
       width: 100%;
       height: 100%;
       left: 0;
-
     }
 
   }

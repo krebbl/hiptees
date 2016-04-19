@@ -418,6 +418,11 @@ define([
             this.$.productActions.saveProduct({state: "draft"});
         },
 
+        hidePanel: function() {
+            var navigationStore = this.$.navigationStore;
+            navigationStore && navigationStore.set("activeMenu", null);
+        },
+
         loadingClass: function () {
             return this.get('productStore.loadingProduct') ? "loading" : "";
         }.onChange('productStore.loadingProduct'),
