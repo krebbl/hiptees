@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <div class="loading-overlay" visible="{or(productStore.savingProduct,basketStore.updatingBasket)}">
+    <div class="loading-overlay" visible="{or(productStore.savingProduct,basketStore.updatingBasket,_showLoader)}">
         <div class="loading-overlay__box">
             <div class="loading-overlay__message">
                 {_loadingMessage}

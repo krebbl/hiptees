@@ -33,7 +33,8 @@ define([
             productSelected: false,
             _zoom: 1,
             _loadingMessage: "",
-            _productName: ""
+            _productName: "",
+            _showLoader: false
         },
 
         inject: {
@@ -123,6 +124,13 @@ define([
                 }
 
             }, this);
+
+            this.bind('basketStore', 'on:checkout', function() {
+                this.set({
+                    '_loadingMessage': this.$.i18n.t('message.checkingOut'),
+                    '_showLoader': true
+                });
+            }, this);
         },
 
         _commitSelectedConfiguration: function (configuration) {
@@ -133,8 +141,8 @@ define([
             return this.get('appearance.color') == "black" ? "dark-appearance" : "";
         }.onChange('appearance'),
 
-        or: function (a, b) {
-            return a || b;
+        or: function (a, b, c) {
+            return a || b || c;
         },
 
         showMenu: function (menu) {
