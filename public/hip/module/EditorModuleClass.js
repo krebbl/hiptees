@@ -235,8 +235,8 @@ define([
                     var viewerRect = viewer.$el.getBoundingClientRect();
 
                     var bottomDistance = window.innerHeight - viewerRect.bottom;
-                    if (bottomDistance < 220) {
-                        this.$.wrapper.set('top', (bottomDistance - 210 - 40) + "px");
+                    if (bottomDistance < 250) {
+                        this.$.wrapper.set('top', (bottomDistance - 250) + "px");
                     }
                 }
             } else {
