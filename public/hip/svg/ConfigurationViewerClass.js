@@ -213,6 +213,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
         },
 
         handlePointerMove: function (event) {
+            if (!this.$downPoint) {
+                return;
+            }
             event.preventDefault();
 
             var change = {},
