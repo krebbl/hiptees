@@ -34,7 +34,7 @@
         <tracking:Omniture/>
         <tracking:TrackingManager cid="trackingManager"/>
 
-        <svg:TextEditor class="needsclick"/>
+        <svg:TextEditor cid="textEditor" class="needsclick"/>
         <view:ImageFilterRenderer/>
         <js:NotificationManager cid="notificationManager">
             <js:Template name="default">
