@@ -188,6 +188,37 @@
             setTimeout(function(){
                 document.body.removeChild(preloader);
             },1000);
+
+
+            // Include the UserVoice JavaScript SDK (only needed once on a page)
+            (function() {
+                var uv = document.createElement('script');
+                uv.type = 'text/javascript';
+                uv.src = '//widget.uservoice.com/3TChAJlAoBkgAO3CokQ.js';
+
+                uv.onload = function() {
+                    UserVoice.set({
+                        accent_color: '#00b2a6',
+                        trigger_color: 'white',
+                        trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+                    });
+
+                    // Or, use your own custom trigger:
+                    UserVoice.addTrigger('#uservoice', {mode: 'smartvote'});
+                };
+
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(uv, s);
+
+            })();
+
+            //
+            // UserVoice Javascript SDK developer documentation:
+            // https://www.uservoice.com/o/javascript-sdk
+            //
+
+
+
         }
         window.application = stage.$application;
 
@@ -227,6 +258,7 @@ s.eVar44 = "eu-T-Shirt Designer";
 s.channel = "Designer - Designer";
 s.campaign = ""
 </script>
+
 
 
 </body>
