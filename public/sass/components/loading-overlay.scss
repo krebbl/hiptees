@@ -6,23 +6,26 @@
   right: 0;
   bottom: 0;
   z-index: 10000;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   background-size: 50px;
 
+  font-size: 1.3em;
+
+
   &__box {
-    background: rgba(0, 0, 0, 0.76) url(../img/loader.gif) no-repeat center 20px;
-    background-size: 30px;
-    border-radius: 10px;
-    padding: 70px 15px 15px;
+     background: white url(../img/ajax-loader.gif) no-repeat center 16px;
+    //background: white;
+    //background-size: 30px;
+    border-radius: 2px;
+    padding: 40px 15px 15px;
     width: 70%;
     margin: 60% auto;
-
+    position: relative;
   }
 
   &__message {
      text-align: center;
-     color: white;
-
+     color: black;
   }
 
 }
