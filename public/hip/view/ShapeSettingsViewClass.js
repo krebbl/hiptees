@@ -59,10 +59,6 @@ define(["xaml!hip/view/SettingsView",
             this._updateAttribute("strokeWidth", this.$.configuration.$.strokeWidth > 0 ? 0 : 2);
         },
 
-        gt: function (x, y) {
-            return x > y;
-        },
-
         divide: function (a, b) {
             return a / b;
         },

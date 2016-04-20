@@ -26,11 +26,29 @@
             <li>
                 <a onclick="_selectSubContent(colorContent)">
                     <span class="label">
-                        ${i18n.t('settings.color')}
+                        ${i18n.t('settings.fillColor')}
                     </span>
-                    <span class="value">
-                        <span class="meta">{leafColor}</span>
-                        <span class="color-bubble" backgroundColor="{leafColor}"/>
+                    <span class="value" visible="{neq(color,'none')}">
+                        <span class="meta">{color}</span>
+                        <span class="color-bubble" backgroundColor="{color}"/>
+                    </span>
+                    <span class="value" visible="{eq(color, 'none')}">
+                        ${i18n.t('settings.none')}
+                    </span>
+                </a>
+
+            </li>
+            <li>
+                <a onclick="_selectSubContent(strokeColorContent)">
+                    <span class="label">
+                        ${i18n.t('settings.strokeColor')}
+                    </span>
+                    <span class="value" visible="{strokeWidth}">
+                        <span class="meta">{strokeColor}</span>
+                        <span class="color-bubble" backgroundColor="{strokeColor}"/>
+                    </span>
+                    <span class="value" visible="{not(strokeWidth)}">
+                        ${i18n.t('settings.none')}
                     </span>
                 </a>
 
@@ -109,6 +127,15 @@
                        value="{paragraphStyle.lineHeight}"/>
         </div>
     </js:Content>
-    <setting:ColorSetting cid="colorContent" selectedColor="{leafColor}" oncolorSelect="_updateColor"/>
+    <setting:ColorSetting cid="colorContent" selectedColor="{color}"
+                          showToggleColor="true"
+                          enableColor="{neq(color,'none')}"
+                          oncolorToggle="_toggleFill()"
+                          oncolorSelect="_updateColor('color',event)"/>
+    <setting:ColorSetting cid="strokeColorContent" selectedColor="{strokeColor}"
+                          showToggleColor="true"
+                          enableColor="{gt(strokeWidth, 0)}"
+                          oncolorToggle="_toggleStroke()"
+                          oncolorSelect="_updateColor('strokeColor', event)"/>
 
 </view:TextSettingsViewClass>

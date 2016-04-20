@@ -109,7 +109,17 @@ define(["hip/store/Store",
                 } else {
                     range = TextRange.createTextRange(0, textFlow.textLength())
                 }
+
+                var commonLeafStyle = range.getCommonLeafStyle(textFlow);
+                if (leafStyle.hasOwnProperty("strokeColor")) {
+                    if (commonLeafStyle.$.strokeWidth === 0) {
+                        leafStyle.strokeWidth = 1;
+                    }
+                }
+
                 (new ApplyStyleToElementOperation(range, textFlow, leafStyle, null)).doOperation();
+
+
 
                 this.trigger('on:leafStyleChanged', {
                     textFlow: textFlow,

@@ -14,7 +14,8 @@ define(["xaml!hip/view/SettingsView",
         supportedConfiguration: TextConfiguration,
 
         defaults: {
-            leafColor: null,
+            color: null,
+            strokeColor: null,
             paragraphStyle: null,
             selectedFontFamily: "{_getFontFamily(paragraphStyle.fontFamily)}",
             leafStyle: null,
@@ -28,12 +29,14 @@ define(["xaml!hip/view/SettingsView",
             textFlowActions: TextFlowActions
         },
 
+        $classAttributes: ["color", "strokeColor", "strokeWidth"],
+
         ctor: function () {
             this.callBase();
 
             this.bind('textFlowStore', 'on:selectionChanged', this._updateLeafStyle, this);
             this.bind('textFlowStore', 'on:paragraphStyleChanged', this._updateParagraphStyle, this);
-//            this.bind('textFlowStore', 'on:leafStyleChanged', this._updateLeafStyle, this);
+            this.bind('textFlowStore', 'on:leafStyleChanged', this._updateLeafStyle, this);
 
         },
 
@@ -63,7 +66,9 @@ define(["xaml!hip/view/SettingsView",
                     var l = configuration.$.textFlow.getFirstLeaf();
                     leafStyle = l.$.style;
                 }
-                this.set('leafColor', leafStyle.$.color);
+                this.set('color', leafStyle.$.color);
+                this.set('strokeColor', leafStyle.$.strokeColor || "#000000");
+                this.set('strokeWidth', leafStyle.$.strokeWidth || 0);
             }
         },
 
@@ -147,16 +152,27 @@ define(["xaml!hip/view/SettingsView",
             this._increaseFontSize(-1 * by);
         },
 
-        _updateColor: function (e) {
+        _toggleStroke: function () {
+            this._changeLeafStyle("strokeWidth", this.$.strokeWidth === 0 ? 1 : 0);
+        },
+
+        _toggleFill: function () {
+            this._changeLeafStyle("color", this.$.color === "none" ? "#000000" : "none");
+        },
+
+        _changeLeafStyle: function (type, value) {
+            var leafStyle = {};
+            leafStyle[type] = value;
+            this.$.textFlowActions.changeStyle({
+                textFlow: this.$.configuration.$.textFlow,
+                leafStyle
+            });
+        },
+
+        _updateColor: function (type, e) {
             var color = e.$.color;
             if (color) {
-                this.set('leafColor', color);
-                this.$.textFlowActions.changeStyle({
-                    textFlow: this.$.configuration.$.textFlow,
-                    leafStyle: {
-                        'color': color
-                    }
-                });
+                this._changeLeafStyle(type, color);
             }
         },
 

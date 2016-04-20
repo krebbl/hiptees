@@ -232,6 +232,17 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                         } else {
                             tspan.removeAttribute("fill");
                         }
+
+                        var strokeColor = leaf.get('style.strokeColor');
+                        if (strokeColor) {
+                            tspan.setAttribute("stroke", strokeColor);
+                        } else {
+                            tspan.removeAttribute("stroke");
+                        }
+
+                        var strokeWidth = leaf.get('style.strokeWidth');
+                        tspan.setAttribute("stroke-width", strokeWidth || "0");
+
                         if (!lineText && line.paragraph.$.children.length == 1) {
                             lineText = EMPTY_LINE_TEXT;
                         }
@@ -251,6 +262,7 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
                     text.setAttribute("font-size", style.$.fontSize);
                     text.setAttribute("font-family", style.$.fontFamily);
                     text.setAttribute("letter-spacing", LetterSpacing(style.$.letterSpacing));
+
 
                     if (textAnchor == "center") {
                         x = 0.5 * (maxWidth - line.width);

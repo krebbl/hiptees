@@ -62,6 +62,18 @@ define(["js/ui/View", "js/core/I18n",
             return a - b;
 
         },
+
+        gt: function (x, y) {
+            return x > y;
+        },
+        eq: function (a, b) {
+            return a === b;
+        },
+
+        neq: function (a, b) {
+            return a !== b;
+        },
+
         _selectSubContent: function (subContent) {
             if (subContent) {
                 this.$.placeholder.set('content', subContent);
