@@ -707,7 +707,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             var usedColors = [];
 
             function addColor(color) {
-                if (usedColors.indexOf(color) === -1) {
+                if (usedColors.indexOf(color) === -1 && color !== "none") {
                     usedColors.push(color);
                 }
             }
