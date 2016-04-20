@@ -43,10 +43,29 @@
   .basket__items {
     position: absolute;
     top: 0;
-    bottom: 3px;
+    bottom: 0;
     width: 100%;
     overflow: auto;
     border-bottom: 1px solid lightgray;
+  }
+
+  &__updating {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: rgba(white, 0.6);
+
+    .lovetab {
+      width: 100px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -50px;
+      margin-top: -50px;
+    }
   }
 
   .basket__item {

@@ -1,7 +1,7 @@
 <view:BasketViewClass xmlns="http://www.w3.org/1999/xhtml"
                       xmlns:js="js.core" xmlns:ui="js.ui"
                       xmlns:view="hip.view"
-                      onclick="closeBasket">
+                      onclick="closeBasket" xmlns:xlink="https://www.w3.org/1999/xlink">
 
     <div class="header">
         <a class="back-btn" onclick="closeBasket">
@@ -12,9 +12,9 @@
     </div>
 
 
-    <div class="basket__loading" visible="{and(basketStore.loadingBasket, not(basketStore.updatingBasket))}"/>
-
-    <div class="basket__updating" visible="{basketStore.updatingBasket}"/>
+    <div class="basket__updating" visible="{basketStore.updatingBasket}">
+        <svg xmlns="http://www.w3.org/2000/svg" class="lovetab"><use xlink:href="#heart"/></svg>
+    </div>
 
     <div class="basket__content" visible="{basketStore.basket}" cid="content" onclick="stopPropagation">
         <ui:ItemsView class="basket__items" items="{basket.basketItems}">
