@@ -25,7 +25,7 @@
 
   .header .back-btn {
     position: absolute;
-    right: 7px;
+    right: .25em;
     top: 0;
     color: black;
     padding: 1em;
@@ -60,6 +60,9 @@
   }
 
   .basket__item-options {
+
+    flex-grow: 1;
+
     > * {
       margin: 1em 0;
     }
@@ -90,11 +93,20 @@
     }
   }
 
-  .basket__item-quantity input {
-    padding: 0.5em;
+  .basket__item-quantity {
+
+    position: relative;
     height: 31px;
-    border-radius: 2px;
-    border: 1px solid lightgray;
+
+    input {
+      padding: 0.5em;
+      position: absolute;
+      height: 31px;
+      width: 100%;
+      border-radius: 2px;
+      display: block;
+      border: 1px solid lightgray;
+    }
   }
 
   .basket__item-price {
