@@ -112,7 +112,7 @@ define(["hip/store/Store",
 
                 var commonLeafStyle = range.getCommonLeafStyle(textFlow);
                 if (leafStyle.hasOwnProperty("strokeColor")) {
-                    if (commonLeafStyle.$.strokeWidth === 0) {
+                    if (!commonLeafStyle.$.strokeWidth) {
                         leafStyle.strokeWidth = 1;
                     }
                 }
