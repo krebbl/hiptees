@@ -86,9 +86,7 @@ define([
             }, this);
 
             this.bind('productStore', 'on:editConfiguration', function (e) {
-                if (e.$.configuration) {
-                    this.$.navigationStore.showMenu({menu: "settings"});
-                }
+                this.$.navigationStore.showMenu({menu: e.$.configuration ? "settings" : ""});
                 editModeTimeout && clearTimeout(editModeTimeout);
                 self.set('centeredConfiguration', e.$.configuration);
             }, this);
@@ -135,6 +133,10 @@ define([
 
         or: function (a, b) {
             return a || b;
+        },
+
+        stopEditing: function () {
+            this.$.productActions.editConfiguration();
         },
 
         showMenu: function (menu) {
