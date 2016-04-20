@@ -56,5 +56,3 @@ cd ../..
 # fail if mvn fails, and grep doesn't fail
 set -o pipefail
 mvn deploy:deploy-file -DgroupId=net.sprd.hiptees -DartifactId=hiptees-frontend -Dpackaging=zip -Durl=https://repo.spreadomat.net/content/repositories/libs-qa/ -DrepositoryId=sprd-libs-releases -Dfile=public-build/${VERSION}/${VERSION}.zip -Dversion=${VERSION} | grep -v "KB"
-
-curl -vku svnauto:ReatheV1eif7 -FSubmit=Build "https://jenkins.sprd.net/view/Purchase/view/Checkout2%20Frontend/job/Checkout-deploy/buildWithParameters?delay=0sec&VERSION=${VERSION}"
