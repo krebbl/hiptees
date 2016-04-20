@@ -1,7 +1,7 @@
 define(["hip/entity/Configuration", "js/type/Color"], function (Configuration, Color) {
     return Configuration.inherit('hip.entity.ShapeConfiguration', {
         defaults: {
-            type: "rectangle",
+            type: "shape",
             fill: "#000000",
             fillOpacity: 1,
             strokeOpacity: 1,
