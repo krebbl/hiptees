@@ -123,7 +123,7 @@ define([
 
             }, this);
 
-            this.bind('basketStore', 'on:checkout', function() {
+            this.bind('basketStore', 'on:checkout', function () {
                 this.set({
                     '_loadingMessage': this.$.i18n.t('message.checkingOut'),
                     '_showLoader': true
@@ -230,8 +230,8 @@ define([
                 this.dom(this.$stage.$document).bindDomEvent("pointermove", this.$moveDelegate, false);
                 this.dom(this.$stage.$document).bindDomEvent("pointerup", this.$upDelegate, true);
 
-                this.$.productActions.editTextConfiguration();
             }
+            this.$.productActions.editTextConfiguration();
 
         },
 
@@ -244,7 +244,7 @@ define([
         _onPointerUp: function () {
             this.$startLength = null;
 
-            this.$.innerContent.set('overflow', 'scroll');
+            this.$.innerContent.set('overflow', this.$._zoom > 1 ? 'scroll' : 'hidden');
 
             this.dom(this.$stage.$document).unbindDomEvent("pointermove", this.$moveDelegate, false);
             this.dom(this.$stage.$document).unbindDomEvent("pointerup", this.$upDelegate, true);
@@ -428,7 +428,7 @@ define([
             this.$.productActions.saveProduct({state: "draft"});
         },
 
-        hidePanel: function() {
+        hidePanel: function () {
             var navigationStore = this.$.navigationStore;
             navigationStore && navigationStore.set("activeMenu", null);
         },
@@ -438,7 +438,7 @@ define([
         }.onChange('productStore.loadingProduct'),
 
         zoomClass: function () {
-            return this.$._zoom === 1 ? "zoomed" : "";
+            return this.$._zoom > 1 ? "zoomed" : "";
         }.onChange('_zoom'),
         titleForMenu: function (menu) {
             if (menu === "presets") {

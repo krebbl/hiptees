@@ -98,6 +98,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
             if (event.domEvent.touches && event.domEvent.touches.length > 1) {
                 return;
             }
+            event.stopPropagation();
 
             this.$downTime = (new Date()).getTime();
 
