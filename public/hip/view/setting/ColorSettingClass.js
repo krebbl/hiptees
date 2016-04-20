@@ -17,8 +17,8 @@ define(["js/core/Content", "js/type/Color", "hip/store/ProductStore", "js/core/I
             'on:colorToggle'
         ],
 
-        _commitSelectedColor: function (color) {
-            if (color) {
+        _commitSelectedColor: function (color, oldColor, opt) {
+            if (color && color !== oldColor && !opt.silent) {
                 this.set('_innerColor', Color.fromHexString(color));
             }
         },
@@ -26,9 +26,8 @@ define(["js/core/Content", "js/type/Color", "hip/store/ProductStore", "js/core/I
         _dispatch: function (color) {
             if (color instanceof Color) {
                 color = color.toString();
-            } else {
-                this.set('selectedColor', color, {force: true});
             }
+            this.set('selectedColor', color, {silent: true});
             this.trigger("on:colorSelect", {color: color}, this);
         },
 
