@@ -34,7 +34,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
         },
 
         _commitTextFlow: function () {
-            this.$textBefore = null;
+            this._clearSelection();
         },
 
         _renderMaxWidth: function () {
@@ -49,13 +49,13 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             this.$absoluteEnd = null;
             this.$absoluteOffset = null;
             //setTimeout(function () {
-                if (self.$.textFlow.$.selection) {
-                    self.setCursor(self.$.textFlow.$.selection.$.anchorIndex, self.$.textFlow.$.selection.$.activeIndex);
-                }
+            if (self.$.textFlow.$.selection) {
+                self.setCursor(self.$.textFlow.$.selection.$.anchorIndex, self.$.textFlow.$.selection.$.activeIndex);
+            }
             //}, 1)
         },
 
-        _onpointerMove: function(e){
+        _onpointerMove: function (e) {
             e.stopPropagation();
         },
 
@@ -79,13 +79,9 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             this.callBase();
             var self = this;
             this.dom(this.$stage.$document).bindDomEvent("selectionchange", function (e) {
-                var selection = window.getSelection();
-                if(selection && selection.focusNode) {
-                    self.$textBefore = selection.focusNode.textContent;
-                    self._onSelectionChange();
-                } else {
-                    self.$textBefore = "";
-                }
+                setTimeout(function () {
+                    self._saveSelection();
+                }, 10);
             });
         },
 
@@ -255,49 +251,73 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
                         focusOffset: sel.focusOffset
                     });
                 }
-                this.$textBefore = null;
+                this._clearSelection();
             } else {
-                this.$textBefore = window.getSelection().focusNode.textContent;
+                this._saveSelection();
                 //console.log(String.fromCharCode(domEvent.which));
                 //e.preventDefault();
                 //this.$selectionBefore = this.getAbsoluteSelection();
             }
         },
 
-        _oninput: function (e) {
+        _saveSelection: function () {
             var selection = window.getSelection();
-            var focusNode = selection.focusNode;
-            //console.log(this.$textBefore, focusNode);
-            if (this.$textBefore && focusNode) {
-                var textContent = focusNode.textContent;
-                if (this.$textBefore != textContent) {
-                    for (var i = 0; i < selection.focusOffset && i < this.$textBefore.length; i++) {
-                        var oldChar = this.$textBefore.charAt(i);
-                        var newChar = textContent.charAt(i);
-                        if (oldChar !== newChar) {
-                            break;
-                        }
-                    }
-                    var text = textContent.substring(i, selection.focusOffset);
-                    var abs = this.getAbsoluteSelection();
-                    var endDiff = textContent.length - selection.focusOffset;
-                    var diff = textContent.length - this.$textBefore.length;
+            if (selection && selection.focusNode) {
+                this.$selectionBefore = this.getAbsoluteSelection();
+                this.$focusNodeBefore = selection.focusNode;
+                this.$focusText = selection.focusNode.textContent;
+            } else {
+                this._clearSelection();
+            }
+        },
 
-                    this.$.textActions.insertText({
-                        textFlow: this.$.textFlow,
-                        text: text,
-                        anchorOffset: abs.focusOffset - text.length,
-                        focusOffset: abs.focusOffset - diff
-                    });
+        _clearSelection: function () {
+            this.$selectionBefore = null;
+            this.$focusNodeBefore = null;
+            this.$focusText = null;
+        },
 
+        _ontextInput: function (e) {
+
+            if (this.$selectionBefore) {
+                var text = e.domEvent.data;
+                var startIndex = this.$selectionBefore.anchorOffset;
+                var endIndex = this.$selectionBefore.focusOffset;
+
+
+                //console.log("insert", text, startIndex, endIndex);
+                e.stopPropagation();
+
+                this.$.textActions.insertText({
+                    textFlow: this.$.textFlow,
+                    text: text,
+                    anchorOffset: startIndex,
+                    focusOffset: endIndex
+                });
+
+                this._clearSelection();
+            }
+        },
+
+        _oninput: function (e) {
+            if (this.$selectionBefore) {
+                var selection = window.getSelection();
+                var startIndex = this.$selectionBefore.anchorOffset;
+                var endIndex = this.$selectionBefore.focusOffset;
+                if (startIndex === endIndex) {
+                    startIndex--;
                 }
-            } else if (!this.$textBefore && this.$stage.$browser.isIOS) {
+
+                this.$.textActions.deleteText({
+                    textFlow: this.$.textFlow,
+                    anchorOffset: startIndex,
+                    focusOffset: endIndex
+                });
+            } else if (!this.$selectionBefore && this.$stage.$browser.isIOS) {
                 // prevents that text from the autocompletion is used
                 this.$.$textContainer._renderMeasureResult(this.$.$textContainer.$.measureResult);
             }
-            this.$textBefore = null;
-
-
+            this._clearSelection();
         },
 
         getLineIndex: function (lines, offset) {
@@ -349,7 +369,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
                 e.preventDefault();
                 e.stopPropagation();
                 var sel = this.getAbsoluteSelection();
-                this.$textBefore = null;
+                this._clearSelection();
 
                 this.$.textActions.insertText({
                     textFlow: this.$.textFlow,
