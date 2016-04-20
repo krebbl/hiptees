@@ -31,6 +31,9 @@ define(["hip/store/Store", "js/data/Entity", "underscore"], function (Store, Ent
                         }
                     }
                     self.$.actionsDone.push({ns: ns, action: action, payload: serializedPayload});
+                    if (self.$.actionsDone.length > 10) {
+                        self.$.actionsDone.splice(10);
+                    }
                 }, 1);
             }
 
