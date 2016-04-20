@@ -38,7 +38,8 @@
     "itemAdded": "Produkt erfolgreich hinzugefügt",
     "addingItemFailed": "Produkt konnte nicht hinzugefügt werden",
     "thxForFeedback": "Danke fürs Feedback!",
-    "changesSuccessful": "Änderungen erfolgreich."
+    "changesSuccessful": "Änderungen erfolgreich.",
+    "checkingOut": "Weiterleitung zur Kasse..."
   },
   "login": {
     "withTwitter": "Mit Twitter anmelden",
@@ -99,7 +100,7 @@
     "createYourOwn": "Bearbeiten",
     "confirmGoBack": "Willst du wirklich zurück? Alle deine Änderungen gehen verloren!",
     "savingProduct": "Speichere Shirt",
-    "addingProduct": "Füge Produkt zum Warenkorb hinzu",
+    "addingProduct": "Füge Produkt zum \nWarenkorb hinzu",
     "uploadingImages": "Lade Bilder hoch (%0 / %1)",
     "sizeTable": "Maßtabelle",
     "chooseSize": "Wähle [deine Größe|0]:"

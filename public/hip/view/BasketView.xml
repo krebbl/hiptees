@@ -3,10 +3,11 @@
                       xmlns:view="hip.view"
                       onclick="closeBasket">
 
-    <div class="basket__header">
+    <div class="header">
         <a class="back-btn" onclick="closeBasket">
             <i class="fa fa-times"/>
         </a>
+        <h1 class="header__logo"/>
         <h2>{i18n.t('basket.basket')}</h2>
     </div>
 
@@ -23,14 +24,20 @@
                         <img src="{basketStore.getProductImage(item)}"/>
                     </a>
                     <div class="basket__item-options">
-                        <div class="basket__item-price">
-                            {basketStore.formatPrice(item.priceItem)}
+
+                        <div class="basket__item-actions">
+                            <a onclick="_cloneItem(item)">
+                                <i class=" fa fa-files-o"/>
+                            </a>
+                            <a onclick="_removeItem(item)">
+                                <i class=" fa fa-trash"/>
+                            </a>
                         </div>
+
                         <!--<div class="basket__item-description">-->
                         <!--{item.product.description}-->
                         <!--</div>-->
                         <div class="basket__item-size">
-                            <label>${i18n.t('general.size')}:</label>
                             <div class="btn btn-whitesmoke">
                                 <view:FastSelect emptyOptionText="${i18n.t('product.chooseSize')}"
                                                  emptyOption="true"
@@ -43,18 +50,12 @@
                             </div>
                         </div>
                         <div class="basket__item-quantity">
-                            <label>${i18n.t('general.quantity')}:</label>
                             <input type="tel" value="{item.quantity}"
                                    onkeyup="_handleQuantityKeyUp"
                                    onblur="_handleQuantityChange(item,event)"/>
                         </div>
-                        <div class="basket__item-actions">
-                            <a onclick="_cloneItem(item)">
-                                <i class=" fa fa-files-o"/>
-                            </a>
-                            <a onclick="_removeItem(item)">
-                                <i class=" fa fa-trash"/>
-                            </a>
+                        <div class="basket__item-price">
+                            {basketStore.formatPrice(item.priceItem)}
                         </div>
                     </div>
                 </div>
@@ -66,7 +67,6 @@
         <div class="basket__summary">
             <label>
                 {i18n.t('basket.subTotalWithoutShipping')}<br/>
-                {basketStore.totalQuantity()} {i18n.t('general.article')}
             </label>
             <div class="basket__total-price">
                 <div>{basketStore.formatPrice(basket.priceItems)}</div>
@@ -74,9 +74,8 @@
         </div>
         <div class="basket__btn-wrapper">
             <a class="btn btn-orange" onclick="checkout">
-                <i class="fa fa-external-link fa-pull-left" style="margin-right: -100%"/>
+                <i class=" fa fa-shopping-cart"/>
                 {i18n.t('basket.toCheckout')}
-                <i class="fa fa-spinner fa-spin fa-pull-right" style="margin-left: -100%" visible="{checkingOut}"/>
             </a>
         </div>
     </div>

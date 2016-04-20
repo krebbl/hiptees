@@ -65,7 +65,7 @@
     </div>
 
     <div class="module-container" visible="{started}">
-        <module:EditorModule/>
+        <module:EditorModule cid="editorModule"/>
     </div>
 
 </hip:SprdClass>

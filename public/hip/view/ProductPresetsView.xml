@@ -1,19 +1,23 @@
 <view:ProductPresetsViewClass xmlns="http://www.w3.org/1999/xhtml"
                               xmlns:view="hip.view" xmlns:ui="js.ui" xmlns:js="js.core">
 
-    <div class="presets-view__header">
-        <ui:SelectionView class="department-selection" items="{presetStore.departments}"
-                          selectedItem="{presetStore.selectedDepartment}">
-            <js:Template name="item">
-                <div class="department-selection__item" onclick="selectDepartment(item)">
-                    <span>${i18n.ts('departments', item.name)}</span>
-                </div>
-            </js:Template>
-        </ui:SelectionView>
+
+    <div class="presets-view__wrapper">
+        <div class="presets-view__header">
+            <ui:SelectionView class="department-selection" items="{presetStore.departments}"
+                              selectedItem="{presetStore.selectedDepartment}">
+                <js:Template name="item">
+                    <div class="department-selection__item" onclick="selectDepartment(item)">
+                        <span>${i18n.ts('departments', item.name)}</span>
+                    </div>
+                </js:Template>
+            </ui:SelectionView>
+        </div>
+        <a class="presets-view__close" onclick="hide" visible="{closable}">
+            <i class="fa fa-times"/>
+        </a>
     </div>
-    <a class="presets-view__close" onclick="hide" visible="{closable}">
-        <i class="fa fa-times"/>
-    </a>
+
 
     <view:BackToTop element="{scrollContainer}" text="${i18n.t('general.backToTop')}"/>
 
