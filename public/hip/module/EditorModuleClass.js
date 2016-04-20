@@ -14,6 +14,7 @@ define([
 ], function (BaseModule, Query, ProductType, Product, BasketStore, ProductActions, BasketActions, Collection, Color, TextFlowStore, flow, Memento) {
     return BaseModule.inherit({
         defaults: {
+            showAddInfo: false,
             basketStore: null,
             productStore: null,
             productViewer: null,
@@ -123,6 +124,14 @@ define([
 
             }, this);
 
+
+            this.bind('productStore', 'on:productLoaded', function (e) {
+                var p = e.$.product;
+                if (p && p.$.configurations.size() === 0) {
+                    this.set('showAddInfo', true);
+                }
+            }, this);
+
             this.bind('basketStore', 'on:checkout', function () {
                 this.set({
                     '_loadingMessage': this.$.i18n.t('message.checkingOut'),
@@ -150,6 +159,10 @@ define([
         showMenu: function (menu) {
             if (this.$.zoomed) {
                 this.toggleZoom();
+            }
+
+            if (menu !== "") {
+                this.set('showAddInfo', false);
             }
 
             this.$.navActions.showMenu({menu: menu});

@@ -1,0 +1,37 @@
+.infobox {
+
+  position: absolute;
+  bottom: 51px;
+  width: 100%;
+  z-index: 2;
+  text-align: center;
+  opacity: 0;
+  transition: 500ms ease-in opacity;
+
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+  }
+
+  &__inner {
+    background: white;
+    margin: 0 auto;
+    width: 60%;
+    padding: 4px;
+    border-radius: 2px;
+  }
+
+  p {
+    line-height: 1.6em;
+  }
+
+  .fa-caret-down {
+    color: white;
+    position: absolute;
+    bottom: -21px;
+    font-size: 35px;
+    margin-left: -10px;
+  }
+
+}

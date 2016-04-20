@@ -15,10 +15,10 @@
     <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content" onpointerdown="_onPointerDown">
         <div class="undo-redo-buttons">
             <a onclick="undo" enabled="{memento.hasUndoState()}">
-            <i class="fa fa-reply"/>
+                <i class="fa fa-reply"/>
             </a>
             <a onclick="redo" enabled="{memento.hasRedoState()}">
-            <i class="fa fa-share"/>
+                <i class="fa fa-share"/>
             </a>
         </div>
 
@@ -51,6 +51,15 @@
     </div>
 
     <div class="loading-layer" visible="{or(productStore.loading,textFlowStore.loadingFont)}"/>
+
+    <div class="infobox" selected="{showAddInfo}">
+        <div class="infobox__inner">
+            <ui:TextWrapper tagName="p" string="${i18n.t('info.addElements')}">
+                <span class="highlight">${$text}</span>
+            </ui:TextWrapper>
+            <i class="fa fa-caret-down"/>
+        </div>
+    </div>
 
     <div class="footer">
         <a class="footer__btn footer__template-btn" onclick="showMenu('options')">

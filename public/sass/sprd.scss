@@ -13,6 +13,7 @@
 @import "components/mini-basket-btn";
 @import "components/loading-overlay";
 @import "components/modal";
+@import "components/infobox";
 
 .stage {
   position: absolute;
@@ -305,8 +306,9 @@ $settings-height: 210px;
     height: 45px;
     font-size: 16px;
     margin-top: -5px;
-    padding: 0 1em;
-    line-height: 45px;
+    width: 45px;
+    text-align: center;
+    padding: 14px;
     background: $color-green;
   }
 
@@ -1489,4 +1491,8 @@ $presets-view-height: 500px;
     vertical-align: top;
     font-size: 12px;
   }
+}
+
+.highlight {
+  color: $color-brand;
 }
