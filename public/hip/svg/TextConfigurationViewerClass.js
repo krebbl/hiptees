@@ -146,7 +146,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         getEditorPosition: function () {
             var rect = this.getBoundRectInPx();
-            console.log(rect);
             return {
                 left: Math.ceil(rect.left + window.scrollX),
                 top: Math.floor(rect.top + window.scrollY),
