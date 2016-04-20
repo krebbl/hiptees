@@ -51,7 +51,16 @@
                         ${i18n.t('settings.none')}
                     </span>
                 </a>
-
+            </li>
+            <li>
+                <a onclick="_selectSubContent(strokeContent)">
+                    <span class="label">
+                        ${i18n.t('settings.strokeWidth')}
+                    </span>
+                    <span class="value">
+                        {formatNumber(strokeWidth,1)} mm
+                    </span>
+                </a>
             </li>
             <li>
                 <ui:SelectionView items="{alignments}" class="alignments" tagName="ul"
@@ -137,5 +146,16 @@
                           enableColor="{gt(strokeWidth, 0)}"
                           oncolorToggle="_toggleStroke()"
                           oncolorSelect="_updateColor('strokeColor', event)"/>
+
+    <js:Content cid="strokeContent">
+        <div class="slider-label">
+            ${i18n.t('settings.strokeWidth')}
+            <strong>{formatNumber(strokeWidth,1)} mm</strong>
+        </div>
+        <div class="slider-wrapper">
+            <ui:Slider min="0" max="10" step="0.5" oninput="_changeLeafStyle('strokeWidth', value, true)"
+                       value="{strokeWidth}" onhandleUp="_changeLeafStyle('strokeWidth', value, false)"/>
+        </div>
+    </js:Content>
 
 </view:TextSettingsViewClass>

@@ -160,10 +160,11 @@ define(["xaml!hip/view/SettingsView",
             this._changeLeafStyle("color", this.$.color === "none" ? "#000000" : "none");
         },
 
-        _changeLeafStyle: function (type, value) {
+        _changeLeafStyle: function (type, value, preview) {
             var leafStyle = {};
             leafStyle[type] = value;
             this.$.textFlowActions.changeStyle({
+                preview: preview,
                 textFlow: this.$.configuration.$.textFlow,
                 leafStyle
             });
