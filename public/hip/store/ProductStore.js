@@ -207,7 +207,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
             var leafStyle = payload.leafStyle || {};
             leafStyle.color = this._getNextColor();
-            leafStyle.strokWidth = 0;
+            leafStyle.strokeWidth = 0;
             leafStyle.strokeColor = "#FFFFFF";
 
 
