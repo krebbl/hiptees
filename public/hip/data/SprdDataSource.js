@@ -6,17 +6,29 @@ define(["js/core/Component", "hip/util/SHA1", "rAppid"], function (Component, SH
         return SHA1(data);
     }
 
-    function createQueryParameter(method, url, apiKey, secret, sessionId) {
+    function createQueryParameter(method, url, apiKey, secret, sessionId, locale) {
         var time = new Date().getTime();
 
-        return {
+        var ret = {
             mediaType: "json",
             sig: signature(method, url, secret, time),
             time: time,
-            method: method,
-            apiKey: apiKey,
-            sessionId: sessionId
+            method: method
         };
+
+        if(apiKey) {
+            ret.apiKey = apiKey
+        }
+
+        if(sessionId) {
+            ret.sessionId = sessionId;
+        }
+
+        if(locale) {
+            ret.locale = locale;
+        }
+
+        return ret;
     }
 
     return Component.inherit({
@@ -24,7 +36,8 @@ define(["js/core/Component", "hip/util/SHA1", "rAppid"], function (Component, SH
             endPoint: "",
             gateway: "",
             apiKey: "",
-            secret: ""
+            secret: "",
+            locale: "de_DE"
         },
 
         requestResource: function (resource, method, data, sessionId, callback) {
@@ -35,7 +48,7 @@ define(["js/core/Component", "hip/util/SHA1", "rAppid"], function (Component, SH
                 data: JSON.stringify(data),
                 type: method,
                 contentType: "application/json",
-                queryParameter: createQueryParameter(method, endpointUrl, this.$.apiKey, this.$.secret, sessionId)
+                queryParameter: createQueryParameter(method, endpointUrl, this.$.apiKey, this.$.secret, sessionId, this.$.locale)
             };
 
             rAppid.ajax(requestUrl, options, callback)
