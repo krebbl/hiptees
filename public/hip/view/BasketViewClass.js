@@ -1,7 +1,6 @@
 define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/Product", "hip/store/BasketStore", "hip/action/BasketActions"], function (View, Query, Collection, Product, BasketStore, BasketActions) {
     return View.inherit({
         defaults: {
-            selected: "{navigationStore.isMenuActive('basket')}",
             componentClass: "basket",
             loading: false,
             basket: "{basketStore.basket}",
@@ -12,6 +11,10 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
             basketStore: BasketStore,
             basketActions: BasketActions
         },
+
+        events: [
+            "on:close"
+        ],
 
         _initializationComplete: function () {
             this.callBase();
@@ -30,7 +33,7 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
         closeBasket: function (e) {
             e.stopPropagation();
 
-            this.$.navActions.showMenu();
+            this.trigger('on:close');
         },
 
         goCreate: function (e) {

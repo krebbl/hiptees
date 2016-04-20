@@ -59,7 +59,7 @@
     </js:Router>
 
     <div class="slide-container">
-        <view:BasketView cid="basketView"/>
+        <view:BasketView cid="basketView" selected="{navigationStore.isMenuActive('basket')}" onclose="_handleBasketClose"/>
         <!--<view:ProductOptionsView cid="productOptionsView"/>-->
         <!--<view:ProfileOptionsView cid="profileOptionsView"/>-->
     </div>

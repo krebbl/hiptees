@@ -276,7 +276,7 @@ define(
                     params[splitted[0]] = splitted[1] || "";
                 }
 
-                self.$stage.bind('dom:add', function(){
+                self.$stage.bind('dom:add', function () {
                     self.$stage._renderChild(self.$.textEditor);
                 });
 
@@ -296,6 +296,14 @@ define(
                         }
                         callback(err);
                     })
+            },
+
+            _handleBasketClose: function () {
+                if (this.$.productStore.$.product) {
+                    this.$.navigationActions.showMenu();
+                } else {
+                    this.$.navigationActions.showMenu({menu: "presets"});
+                }
             },
 
             showLoading: function () {
