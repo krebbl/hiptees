@@ -725,6 +725,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         var leaf = config.$.textFlow.getFirstLeaf();
                         if (leaf) {
                             addColor(leaf.$.style.$.color);
+                            if (leaf.$.style.$.strokeWidth) {
+                                addColor(leaf.$.style.$.strokeColor);
+                            }
                         }
                     }
                 });
