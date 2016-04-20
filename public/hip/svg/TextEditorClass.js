@@ -23,14 +23,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
         $domAttributes: ["contenteditable", "autocorrect", "autocomplete", "spellcheck", "autocapitalize"],
 
         _handleSizeChange: function (e) {
-            var rect = e.target.$el.getBoundingClientRect();
-            if (this.$.maxWidth == null && rect.width > 0) {
-                this.set({
-                    width: rect.width,
-                    height: rect.height
-                });
-
-            }
+            // do nothing
         },
 
         _commitTextFlow: function () {

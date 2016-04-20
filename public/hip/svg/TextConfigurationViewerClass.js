@@ -146,11 +146,12 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         getEditorPosition: function () {
             var rect = this.getBoundRectInPx();
+            console.log(rect);
             return {
                 left: Math.ceil(rect.left + window.scrollX),
                 top: Math.floor(rect.top + window.scrollY),
                 width: Math.ceil(rect.width + 20) + "px",
-                height: Math.ceil(rect.height)
+                height: Math.ceil(rect.height) + "px"
             }
         },
 
@@ -178,10 +179,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
             if (!svgTextEditor.isRendered()) {
                 this.$stage._renderChild(svgTextEditor, 0);
-            } else {
-                svgTextEditor.set({
-                    visible: true
-                });
             }
             this.$.textRenderer.set('visible', false);
             this.$editing = true;

@@ -275,7 +275,12 @@ define(['js/svg/SvgElement', 'hip/store/TextFlowStore', 'xaml!hip/svg/TextMeasur
 //                group.appendChild(text);
 
                 var height = (lines.length - 1) * measureResult.fontMeasure.height * style.$.lineHeight + this.$.measureResult.fontMeasure.height;
-                this.trigger('on:sizeChanged', {height: height, width: maxWidth, textAlign: textAnchor}, this);
+                this.trigger('on:sizeChanged', {
+                    height: height,
+                    width: maxWidth,
+                    textAlign: textAnchor,
+                    fontMeasure: this.$.measureResult.fontMeasure
+                }, this);
             }
 
         }
