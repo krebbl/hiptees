@@ -27,7 +27,6 @@ define([
             addView: null,
             makePublic: false,
             showConfigurationInfo: false,
-            savingProduct: false,
             presets: null,
             sizeTableSelected: false,
             navigationStore: null,
@@ -50,24 +49,6 @@ define([
             this.callBase();
 
             var self = this;
-            //this.bind('productStore', 'on:configurationAdded', function (e) {
-            //    var configuration = e.$.configuration;
-            //    if (configuration.$.type == "text" && e.$.cloned == false) {
-            //        setTimeout(function () {
-            //            var viewer = self.$.productViewer.getViewerForConfiguration(configuration);
-            //            viewer._enableEditing();
-            //        }, 10);
-            //    }
-            //});
-
-            this.bind('productStore', 'on:productSave', function () {
-
-                this.set({
-                    '_loadingMessage': this.$.i18n.t('editor.addingProduct'),
-                    'savingProduct': true
-                });
-
-            }, this);
 
             var editModeTimeout = null;
 
@@ -78,12 +59,6 @@ define([
                     }, 100);
                 } else {
                     self.set('centeredConfiguration', e.$);
-                }
-            }, this);
-
-            this.bind('productStore', 'on:productSaveFailed', function (e) {
-                if (this.$.savingProduct) {
-                    this.set('savingProduct', false);
                 }
             }, this);
 
@@ -98,45 +73,11 @@ define([
             }, this);
 
 
-            var uploads = 0,
-                uploaded = 0;
-            this.bind('productStore', 'on:uploadingDesigns', function (e) {
-                var designs = e.$.designs;
-                uploads = designs.length;
-                uploaded = 0;
-                this.set({
-                    '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + "")
-                });
-            }, this);
-
-            this.bind('productStore', 'on:designImageUploaded', function (e) {
-                uploaded++;
-                if (uploaded === uploads) {
-                    this.set({
-                        '_loadingMessage': this.$.i18n.t('editor.addingProduct'),
-                        'savingProduct': true
-                    });
-                } else {
-                    this.set({
-                        '_loadingMessage': this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + "")
-                    });
-                }
-
-            }, this);
-
-
             this.bind('productStore', 'on:productLoaded', function (e) {
                 var p = e.$.product;
                 if (p && p.$.configurations.size() === 0) {
                     this.set('showAddInfo', true);
                 }
-            }, this);
-
-            this.bind('basketStore', 'on:checkout', function () {
-                this.set({
-                    '_loadingMessage': this.$.i18n.t('message.checkingOut'),
-                    '_showLoader': true
-                });
             }, this);
         },
 
@@ -437,7 +378,6 @@ define([
 
         saveProduct: function () {
             this.goBack();
-            this.set('savingProduct', true);
             this.$.productActions.saveProduct({state: "draft"});
         },
 

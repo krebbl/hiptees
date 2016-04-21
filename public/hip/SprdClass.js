@@ -18,6 +18,8 @@ define(
             applicationDefaultNamespace: "hip",
 
             defaults: {
+                _showLoader: false,
+                _loadingMessage: "",
                 product: null,
                 anchor: 0,
                 focus: 0,
@@ -99,10 +101,9 @@ define(
 
                 var api = this.$.api;
 
-                var products = api.createCollection(Collection.of(Product));
-
-                var executor = this.$.executor;
                 var memento = this.$.memento;
+                var basketStore = this.$.basketStore;
+                var addToBasketTime = 0;
 
                 var productStore = this.$.productStore;
                 productStore.set('memento', memento);
@@ -219,14 +220,42 @@ define(
                     productStore.saveProductInLocalStorage();
                 });
 
+                var uploads = 0,
+                    uploaded = 0;
+                productStore.bind('on:uploadingDesigns', function (e) {
+                    var designs = e.$.designs;
+                    uploads = designs.length;
+                    uploaded = 0;
+                    this.showLoading(this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + ""));
+                }, this);
 
-                var basketStore = this.$.basketStore;
-                var addToBasketTime = 0;
+                productStore.bind('on:designImageUploaded', function (e) {
+                    uploaded++;
+                    if (uploaded === uploads) {
+                        this.showLoading(this.$.i18n.t('editor.addingProduct'));
+                    } else {
+                        this.showLoading(this.$.i18n.t('editor.uploadingImages', uploaded + "", uploads + ""));
+                    }
+                }, this);
+
+                productStore.bind('on:productSave', function () {
+                    this.showLoading(this.$.i18n.t('editor.addingProduct'));
+                }, this);
+
+
+                productStore.bind('on:productSaveFailed', function (e) {
+                    this.hideLoading();
+                }, this);
+
+                basketStore.bind('on:checkout', function () {
+                    this.showLoading(this.$.i18n.t('message.checkingOut'));
+                }, this);
 
                 basketStore.bind('on:addingToBasket', function () {
                     addToBasketTime = (new Date()).getTime();
                     tracking.trackAddToBasketSize();
-                });
+                    this.showLoading(this.$.i18n.t('editor.addingProduct'));
+                }, this);
 
                 basketStore.bind('on:addToBasketSuccess', function (e) {
                     this.$.notificationManager.showNotification('default', {message: this.$.i18n.t('message.itemAdded')}, {duration: 3});
@@ -247,6 +276,10 @@ define(
                     tracking.trackBasketCreated(e.$.basketId);
                 });
 
+                basketStore.bind('change:updatingBasket', function (e) {
+                    this.toggleLoading(e.$);
+                }, this);
+
                 basketStore.bind('on:basketItemCloned', function (e) {
                     tracking.trackBasketItemCloned();
                 }, this);
@@ -264,9 +297,9 @@ define(
                 });
 
 
-                productStore.bind('on:productSave', this.showLoading, this);
-                productStore.bind('on:productSaved', this.hideLoading, this);
-                productStore.bind('on:addingImage', this.showLoading, this);
+                productStore.bind('on:addingImage', function(){
+                    this.showLoading();
+                }, this);
 
                 var hasParams = location.search.replace(/^\?/, "").split("&"),
                     params = {};
@@ -306,8 +339,8 @@ define(
                 }
             },
 
-            showLoading: function () {
-                this.toggleLoading(true);
+            showLoading: function (msg) {
+                this.toggleLoading(true, msg);
             },
 
             hideLoading: function () {
@@ -328,9 +361,11 @@ define(
                 return ret;
             }.onChange('selectedConfiguration'),
 
-            toggleLoading: function (visible) {
-                this.set('loaderVisible', visible);
-
+            toggleLoading: function (visible, msg) {
+                this.set({
+                    '_showLoader': visible,
+                    '_loadingMessage': msg
+                });
             }
         });
     }

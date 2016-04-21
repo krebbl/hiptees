@@ -4,7 +4,8 @@
         xmlns:js="js.core" xmlns:hip="hip" xmlns:view="hip.view"
         xmlns:svg="hip.svg" xmlns:util="hip.util"
         xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:module="hip.module" xmlns:dialog="hip.dialog"
-        xmlns:tracking="hip.tracking" xmlns:store="hip.store" xmlns:action="hip.action">
+        xmlns:tracking="hip.tracking" xmlns:store="hip.store" xmlns:action="hip.action"
+        xmlns:xlink="https://www.w3.org/1999/xlink">
 
     <js:Injection cid="injection">
         <js:I18n cid="i18n" path="hip/locale" locale="de"/>
@@ -50,6 +51,17 @@
         </js:NotificationManager>
         <dialog:ConfirmDialog/>
     </js:Injection>
+
+    <div class="loading-overlay" visible="{_showLoader}">
+        <div class="loading-overlay__box">
+            <svg xmlns="http://www.w3.org/2000/svg" class="lovetab">
+                <use xlink:href="#heart"/>
+            </svg>
+            <div class="loading-overlay__message">
+                {_loadingMessage}
+            </div>
+        </div>
+    </div>
 
     <js:Router cid="router">
         <conf:RouteConfiguration route="^$" onexec="defaultRoute"/>

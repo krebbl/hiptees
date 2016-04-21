@@ -50,8 +50,6 @@
         </div>
     </div>
 
-    <div class="loading-layer" visible="{or(productStore.loading,textFlowStore.loadingFont)}"/>
-
     <div class="infobox" selected="{showAddInfo}">
         <div class="infobox__inner">
             <ui:TextWrapper tagName="p" string="${i18n.t('info.addElements')}">
@@ -143,14 +141,6 @@
                 <i class="fa fa-user-secret"/>
                 ${i18n.t('menu.privacy')}
             </a>
-        </div>
-    </div>
-
-    <div class="loading-overlay" visible="{or(productStore.savingProduct,basketStore.updatingBasket,_showLoader)}">
-        <div class="loading-overlay__box">
-            <div class="loading-overlay__message">
-                {_loadingMessage}
-            </div>
         </div>
     </div>
 

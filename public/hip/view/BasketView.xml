@@ -11,11 +11,6 @@
         <h2>{i18n.t('basket.basket')}</h2>
     </div>
 
-
-    <div class="basket__updating" visible="{basketStore.updatingBasket}">
-        <svg xmlns="http://www.w3.org/2000/svg" class="lovetab"><use xlink:href="#heart"/></svg>
-    </div>
-
     <div class="basket__content" visible="{basketStore.basket}" cid="content" onclick="stopPropagation">
         <ui:ItemsView class="basket__items" items="{basket.basketItems}">
             <js:Template name="item">
