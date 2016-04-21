@@ -49,7 +49,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
                 });
             }
 
-            if (this.$action === "resize" || (event.touches && event.touches.length > 1)) {
+            if (this.$action === "resize") {
                 var configuration = this.$.configuration;
                 var range = new TextRange({anchorIndex: 0, activeIndex: configuration.$.textFlow.textLength()});
                 var paragraphStyle = range.getCommonParagraphStyle(configuration.$.textFlow);
