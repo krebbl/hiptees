@@ -659,7 +659,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                                 };
 
                                 image.onerror = function () {
-                                    console.log("error while loading image");
+                                    cb("IMAGE_LOAD_ERROR");
                                 };
 
                                 image.src = this.vars.design.$.resources.SCREEN;
