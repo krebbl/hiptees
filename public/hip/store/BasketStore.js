@@ -248,12 +248,13 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
             }
         },
 
-        formatPrice: function (price, type) {
+        formatPrice: function (price, type, quantity) {
+            quantity = quantity || 1;
             type = type || "display";
             var currency = this.$.combinedBasket.currency;
 
 
-            var stringPrice = price[type].toFixed(currency.decimalCount);
+            var stringPrice = (price[type] * quantity).toFixed(currency.decimalCount);
 
             var isDotCurrency = dotCurrencyCodes.indexOf(currency.isoCode) > -1;
             if (!isDotCurrency) {

@@ -50,7 +50,7 @@
                                    onblur="_handleQuantityChange(item,event)"/>
                         </div>
                         <div class="basket__item-price">
-                            {basketStore.formatPrice(item.priceItem)}
+                            {basketStore.formatPrice(item.priceItem, 'display', item.quantity)}
                         </div>
                     </div>
                 </div>
