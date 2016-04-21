@@ -111,11 +111,11 @@
   "settings": {
     "color": "Farbe",
     "fillColor": "Füllfarbe",
-    "strokeColor": "Randfarbe",
-    "strokeWidth": "Randbreite",
+    "strokeColor": "Konturfarbe",
+    "strokeWidth": "Konturstärke",
     "opacity": "Deckkraft",
     "fillOpacity": "Deckkraft Fläche",
-    "strokeOpacity": "Deckkraft Rand",
+    "strokeOpacity": "Deckkraft Kontur",
     "none": "keine"
   },
   "textSettings": {
