@@ -992,7 +992,7 @@ image.masking-bg-image {
 
 .color-picker {
   position: absolute;
-  top: 30px;
+  top: $settings-header-height;
   left: 45px;
   right: 0;
   bottom: 15px;
