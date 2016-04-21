@@ -58,6 +58,7 @@ define([
                         self.set('centeredConfiguration', null);
                     }, 100);
                 } else {
+                    this.$.navigationStore.showMenu({menu: ""});
                     self.set('centeredConfiguration', e.$);
                 }
             }, this);
@@ -212,7 +213,7 @@ define([
                     var viewerRect = viewer.$el.getBoundingClientRect();
 
                     var bottomDistance = this.$stage.$el.offsetHeight - (viewerRect.top + viewerRect.height);
-                    var bottomThreshold = this.$stage.$browser.isIOS ? 250 : 300;
+                    var bottomThreshold = this.$stage.$browser.isIOS ? 300 : 320;
                     if (bottomDistance < bottomThreshold) {
                         this.$.wrapper.set('top', (bottomDistance - bottomThreshold) + "px");
                     }
