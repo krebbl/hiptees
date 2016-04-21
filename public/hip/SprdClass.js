@@ -251,6 +251,10 @@ define(
                     this.showLoading(this.$.i18n.t('message.checkingOut'));
                 }, this);
 
+                this.$.textFlowStore.bind('change:loadingFont', function (e) {
+                    this.toggleLoading(e.$);
+                },this);
+
                 basketStore.bind('on:addingToBasket', function () {
                     addToBasketTime = (new Date()).getTime();
                     tracking.trackAddToBasketSize();
@@ -297,7 +301,7 @@ define(
                 });
 
 
-                productStore.bind('on:addingImage', function(){
+                productStore.bind('on:addingImage', function () {
                     this.showLoading();
                 }, this);
 
