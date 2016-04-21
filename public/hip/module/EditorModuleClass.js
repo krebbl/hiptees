@@ -250,6 +250,7 @@ define([
                 this.$.productActions.addImageFile({
                     file: files[0]
                 });
+                e.domEvent.target.value = "";
             }
         },
 
