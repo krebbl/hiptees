@@ -168,9 +168,17 @@ define([
         _onPointerDown: function (event) {
             if (event.domEvent.touches && event.domEvent.touches.length === 2) {
                 this.$originalZoom = this.$._zoom;
+                this.$oldScrollTop = this.$.innerContent.$el.scrollTop;
+                this.$oldScrollLeft = this.$.innerContent.$el.scrollLeft;
+
                 this.$downPoint = {
                     x: event.pointerEvent.pageX,
                     y: event.pointerEvent.pageY
+                };
+
+                this.$middlePoint = {
+                    x: (event.domEvent.touches[0].pageX + event.domEvent.touches[1].pageX) * 0.5,
+                    y: (event.domEvent.touches[0].pageY + event.domEvent.touches[1].pageY) * 0.5
                 };
 
                 var self = this;
@@ -193,7 +201,7 @@ define([
         _onPointerMove: function (e) {
             var diff = this._createDiffVector(e);
 
-            this.set('_zoom', Math.max(1, this.$originalZoom + diff[0] / 320));
+            this.set('_zoom', Math.max(1, this.$originalZoom + diff[0] / window.innerWidth * this.$originalZoom));
         },
 
         _onPointerUp: function () {
@@ -297,20 +305,35 @@ define([
 
         _render_zoom: function (zoom) {
             if (this.isRendered() && this.$.innerContent.isRendered()) {
-                var offsetWidth = this.$.innerContent.$el.offsetWidth;
-                var rect = this.$stage.$el.getBoundingClientRect();
+                var $innerEl = this.$.innerContent.$el;
+                var offsetWidth = $innerEl.offsetWidth;
+                var rect = $innerEl.getBoundingClientRect();
                 var zoomHeight = rect.height * zoom;
                 this.$.innerContent.set('overflow', 'hidden');
-                var oldMiddle = (this.$.wrapper.$.height - offsetWidth) * 0.5;
-                var oldScrollLeft = this.$.innerContent.$el.scrollLeft;
 
                 this.$.wrapper.set({
                     'height': zoomHeight
                 });
-                //this.$.wrapper.set('marginLeft', (this.minusHalf(this.$heightBefore)) + "px");
 
-                this.$.innerContent.$el.scrollLeft = (zoomHeight - offsetWidth) * 0.5 + (zoom > 1 ? oldScrollLeft - oldMiddle : 0);
+                if (this.$middlePoint) {
+                    var originalPoint = (this.$middlePoint.y - rect.top) + this.$oldScrollTop;
+                    var zoomedDownPoint = originalPoint * zoom / this.$originalZoom;
+                    $innerEl.scrollTop = zoomedDownPoint - originalPoint + this.$oldScrollTop;
 
+                    originalPoint = (this.$middlePoint.x) + this.$oldScrollLeft;
+                    zoomedDownPoint = originalPoint * zoom / this.$originalZoom;
+                    var scrollLeft = zoomedDownPoint - originalPoint + this.$oldScrollLeft;
+                    // move scroll left more to middle when returning to zoom of 1
+                    var threshold = 1.2;
+                    if (zoom < threshold) {
+                        var limit = threshold - 1;
+                        var targetScrollLeft = (zoomHeight - rect.width) * 0.5;
+                        var diff = targetScrollLeft - scrollLeft;
+                        scrollLeft += (threshold - zoom) / limit * diff;
+                    }
+                    $innerEl.scrollLeft = scrollLeft;
+
+                }
             }
         },
 
