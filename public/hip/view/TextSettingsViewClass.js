@@ -166,7 +166,7 @@ define(["xaml!hip/view/SettingsView",
             this.$.textFlowActions.changeStyle({
                 preview: preview,
                 textFlow: this.$.configuration.$.textFlow,
-                leafStyle
+                leafStyle: leafStyle
             });
         },
 
