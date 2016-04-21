@@ -251,6 +251,14 @@ define(
                     this.showLoading(this.$.i18n.t('message.checkingOut'));
                 }, this);
 
+                productStore.bind('on:addImage', function(){
+                    this.showLoading();
+                }, this);
+
+                productStore.bind('on:imageAdded', function () {
+                    this.hideLoading();
+                }, this);
+
                 this.$.textFlowStore.bind('change:loadingFont', function (e) {
                     this.toggleLoading(e.$);
                 },this);

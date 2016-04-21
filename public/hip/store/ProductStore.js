@@ -246,7 +246,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         },
 
         addImageFile: function (payload) {
-
+            this.trigger('on:addImage');
             this.set('loading', true);
             var file = payload.file;
 
@@ -280,8 +280,9 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     self.trigger('on:configurationAdded', {configuration: configuration});
 
                     self._selectConfiguration(configuration);
-                    self.set('loading', false);
                 }
+                self.set('loading', false);
+                self.trigger('on:imageAdded', {configuration: configuration});
             });
         },
 
