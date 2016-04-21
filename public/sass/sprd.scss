@@ -326,9 +326,11 @@ $settings-height: 210px;
 
 }
 
+$settings-header-height: 40px;
+
 .settings-header {
   background-color: rgba(15, 21, 29, 0.81);
-  height: 30px;
+  height: $settings-header-height;
   position: absolute;
   width: 100%;
   z-index: 3;
@@ -353,12 +355,13 @@ $settings-height: 210px;
 
   a {
     color: white;
-    padding: 7px 8px;
+    padding: 11px 10px;
     display: inline-block;
   }
 
   .back-btn {
     display: inline-block;
+    font-weight: bold;
   }
 
   .header-info {
@@ -368,7 +371,7 @@ $settings-height: 210px;
     top: 0;
     bottom: 0;
     text-align: center;
-    line-height: 30px;
+    line-height: $settings-header-height;
     input {
       background-color: $color-dark2;
       height: 100%;
@@ -420,7 +423,7 @@ $settings-height: 210px;
 }
 
 .settings-content {
-  padding-top: 30px;
+  padding-top: $settings-header-height;
   position: absolute;
   top: 0;
   left: 0;
@@ -451,7 +454,7 @@ $settings-height: 210px;
 }
 
 .settings-sub-content {
-  padding-top: 30px;
+  padding-top: $settings-header-height;
   position: absolute;
   top: 0;
   left: 100%;
@@ -629,7 +632,7 @@ $info-view-height: 400px;
 }
 
 ul.settings {
-  font-weight: 300;
+  font-weight: 400;
   > li {
     border-bottom: 1px solid #444444;
 
