@@ -113,6 +113,7 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 
             this.$originalSize = this.$._size;
             this.$originalOffset = this.$._offset;
+            this.$origninalRatio = this.$originalSize.width / this.$originalSize.height;
 
             var self = this;
             var firstMoveDone = false;
@@ -249,9 +250,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
 
                     if (this.$.keepAspectRatio) {
                         if (diffY !== 0) {
-                            diffX = diffY * this.$originalSize.width / this.$originalSize.height;
+                            diffX = diffY * this.$origninalRatio;
                         } else {
-                            diffY = diffX * this.$originalSize.height / this.$originalSize.width;
+                            diffY = diffX / this.$origninalRatio;
                         }
                     }
                 }
@@ -278,10 +279,17 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                         [size.width * anchor.x, this.$originalOffset.x]
                     ], 0)) * (1 / anchor.x);
 
-                var snappedHeight = size.height;
+                var snappedHeight = Math.abs(snapToPoints([
+                        [size.height * (0 - anchor.y), this.$originalOffset.y],
+                        [size.height * anchor.y, this.$originalOffset.y]
+                    ], 1)) * (1 / anchor.y);
 
                 if (this.$.keepAspectRatio) {
-                    snappedHeight = this.$originalSize.height / this.$originalSize.width * snappedWidth;
+                    if (snappedWidth !== size.width) {
+                        snappedHeight = snappedWidth / this.$origninalRatio;
+                    } else {
+                        snappedWidth = snappedHeight * this.$origninalRatio;
+                    }
                 }
 
                 size.width = snappedWidth;
