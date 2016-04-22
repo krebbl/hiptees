@@ -187,7 +187,16 @@
     </svg>
 </div>
 <script type="text/javascript" data-usage="bootstrap">
-    rAppid.bootStrap("hip/Sprd.xml", null, null, null, function (err, stage) {
+
+    var hasParams = location.search.replace(/^\?/, "").split("&"),
+            params = {};
+
+    for (var j = 0; j < hasParams.length; j++) {
+        var splitted = hasParams[j].split("=");
+        params[decodeURIComponent(splitted[0])] = decodeURIComponent(splitted[1] || "");
+    }
+
+    rAppid.bootStrap("hip/Sprd.xml", null, params, null, function (err, stage) {
         var preloader = document.getElementById("preloader");
         if (err) {
             preloader.style.backgroundColor = "red";

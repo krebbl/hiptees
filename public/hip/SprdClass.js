@@ -239,8 +239,21 @@ define(
                 }, this);
 
                 productStore.bind('on:productSave', function () {
-                    this.showLoading(this.$.i18n.t('editor.addingProduct'));
+                    this.showLoading(this.$.i18n.t('editor.savingProduct'));
                 }, this);
+
+                productStore.bind('on:sprdProductCreated', function (e) {
+                    this.hideLoading();
+
+                    window.parent.postMessage("productId", e.$.sprdProduct.$.id);
+                }, this);
+
+                productStore.bind('on:sprdProductFailed', function (e) {
+                    this.hideLoading();
+                    alert("an error occoured while saving product");
+
+                    console.warn(e);
+                });
 
 
                 productStore.bind('on:productSaveFailed', function (e) {
@@ -251,7 +264,7 @@ define(
                     this.showLoading(this.$.i18n.t('message.checkingOut'));
                 }, this);
 
-                productStore.bind('on:addImage', function(){
+                productStore.bind('on:addImage', function () {
                     this.showLoading();
                 }, this);
 
@@ -261,7 +274,7 @@ define(
 
                 this.$.textFlowStore.bind('change:loadingFont', function (e) {
                     this.toggleLoading(e.$);
-                },this);
+                }, this);
 
                 basketStore.bind('on:addingToBasket', function () {
                     addToBasketTime = (new Date()).getTime();
@@ -313,13 +326,7 @@ define(
                     this.showLoading();
                 }, this);
 
-                var hasParams = location.search.replace(/^\?/, "").split("&"),
-                    params = {};
-
-                for (var j = 0; j < hasParams.length; j++) {
-                    var splitted = decodeURIComponent(hasParams[j]).split("=");
-                    params[splitted[0]] = splitted[1] || "";
-                }
+                var params = this.PARAMETER();
 
                 self.$stage.bind('dom:add', function () {
                     self.$stage._renderChild(self.$.textEditor);

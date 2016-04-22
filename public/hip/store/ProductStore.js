@@ -8,6 +8,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "hip/model/Design",
     "hip/model/Product",
     "hip/model/UpdateProductState",
+    "hip/model/CreateSprdProduct",
     "hip/util/CloudinaryImageUploader",
     "hip/util/ImageFileReader",
     "hip/util/DataUriToBlob",
@@ -18,7 +19,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "text/operation/ApplyStyleToElementOperation",
     "text/entity/TextFlow",
     "flow",
-    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, ImageUploader, ImageFileReader, DataUriToBlob, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, CreateSprdProduct, ImageUploader, ImageFileReader, DataUriToBlob, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
 
 
     var colorIndex = 0;
@@ -352,6 +353,34 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         saveProduct: function (payload) {
             this._saveProduct(this.$.product, payload.state, payload.callback);
         },
+
+        createSprdProduct: function (payload) {
+            var self = this;
+            flow()
+                .seq("product", function (cb) {
+                    self._saveProduct(self.$.product, null, cb);
+                })
+                .seq("sprdProduct", function (cb) {
+                    self.trigger('on:createSprdProduct');
+
+                    var action = self.$.api.createEntity(CreateSprdProduct);
+                    action.set({
+                        product: this.vars.product
+                    });
+
+                    action.save({}, cb)
+                })
+                .exec(function (err, results) {
+                    if(!err) {
+                        self.trigger('on:sprdProductCreated', {sprdProduct: results.sprdProduct, product: results.product});
+                    } else {
+                        self.trigger('on:sprdProductFailed', {err: err});
+                    }
+                    payload.callback && payload.callback(err, results.sprdProduct);
+                });
+
+        },
+
         replaceImageFile: function (payload) {
             var configuration = payload.configuration;
             if (configuration instanceof DesignConfiguration) {
@@ -389,10 +418,13 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     self.set('loading', false);
                 });
             }
-        },
+        }
+
+        ,
         changeProductType: function () {
             // TODO: copy
-        },
+        }
+        ,
 
         init: function (productId, callback) {
             var self = this;
@@ -428,12 +460,14 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     }
                 })
                 .exec(callback);
-        },
+        }
+        ,
 
         selectPreset: function (payload) {
             this.trigger('on:selectPreset', {productId: payload.productId});
             this.loadProduct(payload);
-        },
+        }
+        ,
 
         loadProduct: function (payload) {
             this.trigger('on:loadProduct', {productId: payload.productId});
@@ -500,7 +534,6 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                         p = p.clone();
                         p.set({
                             'id': undefined,
-                            'state': null,
                             'tags': []
                         });
 
@@ -518,15 +551,18 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     callback && callback(err, p);
                     self.set('loadingProduct', false);
                 });
-        },
+        }
+        ,
 
         editConfiguration: function (payload) {
             this.trigger('on:editConfiguration', {configuration: payload.configuration});
-        },
+        }
+        ,
 
         changeProductState: function () {
             // TODO: implement
-        },
+        }
+        ,
 
         _selectConfiguration: function (configuration) {
             if (this.$.selectedConfiguration instanceof TextConfiguration) {
@@ -545,7 +581,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             if (!configuration) {
                 this.editConfiguration({});
             }
-        },
+        }
+        ,
 
         _saveProduct: function (product, state, cb) {
             this.trigger('on:productSave', {product: product});
@@ -560,6 +597,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     }
                 }
             });
+
+            product.set('state', 'new');
 
             // filter out duplicate designs
             newDesigns = _.uniq(newDesigns, false, function (a) {
@@ -612,10 +651,12 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     cb && cb(err, results.savedProduct);
                 });
 
-        },
+        }
+        ,
         _generateConfigurationId: function () {
             return '_' + Math.random().toString(36).substr(2, 9)
-        },
+        }
+        ,
         _imageFileToDesign: function (file, callback) {
             var imageFileReader = this.$.imageFileReader,
                 self = this;
@@ -646,7 +687,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 }
                 callback && callback(err, design);
             });
-        },
+        }
+        ,
         _loadConfiguration: function (configuration, loadLazy, callback) {
             if (configuration instanceof DesignConfiguration) {
                 if (configuration.$.design.$.id) {
@@ -690,7 +732,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             } else {
                 callback && callback();
             }
-        },
+        }
+        ,
 
         _convertOffset: function (offset) {
             var ret = {x: 0, y: 0};
@@ -706,7 +749,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             }
 
             return ret;
-        },
+        }
+        ,
 
         _calculateUsedColors: function () {
             var usedColors = [];
@@ -740,7 +784,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 this.set('usedColors', usedColors);
 
             }
-        },
+        }
+        ,
 
         saveProductInLocalStorage: function () {
             try {
@@ -752,15 +797,18 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             } catch (e) {
                 console.warn(e);
             }
-        },
+        }
+        ,
 
         getComposedProduct: function () {
             return this.$.api.composeModel(this.$.product);
-        },
+        }
+        ,
 
         getMementoState: function () {
             return this.$.product.clone();
         }
     });
 
-});
+})
+;

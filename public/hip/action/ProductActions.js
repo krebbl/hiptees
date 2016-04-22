@@ -52,6 +52,7 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
             addImageFile: {},
 
             saveProduct: {},
+            createSprdProduct: {},
             replaceImageFile: {},
             addShape: {},
             changeProductType: {},

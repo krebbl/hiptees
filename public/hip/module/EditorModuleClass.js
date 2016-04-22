@@ -346,6 +346,10 @@ define([
             }
         },
 
+        isModeActive: function (mode) {
+            return this.PARAMETER().mode === mode;
+        },
+
         isEditButtonVisible: function () {
             return this.$.showConfigurationInfo && !(this.get("configurationViewer._moving") || this.get("configurationViewer._resizing"));
         }.onChange("showConfigurationInfo", "configurationViewer._moving", "configurationViewer._resizing"),
@@ -369,6 +373,12 @@ define([
                 .exec(function (err) {
                     console.log(err);
                 })
+        },
+
+        saveSprdProduct: function () {
+            var self = this;
+            this.$.navActions.showMenu();
+            this.$.productActions.createSprdProduct();
         },
 
         selectSize: function (item) {
@@ -399,11 +409,6 @@ define([
 
         and: function (a, b) {
             return a && b;
-        },
-
-        saveProduct: function () {
-            this.goBack();
-            this.$.productActions.saveProduct({state: "draft"});
         },
 
         hidePanel: function () {

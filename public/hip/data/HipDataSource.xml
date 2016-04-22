@@ -23,6 +23,7 @@
         <conf:ResourceConfiguration modelClassName="hip.model.UpdateProductState" path="updateProductState"/>
 
         <conf:ResourceConfiguration modelClassName="hip.model.AddToSprdBasket" path="addToSprdBasket"/>
+        <conf:ResourceConfiguration modelClassName="hip.model.CreateSprdProduct" path="createSprdProduct"/>
 
         <conf:ResourceConfiguration modelClassName="hip.model.CheckoutBasket" path="checkoutBasket"/>
         <conf:ResourceConfiguration modelClassName="hip.model.AddBasketItem" path="addBasketItem"/>

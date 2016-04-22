@@ -71,9 +71,14 @@
 
 
         <a class="footer__btn footer__buy-btn" onclick="showMenu('buy')"
-           enabled="{not(product.configurations.isEmpty())}">
+           enabled="{not(product.configurations.isEmpty())}"
+           visible="{not(isModeActive('service'))}">
             <i class="fa fa-shopping-cart"/>
             ${i18n.t('editor.buy')}
+        </a>
+        <a class="footer__btn footer__buy-btn" onclick="saveSprdProduct"
+           visible="{isModeActive('service')}">
+            ${i18n.t('editor.save')}
         </a>
 
     </div>
