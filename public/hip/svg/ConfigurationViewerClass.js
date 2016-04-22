@@ -433,8 +433,9 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                 height = this.get('_size.height');
 
             this.$snappingPoints = [
-                [x, x + width * 0.5, x + width],
-                [y, y + height * 0.5, y + height]
+                [x, y, "config"],
+                [x + width * 0.5, y + height * 0.5, "config"],
+                [x + width, y + height, "config"]
             ];
         },
 

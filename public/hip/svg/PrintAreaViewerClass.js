@@ -88,7 +88,7 @@ define(['js/svg/SvgElement', 'js/core/List',
         },
 
         _checkViewer: function (activeViewer) {
-            if(!this.$addedToDom) {
+            if (!this.$addedToDom) {
                 return;
             }
 
@@ -100,7 +100,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             var aEndY = aY + activeViewer.$._size.height;
 
             _.forEach(this.$.configurationContainer.$children, function (viewer) {
-                if(!collides && viewer !== activeViewer) {
+                if (!collides && viewer !== activeViewer) {
                     var vX = viewer.$.translateX;
                     var vY = viewer.$.translateY;
                     var vEndX = vX + viewer.$._size.width;
@@ -206,8 +206,9 @@ define(['js/svg/SvgElement', 'js/core/List',
                 width = this.get('printArea.size.width'),
                 height = this.get('printArea.size.height'),
                 snappingPoints = [
-                    [x, x + width * 0.5, x + width],
-                    [y, y + height * 0.5, y + height]
+                    [x, y, "printarea"],
+                    [x + width * 0.5, y + height * 0.5, "printarea"],
+                    [x + width, y + height, "printarea"]
                 ];
 
             var configurationContainer = this.$.configurationContainer;
@@ -215,10 +216,7 @@ define(['js/svg/SvgElement', 'js/core/List',
                 var configViewer = configurationContainer.$children[i];
                 if (configViewer !== viewer) {
                     var confSnappingPoints = configViewer.getSnappingPoints();
-
-                    snappingPoints[0] = _.uniq(snappingPoints[0].concat(confSnappingPoints[0]));
-                    snappingPoints[1] = _.uniq(snappingPoints[1].concat(confSnappingPoints[1]));
-
+                    snappingPoints = snappingPoints.concat(confSnappingPoints);
                 }
             }
 
@@ -233,10 +231,9 @@ define(['js/svg/SvgElement', 'js/core/List',
                 threshold = 2;
 
             // check if it snap to lines
-            for (var j = 0; j < snappingPoints[axis].length; j++) {
-                var snapPoint = snappingPoints[axis][j],
+            for (var j = 0; j < snappingPoints.length; j++) {
+                var snapPoint = snappingPoints[j][axis],
                     diff = Math.abs(point - snapPoint);
-
                 if (diff < threshold) {
                     if ((diff < closestPoint || closestPoint === false)) {
                         closestPoint = snapPoint;
@@ -249,6 +246,7 @@ define(['js/svg/SvgElement', 'js/core/List',
             if (closestPoint !== false) {
                 this.$.snapLines.$children[axis].set({
                     "stroke-opacity": 1,
+                    "stroke": snappingPoints[j][2] === "config" ? "aqua" : "orange",
                     x1: axis == 1 ? -1000 : closestPoint,
                     x2: axis == 1 ? 1000 : closestPoint,
                     y1: axis == 0 ? -1000 : closestPoint,
