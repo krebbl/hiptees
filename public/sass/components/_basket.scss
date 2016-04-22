@@ -157,8 +157,27 @@
   }
 
   .basket__summary {
-    display: flex;
     margin-bottom: 1em;
+
+    > div {
+      display: flex;
+    }
+
+    label {
+      flex-grow: 1;
+
+      + div {
+        padding: 0.25em 0;
+      }
+    }
+  }
+
+  .basket__discount-price {
+    border-bottom: 1px dashed lightgray;
+    padding-bottom: .5em;
+    margin-bottom: .5em;
+
+    color: $color-brand;
   }
 
   .basket__total-price {

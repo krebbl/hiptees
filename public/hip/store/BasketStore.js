@@ -249,6 +249,11 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
         },
 
         formatPrice: function (price, type, quantity) {
+
+            if (!price) {
+                return;
+            }
+
             quantity = quantity || 1;
             type = type || "display";
             var currency = this.$.combinedBasket.currency;
@@ -293,6 +298,18 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                     }, 100);
                 }
             }
+        },
+
+        volumeDiscount: function(basket) {
+
+            if (!basket) {
+                return null;
+            }
+
+            return _.find(basket.discounts, function(discount) {
+                return discount.type == "scale"
+            });
+
         }
 
     });
