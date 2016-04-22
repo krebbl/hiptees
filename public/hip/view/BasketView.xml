@@ -59,13 +59,35 @@
     </div>
 
     <div class="basket__footer" visible="{basketStore.basket}">
-        <div class="basket__summary">
-            <label>
-                {i18n.t('basket.subTotalWithoutShipping')}<br/>
-            </label>
-            <div class="basket__total-price">
-                <div>{basketStore.formatPrice(basket.priceItems)}</div>
+        <div class="basket__summary" volumeDiscount="{basketStore.volumeDiscount(basket)}">
+            <div visible="{volumeDiscount}" class="basket__subtotal-price">
+                <label>
+                    {i18n.t('basket.subTotal')}
+                    <br/>
+                </label>
+                <div >
+                    <div>{basketStore.formatPrice(basket.priceItems)}</div>
+                </div>
             </div>
+            <div visible="{volumeDiscount}" class="basket__discount-price">
+                <label>
+                    {i18n.t('basket.volumeDiscount')}
+                    <br/>
+                </label>
+                <div >
+                    <div>-{basketStore.formatPrice(volumeDiscount.price)}</div>
+                </div>
+            </div>
+            <div>
+                <label>
+                    {i18n.t('basket.total')}
+                    <br/>
+                </label>
+                <div class="basket__total-price">
+                    <div>{basketStore.formatPrice(basket.priceTotal)}</div>
+                </div>
+            </div>
+
         </div>
         <div class="basket__btn-wrapper">
             <a class="btn btn-orange" onclick="checkout">

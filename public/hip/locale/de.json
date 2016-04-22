@@ -144,6 +144,9 @@
     "basket": "Warenkorb",
     "isEmpty": "Der Warenkorb ist leider leer :(",
     "startCreate": "Jetzt was gestalten!",
+    "total": "Summe ohne Lieferkosten",
+    "subTotal": "Zwischensumme",
+    "volumeDiscount": "Mengenrabatt",
     "subTotalWithoutShipping": "Zwischensumme ohne Lieferkosten",
     "toCheckout": "Jetzt zur Kasse"
   }
