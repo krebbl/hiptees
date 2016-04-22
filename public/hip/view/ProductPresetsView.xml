@@ -24,7 +24,7 @@
     <div class="presets-view__scroll-view" cid="scrollContainer">
         <ui:ItemsView items="{presetStore.presets}" tagName="ul" class="product-list">
             <js:Template name="item">
-                <li>
+                <li class="product-{item.id}">
                     <a class="product-image-wrapper" onclick="selectProductPreset(item, event)">
                         <view:LazyImage src="${item.resources.MEDIUM}?{item.__v}" scrollView="{scrollContainer}"/>
                     </a>
