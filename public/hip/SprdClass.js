@@ -245,7 +245,9 @@ define(
                 productStore.bind('on:sprdProductCreated', function (e) {
                     this.hideLoading();
 
-                    window.parent.postMessage("productId", e.$.sprdProduct.$.id);
+                    window.parent.postMessage(JSON.stringify({
+                        productId: e.$.sprdProduct.$.id
+                    }), "*");
                 }, this);
 
                 productStore.bind('on:sprdProductFailed', function (e) {
@@ -253,7 +255,7 @@ define(
                     alert("an error occoured while saving product");
 
                     console.warn(e);
-                });
+                }, this);
 
 
                 productStore.bind('on:productSaveFailed', function (e) {
