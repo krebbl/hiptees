@@ -253,7 +253,7 @@ define(
                     alert("an error occoured while saving product");
 
                     console.warn(e);
-                });
+                }, this);
 
 
                 productStore.bind('on:productSaveFailed', function (e) {
