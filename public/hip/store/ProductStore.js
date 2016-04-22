@@ -185,6 +185,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         undo: function () {
             var state = this.$.memento.getUndoState();
             if (state) {
+                this.trigger('on:undo');
                 state.sync();
                 this._selectConfiguration(null);
                 this.trigger('on:productRecovered', {product: this.$.product, type: "undo"});
@@ -194,6 +195,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
         redo: function () {
             var state = this.$.memento.getRedoState();
             if (state) {
+                this.trigger('on:redo');
                 state.sync();
                 this._selectConfiguration(null);
                 this.trigger('on:productRecovered', {product: this.$.product, type: "redo"});
