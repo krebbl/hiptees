@@ -5,9 +5,7 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore", "x
         defaults: {
             formDataUrl: "/api/v1/cloudinaryFormData",
             baseUrl: "https://api.cloudinary.com/v1_1/",
-            cloudName: "drbxi29nk",
-            name: "cloudinary",
-            sessionToken: null
+            name: "cloudinary"
         },
 
         inject: {
@@ -19,9 +17,7 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore", "x
 
             options = options || {};
 
-            options.upload_preset = "fatxk4kd";
             options.public_id = id;
-            options.folder = "images";
 
             flow()
                 .seq('signatureOptions', function (cb) {
@@ -56,7 +52,7 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore", "x
                 }
             }
 
-            var url = this.$.baseUrl + "/" + this.$.cloudName + "/image/upload";
+            var url = this.$.baseUrl + "/" + options.cloud_name + "/image/upload";
 
             this.makeAjaxCall(url, {
                 type: "POST",
@@ -68,19 +64,6 @@ define(['js/core/Component', 'rAppid', 'flow', 'hip/util/SHA1', "underscore", "x
                 callback && callback(xhr.status === 200 ? null : xhr);
             })
 
-        },
-
-        _createSignatureParameter: function (url, method) {
-            var secret = this.$.secret;
-            var time = Date.now();
-
-            var data = method + " " + url + " " + time + " " + secret;
-
-            return {
-                sig: SHA1(data),
-                time: time,
-                apiKey: this.$.apiKey
-            };
         },
 
         makeAjaxCall: function (url, options, callback) {

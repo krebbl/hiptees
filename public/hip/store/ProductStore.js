@@ -562,8 +562,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             });
 
             // filter out duplicate designs
-            newDesigns = _.uniq(newDesigns, false, function (a, b) {
-                return a && b && a.$.file === b.$.file;
+            newDesigns = _.uniq(newDesigns, false, function (a) {
+                return a.$.file;
             });
 
             var self = this;
@@ -584,6 +584,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                                 if (!err) {
                                     self.trigger('on:designImageUploaded', {design: design}, self);
                                 } else {
+                                    design.set('id', undefined);
                                     self.trigger('on:designImageUploadFailed', {design: design}, self);
                                 }
                                 cb(err);
@@ -601,6 +602,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 })
                 .exec(function (err, results) {
                     if (!err) {
+                        self.saveProductInLocalStorage();
                         self.trigger('on:productSaved', {product: product, stateBefore: stateBefore}, self);
                     } else {
                         self.trigger('on:productSaveFailed', {err: err});
