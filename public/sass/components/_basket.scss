@@ -195,7 +195,10 @@
   }
 
   .basket__btn-wrapper {
-    text-align: center;
+    text-align: right;
+
+    background: url(https://image.spreadshirtmedia.net/Public/Media/footer/elements/payment_de_4.png) no-repeat 0 10px;
+    background-size: 44%;
 
     .btn {
       padding: 1em 2em;
