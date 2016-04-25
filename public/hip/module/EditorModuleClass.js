@@ -59,7 +59,9 @@ define([
                     }, 100);
                 } else {
                     this.$.navigationStore.showMenu({menu: ""});
-                    self.set('centeredConfiguration', e.$);
+                    if(navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)){
+                        self.set('centeredConfiguration', e.$);
+                    }
                 }
             }, this);
 
@@ -221,7 +223,13 @@ define([
                     var viewerRect = viewer.$el.getBoundingClientRect();
 
                     var bottomDistance = this.$stage.$el.offsetHeight - (viewerRect.top + viewerRect.height);
-                    var bottomThreshold = this.$stage.$browser.isIOS ? 300 : 320;
+                    var bottomThreshold = 240;
+
+                    if(window.navigator.platform === "iPhone") {
+                        bottomThreshold = 300;
+                    } else if(navigator.userAgent.toLowerCase().indexOf("android") > -1){
+                        bottomThreshold = 320;
+                    }
                     if (bottomDistance < bottomThreshold) {
                         this.$.wrapper.set('top', (bottomDistance - bottomThreshold) + "px");
                     }
