@@ -183,7 +183,7 @@
                 </js:Repeat>
             </tbody>
         </table>
-        <div>
+        <div class="buy-view__content">
             <label class="buy-view__label">
                 <ui:TextWrapper string="${i18n.t('editor.chooseSize')}">
                     <a onclick="toggleSizeTable()">{$text}</a>

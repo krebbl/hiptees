@@ -33,12 +33,16 @@ $buy-view-height: 450px;
   &__price {
     position: absolute;
     font-weight: bold;
-    right: 10px;
-    top: 15px;
+    right: 0;
+    top: 0;
   }
 
   &.active {
     bottom: 0;
+  }
+
+  &__content {
+    position: relative;
   }
 
   &__size-list {
