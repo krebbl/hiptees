@@ -22,6 +22,16 @@ define(["js/ui/View", "js/core/I18n",
 
         events: ['on:closeClicked'],
 
+        ctor: function () {
+            this.callBase();
+
+            this.bind('productStore', 'on:editConfiguration', function (e) {
+                if (e.$.configuration === this.$.configuration && this.$.subContentSelected) {
+                    this._selectSubContent(null);
+                }
+            }, this);
+        },
+
         _commitSelectedConfiguration: function (configuration) {
             if (this.supportsConfiguration(configuration)) {
                 this.set('configuration', configuration, {force: true});
