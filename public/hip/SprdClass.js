@@ -250,7 +250,9 @@ define(
                 productStore.bind('on:sprdProductCreated', function (e) {
                     this.hideLoading();
 
-                    window.parent.postMessage("productId", e.$.sprdProduct.$.id);
+                    window.parent.postMessage(JSON.stringify({
+                        productId: e.$.sprdProduct.$.id
+                    }), "*");
                 }, this);
 
                 productStore.bind('on:sprdProductFailed', function (e) {
