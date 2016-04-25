@@ -274,10 +274,10 @@ function getCookieValue (key) {
     return null;
 }
 
-function getAffiliate() {
+function getDirectAffiliate() {
     var match = /affiliate=([^&]+)/.exec(location.search);
     if (match) {
-        var parts = ["affiliate=" + match[1], "path=/", "expires=" + (new Date(Date.now() + 60 * 60 * 24 * 1000)).toUTCString()];
+        var parts = ["direct_affiliate=" + match[1], "path=/", "expires=" + (new Date(Date.now() + 60 * 60 * 24 * 1000)).toUTCString()];
 
         if (/spreadshirt/.test(location.hostname)) {
             parts.push("domain=" + location.host.replace(/^[^.]+/, ""));
@@ -287,7 +287,7 @@ function getAffiliate() {
         return match[1];
     }
 
-    return getCookieValue("affiliate") || "";
+    return getCookieValue("direct_affiliate") || "";
 }
 
 var s_account = "spreadshirt-eu";
@@ -307,7 +307,7 @@ s.currencyCode = "EUR";
 s.pageName = "T-Shirt Designer|Hiptees|Tablomat";
 s.eVar44 = "de-T-Shirt Designer";
 s.channel = "Designer - Designer";
-s.campaign = getAffiliate();
+s.campaign = getDirectAffiliate();
 </script>
 
 
