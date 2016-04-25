@@ -58,7 +58,7 @@
     </div>
 
     <div class="basket__footer" visible="{basketStore.basket}">
-        <div class="basket__summary" volumeDiscount="{basketStore.volumeDiscount(basket)}">
+        <div class="basket__summary" volumeDiscount="{basketStore.volumeDiscount(basket)}" total="{basketStore.totalPrice(basket)}">
             <div visible="{volumeDiscount}" class="basket__subtotal-price">
                 <label>
                     {i18n.t('basket.subTotal')}
@@ -83,7 +83,7 @@
                     <br/>
                 </label>
                 <div class="basket__total-price">
-                    <div>{basketStore.formatPrice(basket.priceTotal)}</div>
+                    <div>{basketStore.formatPrice(total)}</div>
                 </div>
             </div>
 
