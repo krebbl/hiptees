@@ -342,7 +342,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
                 this.$.product.$.configurations.add(configuration);
 
-                this.trigger('on:configurationAdded', {configuration: configuration});
+                this.trigger('on:configurationAdded', {configuration: configuration, type: payload.type});
 
                 this._selectConfiguration(configuration);
 
@@ -371,8 +371,11 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                     action.save({}, cb)
                 })
                 .exec(function (err, results) {
-                    if(!err) {
-                        self.trigger('on:sprdProductCreated', {sprdProduct: results.sprdProduct, product: results.product});
+                    if (!err) {
+                        self.trigger('on:sprdProductCreated', {
+                            sprdProduct: results.sprdProduct,
+                            product: results.product
+                        });
                     } else {
                         self.trigger('on:sprdProductFailed', {err: err});
                     }

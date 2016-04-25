@@ -45,7 +45,7 @@ define(
             initialize: function () {
             },
 
-            locale: function() {
+            locale: function () {
                 return this.PARAMETER().locale || "de";
             },
 
@@ -228,6 +228,10 @@ define(
 
                     productStore.saveProductInLocalStorage();
                 });
+
+                this.$.presetStore.bind('on:selectDepartment', function (e) {
+                    tracking.trackSelectDepartment(e.$.department.name);
+                }, this);
 
                 var uploads = 0,
                     uploaded = 0;
