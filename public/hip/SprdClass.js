@@ -166,6 +166,11 @@ define(
                 productStore.bind('on:productSaved', function (e) {
                     tracking.trackProductSaved();
                     tracking.trackProductSaveTiming((new Date()).getTime() - savingTime);
+
+                    if (this.PARAMETER().mode === "presets") {
+                        this.$.notificationManager.showNotification('default', {message: "Vorlage gespeichert"}, {duration: 4});
+                        this.hideLoading();
+                    }
                 }, this);
 
                 productStore.bind('on:productSaveFailed', function (e) {

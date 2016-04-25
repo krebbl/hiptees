@@ -347,7 +347,7 @@ define([
         },
 
         isModeActive: function (mode) {
-            return this.PARAMETER().mode === mode;
+            return this.PARAMETER().mode == mode;
         },
 
         isEditButtonVisible: function () {
@@ -375,10 +375,14 @@ define([
                 })
         },
 
-        saveSprdProduct: function () {
-            var self = this;
+        saveProduct: function () {
             this.$.navActions.showMenu();
-            this.$.productActions.createSprdProduct();
+            var mode = this.PARAMETER().mode;
+            if (mode === "service") {
+                this.$.productActions.createSprdProduct();
+            } else if (mode === "presets") {
+                this.$.productActions.saveProduct();
+            }
         },
 
         selectSize: function (item) {
