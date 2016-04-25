@@ -45,6 +45,10 @@ define(
             initialize: function () {
             },
 
+            locale: function() {
+                return this.PARAMETER().locale || "de";
+            },
+
             _commitSelectedConfiguration: function (selected) {
                 if (!selected) {
                     this.set('settingsSelected', false);

@@ -1,0 +1,153 @@
+{
+  "general": {
+    "by": "by",
+    "backToTop": "Back to top",
+    "close": "Close",
+    "back": "Back",
+    "size": "Size",
+    "quantity": "Count",
+    "article": "Article",
+    "delete": "Delete",
+    "logout": "Log out",
+    "makePrivate": "Mark as private",
+    "makePublic": "Publish",
+    "giveFeedback": "Give feedback",
+    "visitPage": "visit page"
+  },
+  "info": {
+    "addElements": "Here you can add [Text, images und shapes|0]."
+  },
+  "menu": {
+    "startNewAgain": "Create new shirt",
+    "giveFeedback": "Give feedback",
+    "privacy": "Privacy",
+    "termsAndConditions": "Terms and conditions",
+    "legalInfo": "Imprint"
+  },
+  "dialog": {
+    "feedback": "Feedback",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "send": "Send",
+    "cancel": "Cancel",
+    "feedbackPlaceholder": "What do you like? What can we improve?",
+    "confirmDelete": "Do you really want to delete everything?",
+    "confirmBack": "Do you really want to cancel? All your changes will be lost.",
+    "confirmLogout": "Do you really want to logout?"
+  },
+  "message": {
+    "productSaved": "Product saved!",
+    "itemAdded": "Product added successfully",
+    "addingItemFailed": "Error adding product to th basket",
+    "thxForFeedback": "Thank you for your feedback!",
+    "changesSuccessful": "Changes successful.",
+    "checkingOut": "Redirecting to checkout..."
+  },
+  "login": {
+    "withTwitter": "Login with Twitter",
+    "withFacebook": "Login with Facebook",
+    "forTesting": "Login for testing"
+  },
+  "profile": {
+    "yourProfile": "Your profile",
+    "published": "pubished",
+    "private": "private",
+    "drafts": "drafts",
+    "draft": "draft",
+    "create": "create new shirt",
+    "followers": "followers",
+    "following": "following"
+  },
+  "product": {
+    "buyAndShare": "Buy and share",
+    "createBy": "Created by ",
+    "addToBasket": "Add to basket",
+    "remix": "Use shirt as preset",
+    "sizeTable": "Size table",
+    "chooseSize": "Choose size"
+  },
+  "sizeTable": {
+    "for": "Size table for ",
+    "length": "Width",
+    "brust": "Breast"
+  },
+  "productType": {
+    "chooseATee": "Choose a shirt"
+  },
+  "departments": {
+    "men": "Men",
+    "women": "Women"
+  },
+  "editor": {
+    "adjust": "adjust",
+    "edit": "edit",
+    "buy": "buy",
+    "tapTwiceToEdit": "To edit text, click again",
+    "add": "Add",
+    "addToBasket": "Add to basket",
+    "save": "Save",
+    "addText": "Text",
+    "addImage": "Image",
+    "addRectangle": "Rectangle",
+    "addCircle": "Circle",
+    "addHeart": "Heart",
+    "addStar": "Star",
+    "publishShirt": "publish shirt",
+    "publishShirtHint": "So können es auch andere kaufen",
+    "saveFinal": "save final",
+    "saveAsDraft": "save as a draft",
+    "giveItAName": "Name your shirt",
+    "title": "editor",
+    "chooseTemplate": "Choose a template",
+    "createYourOwn": "Edit",
+    "confirmGoBack": "Going back? All your changes will be lost!",
+    "savingProduct": "Saving Shirt",
+    "addingProduct": "Add product to basket",
+    "uploadingImages": "Upload image (%0 / %1)",
+    "sizeTable": "Size table",
+    "chooseSize": "Choose [your size|0]:"
+  },
+  "settings": {
+    "color": "color",
+    "fillColor": "Fill color",
+    "strokeColor": "Stroke color",
+    "strokeWidth": "Stroke width",
+    "opacity": "Opacity",
+    "fillOpacity": "Fill opacity",
+    "strokeOpacity": "Stroke opacity",
+    "none": "none"
+  },
+  "textSettings": {
+    "bold": "bold",
+    "italic": "italic",
+    "fontFamily": "Font famility",
+    "fontSizeAndSettings": "Font size and settings",
+    "fontSize": "Font size",
+    "lineHeight": "Line height",
+    "letterSpacing": "Letter spacing",
+    "textAlignment": "Text alignment"
+  },
+  "imageSettings": {
+    "presets": "Presets",
+    "manual": "manual",
+    "brightness": "Brightness",
+    "saturation": "Saturation",
+    "contrast": "Contrast",
+    "tint": "Tint",
+    "vignette": "Vignette",
+    "blur": "Blur",
+    "replaceImage": "Replace image",
+    "filter": "Filter"
+  },
+  "basket": {
+    "basket": "Basket",
+    "isEmpty": "Your basket is empty :(",
+    "startCreate": "Start create!",
+    "total": "Total without shipping",
+    "subTotal": "Sub total",
+    "volumeDiscount": "Volume discount",
+    "subTotalWithoutShipping": "Sub total without shipping",
+    "toCheckout": "Go to checkout"
+  }
+}
