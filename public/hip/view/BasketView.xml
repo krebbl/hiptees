@@ -89,6 +89,7 @@
 
         </div>
         <div class="basket__btn-wrapper">
+            <div class="payments"/>
             <a class="btn btn-orange" onclick="checkout">
                 <i class=" fa fa-shopping-cart"/>
                 {i18n.t('basket.toCheckout')}
