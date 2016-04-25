@@ -8,7 +8,7 @@
         xmlns:xlink="https://www.w3.org/1999/xlink">
 
     <js:Injection cid="injection">
-        <js:I18n cid="i18n" path="hip/locale" locale="de"/>
+        <js:I18n cid="i18n" path="hip/locale" locale="{locale()}"/>
         <data:SprdDataSource cid="sprdApi" gateway="/api/v1" apiKey="{ENV().apiKey}" secret="{ENV().secret}"
                              endPoint="{ENV().endPoint}" locale="de_DE"/>
         <data:HipDataSource cid="api" gateway="/hapi/v1" endPoint="{endpoint()}"/>
