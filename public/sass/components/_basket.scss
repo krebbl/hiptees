@@ -196,12 +196,17 @@
 
   .basket__btn-wrapper {
     text-align: right;
+    display: flex;
 
-    background: url(https://image.spreadshirtmedia.net/Public/Media/footer/elements/payment_de_4.png) no-repeat 0 10px;
-    background-size: 44%;
 
     .btn {
       padding: 1em 2em;
+      flex-grow: 0;
+    }
+    .payments {
+      flex-grow: 1;
+      background: url(https://image.spreadshirtmedia.net/Public/Media/footer/elements/payment_de_4.png) no-repeat 0 10px;
+      background-size: 90%;
     }
   }
 
