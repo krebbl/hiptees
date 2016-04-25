@@ -31,7 +31,7 @@ define(["js/core/Component", "hip/tracking/Omniture", "hip/tracking/Google"], fu
         },
 
         trackAddToBasketSize: function () {
-            this.$.omniture.track(null, null, ["scAdd", "event49"]);
+            this.$.omniture.track(null, null, ["scAdd", "event79"]);
             this.$.g.trackEvent("BASKET", "addToBasket");
         },
 
@@ -79,7 +79,13 @@ define(["js/core/Component", "hip/tracking/Omniture", "hip/tracking/Google"], fu
             this.$.g.trackView(screeName);
         },
 
+        trackSelectDepartment: function (department) {
+            this.trackFeature("select department " + department);
+        },
+
         trackSelectPreset: function (productId) {
+            this.trackFeature("select preset " + productId);
+
             this.$.g.trackEvent('PRODUCT', 'selectedPreset', productId);
         },
 
@@ -88,11 +94,21 @@ define(["js/core/Component", "hip/tracking/Omniture", "hip/tracking/Google"], fu
         },
 
         trackConfigurationAdded: function (config) {
+            this.trackFeature("add " + config.$.type);
             this.$.g.trackEvent("PRODUCT", "configurationAdded", config.$.type);
         },
 
         trackConfigurationCloned: function (config) {
+            this.trackFeature("clone " + config.$.type);
+
             this.$.g.trackEvent("PRODUCT", "configurationCloned", config.$.type);
+        },
+
+        trackFeature: function (feature) {
+            this.$.omniture.track(null, {
+                prop30: feature,
+                evar34: feature
+            });
         },
 
         trackConfigurationRemoved: function (config) {

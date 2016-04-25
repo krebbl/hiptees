@@ -25,6 +25,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "js/data/Query", "js/d
         },
 
         selectDepartment: function (payload) {
+            this.trigger("on:selectDepartment", {department: payload.department});
             var department = payload.department;
 
             if (department === this.$.selectedDepartment) {
