@@ -1,7 +1,6 @@
 <view:BasketViewClass xmlns="http://www.w3.org/1999/xhtml"
                       xmlns:js="js.core" xmlns:ui="js.ui"
-                      xmlns:view="hip.view"
-                      onclick="closeBasket" xmlns:xlink="https://www.w3.org/1999/xlink">
+                      xmlns:view="hip.view">
 
     <div class="header">
         <a class="back-btn" onclick="closeBasket">
