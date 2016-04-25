@@ -220,7 +220,8 @@
                     UserVoice.set({
                         accent_color: '#00b2a6',
                         trigger_color: 'white',
-                        trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+                        trigger_background_color: 'rgba(46, 49, 51, 0.6)',
+                        locale: /locale=en/.test(location.search) ? "en" : "de"
                     });
 
                     // Or, use your own custom trigger:
