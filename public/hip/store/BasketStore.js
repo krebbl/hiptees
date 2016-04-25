@@ -310,6 +310,13 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                 return discount.type == "scale"
             });
 
+        },
+
+        totalPrice: function(basket) {
+            var total = JSON.parse(JSON.stringify(basket.priceTotal));
+            total.display = total.display - basket.shipping.price.display;
+
+            return total;
         }
 
     });
