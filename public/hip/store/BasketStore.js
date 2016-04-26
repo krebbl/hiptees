@@ -294,7 +294,8 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                 if (link) {
                     this.trigger('on:checkout');
                     setTimeout(function () {
-                        window.location.href = link.href;
+                        var location = window.top.location;
+                        window.location.href = link.href + "&continueShoppingLink=" + location.protocol + "//" + location.hostname;
                     }, 100);
                 }
             }
