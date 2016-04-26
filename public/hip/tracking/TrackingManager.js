@@ -107,7 +107,7 @@ define(["js/core/Component", "hip/tracking/Omniture", "hip/tracking/Google"], fu
         trackFeature: function (feature) {
             this.$.omniture.track(null, {
                 prop30: feature,
-                evar34: feature
+                eVar34: feature
             });
         },
 
