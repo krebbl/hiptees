@@ -350,7 +350,7 @@ define([
         },
 
         _setScrollLeft: function () {
-            if (this.$.innerContent.isRendered()) {
+            if (this.$addedToDom && this.$.innerContent && this.$.innerContent.isRendered()) {
                 var offsetWidth = this.$.innerContent.$el.offsetWidth;
                 var rect = this.$.wrapper.$el.getBoundingClientRect();
 
