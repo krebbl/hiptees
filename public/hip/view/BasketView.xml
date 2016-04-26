@@ -6,7 +6,7 @@
         <a class="back-btn" onclick="closeBasket">
             <i class="fa fa-times"/>
         </a>
-        <h1 class="header__logo"/>
+        <h1 class="header__logo" onclick="showMenu('presets')"/>
         <h2>{i18n.t('basket.basket')}</h2>
     </div>
 

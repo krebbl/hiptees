@@ -36,6 +36,10 @@ define(["hip/view/ViewBase", "js/data/Query", "js/data/Collection", "hip/model/P
             this.trigger('on:close');
         },
 
+        showMenu: function(menu){
+            this.$.navActions.showMenu({menu: menu});
+        },
+
         goCreate: function (e) {
             this.closeBasket(e);
         },
