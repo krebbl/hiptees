@@ -298,18 +298,31 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
 
         _oninput: function (e) {
             if (this.$selectionBefore) {
+                e.stopPropagation();
                 var selection = window.getSelection();
                 var startIndex = this.$selectionBefore.anchorOffset;
                 var endIndex = this.$selectionBefore.focusOffset;
-                if (startIndex === endIndex) {
-                    startIndex--;
+
+                if(selection && selection.type == "Range" && selection.toString()) {
+                    var text = selection.toString();
+                    this.$.textActions.insertText({
+                        textFlow: this.$.textFlow,
+                        text: text,
+                        anchorOffset: startIndex,
+                        focusOffset: endIndex
+                    });
+                } else {
+                    if (startIndex === endIndex) {
+                        startIndex--;
+                    }
+                    this.$.textActions.deleteText({
+                        textFlow: this.$.textFlow,
+                        anchorOffset: startIndex,
+                        focusOffset: endIndex
+                    });
                 }
 
-                this.$.textActions.deleteText({
-                    textFlow: this.$.textFlow,
-                    anchorOffset: startIndex,
-                    focusOffset: endIndex
-                });
+
             } else if (!this.$selectionBefore && this.$stage.$browser.isIOS) {
                 // prevents that text from the autocompletion is used
                 this.$.$textContainer._renderMeasureResult(this.$.$textContainer.$.measureResult);
