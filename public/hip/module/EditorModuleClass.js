@@ -59,7 +59,7 @@ define([
                     }, 100);
                 } else {
                     this.$.navigationStore.showMenu({menu: ""});
-                    if(navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)){
+                    if (navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)) {
                         self.set('centeredConfiguration', e.$);
                     }
                 }
@@ -82,6 +82,10 @@ define([
                     this.set('showAddInfo', true);
                 }
             }, this);
+
+            this.dom(this.$stage.$window).bindDomEvent("resize", function(){
+                self._setScrollLeft();
+            });
         },
 
         _commitSelectedConfiguration: function (configuration) {
@@ -225,9 +229,9 @@ define([
                     var bottomDistance = this.$stage.$el.offsetHeight - (viewerRect.top + viewerRect.height);
                     var bottomThreshold = 240;
 
-                    if(window.navigator.platform === "iPhone") {
+                    if (window.navigator.platform === "iPhone") {
                         bottomThreshold = 300;
-                    } else if(navigator.userAgent.toLowerCase().indexOf("android") > -1){
+                    } else if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
                         bottomThreshold = 320;
                     }
                     if (bottomDistance < bottomThreshold) {
