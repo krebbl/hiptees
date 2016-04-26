@@ -10,7 +10,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
             width: 100,
             height: 100,
             viewBox: "0 0 100 100",
-            contenteditable: "plaintext-only",
+            contenteditable: true,
             textFlow: null,
             selection: null
         },
@@ -21,6 +21,10 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
         },
 
         $domAttributes: ["contenteditable", "autocorrect", "autocomplete", "spellcheck", "autocapitalize"],
+
+        _bindDomEvents: function(){
+
+        },
 
         _handleSizeChange: function (e) {
             // do nothing

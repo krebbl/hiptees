@@ -59,7 +59,9 @@ define([
                     }, 100);
                 } else {
                     this.$.navigationStore.showMenu({menu: ""});
-                    self.set('centeredConfiguration', e.$);
+                    if (navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)) {
+                        self.set('centeredConfiguration', e.$);
+                    }
                 }
             }, this);
 
@@ -80,6 +82,10 @@ define([
                     this.set('showAddInfo', true);
                 }
             }, this);
+
+            this.dom(this.$stage.$window).bindDomEvent("resize", function(){
+                self._setScrollLeft();
+            });
         },
 
         _commitSelectedConfiguration: function (configuration) {
@@ -221,7 +227,13 @@ define([
                     var viewerRect = viewer.$el.getBoundingClientRect();
 
                     var bottomDistance = this.$stage.$el.offsetHeight - (viewerRect.top + viewerRect.height);
-                    var bottomThreshold = this.$stage.$browser.isIOS ? 300 : 320;
+                    var bottomThreshold = 240;
+
+                    if (window.navigator.platform === "iPhone") {
+                        bottomThreshold = 300;
+                    } else if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
+                        bottomThreshold = 320;
+                    }
                     if (bottomDistance < bottomThreshold) {
                         this.$.wrapper.set('top', (bottomDistance - bottomThreshold) + "px");
                     }
@@ -338,7 +350,7 @@ define([
         },
 
         _setScrollLeft: function () {
-            if (this.$.innerContent.isRendered()) {
+            if (this.$addedToDom && this.$.innerContent && this.$.innerContent.isRendered()) {
                 var offsetWidth = this.$.innerContent.$el.offsetWidth;
                 var rect = this.$.wrapper.$el.getBoundingClientRect();
 
