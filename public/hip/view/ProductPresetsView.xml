@@ -31,6 +31,16 @@
                     <a class="product-option" onclick="removePreset(item)" visible="{presetStore.isPresetMode()}">
                         <i class="fa fa-times"/>
                     </a>
+                    <div class="product-preset-info">
+                        <div class="infobox" selected="true">
+                            <div class="infobox__inner">
+                                <ui:TextWrapper tagName="p" string="${i18n.t('info.emptyTemplate')}">
+                                    <span class="highlight"><br/>${$text}</span>
+                                </ui:TextWrapper>
+                                <i class="fa fa-caret-up"/>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </js:Template>
         </ui:ItemsView>

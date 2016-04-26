@@ -15,7 +15,8 @@
     "visitPage": "visit page"
   },
   "info": {
-    "addElements": "Here you can add [Text, images und shapes|0]."
+    "addElements": "Here you can add [text, images und shapes|0].",
+    "emptyTemplate": "Start with an [empty Template|0]"
   },
   "menu": {
     "startNewAgain": "Create new shirt",
