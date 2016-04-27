@@ -225,8 +225,8 @@
                         accent_color: '#00b2a6',
                         trigger_color: 'white',
                         trigger_background_color: 'rgba(46, 49, 51, 0.6)',
-                        locale: /locale=en/.test(location.search) ? "en" : "de",
-                        forum_id: '352272'
+                        locale: (/locale=en/.test(location.search) || /\.com/.test(location.hostname)) ? "en" : "de",
+                        forum_id: /\.com/.test(location.hostname) ? '52269' : '352272'
                     });
 
                     // Or, use your own custom trigger:
