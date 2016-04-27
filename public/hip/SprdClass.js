@@ -46,7 +46,7 @@ define(
             },
 
             locale: function () {
-                return this.PARAMETER().locale || "de";
+                return this.PARAMETER().locale || (/\.com/.test(location.hostname) ? "en" : "de");
             },
 
             _commitSelectedConfiguration: function (selected) {
