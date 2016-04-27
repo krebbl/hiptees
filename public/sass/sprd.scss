@@ -905,6 +905,11 @@ image.masking-bg-image {
       left: 0;
     }
 
+    .product-preset-info {
+      display: block;
+    }
+
+
   }
 
   > li {
@@ -920,7 +925,7 @@ image.masking-bg-image {
     position: relative;
 
     img {
-      margin-top: -40px;
+      margin-top: -10px;
     }
 
     > .lazy-image {
@@ -935,6 +940,12 @@ image.masking-bg-image {
     padding: 10px;
     color: white;
     font-size: 16px;
+  }
+
+  .product-preset-info {
+    position: relative;
+    top: 26px;
+    display: none;
   }
 
   .draft-tag {

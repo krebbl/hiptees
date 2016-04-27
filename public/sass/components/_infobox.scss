@@ -7,7 +7,6 @@
   text-align: center;
   opacity: 0;
   transition: 500ms ease-in opacity;
-
   pointer-events: none;
 
   &.active {
@@ -15,10 +14,11 @@
   }
 
   &__inner {
+    box-shadow: 0 0 9px -1px rgba(97, 97, 97, 1);
     background: white;
     margin: 0 auto;
     width: 60%;
-    padding: 0.2em 1.2em;
+    padding: 0.1em 1em;
     border-radius: 2px;
     font-size: 15px;
   }
@@ -27,12 +27,21 @@
     line-height: 1.6em;
   }
 
+  .fa-caret-up {
+    color: white;
+    position: absolute;
+    top: -21px;
+    font-size: 35px;
+    margin-left: -7px;
+
+  }
+
   .fa-caret-down {
     color: white;
     position: absolute;
     bottom: -21px;
     font-size: 35px;
-    margin-left: -10px;
+    margin-left: -7px;
   }
 
 }

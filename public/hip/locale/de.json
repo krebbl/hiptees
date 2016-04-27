@@ -15,7 +15,8 @@
     "visitPage": "Seite besuchen"
   },
   "info": {
-    "addElements": "Hier kannst du [Text, Bilder und Formen|0] hinzufügen."
+    "addElements": "Hier kannst du [Text, Bilder und Formen|0] hinzufügen.",
+    "emptyTemplate": "Starte mit einer [leeren Vorlage|0]"
   },
   "menu": {
     "startNewAgain": "Neues Shirt Gestalten",
