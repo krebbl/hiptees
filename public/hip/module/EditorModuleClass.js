@@ -12,6 +12,18 @@ define([
     "flow",
     "hip/util/Memento"
 ], function (BaseModule, Query, ProductType, Product, BasketStore, ProductActions, BasketActions, Collection, Color, TextFlowStore, flow, Memento) {
+
+    var links = {
+        DE: {
+            terms: "https://www.spreadshirt.de/-C8662",
+            privacy: "https://www.spreadshirt.de/-C8681"
+        },
+        US: {
+            privacy: "https://www.spreadshirt.com/-C3259",
+            terms: "https://www.spreadshirt.com/-C2377"
+        }
+    };
+
     return BaseModule.inherit({
         defaults: {
             showAddInfo: false,
@@ -43,6 +55,14 @@ define([
             textFlowStore: TextFlowStore,
             basketStore: BasketStore,
             memento: Memento
+        },
+
+        linkTo: function(what) {
+            return links[this.isNA()  ? 'US' : 'DE'][what];
+        },
+
+        isNA: function() {
+            return /\.com/.test(location.hostname);
         },
 
         ctor: function () {

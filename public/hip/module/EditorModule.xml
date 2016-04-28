@@ -212,21 +212,22 @@
         <a class="back-btn" onclick="hidePanel">
             <i class=" fa fa-times"/>
         </a>
-        <view:LegalInfo/>
+        <view:LegalInfo visible="{not(isNA())}"/>
+        <view:LegalInfoNA visible="{isNA()}"/>
     </div>
 
     <div class="info-view" _isActive="{navigationStore.isMenuActive('privacy')}" selected="{_isActive}">
         <a class="back-btn" onclick="hidePanel">
             <i class=" fa fa-times"/>
         </a>
-        <iframe src="https://www.spreadshirt.de/-C8681" visible="{or(_isActive, visible)}"/>
+        <iframe src="{linkTo('privacy')}" visible="{or(_isActive, visible)}"/>
     </div>
 
     <div class="info-view" _isActive="{navigationStore.isMenuActive('termsAndConditions')}" selected="{_isActive}">
         <a class="back-btn" onclick="hidePanel">
             <i class=" fa fa-times"/>
         </a>
-        <iframe src="https://www.spreadshirt.de/-C8662" visible="{or(_isActive, visible)}"/>
+        <iframe src="{linkTo('terms')}" visible="{or(_isActive, visible)}"/>
     </div>
 
 </parent:EditorModuleClass>
