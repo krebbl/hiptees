@@ -1,6 +1,5 @@
 {
     "xamlClasses": [
-        "hip/Hiptees",
         "hip/ImageRenderer",
         "hip/Sprd",
         "hip/data/HipDataSource",
@@ -26,6 +25,7 @@
         "hip/view/ImageSettingsView",
         "hip/view/LazyImage",
         "hip/view/LegalInfo",
+        "hip/view/LegalInfoNA",
         "hip/view/MiniBasketButton",
         "hip/view/ProductOptionsView",
         "hip/view/ProductPresetsView",
