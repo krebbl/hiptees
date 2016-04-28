@@ -183,6 +183,7 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
             try {
                 return window.localStorage.getItem("basketId");
             } catch (e) {
+                return null;
                 // TODO: handle e
             }
 
@@ -270,10 +271,15 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
         },
 
         loadCombinedBasket: function (cb) {
+            var basketId;
+            if (this.$.basket) {
+                basketId = this.$.basket.id;
+            } else {
+                basketId = this._loadBasketId();
+            }
 
-            var basketId = this._loadBasketId();
-            var self = this;
             if (basketId) {
+                var self = this;
                 this.set('loadingBasket', true);
                 this.$.sprdApi.loadCombinedBasket(basketId, function (err, combinedBasket) {
                     self.set('combinedBasket', err ? null : combinedBasket);
@@ -281,8 +287,10 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
                         self._clearBasketId();
                     }
                     self.set('loadingBasket', false);
-                    cb && cb();
+                    cb && cb(err);
                 });
+            } else {
+                cb && cb();
             }
 
         },
@@ -301,19 +309,19 @@ define(["hip/store/Store", "xaml!hip/data/HipDataSource", "hip/model/AddToSprdBa
             }
         },
 
-        volumeDiscount: function(basket) {
+        volumeDiscount: function (basket) {
 
             if (!basket) {
                 return null;
             }
 
-            return _.find(basket.discounts, function(discount) {
+            return _.find(basket.discounts, function (discount) {
                 return discount.type == "scale"
             });
 
         },
 
-        totalPrice: function(basket) {
+        totalPrice: function (basket) {
             var total = JSON.parse(JSON.stringify(basket.priceTotal));
             total.display = total.display - basket.shipping.price.display;
 
