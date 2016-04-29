@@ -49,6 +49,10 @@ define(["hip/action/ActionDomain"], function (ActionDomain) {
                 },
                 size: null
             },
+            setText: {
+                text: "",
+                configuration: null
+            },
             addImageFile: {},
 
             saveProduct: {},

@@ -25,17 +25,18 @@
         <action:TextFlowActions/>
 
         <store:LoggerStore cid="loggerStore"/>
+        <store:TextFlowStore cid="textFlowStore"/>
         <store:NavigationStore cid="navigationStore"/>
         <store:ProductStore cid="productStore"/>
         <store:BasketStore cid="basketStore"/>
-        <store:TextFlowStore cid="textFlowStore"/>
         <store:PresetStore cid="presetStore"/>
 
         <tracking:Google/>
         <tracking:Omniture/>
         <tracking:TrackingManager cid="trackingManager"/>
 
-        <svg:TextEditor cid="textEditor" class="needsclick"/>
+        <!--<svg:TextEditor cid="textEditor" class="needsclick"/>-->
+        <view:SimpleTextEditor />
         <view:ImageFilterRenderer/>
         <js:NotificationManager cid="notificationManager">
             <js:Template name="default">

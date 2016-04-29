@@ -13,3 +13,9 @@
   user-drag: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+input[type="button"],
+input[type="submit"]{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

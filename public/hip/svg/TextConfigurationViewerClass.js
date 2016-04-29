@@ -1,4 +1,4 @@
-define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/entity/TextRange', 'hip/action/TextFlowActions'], function (ConfigurationViewerSvg, SvgTextEditor, TextRange, TextFlowActions) {
+define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/view/SimpleTextEditor', 'text/entity/TextRange', 'hip/action/TextFlowActions'], function (ConfigurationViewerSvg, SimpleTextEditor, TextRange, TextFlowActions) {
     return ConfigurationViewerSvg.inherit('sprd.svg.ConfigurationViewerClass', {
 
         defaults: {
@@ -14,21 +14,24 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         $classAttributes: ["textRenderer", "activeTextConfiguration"],
 
         inject: {
-            svgTextEditor: SvgTextEditor,
+            textEditor: SimpleTextEditor,
             textFlowActions: TextFlowActions
         },
 
         ctor: function () {
             this.callBase();
 
-            this.bind('svgTextEditor', 'on:blur', function (e) {
-                if (this.$.configuration.$.textFlow === this.$.svgTextEditor.$.textFlow) {
-                    this.$.productActions.editTextConfiguration({
-                        configuration: null
-                    });
-                }
+            this.bind('textEditor', 'on:cancel', function (e) {
+                this.$.productActions.editTextConfiguration();
             }, this);
 
+
+            this.bind('textEditor', 'on:save', function (e) {
+                if (this.$.textEditor.$.textFlow === this.$.configuration.$.textFlow) {
+                    this.$.productActions.setText({configuration: this.$.configuration, text: e.$.text});
+                    this.$.productActions.editTextConfiguration();
+                }
+            }, this);
         },
 
         _preventDefault: function (e) {
@@ -41,6 +44,8 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         },
 
         handlePointerDown: function () {
+            this.$wasSelected = this.$.selected;
+
             this.callBase();
 
             if (this.$handleUsed) {
@@ -60,7 +65,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         handlePointerMove: function (event) {
 
-            if (this.$action === "resize") {
+            if (this.$action === "resize" && this.$originalSize) {
                 event.preventDefault();
                 this.set('_resizing', true);
                 this.$resized = false;
@@ -118,12 +123,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
             this.set({
                 _size: size
             });
-
-            var svgTextEditor = this.$.svgTextEditor;
-            var configuration = this.$.configuration;
-            if (svgTextEditor.$.textFlow === configuration.$.textFlow) {
-                svgTextEditor.set(this.getEditorPosition());
-            }
         },
         _commitActiveTextConfiguration: function (configuration) {
             if (configuration === this.$.configuration) {
@@ -135,7 +134,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         _disableEditing: function () {
             if (!this.$.activeTextConfiguration) {
-                this.$.svgTextEditor.set('visible', false);
+                this.$.textEditor.set('selected', false);
             }
             this.$.textRenderer.set('visible', true);
             if (this.isRendered()) {
@@ -146,46 +145,34 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
         },
 
-        getEditorPosition: function () {
-            var rect = this.getBoundRectInPx();
-            return {
-                left: Math.ceil(rect.left + window.scrollX),
-                top: Math.floor(rect.top + window.scrollY),
-                width: Math.ceil(rect.width + 20) + "px",
-                height: Math.ceil(rect.height) + "px"
-            }
-        },
-
         _enableEditing: function () {
             var rect = this.getBoundRectInPx();
             var root = this.getSvgRoot();
-            var svgTextEditor = this.$.svgTextEditor;
+            var textEditor = this.$.textEditor;
 
             var textFlow = this.$.configuration.$.textFlow;
 
-            svgTextEditor.set({
-                zIndex: 1000,
-                position: "absolute",
-                overflow: "hidden",
-                svgWidth: root.$.width,
-                svgHeight: root.$.height,
-                maxWidth: this.$.maxWidth,
-                viewBox: this.getSvgRoot().$.viewBox,
+            textEditor.set({
+                //zIndex: 1000,
+                //position: "absolute",
+                //overflow: "hidden",
+                //svgWidth: root.$.width,
+                //svgHeight: root.$.height,
+                //maxWidth: this.$.maxWidth,
+                //viewBox: this.getSvgRoot().$.viewBox,
                 textFlow: null,
-                visible: true
+                selected: true
             }, {force: true});
 
-            svgTextEditor.set(this.getEditorPosition());
-            svgTextEditor.set('textFlow', textFlow);
+            textEditor.set('textFlow', textFlow);
 
-            if (!svgTextEditor.isRendered()) {
-                this.$stage._renderChild(svgTextEditor, 0);
+            if (!textEditor.isRendered()) {
+                this.$stage._renderChild(textEditor, 0);
             }
-            this.$.textRenderer.set('visible', false);
             this.$editing = true;
             this.addClass("editing");
 
-            svgTextEditor.focus();
+            textEditor.focus();
         },
 
         trans: function (scale, length) {
@@ -193,7 +180,7 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
         },
 
         handlePointerUp: function () {
-            if (this.$.selected && !this.$moved && !this.$resized && !this.$handleUsed && !this.$fontSizeChanged) {
+            if (this.$wasSelected && !this.$moved && !this.$resized && !this.$handleUsed && !this.$fontSizeChanged) {
                 this.$.productActions.editTextConfiguration({
                     configuration: this.$.configuration
                 });

@@ -1,0 +1,42 @@
+.simple-text-editor {
+  position: absolute;
+  z-index: 1000;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  display: none;
+
+  &.active {
+    display: block;
+  }
+
+  &.dark {
+    background: rgba(9, 9, 9, 0.94);
+  }
+
+  &.bright {
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  textarea {
+    color: rgb(0, 0, 0);
+    width: 100%;
+    -webkit-appearance: none;
+    border: none;
+    padding: 50px 30px 20px;
+    font-size: 2em;
+    background: none;
+  }
+
+  &__buttons {
+    text-align: right;
+
+    > * {
+      margin-left: 10px;
+    }
+  }
+}

@@ -17,9 +17,12 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
     "js/data/Collection",
     "text/entity/TextRange",
     "text/operation/ApplyStyleToElementOperation",
+    "text/operation/InsertTextOperation",
+    "text/operation/SplitParagraphOperation",
     "text/entity/TextFlow",
+    "hip/store/TextFlowStore",
     "flow",
-    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, CreateSprdProduct, ImageUploader, ImageFileReader, DataUriToBlob, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, TextFlow, flow, _) {
+    "underscore"], function (Store, TextConfiguration, DesignConfiguration, RectangleConfiguration, CircleConfiguration, ShapeConfiguration, PathConfiguration, Filter, Design, Product, UpdateProductState, CreateSprdProduct, ImageUploader, ImageFileReader, DataUriToBlob, TextMeasurer, HipDataSource, Collection, TextRange, ApplyStyleToElementOperation, InsertTextOperation, SplitParagraphOperation, TextFlow, TextFlowStore, flow, _) {
 
 
     var colorIndex = 0;
@@ -44,7 +47,8 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
             api: HipDataSource,
             imageUploader: ImageUploader,
             imageFileReader: ImageFileReader,
-            textMeasurer: TextMeasurer
+            textMeasurer: TextMeasurer,
+            textFlowStore: TextFlowStore
         },
 
         selectSize: function (payload) {
@@ -201,6 +205,29 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
                 this._selectConfiguration(null);
                 this.trigger('on:productRecovered', {product: this.$.product, type: "redo"});
             }
+        },
+
+        setText: function (payload) {
+
+            var configuration = payload.configuration;
+            var text = payload.text;
+            if (configuration instanceof TextConfiguration) {
+                var textFlow = configuration.$.textFlow;
+                if (textFlow && text && text !== textFlow.text(0, textFlow.textLength(), "\n").replace(/\n$/, "")) {
+                    this.$.textFlowStore.insertText({
+                        anchorOffset: 0,
+                        focusOffset: textFlow.textLength(),
+                        textFlow: textFlow,
+                        text: text
+                    });
+
+                }
+
+                if (!text) {
+                    this.removeConfiguration(payload);
+                }
+            }
+
         },
 
         addText: function (payload) {

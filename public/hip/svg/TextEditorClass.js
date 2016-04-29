@@ -22,7 +22,7 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
 
         $domAttributes: ["contenteditable", "autocorrect", "autocomplete", "spellcheck", "autocapitalize"],
 
-        _bindDomEvents: function(){
+        _bindDomEvents: function () {
 
         },
 
@@ -275,7 +275,8 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
         },
 
         _ontextInput: function (e) {
-
+            e.stopPropagation();
+            e.preventDefault();
             if (this.$selectionBefore) {
                 var text = e.domEvent.data;
                 var startIndex = this.$selectionBefore.anchorOffset;
@@ -283,7 +284,6 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
 
 
                 //console.log("insert", text, startIndex, endIndex);
-                e.stopPropagation();
 
                 this.$.textActions.insertText({
                     textFlow: this.$.textFlow,
@@ -297,13 +297,14 @@ define(["js/ui/View", "hip/action/TextFlowActions", 'hip/store/TextFlowStore'], 
         },
 
         _oninput: function (e) {
+            e.stopPropagation();
+            e.preventDefault();
             if (this.$selectionBefore) {
-                e.stopPropagation();
                 var selection = window.getSelection();
                 var startIndex = this.$selectionBefore.anchorOffset;
                 var endIndex = this.$selectionBefore.focusOffset;
 
-                if(selection && selection.type == "Range" && selection.toString()) {
+                if (selection && selection.type == "Range" && selection.toString()) {
                     var text = selection.toString();
                     this.$.textActions.insertText({
                         textFlow: this.$.textFlow,

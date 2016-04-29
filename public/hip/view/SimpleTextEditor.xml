@@ -1,0 +1,17 @@
+<parent:SimpleTextEditorClass xmlns="http://www.w3.org/1999/xhtml"
+                              tagName="form"
+                              xmlns:parent="hip.view"
+                              onsubmit="saveText"
+                              class="simple-text-editor {_brightnessClass} needsclick">
+    <textarea cid="textArea"
+              rows="4"
+              fontFamily="{_paragraphStyle.fontFamily}"
+              color="{_leafStyle.color}"
+              textAlign="{_paragraphStyle.textAlign}"
+            >{_text}</textarea>
+    <div class="simple-text-editor__buttons">
+        <input type="button" class="btn" value="{i18n.t('general.back')}" onclick="cancel"/>
+        <input type="submit" class="btn btn-green" value="{i18n.t('general.save')}"/>
+    </div>
+
+</parent:SimpleTextEditorClass>

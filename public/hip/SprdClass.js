@@ -343,10 +343,6 @@ define(
 
                 var params = this.PARAMETER();
 
-                self.$stage.bind('dom:add', function () {
-                    self.$stage._renderChild(self.$.textEditor);
-                });
-
                 flow()
                     .seq(function (cb) {
                         self.$.i18n.loadLocale(self.$.i18n.$.locale, cb);

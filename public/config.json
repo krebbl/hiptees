@@ -32,6 +32,7 @@
         "hip/view/ProfileOptionsView",
         "hip/view/SettingsView",
         "hip/view/ShapeSettingsView",
+        "hip/view/SimpleTextEditor",
         "hip/view/SwipeContainer",
         "hip/view/TextSettingsView",
         "hip/view/setting/ColorSetting",

@@ -45,10 +45,24 @@ define(["hip/store/Store",
                 anchorOffset = t;
             }
 
-            (new InsertTextOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow, payload.text)).doOperation();
+            var splitted = payload.text.split("\n");
+
+            (new InsertTextOperation(TextRange.createTextRange(anchorOffset, focusOffset), textFlow, splitted.join(""))).doOperation();
 
             anchorOffset += payload.text.length;
             focusOffset = anchorOffset;
+
+            var index = 0;
+            for (var i = 0; i < splitted.length - 1; i++) {
+                var split = splitted[i];
+                index += split.length;
+                this.insertLine({
+                    textFlow: textFlow,
+                    anchorOffset: index,
+                    focusOffset: index
+                });
+                index++;
+            }
 
             this._setSelection(payload.textFlow, anchorOffset, focusOffset);
         },
@@ -118,7 +132,6 @@ define(["hip/store/Store",
                 }
 
                 (new ApplyStyleToElementOperation(range, textFlow, leafStyle, null)).doOperation();
-
 
 
                 this.trigger('on:leafStyleChanged', {
