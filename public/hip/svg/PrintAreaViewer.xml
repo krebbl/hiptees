@@ -4,11 +4,12 @@
                              translateY="{printArea.offset.y}">
 
     <!--<pattern id="muster_a" patternUnits="userSpaceOnUse" width="308" x="0"-->
-             <!--y="0">-->
-        <!--<image href="http://img.pr0gramm.com/2015/09/29/fa8ecc8cd5549029.jpg" width="100%"/>-->
+    <!--y="0">-->
+    <!--<image href="http://img.pr0gramm.com/2015/09/29/fa8ecc8cd5549029.jpg" width="100%"/>-->
     <!--</pattern>-->
 
-    <rect width="{printArea.size.width}"
+    <rect class="print-area-boundary"
+            width="{printArea.size.width}"
           cid="border"
           height="{printArea.size.height}"
           fill="none"
@@ -64,7 +65,7 @@
 
         <g translateX="{plus(_v._size.width,_handleDistance)}" translateY="{minus(0,_handleDistance)}"
            onpointerdown="handlePointerDown('move','b',event,true)"
-                class="configuration-handle">
+           class="configuration-handle">
             <circle r="{_handleRadius}"/>
             <text y="{_textY}"
                   font-size="{_fontSize}"
@@ -108,7 +109,12 @@
 
     </g>
 
-    <g cid="snapLines">
+    <g class="print-area-rulers">
+        <line _halfWidth="{half(printArea.size.width)}" x1="{_halfWidth}" x2="{_halfWidth}"
+              y1="-9999" y2="9999"/>
+    </g>
+
+    <g cid="snapLines" class="print-area-snaplines">
         <line x1="0" x2="0" y1="0" y2="0" stroke-opacity="0" stroke="aqua"/>
         <line x1="0" x2="0" y1="0" y2="0" stroke-opacity="0" stroke="aqua"/>
     </g>

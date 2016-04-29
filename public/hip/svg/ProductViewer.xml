@@ -1,5 +1,5 @@
 <parent:ProductViewerClass xmlns="js.svg"
-                           xmlns:parent="hip.svg" xmlns:js="js.core">
+                           xmlns:parent="hip.svg" class="{_configurationClass()}">
 
 
     <image href="{appearance.resources.MEDIUM}" width="100%" height="100%"/>

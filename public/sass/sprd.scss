@@ -179,6 +179,31 @@
   pointer-events: none;
 }
 
+.configuration-selected {
+  .print-area-rulers {
+    display: inherit;
+  }
+
+  .print-area-boundary {
+    stroke: orange;
+    stroke-dasharray: 5 5;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+}
+
+.print-area-rulers {
+  display: none;
+
+  line {
+    stroke: orange;
+    stroke-dasharray: 2, 4;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
 .configuration-handle {
   circle {
     fill: white;
@@ -908,7 +933,6 @@ image.masking-bg-image {
     .product-preset-info {
       display: block;
     }
-
 
   }
 

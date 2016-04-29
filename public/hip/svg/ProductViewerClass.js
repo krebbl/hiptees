@@ -7,6 +7,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
             height: null,
             addedToDom: false,
             productType: "{productStore.product.productType}",
+            selectedConfiguration: "{productStore.selectedConfiguration}",
             printArea: "{productType.printArea}",
             product: "{productStore.product}",
             componentClass: "needsclick",
@@ -21,7 +22,7 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
         },
 
         events: ['on:configurationLongTapped'],
-        $classAttributes: ["product", "productType", "printAreaViewer", "activeViewer", "printAreaContainer", "appearance", "printArea", "addedToDom"],
+        $classAttributes: ["product", "productType", "printAreaViewer", "activeViewer", "printAreaContainer", "appearance", "printArea", "addedToDom", "selectedConfiguration"],
 
         ctor: function () {
             this.callBase();
@@ -88,7 +89,11 @@ define(['js/svg/Svg', 'xaml!hip/svg/PrintAreaViewer', "hip/action/ProductActions
                 this.trigger('on:configurationLongTapped', {configuration: configuration});
             }
 
-        }
+        },
+
+        _configurationClass: function () {
+            return this.$.selectedConfiguration ? "configuration-selected" : "";
+        }.onChange("selectedConfiguration")
 
     });
 
