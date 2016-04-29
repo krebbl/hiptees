@@ -1,4 +1,4 @@
-define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/view/SimpleTextEditor', 'text/entity/TextRange', 'hip/action/TextFlowActions'], function (ConfigurationViewerSvg, SimpleTextEditor, TextRange, TextFlowActions) {
+define(['xaml!hip/svg/ConfigurationViewer', 'text/entity/TextRange', 'hip/action/TextFlowActions'], function (ConfigurationViewerSvg, TextRange, TextFlowActions) {
     return ConfigurationViewerSvg.inherit('sprd.svg.ConfigurationViewerClass', {
 
         defaults: {
@@ -14,24 +14,11 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/view/SimpleTextEditor', 't
         $classAttributes: ["textRenderer", "activeTextConfiguration"],
 
         inject: {
-            textEditor: SimpleTextEditor,
             textFlowActions: TextFlowActions
         },
 
         ctor: function () {
             this.callBase();
-
-            this.bind('textEditor', 'on:cancel', function (e) {
-                this.$.productActions.editTextConfiguration();
-            }, this);
-
-
-            this.bind('textEditor', 'on:save', function (e) {
-                if (this.$.textEditor.$.textFlow === this.$.configuration.$.textFlow) {
-                    this.$.productActions.setText({configuration: this.$.configuration, text: e.$.text});
-                    this.$.productActions.editTextConfiguration();
-                }
-            }, this);
         },
 
         _preventDefault: function (e) {
@@ -123,60 +110,6 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/view/SimpleTextEditor', 't
             this.set({
                 _size: size
             });
-        },
-        _commitActiveTextConfiguration: function (configuration) {
-            if (configuration === this.$.configuration) {
-                this._enableEditing();
-            } else {
-                this._disableEditing();
-            }
-        },
-
-        _disableEditing: function () {
-            if (!this.$.activeTextConfiguration) {
-                this.$.textEditor.set('selected', false);
-            }
-            this.$.textRenderer.set('visible', true);
-            if (this.isRendered()) {
-                this.removeClass("editing");
-            }
-            this.$editing = false;
-            this._updateSnapPoints();
-
-        },
-
-        _enableEditing: function () {
-            var rect = this.getBoundRectInPx();
-            var root = this.getSvgRoot();
-            var textEditor = this.$.textEditor;
-
-            var textFlow = this.$.configuration.$.textFlow;
-
-            textEditor.set({
-                //zIndex: 1000,
-                //position: "absolute",
-                //overflow: "hidden",
-                //svgWidth: root.$.width,
-                //svgHeight: root.$.height,
-                //maxWidth: this.$.maxWidth,
-                //viewBox: this.getSvgRoot().$.viewBox,
-                textFlow: null,
-                selected: true
-            }, {force: true});
-
-            textEditor.set('textFlow', textFlow);
-
-            if (!textEditor.isRendered()) {
-                this.$stage._renderChild(textEditor, 0);
-            }
-            this.$editing = true;
-            this.addClass("editing");
-
-            textEditor.focus();
-        },
-
-        trans: function (scale, length) {
-            return (1 - scale) * length * 0.5;
         },
 
         handlePointerUp: function () {

@@ -24,10 +24,12 @@ define(
                 anchor: 0,
                 focus: 0,
                 text: "",
+                textEditor: null,
                 fonts: null,
                 executor: null,
                 selectionHandler: null,
                 selectedConfiguration: "{productStore.selectedConfiguration}",
+                activeTextConfiguration: "{productStore.activeTextConfiguration}",
                 textColor: "{selectedConfiguration.color}",
                 fontSize: "{selectedConfiguration.fontSize}",
                 confirmDialog: null,
@@ -341,6 +343,18 @@ define(
                     this.showLoading();
                 }, this);
 
+                this.bind('textEditor', 'on:cancel', function (e) {
+                    this.$.productActions.editTextConfiguration();
+                }, this);
+
+
+                this.bind('textEditor', 'on:save', function (e) {
+                    if (this.$.textEditor.$.textFlow === this.$.selectedConfiguration.$.textFlow) {
+                        this.$.productActions.setText({configuration: this.$.selectedConfiguration, text: e.$.text});
+                        this.$.productActions.editTextConfiguration();
+                    }
+                }, this);
+
                 var params = this.PARAMETER();
 
                 flow()
@@ -366,6 +380,40 @@ define(
                     this.$.navigationActions.showMenu();
                 } else {
                     this.$.navigationActions.showMenu({menu: "presets"});
+                }
+            },
+
+            _commitActiveTextConfiguration: function (configuration) {
+                if (configuration === this.$.selectedConfiguration) {
+                    this._enableEditing();
+                } else {
+                    this._disableEditing();
+                }
+            },
+
+            _disableEditing: function () {
+                if (!this.$.activeTextConfiguration) {
+                    this.$.textEditor.set('selected', false);
+                }
+            },
+
+            _enableEditing: function () {
+                if(this.$.selectedConfiguration) {
+                    var textEditor = this.$.textEditor;
+
+                    var textFlow = this.$.selectedConfiguration.$.textFlow;
+
+                    textEditor.set({
+                        textFlow: null,
+                        selected: true
+                    }, {force: true});
+
+                    textEditor.set('textFlow', textFlow);
+
+                    if (!textEditor.isRendered()) {
+                        this.$stage._renderChild(textEditor, 0);
+                    }
+                    textEditor.focus();
                 }
             },
 

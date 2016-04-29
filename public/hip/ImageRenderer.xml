@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <hip:ImageRendererClass
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:js="js.core" xmlns:ui="js.ui" xmlns:hip="hip" xmlns:view="hip.view"
-        xmlns:command="hip.command" xmlns:handler="hip.handler" xmlns:svg="hip.svg" xmlns:util="hip.util"
+        xmlns:js="js.core" xmlns:hip="hip" xmlns:view="hip.view"
+        xmlns:svg="hip.svg" xmlns:util="hip.util"
         xmlns:data="hip.data" xmlns:conf="js.conf" xmlns:store="hip.store" xmlns:action="hip.action">
 
     <js:Injection cid="injection">
@@ -22,7 +22,6 @@
         <store:ProductStore cid="productStore"/>
 
         <view:ImageFilterRenderer/>
-        <svg:TextEditor/>
     </js:Injection>
 
     <js:Router cid="router">

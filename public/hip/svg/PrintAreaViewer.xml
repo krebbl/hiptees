@@ -19,7 +19,7 @@
 
     <g _v="{activeViewer}" visible="{showActiveViewer}" translateX="{_v._realOffset.x}" translateY="{_v._realOffset.y}"
        _handleDistance="{multiply(handleWidth,0.9)}"
-       _handleRadius="{multiply(handleWidth, 1.4)}"
+       _handleRadius="{multiply(handleWidth, 1.6)}"
        _textY="{multiply(handleWidth,0.5)}"
        _fontSize="{multiply(handleWidth, 1.3)}"
        class="needsClick">
