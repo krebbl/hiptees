@@ -6,12 +6,13 @@ define([
     "hip/store/BasketStore",
     "hip/action/ProductActions",
     "hip/action/BasketActions",
+    "hip/entity/TextConfiguration",
     "js/data/Collection",
     "js/type/Color",
     "hip/store/TextFlowStore",
     "flow",
     "hip/util/Memento"
-], function (BaseModule, Query, ProductType, Product, BasketStore, ProductActions, BasketActions, Collection, Color, TextFlowStore, flow, Memento) {
+], function (BaseModule, Query, ProductType, Product, BasketStore, ProductActions, BasketActions, TextConfiguration, Collection, Color, TextFlowStore, flow, Memento) {
 
     var links = {
         DE: {
@@ -57,11 +58,11 @@ define([
             memento: Memento
         },
 
-        linkTo: function(what) {
-            return links[this.isNA()  ? 'US' : 'DE'][what];
+        linkTo: function (what) {
+            return links[this.isNA() ? 'US' : 'DE'][what];
         },
 
-        isNA: function() {
+        isNA: function () {
             return /\.com/.test(location.hostname);
         },
 
@@ -90,7 +91,7 @@ define([
                 }
             }, this);
 
-            this.dom(this.$stage.$window).bindDomEvent("resize", function(){
+            this.dom(this.$stage.$window).bindDomEvent("resize", function () {
                 self._setScrollLeft();
             });
         },
@@ -141,6 +142,9 @@ define([
 
         vectorLength: function (v) {
             return Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2));
+        },
+        isTextConfiguration: function (config) {
+            return config instanceof TextConfiguration;
         },
 
         _createDiffVector: function (event) {
@@ -236,11 +240,6 @@ define([
                     var bottomDistance = this.$stage.$el.offsetHeight - (viewerRect.top + viewerRect.height);
                     var bottomThreshold = 240;
 
-                    if (window.navigator.platform === "iPhone") {
-                        bottomThreshold = 300;
-                    } else if (navigator.userAgent.toLowerCase().indexOf("android") > -1) {
-                        bottomThreshold = 320;
-                    }
                     if (bottomDistance < bottomThreshold) {
                         this.$.wrapper.set('top', (bottomDistance - bottomThreshold) + "px");
                     }
@@ -269,6 +268,36 @@ define([
             }
 
             this.$.navActions.showMenu();
+        },
+
+        removeConfiguration: function () {
+            this.$.productActions.removeConfiguration({configuration: this.get('productStore.selectedConfiguration')});
+        },
+
+        layerUp: function () {
+            this.$.productActions.changeOrder({
+                configuration: this.get('productStore.selectedConfiguration'),
+                move: 1
+            });
+        },
+
+        layerDown: function (event) {
+            this.$.productActions.changeOrder({
+                configuration: this.get('productStore.selectedConfiguration'),
+                move: -1
+            });
+        },
+
+        editTextConfiguration: function () {
+            this.$.productActions.editTextConfiguration({configuration: this.get('productStore.selectedConfiguration')});
+        },
+
+        editConfiguration: function () {
+            this.$.productActions.editConfiguration({configuration: this.get('productStore.selectedConfiguration')});
+        },
+
+        cloneConfiguration: function () {
+            this.$.productActions.cloneConfiguration({configuration: this.get('productStore.selectedConfiguration')})
         },
 
         handleUpload: function (e) {

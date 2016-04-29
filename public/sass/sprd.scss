@@ -309,6 +309,7 @@ $settings-height: 210px;
   text-align: center;
   font-size: 1em;
   height: 40px;
+  z-index: 2;
 
   &__btn {
     font-weight: bold;
@@ -568,6 +569,42 @@ $add-view-height: 300px;
       width: 100%;
     }
   }
+}
+
+$toolbar-height: 85px;
+
+.toolbar-view {
+  background: rgba($color-dark2, 0.93);
+  position: absolute;
+  bottom: -$toolbar-height;
+  width: 100%;
+  height: $toolbar-height;
+  z-index: 2;
+  display: flex;
+
+  -webkit-transform: translatez(0);
+  -moz-transform: translatez(0);
+  transform: translatez(0);
+
+  transition: bottom 0.5s ease;
+  transition-property: bottom, visibility;
+  visibility: hidden;
+
+  &.active {
+    visibility: visible;
+    bottom: 0;
+  }
+
+
+  a {
+    flex: 1 0 auto;
+    display: block;
+    padding: 13px;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+  }
+
 }
 
 $menu-view-height: 209px;

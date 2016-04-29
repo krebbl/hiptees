@@ -59,6 +59,21 @@
         </div>
     </div>
 
+    <div class="toolbar-view" selected="{productStore.selectedConfiguration}">
+        <a onclick="editConfiguration()">
+            <i class="fa fa-paint-brush"/>
+        </a>
+        <a onclick="editTextConfiguration()" visible="{isTextConfiguration(productStore.selectedConfiguration)}">
+            <i class="fa fa-pencil"/>
+        </a>
+        <a onclick="cloneConfiguration()">
+            <i class="fa fa-files-o"/>
+        </a>
+        <a onclick="removeConfiguration()">
+            <i class="fa fa-trash"/>
+        </a>
+    </div>
+
     <div class="footer">
         <a class="footer__btn footer__template-btn" onclick="showMenu('options')">
             <i class="fa fa-bars"/>

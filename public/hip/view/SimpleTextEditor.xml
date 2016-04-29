@@ -5,6 +5,7 @@
                               class="simple-text-editor {_brightnessClass} needsclick">
     <textarea cid="textArea"
               rows="4"
+              autofocus="autofocus"
               fontFamily="{_paragraphStyle.fontFamily}"
               color="{_leafStyle.color}"
               textAlign="{_paragraphStyle.textAlign}"

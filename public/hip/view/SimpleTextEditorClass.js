@@ -52,6 +52,9 @@ define(["js/ui/View", 'text/entity/TextRange', "js/type/Color", "js/core/I18n", 
             this.$el.dispatchEvent(evt);
 
             this.$.textArea && this.$.textArea.focus();
+
+
+            window.document.body.scrollTop = 0;
         },
 
         cancel: function () {
