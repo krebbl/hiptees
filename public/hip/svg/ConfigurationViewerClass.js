@@ -284,6 +284,13 @@ define(['js/svg/SvgElement', 'js/core/List', "underscore", "hip/action/ProductAc
                         [size.height * anchor.y, this.$originalOffset.y]
                     ], 1)) * (1 / anchor.y);
 
+                if (snappedHeight <= 0) {
+                    snappedHeight = minHeight;
+                }
+                if (snappedWidth <= 0) {
+                    snappedWidth = minWidth;
+                }
+
                 if (this.$.keepAspectRatio) {
                     if (snappedWidth !== size.width) {
                         snappedHeight = snappedWidth / this.$origninalRatio;
