@@ -37,6 +37,9 @@ define(["js/ui/View", "js/core/I18n",
                 this.set('configuration', configuration, {force: true});
                 this.set('visible', true);
                 this.set('selected', true);
+                if (this.$.settingsContainer && this.$.settingsContainer.isRendered()) {
+                    this.$.settingsContainer.$el.scrollTop = 0;
+                }
             } else {
                 this.set('selected', false);
                 this._selectSubContent(null);
