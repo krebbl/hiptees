@@ -72,19 +72,6 @@ define([
 
             var editModeTimeout = null;
 
-            this.bind('productStore', 'change:activeTextConfiguration', function (e) {
-                if (!e.$) {
-                    editModeTimeout = setTimeout(function () {
-                        self.set('centeredConfiguration', null);
-                    }, 100);
-                } else {
-                    this.$.navigationStore.showMenu({menu: ""});
-                    if (navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)) {
-                        self.set('centeredConfiguration', e.$);
-                    }
-                }
-            }, this);
-
             this.bind('productStore', 'on:editConfiguration', function (e) {
                 this.$.navigationStore.showMenu({menu: e.$.configuration ? "settings" : ""});
                 editModeTimeout && clearTimeout(editModeTimeout);
