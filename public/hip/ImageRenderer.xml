@@ -18,8 +18,8 @@
         <action:TextFlowActions/>
 
         <store:NavigationStore cid="navigationStore"/>
-        <store:ProductStore cid="productStore"/>
         <store:TextFlowStore cid="textFlowStore"/>
+        <store:ProductStore cid="productStore"/>
 
         <view:ImageFilterRenderer/>
         <svg:TextEditor/>
