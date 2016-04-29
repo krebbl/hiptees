@@ -13,13 +13,18 @@
                height="{_size.height}" x="0" y="0"/>
         <!-- TODO: only use this on server side rendering -->
         <g visible="{not(hasWebGl())}">
-            <parent:ImageFilter id="${_filterId}" filter="{configuration.filter}" x="0%" y="0%" width="100%"
-                                height="100%"/>
-            <image cid="groupImage"
-                   filter="{filterUrl()}"
-                   href="{configuration.design.resources.SCREEN}"
-                   width="{_size.width}" height="{_size.height}" x="0" y="0"
-                    />
+            <parent:ImageFilter id="${_filterId}" filter="{configuration.filter}"
+                                filterUnits="objectBoundingBox"
+                                primitiveUnits="objectBoundingBox"
+                                width="200%"
+                                height="200%" x="0%" y="0%"/>
+            <g>
+                <image cid="groupImage"
+                       filter="{filterUrl()}"
+                       href="{configuration.design.resources.SCREEN}"
+                       width="{_size.width}" height="{_size.height}" x="0" y="0"
+                        />
+            </g>
         </g>
         <rect fill="url(#${_gradId})" width="{_size.width}" height="{_size.height}">
 
