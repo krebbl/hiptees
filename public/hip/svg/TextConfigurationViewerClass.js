@@ -81,7 +81,9 @@ define(['xaml!hip/svg/ConfigurationViewer', 'xaml!hip/svg/TextEditor', 'text/ent
 
                 var newHeight = this.$originalSize.height + diffY * 2;
                 var nFontSize = this.$originalFontSize * (newHeight / this.$originalSize.height);
-                this.$lastFontSize = Math.round(nFontSize);
+                this.$lastFontSize = Math.max(20, Math.round(nFontSize));
+
+
                 this.$.textFlowActions.changeStyle({
                     textFlow: this.$.configuration.$.textFlow,
                     preview: true,
