@@ -110,8 +110,8 @@
     "sizeTable": "Size table",
     "chooseSize": "Choose [your size|0]:",
 
-    "textSettings": "Text settings",
-    "designSettings": "Colour",
+    "textSettings": "Edit",
+    "designSettings": "Edit",
     "duplicate": "Duplicate",
     "delete": "Remove"
   },
