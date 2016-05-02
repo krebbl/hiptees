@@ -108,7 +108,12 @@
     "addingProduct": "Füge Produkt zum \nWarenkorb hinzu",
     "uploadingImages": "Lade Bilder hoch (%0 / %1)",
     "sizeTable": "Maßtabelle",
-    "chooseSize": "Wähle [deine Größe|0]:"
+    "chooseSize": "Wähle [deine Größe|0]:",
+
+    "textSettings": "Schrifteinstellungen",
+    "designSettings": "Farbe",
+    "duplicate": "Duplizieren",
+    "delete": "Löschen"
   },
   "settings": {
     "color": "Farbe",

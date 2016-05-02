@@ -108,7 +108,12 @@
     "addingProduct": "Add product to basket",
     "uploadingImages": "Upload image (%0 / %1)",
     "sizeTable": "Size table",
-    "chooseSize": "Choose [your size|0]:"
+    "chooseSize": "Choose [your size|0]:",
+
+    "textSettings": "Text settings",
+    "designSettings": "Colour",
+    "duplicate": "Duplicate",
+    "delete": "Remove"
   },
   "settings": {
     "color": "color",

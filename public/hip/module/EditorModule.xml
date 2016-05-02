@@ -59,18 +59,22 @@
         </div>
     </div>
 
-    <div class="toolbar-view" selected="{productStore.selectedConfiguration}">
-        <a onclick="editConfiguration()">
-            <i class="fa fa-paint-brush"/>
+    <div class="toolbar-view" selected="{productStore.selectedConfiguration}" _isTextConfiguration="{isTextConfiguration(productStore.selectedConfiguration)}">
+        <a onclick="editConfiguration()" visible="{_isTextConfiguration}">
+            <i class="fa fa-font"/>
+            {i18n.t('editor.textSettings')}
         </a>
-        <a onclick="editTextConfiguration()" visible="{isTextConfiguration(productStore.selectedConfiguration)}">
-            <i class="fa fa-pencil"/>
+        <a onclick="editConfiguration()" visible="{not(_isTextConfiguration)}">
+            <i class="fa fa-paint-brush"/>
+            {i18n.t('editor.designSettings')}
         </a>
         <a onclick="cloneConfiguration()">
             <i class="fa fa-files-o"/>
+            {i18n.t('editor.duplicate')}
         </a>
         <a onclick="removeConfiguration()">
             <i class="fa fa-trash"/>
+            {i18n.t('editor.delete')}
         </a>
     </div>
 

@@ -571,7 +571,7 @@ $add-view-height: 300px;
   }
 }
 
-$toolbar-height: 85px;
+$toolbar-height: 100px;
 
 .toolbar-view {
   background: rgba($color-dark2, 0.93);
@@ -597,12 +597,18 @@ $toolbar-height: 85px;
 
 
   a {
-    flex: 1 0 auto;
+    flex: 1 0 100px;
     display: block;
     padding: 13px;
     color: white;
-    font-size: 18px;
+    font-size: 11px;
     text-align: center;
+
+    i {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 4px;
+    }
   }
 
 }
