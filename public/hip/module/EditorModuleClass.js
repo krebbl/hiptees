@@ -47,7 +47,9 @@ define([
             _zoom: 1,
             _loadingMessage: "",
             _productName: "",
-            _showLoader: false
+            _showLoader: false,
+
+            showSettingsMenu: false
         },
 
         inject: {
@@ -78,6 +80,15 @@ define([
                 editModeTimeout && clearTimeout(editModeTimeout);
                 self.set('centeredConfiguration', e.$.configuration);
             }, this);
+
+            this.bind('productStore', 'on:configurationSelected', function(e) {
+                if (this.$.showSettingsMenu) {
+                    this.set("showSettingsMenu", false);
+                    this.$.navigationStore.showMenu({menu: e.$.configuration ? "settings" : ""});
+                }
+            }, this);
+
+
 
             this.bind('innerContent', 'dom:add', function () {
                 this._setScrollLeft();
@@ -254,6 +265,9 @@ define([
         },
 
         add: function (what, e) {
+
+            this.set("showSettingsMenu", true);
+
             if (what == "text") {
                 this.$.productActions.addText();
             } else if (what == "image") {
@@ -267,7 +281,7 @@ define([
                 });
             }
 
-            this.$.navActions.showMenu();
+            //this.$.navActions.showMenu();
         },
 
         removeConfiguration: function () {
@@ -478,9 +492,9 @@ define([
         titleForMenu: function (menu) {
             if (menu === "presets") {
                 return this.$.i18n.t('editor.chooseTemplate');
-            } else {
-                return this.$.i18n.t('editor.createYourOwn');
             }
+
+            return "";
         }
     })
 });
