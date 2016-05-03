@@ -11,8 +11,16 @@
               textAlign="{_paragraphStyle.textAlign}"
             >{_text}</textarea>
     <div class="simple-text-editor__buttons">
-        <input type="button" class="btn" value="{i18n.t('general.back')}" onclick="cancel"/>
-        <input type="submit" class="btn btn-green" value="{i18n.t('general.save')}"/>
+        <a onclick="cancel" class="cancel">
+            <i class="fa fa-times"/>
+            {i18n.t('general.back')}
+        </a>
+
+        <a onclick="saveText" class="save">
+            <i class="fa fa-check"/>
+            {i18n.t('general.save')}
+        </a>
+
     </div>
 
 </parent:SimpleTextEditorClass>

@@ -15,11 +15,29 @@
   }
 
   &.dark {
-    background: rgba(9, 9, 9, 0.94);
+    background: rgba(9, 9, 9, 0.9);
+
+
+    .simple-text-editor__buttons {
+      background: black;
+      color: white;
+    }
+
+  }
+
+  .fa {
+    position: relative;
+    left: -2px;
   }
 
   &.bright {
     background: rgba(255, 255, 255, 0.94);
+
+    .simple-text-editor__buttons {
+      background: white;
+      color: black;
+    }
+
   }
 
   textarea {
@@ -32,8 +50,19 @@
     background: none;
   }
 
+
   &__buttons {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    padding: 5px 12px;
     text-align: right;
+
+    a {
+      padding: 10px;
+      display: inline-block;
+    }
 
     > * {
       margin-left: 10px;
