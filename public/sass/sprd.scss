@@ -525,7 +525,7 @@ $settings-header-height: 40px;
 
 }
 
-$add-view-height: 300px;
+$add-view-height: 200px;
 
 .add-view {
   z-index: 2;
@@ -560,7 +560,7 @@ $add-view-height: 300px;
     text-decoration: none;
     padding: 1em;
     float: left;
-    width: 50%;
+    width: 33%;
     text-align: center;
 
     &.close-btn {
