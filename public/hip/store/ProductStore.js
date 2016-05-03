@@ -243,7 +243,7 @@ define(["hip/store/Store", "hip/entity/TextConfiguration",
 
             (new ApplyStyleToElementOperation(TextRange.createTextRange(0, textFlow.textLength() - 1), textFlow, leafStyle, payload.paragraphStyle || {
                     textAlign: "center",
-                    lineHeight: 1.3,
+                    lineHeight: 1.0,
                     fontSize: 70,
                     letterSpacing: 0,
                     fontFamily: this.$.defaultFont
