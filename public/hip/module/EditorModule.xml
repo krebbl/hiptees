@@ -13,14 +13,14 @@
 
 
     <div class="content {appearanceClass()} content__editor {zoomClass()}" cid="content" onpointerdown="_onPointerDown">
-        <div class="undo-redo-buttons">
-            <a onclick="undo" enabled="{memento.hasUndoState()}">
-                <i class="fa fa-reply"/>
-            </a>
-            <a onclick="redo" enabled="{memento.hasRedoState()}">
-                <i class="fa fa-share"/>
-            </a>
-        </div>
+        <!--<div class="undo-redo-buttons">-->
+            <!--<a onclick="undo" enabled="{memento.hasUndoState()}">-->
+                <!--<i class="fa fa-reply"/>-->
+            <!--</a>-->
+            <!--<a onclick="redo" enabled="{memento.hasRedoState()}">-->
+                <!--<i class="fa fa-share"/>-->
+            <!--</a>-->
+        <!--</div>-->
 
         <a class="zoom-btn" onclick="zoomOut" selected="{gt(_zoom,1)}">
             <!--<i class="fa fa-search-plus" visible="{not(zoomed)}"/>-->
